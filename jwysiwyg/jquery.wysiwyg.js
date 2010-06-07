@@ -819,10 +819,8 @@
                          */
                         $(this.original).focus(function ()
                         {
-                                if (!$.browser.msie)
-                                {
-                                        self.focus();
-                                }
+						        if ($(this).filter(':visible')) return;
+                                self.focus();
                         });
 
                         if (!$.browser.msie)
