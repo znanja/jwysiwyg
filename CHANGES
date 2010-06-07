@@ -1,5 +1,7 @@
 == master (not tagged yet) ==
 
+== Version 0.9 (maintenance release)
+
 * Buttons are unselectable now and have no anchors (CSS reviewed) - mrapczynski
 * Way to return focus to editor has been corrected - mappam0
 * $.fn.documentSelection has been removed to minimize pollution of $.fn namespace - akzhan.abdulin
