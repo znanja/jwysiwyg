@@ -1,5 +1,6 @@
 == master (not tagged yet) ==
 * Editor now throw errors on unknown actions - akzhan.abdulin
+* Getter methods was broken. Fixed - wordituk
 
 == Version 0.9 (maintenance release)
 
