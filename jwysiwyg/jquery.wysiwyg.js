@@ -61,27 +61,19 @@
                         var action = arguments[0].toString();
                         var params = [];
 
-                        for (var i = 1; i < arguments.length; i++)
-                        {
-                                params[i - 1] = arguments[i];
-                        }
                         if (action == 'enabled')
                         {
                                 return this.data('wysiwyg') !== null;
                         }
-                        if (action in Wysiwyg)
+                        for (var i = 1; i < arguments.length; i++)
                         {
-                                return this.each(function ()
-                                {
-                                        $.data(this, 'wysiwyg').designMode();
-
-                                        Wysiwyg[action].apply(this, params);
-                                });
+                                params[i - 1] = arguments[i];
                         }
-                        else
+                        return this.each(function()
                         {
-                                return this;
-                        }
+                                $.data(this, 'wysiwyg').designMode();
+                                Wysiwyg[action].apply(this, params);
+                        });
                 }
 
                 var controls = { };
