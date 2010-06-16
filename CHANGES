@@ -1,4 +1,5 @@
 == master (not tagged yet) ==
+* Editor now throw errors on unknown actions - akzhan.abdulin
 
 == Version 0.9 (maintenance release)
 
