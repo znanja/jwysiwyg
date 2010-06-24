@@ -69,7 +69,7 @@
                         {
                                 params[i - 1] = arguments[i];
                         }
-						retValue = null;
+						var retValue = null;
                         this.each(function()
                         {
                                 $.data(this, 'wysiwyg').designMode();
@@ -277,9 +277,9 @@
                         visible: true,
                         exec: function ()
                         {
+                                var self = this;
                                 if ($.modal)
                                 {
-                                        var self = this;
                                         $.modal($.fn.wysiwyg.defaults.formImageHtml, {
                                                 onShow: function(dialog)
                                                 {
@@ -307,7 +307,6 @@
                                 else
                                 {
                                      if ($.fn.dialog){
-                                        var self = this;
                                         var dialog = $($.fn.wysiwyg.defaults.formImageHtml).appendTo('body');
                                         dialog.dialog({
                                             modal: true,
@@ -365,10 +364,9 @@
                         visible: true,
                         exec: function ()
                         {
-
+                                var self = this;
                                 if ($.fn.modal)
                                 {
-                                        var self = this;
                                         $.modal($.fn.wysiwyg.defaults.formTableHtml, {
                                                 onShow: function(dialog)
                                                 {
@@ -394,7 +392,6 @@
                                 else
                                 {
                                     if ($.fn.dialog){
-                                        var self = this;
                                         var dialog = $($.fn.wysiwyg.defaults.formTableHtml).appendTo('body');
                                         dialog.dialog({
                                             modal: true,
@@ -831,7 +828,10 @@
                          */
                         $(this.original).focus(function ()
                         {
-						        if ($(this).filter(':visible')) return;
+						        if ($(this).filter(':visible'))
+								{
+								        return;
+								}
                                 self.focus();
                         });
 
@@ -1006,7 +1006,7 @@
                 },
                 insertTable: function(colCount, rowCount, filler)
                 {
-                        if (isNaN(rowCount) || isNaN(colCount) || rowCount == null || colCount==null)
+                        if (isNaN(rowCount) || isNaN(colCount) || rowCount === null || colCount === null)
                         {
                                 return;
                         }
