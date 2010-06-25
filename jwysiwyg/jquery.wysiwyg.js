@@ -260,7 +260,7 @@
                                                 var szURL = prompt('URL', 'http://');
                                                 if (szURL && szURL.length > 0)
                                                 {
-                                                        this.editorDoc.execCommand('unlink', false, []);
+                                                        this.editorDoc.execCommand('unlink', false, null);
                                                         this.editorDoc.execCommand('createLink', false, szURL);
                                                 }
                                         }
@@ -434,7 +434,7 @@
                         groupIndex: 7,
                         className: 'h1',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        'arguments': [$.browser.msie ? '<h1>' : 'h1'],
+                        'arguments': $.browser.msie ? '<h1>' : 'h1',
                         tags: ['h1'],
                         tooltip: 'Header 1'
                 },
@@ -442,7 +442,7 @@
                         visible: true,
                         className: 'h2',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        'arguments': [$.browser.msie ? '<h2>' : 'h2'],
+                        'arguments': $.browser.msie ? '<h2>' : 'h2',
                         tags: ['h2'],
                         tooltip: 'Header 2'
                 },
@@ -450,7 +450,7 @@
                         visible: true,
                         className: 'h3',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        'arguments': [$.browser.msie ? '<h3>' : 'h3'],
+                        'arguments': $.browser.msie ? '<h3>' : 'h3',
                         tags: ['h3'],
                         tooltip: 'Header 3'
                 },
@@ -486,8 +486,8 @@
                                 {
                                         this.focus();
                                 }
-                                this.editorDoc.execCommand('removeFormat', false, []);
-                                this.editorDoc.execCommand('unlink', false, []);
+                                this.editorDoc.execCommand('removeFormat', false, null);
+                                this.editorDoc.execCommand('unlink', false, null);
                          },
                          tooltip: 'Remove formatting'
                 },
@@ -560,7 +560,7 @@
                                         {
                                                 self.focus();
                                         }
-                                        self.editorDoc.execCommand('unlink', false, []);
+                                        self.editorDoc.execCommand('unlink', false, null);
                                         self.editorDoc.execCommand('createLink', false, szURL);
                                 }
                                 else if (self.options.messages.nonSelection)
@@ -657,8 +657,8 @@
                         {
                                 this.focus();
                         }
-                        this.editorDoc.execCommand('removeFormat', false, []);
-                        this.editorDoc.execCommand('unlink', false, []);
+                        this.editorDoc.execCommand('removeFormat', false, null);
+                        this.editorDoc.execCommand('unlink', false, null);
 						return this;
                 },
                 destroy: function ()
@@ -965,12 +965,12 @@
                 {
                         var selection = this.getSelection();
 
-                        if (!(selection))
+                        if (!selection)
                         {
                                 return null;
                         }
 
-                        return (selection.rangeCount > 0) ? selection.getRangeAt(0) : selection.createRange();
+                        return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
                 },
 
                 getContent: function ()
