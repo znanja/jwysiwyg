@@ -433,24 +433,24 @@
                         visible: true,
                         groupIndex: 7,
                         className: 'h1',
-                        command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        'arguments': $.browser.msie ? '<h1>' : 'h1',
+                        command: ($.browser.msie || $.browser.safari) ? 'FormatBlock' : 'heading',
+                        'arguments': ($.browser.msie || $.browser.safari) ? '<h1>' : 'h1',
                         tags: ['h1'],
                         tooltip: 'Header 1'
                 },
                 h2: {
                         visible: true,
                         className: 'h2',
-                        command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        'arguments': $.browser.msie ? '<h2>' : 'h2',
+                        command: ($.browser.msie || $.browser.safari)  ? 'FormatBlock' : 'heading',
+                        'arguments': ($.browser.msie || $.browser.safari) ? '<h2>' : 'h2',
                         tags: ['h2'],
                         tooltip: 'Header 2'
                 },
                 h3: {
                         visible: true,
                         className: 'h3',
-                        command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        'arguments': $.browser.msie ? '<h3>' : 'h3',
+                        command: ($.browser.msie || $.browser.safari) ? 'FormatBlock' : 'heading',
+                        'arguments': ($.browser.msie || $.browser.safari) ? '<h3>' : 'h3',
                         tags: ['h3'],
                         tooltip: 'Header 3'
                 },
