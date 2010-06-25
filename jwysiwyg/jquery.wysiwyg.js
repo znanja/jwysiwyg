@@ -1122,7 +1122,7 @@
                                 }
                                 this.appendMenu(
                                         control.command || name,
-                                        control['arguments'] || [],
+                                        control['arguments'] || '',
                                         control.className || control.command || name || 'empty',
                                         control.exec,
                                         control.tooltip || control.command || name || ''
