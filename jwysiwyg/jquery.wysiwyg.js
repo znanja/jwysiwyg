@@ -1,5 +1,5 @@
 /**
- * WYSIWYG - jQuery plugin 0.9
+ * WYSIWYG - jQuery plugin 0.91
  *
  * Copyright (c) 2008-2009 Juan M Martinez
  * http://plugins.jquery.com/project/jWYSIWYG

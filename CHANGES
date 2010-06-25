@@ -1,6 +1,10 @@
 == master (not tagged yet) ==
+
+== Version 0.91 (maintenance release)
+
 * Editor now throw errors on unknown actions - akzhan.abdulin
-* Getter methods was broken. Fixed - wordituk
+* Getter methods were broken. Fixed - wordituk
+* headings formatting has been fixed in IE, Firefox and Chrome - kolpak
 
 == Version 0.9 (maintenance release)
 
