@@ -486,6 +486,10 @@
                                 {
                                         this.focus();
                                 }
+                                if ($.browser.mozilla)
+                                {
+                                        this.editorDoc.execCommand('formatBlock', false, '<P>');
+                                }
                                 this.editorDoc.execCommand('removeFormat', false, null);
                                 this.editorDoc.execCommand('unlink', false, null);
                          },
