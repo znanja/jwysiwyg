@@ -1,7 +1,7 @@
 == master (not tagged yet) ==
 
 * Fix work under quirks mode of Internet Explorer - kris.schwab
-* Workaround for Mozilla/WebKit misfunctionality over headings - aiveldesign
+* Workaround for Mozilla/WebKit misfunctionality of RemoveFormat over headings - aiveldesign
 * Experimental support for switching between LTR/RTL modes (no icons provided and markup issues) - abduljawad.mahmoud
 * More robust selection check in createLink - systeembeheer 
 
