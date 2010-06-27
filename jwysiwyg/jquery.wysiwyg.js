@@ -248,7 +248,7 @@
                         {
                                 var selection = documentSelection.call($(this.editor));
 
-                                if (selection.length > 0)
+                                if (selection && selection.length > 0)
                                 {
                                         if ($.browser.msie)
                                         {
@@ -589,7 +589,7 @@
                         {
                                 var selection = documentSelection.call($(self.editor));
 
-                                if (selection.length > 0)
+                                if (selection && selection.length > 0)
                                 {
                                         if ($.browser.msie)
                                         {
