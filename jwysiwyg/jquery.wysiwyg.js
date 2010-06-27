@@ -486,10 +486,7 @@
                                 {
                                         this.focus();
                                 }
-                                if ($.browser.mozilla)
-                                {
-                                        this.editorDoc.execCommand('formatBlock', false, '<P>');
-                                }
+                                this.editorDoc.execCommand('formatBlock', false, '<P>'); // remove headings
                                 this.editorDoc.execCommand('removeFormat', false, null);
                                 this.editorDoc.execCommand('unlink', false, null);
                          },

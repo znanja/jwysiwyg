@@ -1,7 +1,7 @@
 == master (not tagged yet) ==
 
 * Fix work under quirks mode of Internet Explorer - kris.schwab
-* Workaround for Mozilla bug in removeFormat over headings - aiveldesign
+* Workaround for Mozilla/WebKit bug in removeFormat over headings - aiveldesign
 * Experimental support for switching between LTR/RTL modes (no icons provided and markup issues) - abduljawad.mahmoud
 
 == Version 0.91 (maintenance release)
