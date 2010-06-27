@@ -1,5 +1,7 @@
 == master (not tagged yet) ==
 
+* Experimental support for switching between LTR/RTL modes (no icons provided and markup issues) - abduljawad.mahmoud
+
 == Version 0.91 (maintenance release)
 
 * Editor now throw errors on unknown actions - akzhan.abdulin
