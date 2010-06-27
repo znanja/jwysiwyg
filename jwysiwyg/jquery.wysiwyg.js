@@ -1,5 +1,5 @@
 /**
- * WYSIWYG - jQuery plugin 0.91
+ * WYSIWYG - jQuery plugin 0.92 (arigatou gozaimasu)
  *
  * Copyright (c) 2008-2009 Juan M Martinez
  * http://plugins.jquery.com/project/jWYSIWYG
