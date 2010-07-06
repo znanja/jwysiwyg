@@ -1,5 +1,5 @@
 ========================
-jWYSIWYG 0.5 User Manual
+jWYSIWYG 0.92 User Manual
 ========================
 
 
@@ -63,7 +63,7 @@ To apply a CSS stylesheet to the content inside the editor, use the ``css`` conf
         css: 'editor.css'
     });
 
-The editor will not inherit the style of the containing page by default, you must specify a CSS file to apply to it.
+The editor will not inherit the style of the containing page anyway, you must specify a CSS file to apply to it.
 
 
 Clear the Editor
@@ -171,44 +171,35 @@ Additional configuration options are specified by passing a javascript object to
     * ``italic``: Make text italic.
     * ``strikeThrough``: Make text strikethrough.
     * ``underline``: Make text underlined.
-    * ``seperator00``
     * ``justifyLeft``: Left-align text.
     * ``justifyCenter``: Center-align text.
     * ``justifyRight``: Right-align text.
     * ``justifyFull``: Justify text.
-    * ``separator01``
     * ``indent``: Indent text.
     * ``outdent``: Outdent text.
-    * ``separator02``
     * ``subscript``: Make text subscript.
     * ``superscript``: Make text superscript.
-    * ``separator03``
     * ``undo``: Undo last action.
     * ``redo``: Redo last action.
-    * ``separator04``
     * ``insertOrderedList``: Insert ordered (numbered) list.
     * ``insertUnorderedList``: Insert unordered (bullet) list.
     * ``insertHorizontalRule``: Insert horizontal rule.
-    * ``separator05``    
-    * ``createLink``: Create a link from the selected text, by prompting user for the URL.
+    * ``createLink``: Create a link from the selected text, by prompting the user for the URL.
     * ``insertImage``: Insert an image, by prompting the user for the image path.
-    * ``separator06``
     * ``h1mozilla``: Make text an h1 header, Mozilla-specific.
     * ``h2mozilla``: Make text an h2 header, Mozilla-specific.
     * ``h3mozilla``: Make text on h3 header, Mozilla-specific.
     * ``h1``: Make text an h1 header, non-Mozilla-specific.
     * ``h2``: Make text an h2 header, non-Mozilla-specific.
     * ``h3``: Make text an h3 header, non-Mozilla-specific.
-    * ``separator07``
     * ``cut``: Cut selected text.
     * ``copy``: Copy selected text.
     * ``paste``: Paste from clipboard.
-    * ``separator08``
     * ``increaseFontSize``: Increase font size.
     * ``decreaseFontSize``: Decrease font size.
-    * ``separator09``
     * ``html``: Show the original textarea with HTML source. When clicked again, copy the textarea code back to the jWYSIWYG editor.
     * ``removeFormat``: Remove all formatting.
+    * ``insertTable``: Insert a table, by prompting the user for the table settings.
 
 
 ``messages``
@@ -238,4 +229,11 @@ When jWYSIWYG is called on a textarea, it does the following things:
 1. Creates an additional container div to encapsulate the new editor.
 2. Hides the existing textarea.
 3. Creates an iframe inside the container div, populated with editor window and toolbar.
-4. When ``saveContent()`` is called, 
+4. When ``saveContent()`` is called, copy its content to existing textarea.
+5. Listen for ``submit`` event of closest form to apply ``saveContent()`` before form submittion.
+
+====================
+Additional Resources
+====================
+
+Look at http://akzhan.github.com/jwysiwyg/examples/
