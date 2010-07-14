@@ -513,8 +513,8 @@
 									    var $ed = $(this.editor);
                                         this.saveContent();
                                         $(this.original).css({
-                                                width: $ed.outerWidth(),
-												height: $ed.outerHeight(),
+                                                width:  $(this.element).outerWidth() - 6,
+												height: $(this.element).height() - $(this.panel).height() - 6,
 												resize: 'none'
 										}).show();
 										$ed.hide();
@@ -741,10 +741,12 @@
                                 if (newX === 0 && element.cols)
                                 {
                                         newX = (element.cols * 8) + 21;
+										element.cols = 0;
                                 }
                                 if (newY === 0 && element.rows)
                                 {
                                         newY = (element.rows * 16) + 16;
+										element.rows = 0;
                                 }
                                 this.editor = $(location.protocol == 'https:' ? '<iframe src="javascript:false;"></iframe>' : '<iframe></iframe>').css(
                                 {
