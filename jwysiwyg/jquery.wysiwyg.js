@@ -506,11 +506,18 @@
                                 {
                                         this.setContent($(this.original).val());
                                         $(this.original).hide();
+										$(this.editor).show();
                                 }
                                 else
                                 {
+									    var $ed = $(this.editor);
                                         this.saveContent();
-                                        $(this.original).show();
+                                        $(this.original).css({
+                                                width: $ed.outerWidth(),
+												height: $ed.outerHeight(),
+												resize: 'none'
+										}).show();
+										$ed.hide();
                                 }
 
                                 this.viewHTML = !(this.viewHTML);
@@ -753,15 +760,6 @@
                                 if ($.browser.msie)
                                 {
                                         this.editor.css('height', (newY).toString() + 'px');
-
-                                        /**
-                                         var editor = $('<span></span>').css({
-                                         width	 : ( newX - 6 ).toString() + 'px',
-                                         height	: ( newY - 8 ).toString() + 'px'
-                                         }).attr('id', $(element).attr('id') + 'IFrame');
-
-                                         editor.outerHTML = this.editor.outerHTML;
-                                         */
                                 }
                         }
 
@@ -794,20 +792,17 @@
                                 }, this.options.resizeOptions));
                         }
 
-                        /**
-                         * http://code.google.com/p/jwysiwyg/issues/detail?id=100
-                         */
-                        var form = $(element).closest('form');
+                        var $form = $(element).closest('form');
 
                         if (this.options.autoSave)
                         {
-                                form.submit(function ()
+                                $form.submit(function ()
                                 {
                                         self.saveContent();
                                 });
                         }
 
-                        form.bind('reset', function ()
+                        $form.bind('reset', function ()
                         {
                                 self.setContent(self.initialContent);
                                 self.saveContent();
