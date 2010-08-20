@@ -776,13 +776,16 @@
                         var panel = this.panel = $('<ul role="menu" class="panel"></ul>');
 
                         this.appendControls();
-                        this.element = $('<div></div>').css(
-                        {
-                                width: (newX > 0) ? (newX).toString() + 'px' : '100%'
-                        }).addClass('wysiwyg').append(panel).append($('<div><!-- --></div>').css(
-                        {
-                                clear: 'both'
-                        })).append(this.editor);
+                        this.element = $('<div></div>').addClass('wysiwyg').append(panel).append($('<div><!-- --></div>').css({
+                            clear: 'both'
+                        }).append(this.editor);
+
+						if (!options.iFrameClass)
+						{
+                            this.element.css({
+                               width: (newX > 0) ? newX.toString() + 'px' : '100%'
+                            });
+						}
 
                         $(element).hide().before(this.element);
 
