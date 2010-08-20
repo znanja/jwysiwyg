@@ -131,6 +131,7 @@
                 rmUnwantedBr: true,
                 // http://code.google.com/p/jwysiwyg/issues/detail?id=15
                 brIE: true,
+				iFrameClass: null,
                 messages:
                 {
                         nonSelection: 'select the text you wish to link'
@@ -749,21 +750,27 @@
                                         newY = (element.rows * 16) + 16;
 										element.rows = 0;
                                 }
-                                this.editor = $(location.protocol == 'https:' ? '<iframe src="javascript:false;"></iframe>' : '<iframe></iframe>').css(
-                                {
+                                this.editor = $(location.protocol == 'https:' ? '<iframe src="javascript:false;"></iframe>' : '<iframe></iframe>').attr('frameborder', '0');
+								if (options.iFrameClass)
+								{
+									this.editor.addClass(iFrameClass);
+								}
+								else
+								{
+                                    this.editor.css({
                                         minHeight: (newY - 6).toString() + 'px',
                                         width: (newX - 8).toString() + 'px'
-                                }).attr('frameborder', '0');
+                                    });
+                                    if ($.browser.msie)
+                                    {
+                                        this.editor.css('height', newY.toString() + 'px');
+                                    }
+								}
 
                                 /**
                                  * http://code.google.com/p/jwysiwyg/issues/detail?id=96
                                  */
                                 this.editor.attr('tabindex', $(element).attr('tabindex'));
-
-                                if ($.browser.msie)
-                                {
-                                        this.editor.css('height', (newY).toString() + 'px');
-                                }
                         }
 
                         var panel = this.panel = $('<ul role="menu" class="panel"></ul>');
