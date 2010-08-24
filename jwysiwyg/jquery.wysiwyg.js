@@ -778,7 +778,7 @@
                         this.appendControls();
                         this.element = $('<div></div>').addClass('wysiwyg').append(panel).append($('<div><!-- --></div>').css({
                             clear: 'both'
-                        }).append(this.editor);
+                        })).append(this.editor);
 
 						if (!options.iFrameClass)
 						{
