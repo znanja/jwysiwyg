@@ -90,6 +90,7 @@
                  * If the user set custom controls, we catch it, and merge with the
                  * defaults controls later.
                  */
+
                 if (options && options.controls)
                 {
                         controls = options.controls;
@@ -808,7 +809,7 @@
                         var $form = $(element).closest('form');
 
                         if (this.options.autoSave)
-                        {
+                        {                            
                                 $form.submit(function ()
                                 {
                                         self.saveContent();
@@ -929,16 +930,11 @@
                                 /**
                                  * @link http://code.google.com/p/jwysiwyg/issues/detail?id=11
                                  */
-                                $(this.editorDoc).keydown(function ()
-                                {
-                                        self.saveContent();
-                                }).keyup(function ()
-                                {
-                                        self.saveContent();
-                                }).mousedown(function ()
-                                {
-                                        self.saveContent();
-                                });
+                                var handler = function () {
+                                    self.saveContent();
+                                };
+                                $(this.editorDoc).keydown(handler).keyup(handler).mousedown(handler).bind($.support.noCloneEvent ? "input" : "paste", handler);
+
                         }
 
                         if (this.options.css)
@@ -1145,15 +1141,20 @@
                 {
                         return $('<li role="separator" class="separator"></li>').appendTo(this.panel);
                 },
-
+                parseControls: function() {
+                    if(this.options.parseControls) {
+                        return this.options.parseControls.call(this);
+                    }
+                    return this.options.controls;
+                },
                 appendControls: function ()
                 {
-
+                        var controls = this.parseControls();
                         var currentGroupIndex  = 0;
                         var hasVisibleControls = true; // to prevent separator before first item
-                        for (var name in this.options.controls)
+                        for (var name in controls)
                         {
-                                var control = this.options.controls[name];
+                                var control = controls[name];                            
                                 if (control.groupIndex && currentGroupIndex != control.groupIndex)
                                 {
                                         currentGroupIndex = control.groupIndex;
