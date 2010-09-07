@@ -968,6 +968,17 @@
                         {
                                 $(self.editorDoc).bind(key, handler);
                         });
+                        if(this.options.events && this.options.events.save) {
+                            var handler = this.options.events.save;
+                            $(self.editorDoc).bind('keyup', handler);
+                            $(self.editorDoc).bind('change', handler);
+                            if($.support.noCloneEvent) {
+                                $(self.editorDoc).bind("input", handler);
+                            } else {
+                                $(self.editorDoc).bind("paste", handler);
+                                $(self.editorDoc).bind("cut", handler);
+                            }
+                        }
                 },
 
                 designMode: function ()
@@ -1086,6 +1097,9 @@
                                 }
 
                                 $(this.original).val(content);
+                                if(this.options.events && this.options.events.save) {
+                                    this.options.events.save.call(this);
+                                }
                         }
 						return this;
                 },
