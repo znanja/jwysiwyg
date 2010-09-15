@@ -968,6 +968,7 @@
                         {
                                 $(self.editorDoc).bind(key, handler);
                         });
+						$(this.editorDoc.body).addClass('wysiwyg');
                         if(this.options.events && this.options.events.save) {
                             var handler = this.options.events.save;
                             $(self.editorDoc).bind('keyup', handler);
