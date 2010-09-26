@@ -1,8 +1,8 @@
 /**
- * WYSIWYG - jQuery plugin 0.92
- * (arigatou gozaimasu)
+ * WYSIWYG - jQuery plugin 0.93
+ * (koken)
  *
- * Copyright (c) 2008-2009 Juan M Martinez
+ * Copyright (c) 2008-2009 Juan M Martinez, 2010 Akzhan Abdulin and all contrbutors
  * http://plugins.jquery.com/project/jWYSIWYG
  *
  * Dual licensed under the MIT and GPL licenses:

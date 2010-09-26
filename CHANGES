@@ -1,6 +1,13 @@
 == master (not tagged yet) ==
 
+== Version 0.93 (koken) ==
+
 * Hide wysiwyg while html shown - akzhan.abdulin
+* jwysiwyg destroy fixed - jalada
+* jwysiwyg iframe body now marked with wysiwyg class - TheQueenDrinksTea
+* Common save event for catching all the modifications added - Janne Hietamaki
+* Custom handler for chaining toolbar ordering etc. added - Janne Hietamaki
+* Iframe now can use class name to be styled - chris.haumesser
 * Version string in source file must ended with version number for Drupal integration folks - xeto
 
 == Version 0.92 (arigatou gozaimasu)
