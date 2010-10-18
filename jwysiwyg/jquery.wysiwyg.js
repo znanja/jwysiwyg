@@ -71,7 +71,9 @@
                                 params[i - 1] = arguments[i];
                         }
 						var retValue = null;
-                        this.each(function()
+						
+						// .filter('textarea') is a fix for bug 29 ( http://github.com/akzhan/jwysiwyg/issues/issue/29 )
+                        this.filter('textarea').each(function()
                         {
                                 $.data(this, 'wysiwyg').designMode();
                                 retValue = Wysiwyg[action].apply(this, params);
@@ -748,11 +750,15 @@
                                 if (newX === 0 && element.cols)
                                 {
                                         newX = (element.cols * 8) + 21;
+										
+										// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 )
 										element.cols = 1;
                                 }
                                 if (newY === 0 && element.rows)
                                 {
                                         newY = (element.rows * 16) + 16;
+
+										// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 )
 										element.rows = 1;
                                 }
                                 this.editor = $(location.protocol == 'https:' ? '<iframe src="javascript:false;"></iframe>' : '<iframe></iframe>').attr('frameborder', '0');
@@ -764,7 +770,9 @@
 								{
                                     this.editor.css({
                                         minHeight: (newY - 6).toString() + 'px',
-                                        width: (newX - 8).toString() + 'px'
+										
+										// fix for issue 12 ( http://github.com/akzhan/jwysiwyg/issues/issue/12 )
+                                        width: (newX > 50) ? (newX - 8).toString() + 'px' : ''
                                     });
                                     if ($.browser.msie)
                                     {
