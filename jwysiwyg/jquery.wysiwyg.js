@@ -1318,9 +1318,10 @@
                                         } while ((elm = elm.parentNode));
                                 }
 
-                                if (control.css)
+                                if (control.css || (control.options && control.options.css))
                                 {
-                                        var el = $(element);
+										var css = control.css || (control.options && control.options.css);
+                                       var el = $(element);
 
                                         do
                                         {
@@ -1329,9 +1330,9 @@
                                                         break;
                                                 }
 
-                                                for (var cssProperty in control.css)
+                                                for (var cssProperty in css)
                                                 {
-                                                        if (el.css(cssProperty).toString().toLowerCase() == control.css[cssProperty])
+                                                        if (el.css(cssProperty).toString().toLowerCase() == css[cssProperty])
                                                         {
                                                                 $('.' + className, this.panel).addClass('active');
                                                         }
