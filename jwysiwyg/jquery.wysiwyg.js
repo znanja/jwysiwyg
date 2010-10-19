@@ -1002,7 +1002,7 @@
 
                         if (this.initialContent.length === 0)
                         {
-                                this.setContent('');
+                                this.setContent('<p>initial content</p>');
                         }
 
                         $.each(this.options.events, function(key, handler)
@@ -1201,6 +1201,7 @@
                         return $('<li role="menuitem" UNSELECTABLE="on"><img src="' + options.icon + '" class="jwysiwyg-custom-icon" />' + (name) + '</li>')
 									.addClass("custom-command-"+name)
 									.addClass("jwysiwyg-custom-command")
+									.addClass(name)
 									.attr('title', options.tooltip)
 									.hover(addHoverClass, removeHoverClass)
 									.click(function () {
@@ -1212,7 +1213,8 @@
 				triggerCallback : function (name) {
 					$(window).trigger("wysiwyg-trigger-"+name, [
 						this.getInternalRange(),
-						this
+						this,
+						this.getInternalSelection()
 					]);
 				},
 
@@ -1298,17 +1300,18 @@
 
                                 $('.' + className, this.panel).removeClass('active');
 
-                                if (control.tags)
+                                if (control.tags || (control.options && control.options.tags))
                                 {
+										var tags = control.tags || (control.options && control.options.tags);
                                         var elm = element;
                                         do
                                         {
-                                                if (elm.nodeType != 1)
+                                               if (elm.nodeType != 1)
                                                 {
                                                         break;
                                                 }
 
-                                                if ($.inArray(elm.tagName.toLowerCase(), control.tags) != -1)
+                                                if ($.inArray(elm.tagName.toLowerCase(), tags) != -1)
                                                 {
                                                         $('.' + className, this.panel).addClass('active');
                                                 }
