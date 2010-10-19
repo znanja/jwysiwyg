@@ -143,6 +143,31 @@
                 controls: { },
                 resizeOptions: false
         };
+		
+		/**
+		 * Custom control support by Alec Gorge ( http://github.com/alecgorge )
+		 */
+		// need a global, static namespace
+		$.wysiwyg = {
+			addControl : function (name, settings) {
+				// sample settings
+				/*
+				var example = {
+					icon: '/path/to/icon',
+					tooltip: 'my custom item',
+					callback: function(selectedText, wysiwygInstance) {
+						//Do whatever you want to do in here.
+					}
+				};
+				*/
+				
+				var custom = {};
+				custom[name] = {visible: true, custom: true, options: settings};
+				
+				$.extend($.fn.wysiwyg.controls, $.fn.wysiwyg.controls, custom);
+			}
+		};
+		
         $.fn.wysiwyg.controls = {
                 bold: {
                         visible: true,
@@ -998,6 +1023,11 @@
                         }
                 },
 
+				execute: function (command, arg) {
+					if(typeof(arg) == "undefined") arg = null;
+					this.editorDoc.execCommand(command, false, arg);
+				},
+
                 designMode: function ()
                 {
                         var attempts = 3;
@@ -1033,10 +1063,28 @@
                         return (window.getSelection) ? window.getSelection() : document.selection;
                 },
 
+
+                getInternalSelection: function ()
+                {
+                        return (this.editor[0].contentWindow.getSelection) ? this.editor[0].contentWindow.getSelection() : this.editor[0].contentDocument.selection;
+                },
+
                 getRange: function ()
                 {
                         var selection = this.getSelection();
+						
+                        if (!selection)
+                        {
+                                return null;
+                        }
 
+                        return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
+                },
+
+                getInternalRange: function ()
+                {
+                        var selection = this.getInternalSelection();
+						
                         if (!selection)
                         {
                                 return null;
@@ -1143,6 +1191,31 @@
 						return this;
                 },
 
+                appendMenuCustom: function (name, options)
+                {
+                        var self = this;
+                        args = args || [];
+
+						$(window).bind("wysiwyg-trigger-"+name, options.callback);
+						
+                        return $('<li role="menuitem" UNSELECTABLE="on"><img src="' + options.icon + '" class="jwysiwyg-custom-icon" />' + (name) + '</li>')
+									.addClass("custom-command-"+name)
+									.addClass("jwysiwyg-custom-command")
+									.attr('title', options.tooltip)
+									.hover(addHoverClass, removeHoverClass)
+									.click(function () {
+										self.triggerCallback(name);
+									})
+									.appendTo(this.panel);
+                },
+				
+				triggerCallback : function (name) {
+					$(window).trigger("wysiwyg-trigger-"+name, [
+						this.getInternalRange(),
+						this
+					]);
+				},
+
                 appendMenu: function (cmd, args, className, fn, tooltip)
                 {
                         var self = this;
@@ -1186,7 +1259,7 @@
                         for (var name in controls)
                         {
                                 var control = controls[name];                            
-                                if (control.groupIndex && currentGroupIndex != control.groupIndex)
+								if (control.groupIndex && currentGroupIndex != control.groupIndex)
                                 {
                                         currentGroupIndex = control.groupIndex;
                                         hasVisibleControls = false;
@@ -1200,13 +1273,19 @@
                                         this.appendMenuSeparator();
                                         hasVisibleControls = true;
                                 }
-                                this.appendMenu(
-                                        control.command || name,
-                                        control['arguments'] || '',
-                                        control.className || control.command || name || 'empty',
-                                        control.exec,
-                                        control.tooltip || control.command || name || ''
-                                );
+								
+								if(control.custom) {
+									this.appendMenuCustom(name, control.options);
+								}
+								else {
+									this.appendMenu(
+											control.command || name,
+											control['arguments'] || '',
+											control.className || control.command || name || 'empty',
+											control.exec,
+											control.tooltip || control.command || name || ''
+									);
+								}
                         }
                 },
 
