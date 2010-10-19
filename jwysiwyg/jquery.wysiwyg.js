@@ -1194,7 +1194,7 @@
                 appendMenuCustom: function (name, options)
                 {
                         var self = this;
-                        args = args || [];
+                        //args = args || [];
 
 						$(window).bind("wysiwyg-trigger-"+name, options.callback);
 						
