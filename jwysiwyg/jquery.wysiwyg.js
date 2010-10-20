@@ -726,6 +726,7 @@
                 },
 
                 element: null,
+				rangeSaver: null,
                 editor: null,
 
                 removeFormat: function ()
@@ -1009,6 +1010,12 @@
                         {
                                 $(self.editorDoc).bind(key, handler);
                         });
+						
+						// restores selection properly on focus
+						$(self.editor).blur(function() {
+							self.rangeSaver = self.getInternalRange();
+						});
+
 						$(this.editorDoc.body).addClass('wysiwyg');
                         if(this.options.events && this.options.events.save) {
                             var handler = this.options.events.save;
@@ -1022,6 +1029,23 @@
                             }
                         }
                 },
+				
+				focusEditor: function () {
+					//console.log(this.editorDoc.body.focus());//.focus();
+					if (this.rangeSaver != null) {
+						if (window.getSelection) { //non IE and there is already a selection
+							var s = window.getSelection();
+							if (s.rangeCount > 0) s.removeAllRanges();
+							s.addRange(savedRange);
+						}
+						else if (document.createRange) { //non IE and no selection
+							window.getSelection().addRange(savedRange);
+						}
+						else if (document.selection) { //IE
+							savedRange.select();
+						}
+					}					
+				},
 
 				execute: function (command, arg) {
 					if(typeof(arg) == "undefined") arg = null;
@@ -1215,6 +1239,8 @@
 						this,
 						this.getInternalSelection()
 					]);
+					$(".custom-command-"+name, this.panel).blur();
+					this.focusEditor();
 				},
 
                 appendMenu: function (cmd, args, className, fn, tooltip)
@@ -1239,6 +1265,7 @@
                                         self.saveContent();
                                 }
                                 this.blur();
+								self.focusEditor();
                         }).appendTo(this.panel);
                 },
 

@@ -28,7 +28,7 @@
 					common = common.parentNode;
 				}
 				
-				console.log(common.parentNode.nodeName);
+				// console.log(common.parentNode.nodeName);
 				
 				if(common.parentNode.nodeName == "BLOCKQUOTE" || (common.parentNode.nodeName == "BODY" && common.nodeName == "BLOCKQUOTE")) {
 					$(common).unwrap();
@@ -38,6 +38,7 @@
 				}
 			}
 		});
+
 		$('#wysiwyg').wysiwyg({
 			controls: {
 				html: {
