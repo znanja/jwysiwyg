@@ -27,8 +27,15 @@
 				if (common.nodeType == 3) {
 					common = common.parentNode;
 				}
-
-				$(common).wrap("<blockquote class='quote' />");
+				
+				console.log(common.parentNode.nodeName);
+				
+				if(common.parentNode.nodeName == "BLOCKQUOTE" || (common.parentNode.nodeName == "BODY" && common.nodeName == "BLOCKQUOTE")) {
+					$(common).unwrap();
+				}
+				else {
+					$(common).wrap("<blockquote class='quote' />");
+				}
 			}
 		});
 		$('#wysiwyg').wysiwyg({
@@ -36,6 +43,9 @@
 				html: {
 					visible: true
 				},
+				quote: {
+					visible: true
+				}
 			}
 		});
 	});

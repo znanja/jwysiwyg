@@ -162,7 +162,7 @@
 				*/
 				
 				var custom = {};
-				custom[name] = {visible: true, custom: true, options: settings};
+				custom[name] = {visible: false, custom: true, options: settings};
 				
 				$.extend($.fn.wysiwyg.controls, $.fn.wysiwyg.controls, custom);
 			}
