@@ -1,5 +1,10 @@
 == master (not tagged yet) ==
 
+* focus is properly returned after clicking on buttons - alecgorge
+* fix for getContent operation by class selector - alecgorge
+* new option for custom toolbar items (look at tests/issue 26.html for details) - alecgorge
+* fix IE8/XP compatibility issue - jsch
+
 == Version 0.93 (koken) ==
 
 * Hide wysiwyg while html shown - akzhan.abdulin
