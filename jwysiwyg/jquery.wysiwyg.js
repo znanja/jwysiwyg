@@ -790,7 +790,7 @@
                                 this.editor = $(location.protocol == 'https:' ? '<iframe src="javascript:false;"></iframe>' : '<iframe></iframe>').attr('frameborder', '0');
 								if (options.iFrameClass)
 								{
-									this.editor.addClass(iFrameClass);
+									this.editor.addClass(options.iFrameClass);
 								}
 								else
 								{
