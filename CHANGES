@@ -4,6 +4,7 @@
 * fix for getContent operation by class selector - alecgorge
 * new option for custom toolbar items (look at tests/issue 26.html for details) - alecgorge
 * fix IE8/XP compatibility issue - jsch
+* Fix incorrect handling of iFrameClass option - bbrewder
 
 == Version 0.93 (koken) ==
 
