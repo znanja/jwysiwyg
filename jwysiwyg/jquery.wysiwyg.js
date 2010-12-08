@@ -155,6 +155,7 @@
 		formHeight: 270,
 		tableFiller: 'Lorem ipsum',
 		css: {},
+		loadCss: true,
 		debug: false,
 		autoSave: true,
 		// http://code.google.com/p/jwysiwyg/issues/detail?id=11
@@ -703,7 +704,14 @@
 			var self = $.data(this, 'wysiwyg');
 			self.destroy();
 			return this;
+		},
+		
+		focus: function() {
+			var self = $.data(this, 'wysiwyg');
+			self.editor.get(0).contentWindow.focus();
+			return this;
 		}
+
 	});
 
 	var addHoverClass = function() {
@@ -742,15 +750,10 @@
 			return this;
 		},
 
-		focus: function() {
-			this.editor.get(0).contentWindow.focus();
-			return this;
-		},
-
 		init: function(element, options) {
 			var self = this;
 
-			loadCss_("jquery.wysiwyg.css");
+			if (options.loadCss === true) loadCss_("jquery.wysiwyg.css");
 
 			this.editor = element;
 			this.options = options || {};
@@ -831,7 +834,7 @@
 			this.resetFunction = function() {
 				self.setContent(self.initialContent);
 				self.saveContent();
-			}
+			};
 
 			if(this.options.resizeOptions && $.fn.resizable) {
 				this.element.resizable($.extend(true, {
@@ -1000,7 +1003,7 @@
 
 			$(this.editorDoc.body).addClass('wysiwyg');
 			if(this.options.events && this.options.events.save) {
-				var handler = this.options.events.save;
+				handler = this.options.events.save;
 				$(self.editorDoc).bind('keyup', handler);
 				$(self.editorDoc).bind('change', handler);
 				if($.support.noCloneEvent) {
