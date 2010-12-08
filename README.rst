@@ -105,11 +105,17 @@ Additional configuration options are specified by passing a javascript object to
 ``html``
     A string containing the source HTML code used inside the editor's iframe. This is a template where ``STYLE_SHEET`` and ``INITIAL_CONTENT`` are later replaced by the appropriate code for the editor instance, so those two strings must be present in this option.
 
+``initialContent``
+    A string. Default ``<p>Initial Content</p>``
+
 ``css``
     A string containing the path to a CSS file which will be included in the editor's iframe.
 
 ``debug``
     A boolean, enabling or disabling debugging.
+
+``autoGrow``
+    A boolean.
 
 ``autoSave``
     A boolean. If ``true``, the editor will copy its contents back to the original textarea anytime it is updated. If ``false``, this must be done manually.
