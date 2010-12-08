@@ -155,6 +155,7 @@
 		formHeight: 270,
 		tableFiller: 'Lorem ipsum',
 		css: {},
+		loadCss: true,
 		debug: false,
 		autoSave: true,
 		// http://code.google.com/p/jwysiwyg/issues/detail?id=11
@@ -752,7 +753,7 @@
 		init: function(element, options) {
 			var self = this;
 
-			loadCss_("jquery.wysiwyg.css");
+			if (options.loadCss === true) loadCss_("jquery.wysiwyg.css");
 
 			this.editor = element;
 			this.options = options || {};
