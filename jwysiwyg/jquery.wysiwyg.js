@@ -831,7 +831,7 @@
 			this.resetFunction = function() {
 				self.setContent(self.initialContent);
 				self.saveContent();
-			}
+			};
 
 			if(this.options.resizeOptions && $.fn.resizable) {
 				this.element.resizable($.extend(true, {
@@ -1000,7 +1000,7 @@
 
 			$(this.editorDoc.body).addClass('wysiwyg');
 			if(this.options.events && this.options.events.save) {
-				var handler = this.options.events.save;
+				handler = this.options.events.save;
 				$(self.editorDoc).bind('keyup', handler);
 				$(self.editorDoc).bind('change', handler);
 				if($.support.noCloneEvent) {
