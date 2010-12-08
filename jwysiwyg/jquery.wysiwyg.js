@@ -703,7 +703,14 @@
 			var self = $.data(this, 'wysiwyg');
 			self.destroy();
 			return this;
+		},
+		
+		focus: function() {
+			var self = $.data(this, 'wysiwyg');
+			self.editor.get(0).contentWindow.focus();
+			return this;
 		}
+
 	});
 
 	var addHoverClass = function() {
@@ -739,11 +746,6 @@
 			$(this.element).remove();
 			$.removeData(this.original, 'wysiwyg');
 			$(this.original).show();
-			return this;
-		},
-
-		focus: function() {
-			this.editor.get(0).contentWindow.focus();
 			return this;
 		},
 
