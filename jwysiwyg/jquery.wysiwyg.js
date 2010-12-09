@@ -15,13 +15,8 @@
 /*jslint browser: true, forin: true */
 
 /*
-
-:FIXED:
-2) this.editor[0] || this.editor.get(0)
-
 :TODO:
-1) documentSelection || getSelection || windowSelection ???
-
+1) documentSelection || getSelection || window.getSelection ???
  */
 
 (function($) {
@@ -626,7 +621,7 @@
 			var self = this;
 			var doc	= this.editorDoc;
 			runner = function() {
-				if (self.innerDocument(self.editor) !== doc) {
+				if (self.innerDocument() !== doc) {
 					self.initFrame();
 					return;
 				}
@@ -738,7 +733,7 @@
 		},
 
 		getContent: function() {
-			return $(this.innerDocument(this.editor)).find("body").html();
+			return $(this.innerDocument()).find("body").html();
 		},
 
 		getElementByAttributeValue: function(tagName, attributeName, attributeValue) {
@@ -791,7 +786,7 @@
 
 		// :TODO: you can type long string and letters will be hidden because of overflow
 		grow: function() {
-			var innerBody = $(this.innerDocument(this.editor).body);
+			var innerBody = $(this.innerDocument().body);
 			var innerHeight = $.browser.msie ? innerBody[0].scrollHeight : innerBody.height() + 2 + 20; // 2 - borders, 20 - to prevent content jumping on grow
 
 			var minHeight = this.initialHeight;
@@ -924,7 +919,7 @@
 				style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '"/>';
 			}
 
-			this.editorDoc = this.innerDocument(this.editor);
+			this.editorDoc = this.innerDocument();
 			this.editorDoc_designMode = false;
 
 			this.designMode();
@@ -1080,8 +1075,8 @@
 			}
 		},
 
-		innerDocument: function(elements) {
-			var element = $(elements).get(0);
+		innerDocument: function() {
+			var element = this.editor.get(0);
 
 			if (element.nodeName.toLowerCase() == "iframe") {
 				return element.contentWindow.document;
@@ -1201,7 +1196,7 @@
 		},
 
 		setContent: function(newContent) {
-			$(this.innerDocument(this.editor)).find("body").html(newContent);
+			$(this.innerDocument()).find("body").html(newContent);
 			return this;
 		},
 
