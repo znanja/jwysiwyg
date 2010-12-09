@@ -343,7 +343,7 @@
 			ltr: {
 				visible: false,
 				exec: function() {
-					var selection = $(this.editor).documentSelection();
+					var selection = this.documentSelection();
 					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "ltr");
 					}
@@ -381,7 +381,7 @@
 			rtl: {
 				visible: false,
 				exec: function() {
-					var selection = $(this.editor).documentSelection();
+					var selection = this.documentSelection();
 					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "rtl");
 					}
@@ -656,13 +656,11 @@
 		},
 
 		documentSelection: function() {
-			var element = this.get(0);
-
-			if (element.contentWindow.document.selection) {
-				return element.contentWindow.document.selection.createRange().text;
+			if (this.editor.get(0).contentWindow.document.selection) {
+				return this.editor.get(0).contentWindow.document.selection.createRange().text;
 			}
 			else {
-				return element.contentWindow.getSelection().toString();
+				return this.editor.get(0).contentWindow.getSelection().toString();
 			}
 		},
 //not used?
