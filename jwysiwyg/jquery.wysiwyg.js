@@ -16,9 +16,11 @@
 
 /*
 
+:FIXED:
+2) this.editor[0] || this.editor.get(0)
+
 :TODO:
 1) documentSelection || getSelection || windowSelection ???
-2) this.editor[0] || this.editor.get(0)
 
  */
 
@@ -156,7 +158,7 @@
 				exec: function() {
 					var self = this;
 					if ($.modal) {
-						$.modal(Wysiwyg.defaults.formImageHtml, {
+						$.modal(this.defaults.formImageHtml, {
 							onShow: function(dialog) {
 								$("input:submit", dialog.data).click(function(e) {
 									e.preventDefault();
@@ -172,18 +174,18 @@
 									$.modal.close();
 								});
 							},
-							maxWidth: Wysiwyg.defaults.formWidth,
-							maxHeight: Wysiwyg.defaults.formHeight,
+							maxWidth: this.defaults.formWidth,
+							maxHeight: this.defaults.formHeight,
 							overlayClose: true
 						});
 					}
 					else {
 						if ($.fn.dialog) {
-							var dialog = $(Wysiwyg.defaults.formImageHtml).appendTo("body");
+							var dialog = $(this.defaults.formImageHtml).appendTo("body");
 							dialog.dialog({
 								modal: true,
-								width: Wysiwyg.defaults.formWidth,
-								height: Wysiwyg.defaults.formHeight,
+								width: this.defaults.formWidth,
+								height: this.defaults.formHeight,
 									open: function(ev, ui) {
 										$("input:submit", $(this)).click(function(e) {
 										e.preventDefault();
@@ -211,7 +213,7 @@
 							}
 							else {
 								var szURL = prompt("URL", "http://");
-									if (szURL && szURL.length > 0) {
+								if (szURL && szURL.length > 0) {
 									this.editorDoc.execCommand("insertImage", false, szURL);
 								}
 							}
@@ -234,13 +236,13 @@
 				exec: function() {
 					var self = this;
 					if ($.fn.modal) {
-						$.modal(Wysiwyg.defaults.formTableHtml, {
+						$.modal(this.defaults.formTableHtml, {
 							onShow: function(dialog) {
 								$("input:submit", dialog.data).click(function(e) {
 									e.preventDefault();
 									var rowCount = $('input[name="rowCount"]', dialog.data).val();
 									var colCount = $('input[name="colCount"]', dialog.data).val();
-									self.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
+									self.insertTable(colCount, rowCount, this.defaults.tableFiller);
 									$.modal.close();
 								});
 								$("input:reset", dialog.data).click(function(e) {
@@ -248,24 +250,24 @@
 									$.modal.close();
 								});
 							},
-							maxWidth: Wysiwyg.defaults.formWidth,
-							maxHeight: Wysiwyg.defaults.formHeight,
+							maxWidth: this.defaults.formWidth,
+							maxHeight: this.defaults.formHeight,
 							overlayClose: true
 						});
 					}
 					else {
 						if ($.fn.dialog) {
-							var dialog = $(Wysiwyg.defaults.formTableHtml).appendTo("body");
+							var dialog = $(this.defaults.formTableHtml).appendTo("body");
 							dialog.dialog({
 								modal: true,
-								width: Wysiwyg.defaults.formWidth,
-								height: Wysiwyg.defaults.formHeight,
+								width: this.defaults.formWidth,
+								height: this.defaults.formHeight,
 								open: function(event, ui) {
 									$("input:submit", $(this)).click(function(e) {
 										e.preventDefault();
 										var rowCount = $('input[name="rowCount"]', dialog).val();
 										var colCount = $('input[name="colCount"]', dialog).val();
-										self.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
+										self.insertTable(colCount, rowCount, this.defaults.tableFiller);
 										$(dialog).dialog("close");
 									});
 									$("input:reset", $(this)).click(function(e) {
@@ -281,7 +283,7 @@
 						else {
 							var colCount = prompt("Count of columns", "3");
 							var rowCount = prompt("Count of rows", "3");
-							this.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
+							this.insertTable(colCount, rowCount, this.defaults.tableFiller);
 						}
 					}
 				},
@@ -342,13 +344,13 @@
 				visible: false,
 				exec: function() {
 					var selection = $(this.editor).documentSelection();
-					if ($("<div />").append(selection).children().length > 0) {
+					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "ltr");
 					}
 					else {
-						selection = $("<div />").attr("dir", "ltr").append(selection);
+						selection = $("<div/>").attr("dir", "ltr").append(selection);
 					}
-					this.editorDoc.execCommand("inserthtml", false, $("<div />").append(selection).html());
+					this.editorDoc.execCommand("inserthtml", false, $("<div/>").append(selection).html());
 				},
 				tooltip : "Left to Right"
 			},
@@ -371,13 +373,7 @@
 			removeFormat: {
 				visible: true,
 				exec: function() {
-					if ($.browser.msie) {
-						this.focus();
-					}
-
-					this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
-					this.editorDoc.execCommand("removeFormat", false, null);
-					this.editorDoc.execCommand("unlink", false, null);
+					this.removeFormat();
 				},
 				tooltip: "Remove formatting"
 			},
@@ -386,13 +382,13 @@
 				visible: false,
 				exec: function() {
 					var selection = $(this.editor).documentSelection();
-					if ($("<div />").append(selection).children().length > 0) {
+					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "rtl");
 					}
 					else {
-						selection = $("<div />").attr("dir", "rtl").append(selection);
+						selection = $("<div/>").attr("dir", "rtl").append(selection);
 					}
-					this.editorDoc.execCommand("inserthtml", false, $("<div />").append(selection).html());
+					this.editorDoc.execCommand("inserthtml", false, $("<div/>").append(selection).html());
 				},
 				tooltip : "Right to Left"
 			},
@@ -454,7 +450,7 @@
 			loadCss: ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"],
 			maxHeight: 10000, /* see autoGrow */
 			messages: {
-				nonSelection: "select the text you wish to link"
+				nonSelection: "Select the text you wish to link"
 			},
 			resizeOptions: false,
 			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
@@ -527,7 +523,7 @@
 						try {
 							self.editorDoc.execCommand(cmd, false, args);
 						}
-						catch (e) {
+						catch(e) {
 							console.error(e);
 						}
 					}
@@ -567,7 +563,7 @@
 								self.editorDoc.execCommand(options.command, false, args);
 							}
 						}
-						catch (e) {
+						catch(e) {
 							console.error(e);
 						}
 					}
@@ -637,7 +633,7 @@
 				try {
 					doc.designMode = "on";
 				}
-				catch (e) {
+				catch(e) {
 				}
 				attempts--;
 				if (attempts > 0 && $.browser.mozilla) {
@@ -689,8 +685,8 @@
 				delete options.controls;
 			}
 
-			options = $.extend(true, {}, Wysiwyg.defaults, options);
-			options.controls = $.extend(true, options.controls, Wysiwyg.controls);
+			options = $.extend(true, {}, this.defaults, options);
+			options.controls = $.extend(true, options.controls, this.controls);
 
 			for (var control in controls) {
 				if (control in options.controls) {
@@ -778,7 +774,7 @@
 		},
 // 2 times
 		getInternalSelection: function() {
-			return (this.editor[0].contentWindow.getSelection) ? this.editor[0].contentWindow.getSelection() : this.editor[0].contentDocument.selection;
+			return (this.editor.get(0).contentWindow.getSelection) ? this.editor.get(0).contentWindow.getSelection() : this.editor.get(0).contentDocument.selection;
 		},
 // used once in initFrame
 		getRange: function() {
@@ -807,7 +803,7 @@
 			this.editor.attr("scrolling", height < this.options.maxHeight ? "no" : "auto"); // hide scrollbar firefox
 			innerBody.css("overflow", height < this.options.maxHeight ? "hidden" : ""); // hide scrollbar chrome
 
-			this.editor[0].height = height;
+			this.editor.get(0).height = height;
 			return this;
 		},
 
@@ -815,7 +811,7 @@
 			var self = this;
 
 			this.editor = element;
-			this.options = Wysiwyg.extendOptions(options);
+			this.options = this.extendOptions(options);
 
 			if (false !== this.options.loadCss) {
 				for (i in this.options.loadCss) {
@@ -856,7 +852,6 @@
 				else {
 					this.editor.css({
 						minHeight: (newY - 6).toString() + "px",
-
 						// fix for issue 12 ( http://github.com/akzhan/jwysiwyg/issues/issue/12 )
 						width: (newX > 50) ? (newX - 8).toString() + "px" : ""
 					});
@@ -873,7 +868,7 @@
 			var panel = this.panel = $('<ul role="menu" class="panel"></ul>');
 
 			this.appendControls();
-			this.element = $("<div></div>").addClass("wysiwyg").append(panel)
+			this.element = $("<div/>").addClass("wysiwyg").append(panel)
 				.append($("<div><!-- --></div>")
 				.css({
 					clear: "both"
@@ -938,16 +933,16 @@
 
 			this.editorDoc.open();
 			this.editorDoc.write(
-			this.options.html
-			/**
-			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=144
-			 */
-			.replace(/INITIAL_CONTENT/, function() {
-				return self.initialContent;
-			})
-			.replace(/STYLE_SHEET/, function() {
-				return style;
-			}));
+				this.options.html
+				/**
+				 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=144
+				 */
+				.replace(/INITIAL_CONTENT/, function() {
+					return self.initialContent;
+				})
+				.replace(/STYLE_SHEET/, function() {
+					return style;
+				}));
 			this.editorDoc.close();
 
 			if ($.browser.msie) {
@@ -1048,7 +1043,7 @@
 						 * $(self.editorDoc)
 						 * .find("head")
 						 * .append(
-						 *	 $('<link rel="stylesheet" type="text/css" media="screen" />')
+						 *	 $('<link rel="stylesheet" type="text/css" media="screen"/>')
 						 *	 .attr("href", self.options.css)
 						 * );
 						 */
@@ -1064,7 +1059,6 @@
 			}
 
 			$.each(this.options.events, function(key, handler) {
-console.log("key", key);
 				$(self.editorDoc).bind(key + ".wysiwyg", handler);
 			});
 
@@ -1088,8 +1082,8 @@ console.log("key", key);
 			}
 		},
 
-		innerDocument: function(elts) {
-			var element = $(elts).get(0);
+		innerDocument: function(elements) {
+			var element = $(elements).get(0);
 
 			if (element.nodeName.toLowerCase() == "iframe") {
 				return element.contentWindow.document;
@@ -1103,18 +1097,20 @@ console.log("key", key);
 		},
 
 		insertHtml: function(szHTML) {
-			if (szHTML && szHTML.length > 0) {
-				if ($.browser.msie) {
-					this.focus();
-					this.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
-					var img = this.getElementByAttributeValue("img", "src", "#jwysiwyg#");
-					if (img) {
-						$(img).replaceWith(szHTML);
-					}
+			if (!szHTML || szHTML.length == 0) {
+				return this;
+			}
+			
+			if ($.browser.msie) {
+				this.focus();
+				this.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
+				var img = this.getElementByAttributeValue("img", "src", "#jwysiwyg#");
+				if (img) {
+					$(img).replaceWith(szHTML);
 				}
-				else {
-					this.editorDoc.execCommand("insertHTML", false, szHTML);
-				}
+			}
+			else {
+				this.editorDoc.execCommand("insertHTML", false, szHTML);
 			}
 			return this;
 		},
@@ -1179,6 +1175,8 @@ console.log("key", key);
 			if ($.browser.msie) {
 				this.focus();
 			}
+
+//			this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
 			this.editorDoc.execCommand("removeFormat", false, null);
 			this.editorDoc.execCommand("unlink", false, null);
 			return this;
@@ -1210,12 +1208,12 @@ console.log("key", key);
 		},
 
 		triggerCallback: function(name) {
-			$(window).trigger("wysiwyg-trigger-"+name, [
+			$(window).trigger("wysiwyg-trigger-" + name, [
 				this.getInternalRange(),
 				this,
 				this.getInternalSelection()
 			]);
-			$(".custom-command-"+name, this.panel).blur();
+			$(".custom-command-" + name, this.panel).blur();
 			this.focusEditor();
 		},
 
@@ -1224,11 +1222,11 @@ console.log("key", key);
 				try {
 					this.editorDoc.execCommand("styleWithCSS", false, false);
 				}
-				catch (e) {
+				catch(e) {
 					try {
 						this.editorDoc.execCommand("useCSS", false, true);
 					}
-					catch (e2) {
+					catch(e2) {
 					}
 				}
 			}
@@ -1275,19 +1273,21 @@ console.log("key", key);
 		createLink: function(szURL) {
 			var self = this.data("wysiwyg");
 
-			if (szURL && szURL.length > 0) {
-				var selection = documentSelection.call($(self.editor));
+			if (!szURL || szURL.length == 0) {
+				return this;
+			}
 
-				if (selection && selection.length > 0) {
-					if ($.browser.msie) {
-						self.focus();
-					}
-					self.editorDoc.execCommand("unlink", false, null);
-					self.editorDoc.execCommand("createLink", false, szURL);
+			var selection = self.documentSelection.call($(self.editor));
+
+			if (selection && selection.length > 0) {
+				if ($.browser.msie) {
+					self.focus();
 				}
-				else if (self.options.messages.nonSelection) {
-					alert(self.options.messages.nonSelection);
-				}
+				self.editorDoc.execCommand("unlink", false, null);
+				self.editorDoc.execCommand("createLink", false, szURL);
+			}
+			else if (self.options.messages.nonSelection) {
+				alert(self.options.messages.nonSelection);
 			}
 			return this;
 		},
@@ -1315,7 +1315,34 @@ console.log("key", key);
 				if ($this.data("wysiwyg")) {
 					return this;
 				}
-// :1:
+
+				/*
+				 * :TODO:
+				 * this code do nothing, remove it? 
+				 */
+				if (false) {
+					if (arguments.length > 0 && arguments[0].constructor == String) {
+						var action = arguments[0].toString();
+						var params = [];
+	
+						if (action == "enabled") {
+							return this.data("wysiwyg") !== null;
+						}
+						for (var i = 1; i < arguments.length; i++) {
+							params[i - 1] = arguments[i];
+						}
+						var retValue = null;
+	
+						// .filter('textarea') is a fix for bug 29 ( http://github.com/akzhan/jwysiwyg/issues/issue/29 )
+						this.filter("textarea").each(function() {
+							$.data(this, "wysiwyg").designMode();
+							retValue = Wysiwyg[action].apply(this, params);
+						});
+						return retValue;
+					}
+				}
+				/* end */
+
 				Wysiwyg.init(this, options);
 			});
 		},
@@ -1329,25 +1356,27 @@ console.log("key", key);
 		insertImage: function(szURL, attributes) {
 			var self = this.data("wysiwyg");
 
-			if (szURL && szURL.length > 0) {
-				if ($.browser.msie) {
-					self.focus();
-				}
-				if (attributes) {
-					self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
-					var img = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
+			if (!szURL || szURL.length == 0) {
+				return this;
+			}
+			
+			if ($.browser.msie) {
+				self.focus();
+			}
+			if (attributes) {
+				self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
+				var img = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
 
-					if (img) {
-						img.src = szURL;
+				if (img) {
+					img.src = szURL;
 
-						for (var attribute in attributes) {
-							img.setAttribute(attribute, attributes[attribute]);
-						}
+					for (var attribute in attributes) {
+						img.setAttribute(attribute, attributes[attribute]);
 					}
 				}
-				else {
-					self.editorDoc.execCommand("insertImage", false, szURL);
-				}
+			}
+			else {
+				self.editorDoc.execCommand("insertImage", false, szURL);
 			}
 			return this;
 		},
@@ -1389,7 +1418,7 @@ console.log("key", key);
 			try {
 				$.error("Method " +  method + " does not exist on jQuery.wysiwyg");
 			}
-			catch (error) {
+			catch(e) {
 				console.error(error);
 			}
 		};
