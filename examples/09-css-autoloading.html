@@ -6,13 +6,15 @@
 <script type="text/javascript" src="../lib/jquery-1.4.3.min.js"></script>
 <script type="text/javascript" src="../jwysiwyg/jquery.wysiwyg.js"></script>
 <script type="text/javascript">
-jQuery(function() {
-	$("textarea").wysiwyg({
-		"autoGrow": true,
-		"maxHeight": 600,
-		"initialContent": "Content"
+(function($) {
+	$(document).ready(function() {
+		$("textarea").wysiwyg({
+			"autoGrow": true,
+			"maxHeight": 600,
+			"initialContent": "Content"
+		});
 	});
-});
+})(jQuery);
 </script>
 <style type="text/css">
 .note { background-color: rgb(228, 228, 228); font-size: 80%; padding: 5px 6px; }
@@ -23,15 +25,12 @@ jQuery(function() {
 	<h2>Example: CSS Autoloading &amp; initialContent</h2>
 	
 	<p class="note">If script will not be able to find or download CSS file you will see something like this:<br/>
-# bold<br/>
-# italic<br/>
-# strikeThrough<br/>
-# underline
-</p>
+		# bold<br/>
+		# italic<br/>
+		# strikeThrough<br/>
+		# underline</p>
 
-	<div>
-		<textarea style="width: 400px; height: 300px;"></textarea>
-	</div>
+	<textarea style="width: 400px; height: 300px;"></textarea>
 
 	<hr/>
 
