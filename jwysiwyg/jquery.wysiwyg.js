@@ -459,6 +459,7 @@
 		options: {},
 		original: null,
 		rangeSaver: null,
+		timers: [],
 
 		addHoverClass: function() {
 			$(this).addClass("wysiwyg-button-hover");
@@ -632,7 +633,7 @@
 				}
 				attempts--;
 				if (attempts > 0 && $.browser.mozilla) {
-					setTimeout(runner, 100);
+					self.timers["designMode"] = setTimeout(runner, 100);
 				}
 			};
 			runner();
@@ -640,6 +641,10 @@
 		},
 
 		destroy: function() {
+			for (i in this.timers) {
+				var a = clearTimeout(this.timers[i]);
+			}
+			
 			// Remove bindings
 			var $form = $(this.element).closest("form");
 			$form.unbind("submit.wysiwyg", this.autoSaveFunction)
@@ -923,7 +928,6 @@
 			this.editorDoc_designMode = false;
 
 			this.designMode();
-
 			this.editorDoc.open();
 			this.editorDoc.write(
 				this.options.html
@@ -942,7 +946,7 @@
 				/**
 				 * Remove the horrible border it has on IE.
 				 */
-				window.setTimeout(function() {
+				this.timers["initFrame_IeBorder"] = setTimeout(function() {
 					$(self.editorDoc.body).css("border", "none");
 				}, 0);
 			}
@@ -1030,7 +1034,7 @@
 			}
 
 			if (this.options.css) {
-				window.setTimeout(function() {
+				this.timers["initFrame_Css"] = setTimeout(function() {
 					if (self.options.css.constructor == String) {
 						/**
 						 * $(self.editorDoc)
@@ -1079,7 +1083,12 @@
 			var element = this.editor.get(0);
 
 			if (element.nodeName.toLowerCase() == "iframe") {
-				return element.contentWindow.document;
+				if (element.contentWindow) {
+					return element.contentWindow.document;
+				}
+				else {
+					return element;
+				}
 				/*
 				 return ( $.browser.msie )
 				 ? document.frames[element.id].document
@@ -1287,7 +1296,12 @@
 
 		destroy: function() {
 			var self = this.data("wysiwyg");
-			self.destroy();
+
+			if ("undefined" === typeof self) {
+				return this;
+			}
+
+			var a = self.destroy();
 			return this;
 		},
 
