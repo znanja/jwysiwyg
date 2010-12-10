@@ -1,5 +1,5 @@
 ========================
-jWYSIWYG 0.93 User Manual
+jWYSIWYG 0.94 User Manual
 ========================
 
 

@@ -1,6 +1,6 @@
 /**
- * WYSIWYG - jQuery plugin 0.93
- * (koken)
+ * WYSIWYG - jQuery plugin 0.94
+ * (phase 2)
  *
  * Copyright (c) 2008-2009 Juan M Martinez, 2010 Akzhan Abdulin and all contrbutors
  * http://plugins.jquery.com/project/jWYSIWYG

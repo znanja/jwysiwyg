@@ -1,10 +1,18 @@
 == master (not tagged yet) ==
 
+== Version 0.94 (phase 2) ==
+
 * focus is properly returned after clicking on buttons - alecgorge
 * fix for getContent operation by class selector - alecgorge
 * new option for custom toolbar items (look at tests/issue 26.html for details) - alecgorge
 * fix IE8/XP compatibility issue - jsch
 * Fix incorrect handling of iFrameClass option - bbrewder
+* Refactoring - frost-nzcr4
+* Fixing of destroy, documentSelection in ltr, rtl  modes - frost-nzcr4
+* Adding of CSS autoload, initialContent option - frost-nzcr4
+* Adding of autoGrow option - Lukom
+* Use Cmd key on Macs - boutell
+* JSlint fixes - akzhan, filiptepper
 
 == Version 0.93 (koken) ==
 
