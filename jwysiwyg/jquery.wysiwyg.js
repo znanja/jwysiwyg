@@ -423,7 +423,7 @@
 				groupIndex: 4,
 				visible: true,
 				tooltip: "Undo"
-			},
+			}
 		},
 
 		defaults: {
@@ -450,7 +450,7 @@
 			resizeOptions: false,
 			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			rmUnwantedBr: true,
-			tableFiller: "Lorem ipsum",
+			tableFiller: "Lorem ipsum"
 		},
 
 		editor: null,
@@ -485,7 +485,7 @@
 					hasVisibleControls = true;
 				}
 				if (control.custom) {
-					var a = this.appendMenuCustom(name, control.options);
+					this.appendMenuCustom(name, control.options);
 				}
 				else {
 					this.appendMenu(
@@ -633,7 +633,7 @@
 				}
 				attempts--;
 				if (attempts > 0 && $.browser.mozilla) {
-					self.timers["designMode"] = setTimeout(runner, 100);
+					self.timers.designMode = setTimeout(runner, 100);
 				}
 			};
 			runner();
@@ -641,8 +641,8 @@
 		},
 
 		destroy: function() {
-			for (i in this.timers) {
-				var a = clearTimeout(this.timers[i]);
+			for (var i in this.timers) {
+				clearTimeout(this.timers[i]);
 			}
 			
 			// Remove bindings
@@ -702,13 +702,13 @@
 		 */
 		findPath: function() {
 			var collection = $("script");
-			var reg = new RegExp("^(.*)jquery\.wysiwyg\.js$");
+			var reg = /^(.*)jquery\.wysiwyg\.js$/;
 
 			var path = null;
 			for (i = 0; i < collection.length; i++) {
-				if (null == path) {
+				if (null === path) {
 					var p = reg.exec(collection[i].src);
-					if (null != p) {
+					if (null !== p) {
 						return p[1];
 					}
 				}
@@ -722,10 +722,12 @@
 		},
 
 		focusEditor: function() {
-			if (this.rangeSaver != null) {
+			if (this.rangeSaver !== null) {
 				if (window.getSelection) { //non IE and there is already a selection
 					var s = window.getSelection();
-					if (s.rangeCount > 0) s.removeAllRanges();
+					if (s.rangeCount > 0) {
+						s.removeAllRanges();
+					}
 					s.addRange(savedRange);
 				}
 				else if (document.createRange) { //non IE and no selection
@@ -812,12 +814,12 @@
 			this.options = this.extendOptions(options);
 
 			if (false !== this.options.loadCss) {
-				for (i in this.options.loadCss) {
+				for (var i in this.options.loadCss) {
 					this.loadCss(this.options.loadCss[i]);
 				}
 			}
 
-			if ($.browser.msie && parseInt($.browser.version) < 8) {
+			if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
 				this.options.autoGrow = false;
 			}
 
@@ -853,7 +855,7 @@
 						// fix for issue 12 ( http://github.com/akzhan/jwysiwyg/issues/issue/12 )
 						width: (newX > 50) ? (newX - 8).toString() + "px" : ""
 					});
-					if ($.browser.msie && parseInt($.browser.version) < 7) {
+					if ($.browser.msie && parseInt($.browser.version, 10) < 7) {
 						this.editor.css("height", newY.toString() + "px");
 					}
 				}
@@ -946,7 +948,7 @@
 				/**
 				 * Remove the horrible border it has on IE.
 				 */
-				this.timers["initFrame_IeBorder"] = setTimeout(function() {
+				this.timers.initFrame_IeBorder = setTimeout(function() {
 					$(self.editorDoc.body).css("border", "none");
 				}, 0);
 			}
@@ -1034,7 +1036,7 @@
 			}
 
 			if (this.options.css) {
-				this.timers["initFrame_Css"] = setTimeout(function() {
+				this.timers.initFrame_Css = setTimeout(function() {
 					if (self.options.css.constructor == String) {
 						/**
 						 * $(self.editorDoc)
@@ -1066,15 +1068,15 @@
 
 			$(this.editorDoc.body).addClass("wysiwyg");
 			if (this.options.events && this.options.events.save) {
-				handler = this.options.events.save;
-				$(self.editorDoc).bind("keyup.wysiwyg", handler);
-				$(self.editorDoc).bind("change.wysiwyg", handler);
+				var saveHandler = this.options.events.save;
+				$(self.editorDoc).bind("keyup.wysiwyg", saveHandler);
+				$(self.editorDoc).bind("change.wysiwyg",saveHandler);
 				if ($.support.noCloneEvent) {
-					$(self.editorDoc).bind("input.wysiwyg", handler);
+					$(self.editorDoc).bind("input.wysiwyg", saveHandler);
 				}
 				else {
-					$(self.editorDoc).bind("paste.wysiwyg", handler);
-					$(self.editorDoc).bind("cut.wysiwyg", handler);
+					$(self.editorDoc).bind("paste.wysiwyg", saveHandler);
+					$(self.editorDoc).bind("cut.wysiwyg", saveHandler);
 				}
 			}
 		},
@@ -1099,7 +1101,7 @@
 		},
 
 		insertHtml: function(szHTML) {
-			if (!szHTML || szHTML.length == 0) {
+			if (!szHTML || szHTML.length === 0) {
 				return this;
 			}
 			
@@ -1233,7 +1235,7 @@
 				}
 			}
 			return this;
-		},
+		}
 	};
 
 	/*
@@ -1275,7 +1277,7 @@
 		createLink: function(szURL) {
 			var self = this.data("wysiwyg");
 
-			if (!szURL || szURL.length == 0) {
+			if (!szURL || szURL.length === 0) {
 				return this;
 			}
 
@@ -1301,7 +1303,7 @@
 				return this;
 			}
 
-			var a = self.destroy();
+			self.destroy();
 			return this;
 		},
 
@@ -1363,7 +1365,7 @@
 		insertImage: function(szURL, attributes) {
 			var self = this.data("wysiwyg");
 
-			if (!szURL || szURL.length == 0) {
+			if (!szURL || szURL.length === 0) {
 				return this;
 			}
 			
@@ -1411,7 +1413,7 @@
 			self.setContent(newContent);
 			self.saveContent();
 			return this;
-		},
+		}
 	};
 
 	$.fn.wysiwyg = function(method) {
@@ -1428,6 +1430,6 @@
 			catch(e) {
 				console.error(error);
 			}
-		};
+		}
 	};
 })(jQuery);
