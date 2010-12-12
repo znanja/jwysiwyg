@@ -1192,6 +1192,9 @@
 
 		saveContent: function() {
 			if (this.original) {
+				if (this.viewHTML) {
+					 this.setContent($(this.original).val());
+				}
 				var content = this.getContent();
 
 				if (this.options.rmUnwantedBr) {
