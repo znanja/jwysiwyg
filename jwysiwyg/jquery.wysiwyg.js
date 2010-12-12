@@ -151,69 +151,21 @@
 			insertImage: {
 				visible: true,
 				exec: function() {
-					var self = this;
-					if ($.modal) {
-						$.modal(this.defaults.formImageHtml, {
-							onShow: function(dialog) {
-								$("input:submit", dialog.data).click(function(e) {
-									e.preventDefault();
-									var szURL = $('input[name="url"]', dialog.data).val();
-									var title = $('input[name="imagetitle"]', dialog.data).val();
-									var description = $('input[name="description"]', dialog.data).val();
-									var img = '<img src="' + szURL + '" title="' + title + '" alt="' + description + '"/>';
-									self.insertHtml(img);
-									$.modal.close();
-								});
-								$("input:reset", dialog.data).click(function(e) {
-									e.preventDefault();
-									$.modal.close();
-								});
-							},
-							maxWidth: this.defaults.formWidth,
-							maxHeight: this.defaults.formHeight,
-							overlayClose: true
-						});
-					}
-					else {
-						if ($.fn.dialog) {
-							var dialog = $(this.defaults.formImageHtml).appendTo("body");
-							dialog.dialog({
-								modal: true,
-								width: this.defaults.formWidth,
-								height: this.defaults.formHeight,
-									open: function(ev, ui) {
-										$("input:submit", $(this)).click(function(e) {
-										e.preventDefault();
-										var szURL = $('input[name="url"]', dialog).val();
-										var title = $('input[name="imagetitle"]', dialog).val();
-										var description = $('input[name="description"]', dialog).val();
-										var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
-										self.insertHtml(img);
-										$(dialog).dialog("close");
-									});
-									$("input:reset", $(this)).click(function(e) {
-										e.preventDefault();
-										$(dialog).dialog("close");
-									});
-								},
-								close: function(ev, ui){
-									$(this).dialog("destroy");
-								}
+					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.image)) {
+						if ($.wysiwyg.autoload) {
+							$.wysiwyg.autoload.control("wysiwyg.ctrl.image.js", {"success": (function(object) {
+									alert("Image control load succesfull. Click again on Insert image");
+//									object.insertImage();
+//									$.wysiwyg.controls.image(object);
+								})(this)
 							});
+							return true;
 						}
 						else {
-							if ($.browser.msie) {
-								this.focus();
-								this.editorDoc.execCommand("insertImage", true, null);
-							}
-							else {
-								var szURL = prompt("URL", "http://");
-								if (szURL && szURL.length > 0) {
-									this.editorDoc.execCommand("insertImage", false, szURL);
-								}
-							}
+							return false;
 						}
 					}
+					$.wysiwyg.controls.image(this);
 				},
 				tags: ["img"],
 				tooltip: "Insert image"
@@ -229,58 +181,20 @@
 			insertTable: {
 				visible: true,
 				exec: function() {
-					var self = this;
-					if ($.fn.modal) {
-						$.modal(this.defaults.formTableHtml, {
-							onShow: function(dialog) {
-								$("input:submit", dialog.data).click(function(e) {
-									e.preventDefault();
-									var rowCount = $('input[name="rowCount"]', dialog.data).val();
-									var colCount = $('input[name="colCount"]', dialog.data).val();
-									self.insertTable(colCount, rowCount, this.defaults.tableFiller);
-									$.modal.close();
-								});
-								$("input:reset", dialog.data).click(function(e) {
-									e.preventDefault();
-									$.modal.close();
-								});
-							},
-							maxWidth: this.defaults.formWidth,
-							maxHeight: this.defaults.formHeight,
-							overlayClose: true
-						});
-					}
-					else {
-						if ($.fn.dialog) {
-							var dialog = $(this.defaults.formTableHtml).appendTo("body");
-							dialog.dialog({
-								modal: true,
-								width: this.defaults.formWidth,
-								height: this.defaults.formHeight,
-								open: function(event, ui) {
-									$("input:submit", $(this)).click(function(e) {
-										e.preventDefault();
-										var rowCount = $('input[name="rowCount"]', dialog).val();
-										var colCount = $('input[name="colCount"]', dialog).val();
-										self.insertTable(colCount, rowCount, this.defaults.tableFiller);
-										$(dialog).dialog("close");
-									});
-									$("input:reset", $(this)).click(function(e) {
-										e.preventDefault();
-										$(dialog).dialog("close");
-									});
-								},
-								close: function(event, ui){
-									$(this).dialog("destroy");
-								}
+					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.table)) {
+						if ($.wysiwyg.autoload) {
+							$.wysiwyg.autoload.control("wysiwyg.ctrl.table.js", {"success": (function(object) {
+									alert("Table control load succesfull. Click again on Insert table");
+//									$.wysiwyg.controls.table(object);
+								})(this)
 							});
+							return true;
 						}
 						else {
-							var colCount = prompt("Count of columns", "3");
-							var rowCount = prompt("Count of rows", "3");
-							this.insertTable(colCount, rowCount, this.defaults.tableFiller);
+							return false;
 						}
 					}
+					$.wysiwyg.controls.table(this);
 				},
 				tags: ["table"],
 				tooltip: "Insert table"
@@ -440,6 +354,7 @@
 			autoSave: true,
 			// http://code.google.com/p/jwysiwyg/issues/detail?id=15
 			brIE: true,
+			i18n: false,
 			iFrameClass: null,
 			initialContent: "<p>Initial content</p>",
 			loadCss: ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"],
@@ -488,12 +403,16 @@
 					this.appendMenuCustom(name, control.options);
 				}
 				else {
+					var tooltip = control.tooltip || control.command || name || "";
+					if ($.wysiwyg.i18n) {
+						tooltip = $.wysiwyg.i18n.t(tooltip);
+					}
 					this.appendMenu(
 						control.command || name,
 						control["arguments"] || "",
 						control.className || control.command || name || "empty",
 						control.exec,
-						control.tooltip || control.command || name || ""
+						tooltip
 					);
 				}
 			}
@@ -697,25 +616,6 @@
 			return options;
 		},
 
-		/**
-		 * Search path to this js file
-		 */
-		findPath: function() {
-			var collection = $("script");
-			var reg = /^(.*)jquery\.wysiwyg\.js$/;
-
-			var path = null;
-			for (i = 0; i < collection.length; i++) {
-				if (null === path) {
-					var p = reg.exec(collection[i].src);
-					if (null !== p) {
-						return p[1];
-					}
-				}
-			}
-			return path;
-		},
-
 		focus: function() {
 			this.editor.get(0).contentWindow.focus();
 			return this;
@@ -809,14 +709,19 @@
 
 		init: function(element, options) {
 			var self = this;
-
 			this.editor = element;
 			this.options = this.extendOptions(options);
 
 			if (false !== this.options.loadCss) {
-				for (var i in this.options.loadCss) {
-					this.loadCss(this.options.loadCss[i]);
+				if (undefined !== $.wysiwyg.autoload) {
+					for (var i in this.options.loadCss) {
+						$.wysiwyg.autoload.css(this.options.loadCss[i]);
+					}
 				}
+			}
+
+			if (false !== this.options.i18n && undefined !== $.wysiwyg.i18n) {
+				$.wysiwyg.i18n.init(this, this.options.i18n);
 			}
 
 			if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
@@ -928,7 +833,6 @@
 
 			this.editorDoc = this.innerDocument();
 			this.editorDoc_designMode = false;
-
 			this.designMode();
 			this.editorDoc.open();
 			this.editorDoc.write(
@@ -1141,33 +1045,6 @@
 			return this.insertHtml(html.join(""));
 		},
 
-		/**
-		 * Include necessary CSS file
-		 */
-		loadCss: function(file, options) {
-			options = options || {"basePath": this.findPath(), "cssPath": "css/"};
-
-			var collection = $("link[rel=stylesheet]");
-			var path = options.basePath + options.cssPath + file;
-
-			for (i = 0; i < collection.length; i++) {
-				if (path == collection[i].href) {
-					// is loaded
-					return true;
-				}
-			}
-
-			var l = $("<link/>");
-			l.attr({
-				"href":		path,
-				"media":	"all",
-				"rel":		"stylesheet",
-				"type":		"text/css"
-			});
-			$("head").append(l);
-			return true;
-		},
-
 		parseControls: function() {
 			if (this.options.parseControls) {
 				return this.options.parseControls.call(this);
@@ -1193,7 +1070,7 @@
 		saveContent: function() {
 			if (this.original) {
 				var content = this.getContent();
-
+console.log("save", content);
 				if (this.options.rmUnwantedBr) {
 					content = (content.substr(-4) == "<br/>") ? content.substr(0, content.length - 4) : content;
 				}
