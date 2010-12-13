@@ -24,6 +24,7 @@
 	var Wysiwyg = {
 		controls: {
 			bold: {
+				groupIndex: 0,
 				visible: true,
 				tags: ["b", "strong"],
 				css: {
@@ -33,6 +34,7 @@
 			},
 
 			copy: {
+				groupIndex: 8,
 				visible: false,
 				tooltip: "Copy"
 			},
@@ -71,14 +73,15 @@
 			},
 
 			decreaseFontSize: {
+				groupIndex: 9,
 				visible: false && !($.browser.msie),
 				tags: ["small"],
 				tooltip: "Decrease font size"
 			},
 
 			h1: {
-				visible: true,
 				groupIndex: 7,
+				visible: true,
 				className: "h1",
 				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
 				"arguments": ($.browser.msie || $.browser.safari) ? "<h1>" : "h1",
@@ -87,6 +90,7 @@
 			},
 
 			h2: {
+				groupIndex: 7,
 				visible: true,
 				className: "h2",
 				command: ($.browser.msie || $.browser.safari)	? "FormatBlock" : "heading",
@@ -96,6 +100,7 @@
 			},
 
 			h3: {
+				groupIndex: 7,
 				visible: true,
 				className: "h3",
 				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
@@ -143,12 +148,14 @@
 			},
 
 			insertHorizontalRule: {
+				groupIndex: 6,
 				visible: true,
 				tags: ["hr"],
 				tooltip: "Insert Horizontal Rule"
 			},
 
 			insertImage: {
+				groupIndex: 6,
 				visible: true,
 				exec: function() {
 					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.image)) {
@@ -181,6 +188,7 @@
 			},
 
 			insertTable: {
+				groupIndex: 6,
 				visible: true,
 				exec: function() {
 					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.table)) {
@@ -205,12 +213,14 @@
 			},
 
 			insertUnorderedList: {
+				groupIndex: 5,
 				visible: true,
 				tags: ["ul"],
 				tooltip: "Insert Unordered List"
 			},
 
 			italic: {
+				groupIndex: 0,
 				visible: true,
 				tags: ["i", "em"],
 				css: {
@@ -220,6 +230,7 @@
 			},
 
 			justifyCenter: {
+				groupIndex: 1,
 				visible: true,
 				tags: ["center"],
 				css: {
@@ -229,6 +240,7 @@
 			},
 
 			justifyFull: {
+				groupIndex: 1,
 				visible: true,
 				css: {
 					textAlign: "justify"
@@ -246,6 +258,7 @@
 			},
 
 			justifyRight: {
+				groupIndex: 1,
 				visible: true,
 				css: {
 					textAlign: "right"
@@ -254,6 +267,7 @@
 			},
 
 			ltr: {
+				groupIndex: 10,
 				visible: false,
 				exec: function() {
 					var selection = this.documentSelection();
@@ -269,21 +283,25 @@
 			},
 
 			outdent: {
+				groupIndex: 2,
 				visible: true,
 				tooltip: "Outdent"
 			},
 
 			paste: {
+				groupIndex: 8,
 				visible: false,
 				tooltip: "Paste"
 			},
 
 			redo: {
+				groupIndex: 4,
 				visible: true,
 				tooltip: "Redo"
 			},
 
 			removeFormat: {
+				groupIndex: 10,
 				visible: true,
 				exec: function() {
 					this.removeFormat();
@@ -292,6 +310,7 @@
 			},
 
 			rtl: {
+				groupIndex: 10,
 				visible: false,
 				exec: function() {
 					var selection = this.documentSelection();
@@ -307,6 +326,7 @@
 			},
 
 			strikeThrough: {
+				groupIndex: 0,
 				visible: true,
 				tags: ["s", "strike"],
 				css: {
@@ -323,12 +343,14 @@
 			},
 
 			superscript: {
+				groupIndex: 3,
 				visible: true,
 				tags: ["sup"],
 				tooltip: "Superscript"
 			},
 
 			underline: {
+				groupIndex: 0,
 				visible: true,
 				tags: ["u"],
 				css: {
@@ -385,35 +407,61 @@
 			var currentGroupIndex	= 0;
 			var hasVisibleControls = true; // to prevent separator before first item
 
+			var groups = [];
+			var controlsByGroup = {};
 			for (var name in controls) {
-				var control = controls[name];
-				if (control.groupIndex && currentGroupIndex != control.groupIndex) {
-					currentGroupIndex = control.groupIndex;
-					hasVisibleControls = false;
-				}
+				var c = controls[name];
+				var index = "empty";
 
-				if (!control.visible) {
-					continue;
-				}
-				if (!hasVisibleControls) {
-					this.appendMenuSeparator();
-					hasVisibleControls = true;
-				}
-				if (control.custom) {
-					this.appendMenuCustom(name, control.options);
-				}
-				else {
-					var tooltip = control.tooltip || control.command || name || "";
-					if ($.wysiwyg.i18n) {
-						tooltip = $.wysiwyg.i18n.t(tooltip);
+				if (undefined !== c.groupIndex) {
+					if ("" === c.groupIndex) {
+						index = "empty";
 					}
-					this.appendMenu(
-						control.command || name,
-						control["arguments"] || "",
-						control.className || control.command || name || "empty",
-						control.exec,
-						tooltip
-					);
+					else {
+						index = c.groupIndex;
+					}
+				}
+				
+				if (undefined === controlsByGroup[index]) {
+					groups.push(index);
+					controlsByGroup[index] = {};
+				}
+				controlsByGroup[index][name] = c;
+			}
+
+			groups.sort(function (a, b) { return (a - b); });
+
+			for (var i in groups) {
+				for (var name in controlsByGroup[i]) {
+					var control = controls[name];
+					if (control.groupIndex && currentGroupIndex != control.groupIndex) {
+						currentGroupIndex = control.groupIndex;
+						hasVisibleControls = false;
+					}
+	
+					if (!control.visible) {
+						continue;
+					}
+					if (!hasVisibleControls) {
+						this.appendMenuSeparator();
+						hasVisibleControls = true;
+					}
+					if (control.custom) {
+						this.appendMenuCustom(name, control.options);
+					}
+					else {
+						var tooltip = control.tooltip || control.command || name || "";
+						if ($.wysiwyg.i18n) {
+							tooltip = $.wysiwyg.i18n.t(tooltip);
+						}
+						this.appendMenu(
+							control.command || name,
+							control["arguments"] || "",
+							control.className || control.command || name || "empty",
+							control.exec,
+							tooltip
+						);
+					}
 				}
 			}
 		},
