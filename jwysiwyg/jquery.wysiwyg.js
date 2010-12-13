@@ -41,7 +41,7 @@
 				groupIndex: 6,
 				visible: true,
 				exec: function() {
-					var selection = this.documentSelection.call($(this.editor));
+					var selection = this.documentSelection();
 
 					if (selection && selection.length > 0) {
 						if ($.browser.msie) {
@@ -152,8 +152,9 @@
 				visible: true,
 				exec: function() {
 					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.image)) {
+						// if not set try to load
 						if ($.wysiwyg.autoload) {
-							$.wysiwyg.autoload.control("wysiwyg.ctrl.image.js", {"success": (function(object) {
+							$.wysiwyg.autoload.control("wysiwyg.image.js", {"success": (function(object) {
 									alert("Image control load succesfull. Click again on Insert image");
 //									object.insertImage();
 //									$.wysiwyg.controls.image(object);
@@ -165,6 +166,7 @@
 							return false;
 						}
 					}
+
 					$.wysiwyg.controls.image(this);
 				},
 				tags: ["img"],
@@ -182,8 +184,9 @@
 				visible: true,
 				exec: function() {
 					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.table)) {
+						// if not set try to load
 						if ($.wysiwyg.autoload) {
-							$.wysiwyg.autoload.control("wysiwyg.ctrl.table.js", {"success": (function(object) {
+							$.wysiwyg.autoload.control("wysiwyg.table.js", {"success": (function(object) {
 									alert("Table control load succesfull. Click again on Insert table");
 //									$.wysiwyg.controls.table(object);
 								})(this)
@@ -194,6 +197,7 @@
 							return false;
 						}
 					}
+
 					$.wysiwyg.controls.table(this);
 				},
 				tags: ["table"],
@@ -342,29 +346,25 @@
 
 		defaults: {
 			html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
-			formTableHtml: '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label><br />Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
-			formImageHtml: '<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="url" value="http://" /></label><label>Image Title: <input type="text" name="imagetitle" value="" /></label><label>Image Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Image" /> <input type="reset" value="Cancel" /></fieldset></form>',
-			formWidth: 440,
-			formHeight: 270,
 			debug: false,
 			events: {},
 			controls: {},
 			css: {},
 			autoGrow: false,
 			autoSave: true,
-			// http://code.google.com/p/jwysiwyg/issues/detail?id=15
-			brIE: true,
+			brIE: true,					// http://code.google.com/p/jwysiwyg/issues/detail?id=15
+			formHeight: 270,
+			formWidth: 440,
 			i18n: false,
 			iFrameClass: null,
 			initialContent: "<p>Initial content</p>",
 			loadCss: ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"],
-			maxHeight: 10000, /* see autoGrow */
+			maxHeight: 10000,			// see autoGrow
 			messages: {
 				nonSelection: "Select the text you wish to link"
 			},
 			resizeOptions: false,
-			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
-			rmUnwantedBr: true,
+			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			tableFiller: "Lorem ipsum"
 		},
 
@@ -1023,28 +1023,6 @@
 			return this;
 		},
 
-		insertTable: function(colCount, rowCount, filler) {
-			if (isNaN(rowCount) || isNaN(colCount) || rowCount === null || colCount === null) {
-				return;
-			}
-			colCount = parseInt(colCount, 10);
-			rowCount = parseInt(rowCount, 10);
-			if (filler === null) {
-				filler = "&nbsp;";
-			}
-			filler = "<td>" + filler + "</td>";
-			var html = ['<table border="1" style="width: 100%;"><tbody>'];
-			for (var i = rowCount; i > 0; i--) {
-				html.push("<tr>");
-				for (var j = colCount; j > 0; j--) {
-					html.push(filler);
-				}
-				html.push("</tr>");
-			}
-			html.push("</tbody></table>");
-			return this.insertHtml(html.join(""));
-		},
-
 		parseControls: function() {
 			if (this.options.parseControls) {
 				return this.options.parseControls.call(this);
@@ -1070,8 +1048,9 @@
 		saveContent: function() {
 			if (this.original) {
 				if (this.viewHTML) {
-					 this.setContent($(this.original).val());
+					this.setContent($(this.original).val());
 				}
+
 				var content = this.getContent();
 
 				if (this.options.rmUnwantedBr) {
@@ -1161,7 +1140,7 @@
 				return this;
 			}
 
-			var selection = self.documentSelection.call($(self.editor));
+			var selection = self.documentSelection();
 
 			if (selection && selection.length > 0) {
 				if ($.browser.msie) {
@@ -1239,40 +1218,6 @@
 		insertHtml: function(szHTML) {
 			var self = this.data("wysiwyg");
 			self.insertHtml(szHTML);
-			return this;
-		},
-
-		insertImage: function(szURL, attributes) {
-			var self = this.data("wysiwyg");
-
-			if (!szURL || szURL.length === 0) {
-				return this;
-			}
-			
-			if ($.browser.msie) {
-				self.focus();
-			}
-			if (attributes) {
-				self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
-				var img = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
-
-				if (img) {
-					img.src = szURL;
-
-					for (var attribute in attributes) {
-						img.setAttribute(attribute, attributes[attribute]);
-					}
-				}
-			}
-			else {
-				self.editorDoc.execCommand("insertImage", false, szURL);
-			}
-			return this;
-		},
-
-		insertTable: function(colCount, rowCount, filler) {
-			var self = this.data("wysiwyg");
-			self.insertTable(colCount, rowCount, filler);
 			return this;
 		},
 
