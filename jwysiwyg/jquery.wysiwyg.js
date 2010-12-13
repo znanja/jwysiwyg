@@ -21,8 +21,8 @@
 
 (function($) {
 	/* Wysiwyg namespace: private properties and methods */
-	var Wysiwyg = {
-		controls: {
+	function Wysiwyg() {
+		this.controls = {
 			bold: {
 				groupIndex: 0,
 				visible: true,
@@ -364,9 +364,9 @@
 				visible: true,
 				tooltip: "Undo"
 			}
-		},
+		};
 
-		defaults: {
+		this.defaults = {
 			html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
 			debug: false,
 			events: {},
@@ -388,21 +388,21 @@
 			resizeOptions: false,
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			tableFiller: "Lorem ipsum"
-		},
+		};
 
-		editor: null,
-		editorDoc: null,
-		element: null,
-		options: {},
-		original: null,
-		rangeSaver: null,
-		timers: [],
+		this.editor		= null;
+		this.editorDoc	= null;
+		this.element	= null;
+		this.options	= {};
+		this.original	= null;
+		this.rangeSaver	= null;
+		this.timers		= [];
 
-		addHoverClass: function() {
+		this.addHoverClass = function() {
 			$(this).addClass("wysiwyg-button-hover");
-		},
+		};
 
-		appendControls: function() {
+		this.appendControls = function() {
 			var controls = this.parseControls();
 			var currentGroupIndex	= 0;
 			var hasVisibleControls = true; // to prevent separator before first item
@@ -464,9 +464,9 @@
 					}
 				}
 			}
-		},
+		};
 
-		appendMenu: function(cmd, args, className, fn, tooltip) {
+		this.appendMenu = function(cmd, args, className, fn, tooltip) {
 			var self = this;
 			args = args || [];
 
@@ -497,9 +497,9 @@
 					self.focusEditor();
 				})
 				.appendTo(this.panel);
-		},
+		};
 
-		appendMenuCustom: function(name, options) {
+		this.appendMenuCustom = function(name, options) {
 			var self = this;
 
 			if ("undefined" !== typeof options.callback) {
@@ -538,13 +538,13 @@
 //					self.triggerCallback(name);
 				})
 				.appendTo(this.panel);
-		},
+		};
 
-		appendMenuSeparator: function() {
+		this.appendMenuSeparator = function() {
 			return $('<li role="separator" class="separator"></li>').appendTo(this.panel);
-		},
+		};
 
-		checkTargets: function(element) {
+		this.checkTargets = function(element) {
 			for (var name in this.options.controls) {
 				var control = this.options.controls[name];
 				var className = control.className || control.command || name || "empty";
@@ -581,9 +581,9 @@
 					} while ((el = el.parent()));
 				}
 			}
-		},
+		};
 
-		designMode: function() {
+		this.designMode = function() {
 			var attempts = 3;
 			var runner;
 			var self = this;
@@ -605,9 +605,9 @@
 			};
 			runner();
 			this.editorDoc_designMode = true;
-		},
+		};
 
-		destroy: function() {
+		this.destroy = function() {
 			for (var i in this.timers) {
 				clearTimeout(this.timers[i]);
 			}
@@ -620,25 +620,25 @@
 			$.removeData(this.original, "wysiwyg");
 			$(this.original).show();
 			return this;
-		},
+		};
 
-		documentSelection: function() {
+		this.documentSelection = function() {
 			if (this.editor.get(0).contentWindow.document.selection) {
 				return this.editor.get(0).contentWindow.document.selection.createRange().text;
 			}
 			else {
 				return this.editor.get(0).contentWindow.getSelection().toString();
 			}
-		},
+		};
 //not used?
-		execute: function(command, arg) {
+		this.execute = function(command, arg) {
 			if (typeof(arg) == "undefined") {
 				arg = null;
 			}
 			this.editorDoc.execCommand(command, false, arg);
-		},
+		};
 
-		extendOptions: function(options) {
+		this.extendOptions = function(options) {
 			var controls = {};
 
 			/**
@@ -662,14 +662,14 @@
 				}
 			}
 			return options;
-		},
+		};
 
-		focus: function() {
+		this.focus = function() {
 			this.editor.get(0).contentWindow.focus();
 			return this;
-		},
+		};
 
-		focusEditor: function() {
+		this.focusEditor = function() {
 			if (this.rangeSaver !== null) {
 				if (window.getSelection) { //non IE and there is already a selection
 					var s = window.getSelection();
@@ -685,13 +685,13 @@
 					savedRange.select();
 				}
 			}
-		},
+		};
 
-		getContent: function() {
+		this.getContent = function() {
 			return $(this.innerDocument()).find("body").html();
-		},
+		};
 
-		getElementByAttributeValue: function(tagName, attributeName, attributeValue) {
+		this.getElementByAttributeValue = function(tagName, attributeName, attributeValue) {
 			var elements = this.editorDoc.getElementsByTagName(tagName);
 
 			for (var i = 0; i < elements.length; i++) {
@@ -708,10 +708,10 @@
 			}
 
 			return false;
-		},
+		};
 
 //2 times
-		getInternalRange: function() {
+		this.getInternalRange = function() {
 			var selection = this.getInternalSelection();
 
 			if (!selection) {
@@ -719,13 +719,13 @@
 			}
 
 			return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
-		},
+		};
 // 2 times
-		getInternalSelection: function() {
+		this.getInternalSelection = function() {
 			return (this.editor.get(0).contentWindow.getSelection) ? this.editor.get(0).contentWindow.getSelection() : this.editor.get(0).contentDocument.selection;
-		},
+		};
 // used once in initFrame
-		getRange: function() {
+		this.getRange = function() {
 			var selection = this.getSelection();
 
 			if (!selection) {
@@ -733,14 +733,14 @@
 			}
 
 			return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
-		},
+		};
 //used once in getRange
-		getSelection: function() {
+		this.getSelection = function() {
 			return (window.getSelection) ? window.getSelection() : document.selection;
-		},
+		};
 
 		// :TODO: you can type long string and letters will be hidden because of overflow
-		grow: function() {
+		this.grow = function() {
 			var innerBody = $(this.innerDocument().body);
 			var innerHeight = $.browser.msie ? innerBody[0].scrollHeight : innerBody.height() + 2 + 20; // 2 - borders, 20 - to prevent content jumping on grow
 
@@ -753,9 +753,9 @@
 
 			this.editor.get(0).height = height;
 			return this;
-		},
+		};
 
-		init: function(element, options) {
+		this.init = function(element, options) {
 			var self = this;
 			this.editor = element;
 			this.options = this.extendOptions(options);
@@ -775,8 +775,6 @@
 			if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
 				this.options.autoGrow = false;
 			}
-
-			$.data(element, "wysiwyg", this);
 
 			var newX = element.width || element.clientWidth || 0;
 			var newY = element.height || element.clientHeight || 0;
@@ -866,9 +864,9 @@
 			}
 
 			$form.bind("reset.wysiwyg", self.resetFunction);
-		},
+		};
 
-		initFrame: function() {
+		this.initFrame = function() {
 			var self = this;
 			var style = "";
 
@@ -1031,9 +1029,9 @@
 					$(self.editorDoc).bind("cut.wysiwyg", saveHandler);
 				}
 			}
-		},
+		};
 
-		innerDocument: function() {
+		this.innerDocument = function() {
 			var element = this.editor.get(0);
 
 			if (element.nodeName.toLowerCase() == "iframe") {
@@ -1050,9 +1048,9 @@
 				 */
 			}
 			return element;
-		},
+		};
 
-		insertHtml: function(szHTML) {
+		this.insertHtml = function(szHTML) {
 			if (!szHTML || szHTML.length === 0) {
 				return this;
 			}
@@ -1069,16 +1067,16 @@
 				this.editorDoc.execCommand("insertHTML", false, szHTML);
 			}
 			return this;
-		},
+		};
 
-		parseControls: function() {
+		this.parseControls = function() {
 			if (this.options.parseControls) {
 				return this.options.parseControls.call(this);
 			}
 			return this.options.controls;
-		},
+		};
 
-		removeFormat: function() {
+		this.removeFormat = function() {
 			if ($.browser.msie) {
 				this.focus();
 			}
@@ -1087,13 +1085,13 @@
 			this.editorDoc.execCommand("removeFormat", false, null);
 			this.editorDoc.execCommand("unlink", false, null);
 			return this;
-		},
+		};
 
-		removeHoverClass: function() {
+		this.removeHoverClass = function() {
 			$(this).removeClass("wysiwyg-button-hover");
-		},
+		};
 
-		saveContent: function() {
+		this.saveContent = function() {
 			if (this.original) {
 				if (this.viewHTML) {
 					this.setContent($(this.original).val());
@@ -1111,14 +1109,14 @@
 				}
 			}
 			return this;
-		},
+		};
 
-		setContent: function(newContent) {
+		this.setContent = function(newContent) {
 			$(this.innerDocument()).find("body").html(newContent);
 			return this;
-		},
+		};
 
-		triggerCallback: function(name) {
+		this.triggerCallback = function(name) {
 			$(window).trigger("wysiwyg-trigger-" + name, [
 				this.getInternalRange(),
 				this,
@@ -1126,9 +1124,9 @@
 			]);
 			$(".custom-command-" + name, this.panel).blur();
 			this.focusEditor();
-		},
+		};
 
-		withoutCss: function() {
+		this.withoutCss = function() {
 			if ($.browser.mozilla) {
 				try {
 					this.editorDoc.execCommand("styleWithCSS", false, false);
@@ -1142,7 +1140,7 @@
 				}
 			}
 			return this;
-		}
+		};
 	};
 
 	/*
@@ -1226,7 +1224,8 @@
 
 		init: function(options) {
 			return this.each(function() {
-				$this = $(this);
+				var $this = $(this);
+				var opts = $.extend(true, {}, options);
 
 				if ($this.data("wysiwyg")) {
 					return this;
@@ -1259,7 +1258,10 @@
 				}
 				/* end */
 
-				Wysiwyg.init(this, options);
+				oWysiwyg = new Wysiwyg();
+				oWysiwyg.init(this, opts);
+
+				$.data(this, "wysiwyg", oWysiwyg);
 			});
 		},
 

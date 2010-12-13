@@ -17,43 +17,49 @@
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
-		$("textarea").wysiwyg({
-			controls: {
-				html: {visible: true},
-				colorpicker: {
-					groupIndex: 11,
-					visible: true,
-					exec: function() {
-						if ($.wysiwyg.controls.colorpicker) {
-							$.wysiwyg.controls.colorpicker(this);
-						}
-					},
-					tooltip: "Colorpicker"
-				}
-			},
-			i18n: "ru",
-			initialContent: function() {
-				var $get = [];
-				var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split("&amp;");
+		var global_i = 0;
 
-				for (var i = 0; i < hashes.length; i++) {
-					var hash = hashes[i].split('=');
-					$get.push(hash[0]);
-					$get[hash[0]] = hash[1];
-				}
+		$("textarea").each(function() {
+			global_i++;
 
-				if ($get.text) {
-					return unescape($get.text.replace(/\+/g, "%20"));
+			$(this).wysiwyg({
+				controls: {
+					html: {visible: true},
+					colorpicker: {
+						groupIndex: 11,
+						visible: true,
+						exec: function() {
+							if ($.wysiwyg.controls.colorpicker) {
+								$.wysiwyg.controls.colorpicker(this);
+							}
+						},
+						tooltip: "Colorpicker"
+					}
+				},
+				i18n: "ru",
+				initialContent: function() {
+					var $get = [];
+					var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split("&amp;");
+
+					for (var i = 0; i < hashes.length; i++) {
+						var hash = hashes[i].split('=');
+						$get.push(hash[0]);
+						$get[hash[0]] = hash[1];
+					}
+
+					if ($get.text) {
+						return unescape($get.text.replace(/\+/g, "%20"));
+					}
+					return "<p>Initial Content " + global_i + "</p>";
 				}
-				return "<p>Initial Content</p>";
-			}
+			});
 		});
 	});
 })(jQuery);
 </script>
 <style type="text/css">
 .note { background-color: rgb(228, 228, 228); font-size: 80%; padding: 5px 6px; }
-textarea { width: 400px; height: 300px; }
+textarea { width: 400px; height: 100px; }
 </style>
 </head>
 <body>
@@ -61,11 +67,12 @@ textarea { width: 400px; height: 300px; }
 	<h2>Example: Test plugins Image, Table, Colorpicker</h2>
 
 	<form action="" method="get">
-		<textarea name="text"></textarea>
-		<input type="submit"/>
-	</form>
-
+	<textarea name="text"></textarea>
 	<hr/>
+	<textarea name="b"></textarea>
+	<hr/>
+	<input type="submit"/>
+	</form>
 
 	<a href="index.html">Index</a>
 </body>
