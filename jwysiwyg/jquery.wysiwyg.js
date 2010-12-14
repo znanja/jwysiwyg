@@ -670,19 +670,19 @@
 		};
 
 		this.focusEditor = function() {
-			if (this.rangeSaver !== null) {
+			if (this.savedRange !== null) {
 				if (window.getSelection) { //non IE and there is already a selection
 					var s = window.getSelection();
 					if (s.rangeCount > 0) {
 						s.removeAllRanges();
 					}
-					s.addRange(savedRange);
+					s.addRange(this.savedRange);
 				}
 				else if (document.createRange) { //non IE and no selection
-					window.getSelection().addRange(savedRange);
+					window.getSelection().addRange(this.savedRange);
 				}
 				else if (document.selection) { //IE
-					savedRange.select();
+					this.savedRange.select();
 				}
 			}
 		};
@@ -1015,7 +1015,7 @@
 
 			// restores selection properly on focus
 			$(self.editor).blur(function() {
-				self.rangeSaver = self.getInternalRange();
+				self.savedRange = self.getInternalRange();
 			});
 
 			$(this.editorDoc.body).addClass("wysiwyg");
