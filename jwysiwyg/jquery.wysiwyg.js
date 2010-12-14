@@ -1260,7 +1260,7 @@
 				}
 				/* end */
 
-				oWysiwyg = new Wysiwyg();
+				var oWysiwyg = new Wysiwyg();
 				oWysiwyg.init(this, opts);
 
 				$.data(this, "wysiwyg", oWysiwyg);
