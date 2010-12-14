@@ -58,13 +58,13 @@ $.wysiwyg.controls.colorpicker = function(Wysiwyg) {
 			width: self.defaults.formWidth,
 			height: self.defaults.formHeight,
 			open: function(event, ui) {
-				$("input:submit", $(self)).click(function(e) {
+				$("input:submit", elements).click(function(e) {
 					e.preventDefault();
 					var color = $('input[name="color"]', dialog).val();
 					self.editorDoc.execCommand('ForeColor', false, color);
 					$(dialog).dialog("close");
 				});
-				$("input:reset", $(self)).click(function(e) {
+				$("input:reset", elements).click(function(e) {
 					e.preventDefault();
 					$(dialog).dialog("close");
 				});
