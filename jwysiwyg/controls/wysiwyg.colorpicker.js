@@ -32,7 +32,7 @@ $.wysiwyg.controls.colorpicker = function(Wysiwyg) {
 				$("input:submit", dialog.data).click(function(e) {
 					e.preventDefault();
 					var color = $('input[name="color"]', dialog.data).val();
-					self.insertTable(colCount, rowCount, self.defaults.tableFiller);
+					self.editorDoc.execCommand('ForeColor', false, color);
 					$.modal.close();
 				});
 				$("input:reset", dialog.data).click(function(e) {
@@ -61,7 +61,7 @@ $.wysiwyg.controls.colorpicker = function(Wysiwyg) {
 				$("input:submit", $(self)).click(function(e) {
 					e.preventDefault();
 					var color = $('input[name="color"]', dialog).val();
-					self.insertTable(colCount, rowCount, self.defaults.tableFiller);
+					self.editorDoc.execCommand('ForeColor', false, color);
 					$(dialog).dialog("close");
 				});
 				$("input:reset", $(self)).click(function(e) {
@@ -83,6 +83,16 @@ $.wysiwyg.controls.colorpicker = function(Wysiwyg) {
 					"margin-left": -1 * Math.round(self.defaults.formWidth / 2)})
 				.html(colorpickerHtml);
 			$(elements.find("div")).farbtastic(elements.find("input:text"));
+			$("input:submit", elements).click(function(event) {
+				event.preventDefault();
+				var color = $('input[name="color"]', elements).val();
+				self.editorDoc.execCommand('ForeColor', false, color);
+				$(elements).remove();
+			});
+			$("input:reset", elements).click(function(event) {
+				event.preventDefault();
+				$(elements).remove();
+			});
 			$("body").append(elements);
 		}
 	}
