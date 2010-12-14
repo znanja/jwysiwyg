@@ -674,13 +674,23 @@
 		};
 
 		this.focusEditor = function() {
-			if (this.savedRange !== null) {
+			if (this.savedRange !== null && this.savedRange !== undefined) {
 				if (window.getSelection) { //non IE and there is already a selection
 					var s = window.getSelection();
 					if (s.rangeCount > 0) {
 						s.removeAllRanges();
 					}
-					s.addRange(this.savedRange);
+					try {
+						s.addRange(this.savedRange);
+					}
+					catch(e) {
+						if (window.console) {
+							console.error(e);
+						}
+						else {
+							throw e;
+						}
+					}
 				}
 				else if (document.createRange) { //non IE and no selection
 					window.getSelection().addRange(this.savedRange);
