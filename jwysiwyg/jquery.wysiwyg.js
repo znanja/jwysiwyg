@@ -2,7 +2,7 @@
  * WYSIWYG - jQuery plugin 0.94
  * (phase 2)
  *
- * Copyright (c) 2008-2009 Juan M Martinez, 2010 Akzhan Abdulin and all contrbutors
+ * Copyright (c) 2008-2009 Juan M Martinez, 2010 Akzhan Abdulin and all contributors
  * http://plugins.jquery.com/project/jWYSIWYG
  *
  * Dual licensed under the MIT and GPL licenses:
@@ -1310,7 +1310,7 @@
 			}
 			catch(e) {
 				if (typeof(window.console) !== 'undefined') {
-  				console.error(e);
+          console.error(e);
         }
 			}
 		}
