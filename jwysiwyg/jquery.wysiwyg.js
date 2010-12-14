@@ -432,8 +432,8 @@
 			groups.sort(function (a, b) { return (a - b); });
 
 			for (var i in groups) {
-				for (var name in controlsByGroup[i]) {
-					var control = controls[name];
+				for (var controlName in controlsByGroup[i]) {
+					var control = controls[controlName];
 					if (control.groupIndex && currentGroupIndex != control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
@@ -447,17 +447,17 @@
 						hasVisibleControls = true;
 					}
 					if (control.custom) {
-						this.appendMenuCustom(name, control.options);
+						this.appendMenuCustom(controlName, control.options);
 					}
 					else {
-						var tooltip = control.tooltip || control.command || name || "";
+						var tooltip = control.tooltip || control.command || controlName || "";
 						if ($.wysiwyg.i18n) {
 							tooltip = $.wysiwyg.i18n.t(tooltip);
 						}
 						this.appendMenu(
-							control.command || name,
+							control.command || controlName,
 							control["arguments"] || "",
-							control.className || control.command || name || "empty",
+							control.className || control.command || controlName || "empty",
 							control.exec,
 							tooltip
 						);
@@ -1143,7 +1143,7 @@
 			}
 			return this;
 		};
-	};
+	}
 
 	/*
 	 * Wysiwyg namespace: public properties and methods
