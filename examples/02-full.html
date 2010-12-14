@@ -9,10 +9,13 @@
 <script type="text/javascript" src="../lib/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="../jwysiwyg/jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="../lib/jquery.simplemodal.js"></script>
+<script type="text/javascript" src="../jwysiwyg/controls/wysiwyg.image.js"></script>
+<script type="text/javascript" src="../jwysiwyg/controls/wysiwyg.table.js"></script>
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
 		$('#wysiwyg').wysiwyg({
+		  autoload: false,
 		  controls: {
 			strikeThrough : { visible : true },
 			underline     : { visible : true },
@@ -73,10 +76,10 @@
 			}
 		  },
 		  events: {
-			click : function(e) {
-				if ($('#click-inform:checked').length > 0) {
-					e.preventDefault();
-					alert('You have clicked jWysiwyg content!');
+			click: function(event) {
+				if ($("#click-inform:checked").length > 0) {
+					event.preventDefault();
+					alert("You have clicked jWysiwyg content!");
 				}
 			}
 		  }

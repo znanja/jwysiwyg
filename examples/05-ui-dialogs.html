@@ -12,10 +12,14 @@
 <script type="text/javascript" src="../lib/ui/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="../lib/ui/jquery.ui.position.js"></script>
 <script type="text/javascript" src="../lib/ui/jquery.ui.dialog.js"></script>
+<script type="text/javascript" src="../jwysiwyg/controls/wysiwyg.image.js"></script>
+<script type="text/javascript" src="../jwysiwyg/controls/wysiwyg.table.js"></script>
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
-		$('#wysiwyg').wysiwyg();
+		$('#wysiwyg').wysiwyg({
+			autoload: false
+		});
 	});
 })(jQuery);
 </script>

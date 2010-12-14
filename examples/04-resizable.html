@@ -11,10 +11,15 @@
 <script type="text/javascript" src="../lib/ui/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="../lib/ui/jquery.ui.mouse.js"></script>
 <script type="text/javascript" src="../lib/ui/jquery.ui.resizable.js"></script>
+<script type="text/javascript" src="../jwysiwyg/controls/wysiwyg.image.js"></script>
+<script type="text/javascript" src="../jwysiwyg/controls/wysiwyg.table.js"></script>
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
-		$('#wysiwyg').wysiwyg({resizeOptions: {}});
+		$('#wysiwyg').wysiwyg({
+			autoload: false,
+			resizeOptions: {}
+		});
 	});
 })(jQuery);
 </script>
