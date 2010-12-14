@@ -523,7 +523,7 @@
 						// in Firefox untrusted JavaScript is not allowed to access the clipboard
 						try {
 							if ("undefined" !== typeof options.command) {
-								self.editorDoc.execCommand(options.command, false, args);
+								self.editorDoc.execCommand(options.command, false, options.args);
 							}
 						}
 						catch(e) {
