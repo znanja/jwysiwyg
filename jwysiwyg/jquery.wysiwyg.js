@@ -369,10 +369,11 @@
 		this.defaults = {
 			html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
 			debug: false,
-			events: {},
 			controls: {},
 			css: {},
+			events: {},
 			autoGrow: false,
+			autoload: {"css": ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"]},
 			autoSave: true,
 			brIE: true,					// http://code.google.com/p/jwysiwyg/issues/detail?id=15
 			formHeight: 270,
@@ -380,7 +381,6 @@
 			i18n: false,
 			iFrameClass: null,
 			initialContent: "<p>Initial content</p>",
-			loadCss: ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"],
 			maxHeight: 10000,			// see autoGrow
 			messages: {
 				nonSelection: "Select the text you wish to link"
@@ -760,10 +760,12 @@
 			this.editor = element;
 			this.options = this.extendOptions(options);
 
-			if (false !== this.options.loadCss) {
+			if (this.options.autoload) {
 				if (undefined !== $.wysiwyg.autoload) {
-					for (var i in this.options.loadCss) {
-						$.wysiwyg.autoload.css(this.options.loadCss[i]);
+					if (this.options.autoload.css) {
+						for (var i in this.options.autoload.css) {
+							$.wysiwyg.autoload.css(this.options.autoload.css[i]);
+						}
 					}
 				}
 			}
@@ -1164,7 +1166,7 @@
 
 			var custom = {};
 			custom[name] = {visible: true, custom: true, options: settings};
-
+			
 			self = this.data("wysiwyg");
 			self.panel = $('<ul role="menu" class="panel"></ul>');
 			self.controls = $.extend(true, self.controls, self.controls, custom);
