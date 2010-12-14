@@ -395,7 +395,7 @@
 		this.element	= null;
 		this.options	= {};
 		this.original	= null;
-		this.rangeSaver	= null;
+		this.savedRange	= null;
 		this.timers		= [];
 
 		this.addHoverClass = function() {
@@ -674,7 +674,7 @@
 		};
 
 		this.focusEditor = function() {
-			if (this.savedRange !== null && this.savedRange !== undefined) {
+			if (this.savedRange !== null) {
 				if (window.getSelection) { //non IE and there is already a selection
 					var s = window.getSelection();
 					if (s.rangeCount > 0) {
