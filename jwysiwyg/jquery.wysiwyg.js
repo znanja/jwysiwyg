@@ -1167,7 +1167,7 @@
 			var custom = {};
 			custom[name] = {visible: true, custom: true, options: settings};
 			
-			self = this.data("wysiwyg");
+			var self = this.data("wysiwyg");
 			self.panel = $('<ul role="menu" class="panel"></ul>');
 			self.controls = $.extend(true, self.controls, self.controls, custom);
 			self.options.controls = self.controls;
@@ -1305,7 +1305,7 @@
 				$.error("Method " +  method + " does not exist on jQuery.wysiwyg");
 			}
 			catch(e) {
-				console.error(error);
+				console.error(e);
 			}
 		}
 	};
