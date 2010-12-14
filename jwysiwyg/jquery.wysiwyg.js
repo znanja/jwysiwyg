@@ -487,7 +487,9 @@
 							self.editorDoc.execCommand(cmd, false, args);
 						}
 						catch(e) {
-							console.error(e);
+							if (typeof(window.console) !== 'undefined') {
+                console.error(e);
+              }
 						}
 					}
 					if (self.options.autoSave) {
@@ -527,7 +529,9 @@
 							}
 						}
 						catch(e) {
-							console.error(e);
+							if (typeof(window.console) !== 'undefined') {
+							  console.error(e);
+              }
 						}
 					}
 					if (self.options.autoSave) {
@@ -1305,7 +1309,9 @@
 				$.error("Method " +  method + " does not exist on jQuery.wysiwyg");
 			}
 			catch(e) {
-				console.error(e);
+				if (typeof(window.console) !== 'undefined') {
+  				console.error(e);
+        }
 			}
 		}
 	};
