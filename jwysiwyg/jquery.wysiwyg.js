@@ -400,7 +400,7 @@
 			"tags",
 			"tooltip",
 			"visible"
-		],
+		];
 
 		this.editor		= null;
 		this.editorDoc	= null;
