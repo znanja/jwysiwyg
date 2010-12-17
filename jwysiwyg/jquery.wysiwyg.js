@@ -390,6 +390,18 @@
 			tableFiller: "Lorem ipsum"
 		};
 
+		this.availableControlProperties = [
+			"arguments",
+			"className",
+			"command",
+			"css",
+			"exec",
+			"groupIndex",
+			"tags",
+			"tooltip",
+			"visible"
+		],
+
 		this.editor		= null;
 		this.editorDoc	= null;
 		this.element	= null;
@@ -1092,6 +1104,14 @@
 		};
 
 		this.parseControls = function() {
+			for (var controlName in this.options.controls) {
+				for (var propertyName in this.options.controls[controlName]) {
+					if (-1 === $.inArray(propertyName, this.availableControlProperties)) {
+						throw controlName + '["' + propertyName + '"]: property "' + propertyName + '" not exists in Wysiwyg.availableControlProperties';
+					}
+				}
+			}
+
 			if (this.options.parseControls) {
 				return this.options.parseControls.call(this);
 			}
