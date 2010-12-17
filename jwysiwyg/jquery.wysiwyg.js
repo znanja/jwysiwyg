@@ -487,9 +487,12 @@
 							self.editorDoc.execCommand(cmd, false, args);
 						}
 						catch(e) {
-							if (typeof(window.console) !== 'undefined') {
-                console.error(e);
-              }
+							if (undefined !== window.console) {
+								console.error(e);
+							}
+							else {
+								throw e;
+							}
 						}
 					}
 					if (self.options.autoSave) {
@@ -504,7 +507,7 @@
 		this.appendMenuCustom = function(name, options) {
 			var self = this;
 
-			if ("undefined" !== typeof options.callback) {
+			if (undefined !== options.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", options.callback);
 			}
 
@@ -515,7 +518,7 @@
 				.attr("title", options.tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function() {
-					if ("undefined" !== typeof options.exec) {
+					if (undefined !== options.exec) {
 						options.exec.apply(self);
 					}
 					else {
@@ -524,14 +527,17 @@
 						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
 						// in Firefox untrusted JavaScript is not allowed to access the clipboard
 						try {
-							if ("undefined" !== typeof options.command) {
+							if (undefined !== options.command) {
 								self.editorDoc.execCommand(options.command, false, options.args);
 							}
 						}
 						catch(e) {
-							if (typeof(window.console) !== 'undefined') {
-							  console.error(e);
-              }
+							if (undefined !== window.console) {
+								console.error(e);
+							}
+							else {
+								throw e;
+							}
 						}
 					}
 					if (self.options.autoSave) {
