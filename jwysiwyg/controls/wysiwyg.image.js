@@ -5,7 +5,7 @@
  */
 (function($) {
 if (undefined === $.wysiwyg) {
-	console.log("Depends on $.wysiwyg");
+	throw "wysiwyg.image.js depends on $.wysiwyg";
 	return false;
 }
 

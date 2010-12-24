@@ -5,11 +5,11 @@
  */
 (function($) {
 if (undefined === $.wysiwyg) {
-	console.log("Depends on $.wysiwyg");
+	throw "lang.ru.js depends on $.wysiwyg";
 	return false;
 }
 if (undefined === $.wysiwyg.i18n) {
-	console.log("Depends on $.wysiwyg.i18n");
+	throw "lang.ru.js depends on $.wysiwyg.i18n";
 	return false;
 }
 

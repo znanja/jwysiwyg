@@ -5,7 +5,7 @@
  */
 (function($) {
 if (undefined === $.wysiwyg) {
-//	console.log("Depends on $.wysiwyg");
+	throw "wysiwyg.i18n.js depends on $.wysiwyg";
 	return false;
 }
 
@@ -27,7 +27,7 @@ $.wysiwyg.i18n = {
 
 		if ((lang !== this.defaults.wysiwygLang) && (undefined === $.wysiwyg.i18n.lang[lang])) {
 			if (!$.wysiwyg.autoload) {
-				// language not loaded
+				throw "wysiwyg.i18n.js depends on $.wysiwyg.autoload";
 				return false;
 			}
 			
