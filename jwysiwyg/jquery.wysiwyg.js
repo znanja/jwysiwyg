@@ -393,11 +393,14 @@
 
 		this.availableControlProperties = [
 			"arguments",
+			"callback",
 			"className",
 			"command",
 			"css",
+			"custom",
 			"exec",
 			"groupIndex",
+			"icon",
 			"tags",
 			"tooltip",
 			"visible"
@@ -451,15 +454,20 @@
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
 					}
+
 					if (!control.visible) {
 						continue;
 					}
+
 					if (!hasVisibleControls) {
 						this.appendMenuSeparator();
 						hasVisibleControls = true;
 					}
+
 					if (control.custom) {
-						this.appendMenuCustom(controlName, control.options);
+						this.appendMenuCustom(
+							control.command || controlName,
+							control);
 					}
 					else {
 						var tooltip = control.tooltip || control.command || controlName || "";
@@ -516,22 +524,22 @@
 				.appendTo(this.panel);
 		};
 
-		this.appendMenuCustom = function(name, options) {
+		this.appendMenuCustom = function(name, control) {
 			var self = this;
 
-			if (undefined !== options.callback) {
-				$(window).bind("trigger-" + name + ".wysiwyg", options.callback);
+			if (control.callback) {
+				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
 			}
 
-			return $('<li role="menuitem" unselectable="on"><img src="' + options.icon + '" class="jwysiwyg-custom-icon"/>' + name + "</li>")
+			return $('<li role="menuitem" unselectable="on" style="background: url(\'' + control.icon + '\') no-repeat;"></li>')
 				.addClass("custom-command-" + name)
 				.addClass("wysiwyg-custom-command")
 				.addClass(name)
-				.attr("title", options.tooltip)
+				.attr("title", control.tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function() {
-					if (undefined !== options.exec) {
-						options.exec.apply(self);
+					if (control.exec) {
+						control.exec.apply(self);
 					}
 					else {
 						self.focus();
@@ -539,8 +547,8 @@
 						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
 						// in Firefox untrusted JavaScript is not allowed to access the clipboard
 						try {
-							if (undefined !== options.command) {
-								self.editorDoc.execCommand(options.command, false, options.args);
+							if (control.command) {
+								self.editorDoc.execCommand(control.command, false, control.args);
 							}
 						}
 						catch(e) {
@@ -552,12 +560,13 @@
 							}
 						}
 					}
+
 					if (self.options.autoSave) {
 						self.saveContent();
 					}
 					this.blur();
 					self.focusEditor();
-//					self.triggerCallback(name);
+					self.triggerCallback(name);
 				})
 				.appendTo(this.panel);
 		};
@@ -1159,7 +1168,7 @@
 		};
 
 		this.triggerCallback = function(name) {
-			$(window).trigger("wysiwyg-trigger-" + name, [
+			$(window).trigger("trigger-" + name + ".wysiwyg", [
 				this.getInternalRange(),
 				this,
 				this.getInternalSelection()
@@ -1193,25 +1202,23 @@
 		 * Custom control support by Alec Gorge ( http://github.com/alecgorge )
 		 */
 		addControl: function(name, settings) {
-			// sample settings
-			/*
-			var example = {
-				icon: "/path/to/icon",
-				tooltip: "my custom item",
-				callback: function(selectedText, wysiwygInstance) {
-					//Do whatever you want to do in here.
+			return this.each(function() {
+				var self = $(this);
+				var oWysiwyg = self.data("wysiwyg");
+				if (undefined === oWysiwyg) {
+					return this;
 				}
-			};
-			*/
 
-			var custom = {};
-			custom[name] = {visible: true, custom: true, options: settings};
-			
-			var self = this.data("wysiwyg");
-			self.panel = $('<ul role="menu" class="panel"></ul>');
-			self.controls = $.extend(true, self.controls, self.controls, custom);
-			self.options.controls = self.controls;
-			self.appendControls();
+				var customControl = {};				
+				customControl[name] = $.extend(true, {visible: true, custom: true}, settings);
+				$.extend(true, oWysiwyg.controls, customControl);
+
+				// render new panel
+				oWysiwyg.panel = $('<ul role="menu" class="panel"></ul>');
+				oWysiwyg.appendControls();
+				$(".panel", oWysiwyg.element).remove();
+				$(oWysiwyg.element).prepend(oWysiwyg.panel);
+			});
 		},
 
 		clear: function() {

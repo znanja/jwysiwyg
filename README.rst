@@ -53,6 +53,16 @@ Custom controls can also be specified with the ``controls`` option::
         }
     })
 
+Another way::
+
+    $('#wysiwyg').wysiwyg("addControl",
+		"controlName",
+		{
+			icon: "/path/to/icon.png",
+			exec:  function() { alert('Hello World'); }
+		}
+	);
+
 
 Styling the Content Inside the Editor
 -------------------------------------
