@@ -386,6 +386,7 @@
 				nonSelection: "Select the text you wish to link"
 			},
 			resizeOptions: false,
+			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			tableFiller: "Lorem ipsum"
 		};
@@ -450,7 +451,6 @@
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
 					}
-	
 					if (!control.visible) {
 						continue;
 					}
@@ -674,6 +674,14 @@
 
 			options = $.extend(true, {}, this.defaults, options);
 			options.controls = $.extend(true, this.controls, controls);
+
+			if (options.rmUnusedControls) {
+				for (var controlName in options.controls) {
+					if (false === controlName in controls) {
+						delete options.controls[controlName];
+					}
+				}
+			}
 
 			return options;
 		};
