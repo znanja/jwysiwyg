@@ -794,7 +794,7 @@
 				}
 			}
 
-			if (false !== this.options.i18n && undefined !== $.wysiwyg.i18n) {
+			if (this.options.i18n && $.wysiwyg.i18n) {
 				$.wysiwyg.i18n.init(this, this.options.i18n);
 			}
 
