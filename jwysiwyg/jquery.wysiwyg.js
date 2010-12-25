@@ -673,16 +673,8 @@
 			}
 
 			options = $.extend(true, {}, this.defaults, options);
-			options.controls = $.extend(true, options.controls, this.controls);
+			options.controls = $.extend(true, this.controls, controls);
 
-			for (var control in controls) {
-				if (control in options.controls) {
-					$.extend(options.controls[control], controls[control]);
-				}
-				else {
-					options.controls[control] = controls[control];
-				}
-			}
 			return options;
 		};
 
