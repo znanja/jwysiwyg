@@ -444,7 +444,7 @@
 			groups.sort(function (a, b) { return (a - b); });
 
 			for (var i in groups) {
-				for (var controlName in controlsByGroup[i]) {
+				for (var controlName in controlsByGroup[groups[i]]) {
 					var control = controls[controlName];
 					if (control.groupIndex && currentGroupIndex != control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
