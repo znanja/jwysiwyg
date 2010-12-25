@@ -143,6 +143,9 @@ Additional configuration options are specified by passing a javascript object to
 ``resizeOptions``
     A boolean. Depends on **jquery.ui.resizable**. If ``false`` the editor will not be resizeable.
 
+``rmUnusedControls``
+    A boolean. If ``true``, the editor will remove all controls which are not mentioned in ``controls`` option.
+
 ``rmUnwantedBr``
     A boolean. If ``true``, the editor will not add extraneous ``<br/>`` tags.
 
