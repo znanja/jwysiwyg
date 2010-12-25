@@ -667,7 +667,7 @@
 			 * If the user set custom controls, we catch it, and merge with the
 			 * defaults controls later.
 			 */
-			if (options && options.controls) {
+			if ("object" === typeof options.controls) {
 				controls = options.controls;
 				delete options.controls;
 			}
