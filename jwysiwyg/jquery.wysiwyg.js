@@ -1151,7 +1151,8 @@
 				var content = this.getContent();
 
 				if (this.options.rmUnwantedBr) {
-					content = (content.substr(-4) == "<br/>") ? content.substr(0, content.length - 4) : content;
+					var brLength = ("<br/>".length) * -1;
+					content = (content.substr(brLength) == "<br/>") ? content.substr(0, brLength) : content;
 				}
 
 				$(this.original).val(content);
