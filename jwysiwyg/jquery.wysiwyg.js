@@ -1204,8 +1204,7 @@
 		 */
 		addControl: function(name, settings) {
 			return this.each(function() {
-				var self = $(this);
-				var oWysiwyg = self.data("wysiwyg");
+				var oWysiwyg = $(this).data("wysiwyg");
 				if (undefined === oWysiwyg) {
 					return this;
 				}
@@ -1223,53 +1222,58 @@
 		},
 
 		clear: function() {
-			var self = this.data("wysiwyg");
-			self.setContent("");
-			self.saveContent();
-			return this;
+			return this.each(function() {
+				var oWysiwyg = $(this).data("wysiwyg");
+				oWysiwyg.setContent("");
+				oWysiwyg.saveContent();
+			});
 		},
 
 		createLink: function(szURL) {
-			var self = this.data("wysiwyg");
-
-			if (!szURL || szURL.length === 0) {
-				return this;
-			}
-
-			var selection = self.documentSelection();
-
-			if (selection && selection.length > 0) {
-				if ($.browser.msie) {
-					self.focus();
+			return this.each(function() {
+				var oWysiwyg = $(this).data("wysiwyg");
+	
+				if (!szURL || szURL.length === 0) {
+					return this;
 				}
-				self.editorDoc.execCommand("unlink", false, null);
-				self.editorDoc.execCommand("createLink", false, szURL);
-			}
-			else if (self.options.messages.nonSelection) {
-				alert(self.options.messages.nonSelection);
-			}
-			return this;
+	
+				var selection = oWysiwyg.documentSelection();
+	
+				if (selection && selection.length > 0) {
+					if ($.browser.msie) {
+						oWysiwyg.focus();
+					}
+					oWysiwyg.editorDoc.execCommand("unlink", false, null);
+					oWysiwyg.editorDoc.execCommand("createLink", false, szURL);
+				}
+				else if (oWysiwyg.options.messages.nonSelection) {
+					alert(oWysiwyg.options.messages.nonSelection);
+				}
+			});
 		},
 
 		destroy: function() {
-			var self = this.data("wysiwyg");
+			return this.each(function() {
+				var oWysiwyg = $(this).data("wysiwyg");
 
-			if ("undefined" === typeof self) {
-				return this;
-			}
+				if (undefined === oWysiwyg) {
+					return this;
+				}
 
-			self.destroy();
-			return this;
+				oWysiwyg.destroy();
+			});
 		},
 
 		"document": function() {
-			var self = this.data("wysiwyg");
-			return $(self.editorDoc);
+			// no chains because of return
+			var oWysiwyg = $(this).data("wysiwyg");
+			return $(oWysiwyg.editorDoc);
 		},
 
 		getContent: function() {
-			var self = this.data("wysiwyg");
-			return self.getContent();
+			// no chains because of return
+			var oWysiwyg = this.data("wysiwyg");
+			return oWysiwyg.getContent();
 		},
 
 		init: function(options) {
@@ -1316,28 +1320,32 @@
 		},
 
 		insertHtml: function(szHTML) {
-			var self = this.data("wysiwyg");
-			self.insertHtml(szHTML);
-			return this;
+			return this.each(function() {
+				var oWysiwyg = $(this).data("wysiwyg");
+				oWysiwyg.insertHtml(szHTML);
+			});
 		},
 
 		removeFormat: function() {
-			var self = this.data("wysiwyg");
-			self.removeFormat();
-			return this;
+			return this.each(function() {
+				var oWysiwyg = $(this).data("wysiwyg");
+				oWysiwyg.removeFormat();
+			});
 		},
 
 		save: function() {
-			var self = this.data("wysiwyg");
-			self.saveContent();
-			return this;
+			return this.each(function() {
+				var oWysiwyg = $(this).data("wysiwyg");
+				oWysiwyg.saveContent();
+			});
 		},
 
 		setContent: function(newContent) {
-			var self = this.data("wysiwyg");
-			self.setContent(newContent);
-			self.saveContent();
-			return this;
+			return this.each(function() {
+				var oWysiwyg = $(this).data("wysiwyg");
+				oWysiwyg.setContent(newContent);
+				oWysiwyg.saveContent();
+			});
 		}
 	};
 
