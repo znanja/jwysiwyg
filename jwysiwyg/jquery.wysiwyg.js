@@ -447,7 +447,7 @@
 
 			groups.sort(function (a, b) { return (a - b); });
 
-			for (var i in groups) {
+			for (var i = 0; i < groups.length; i++) {
 				for (var controlName in controlsByGroup[groups[i]]) {
 					var control = controls[controlName];
 					if (control.groupIndex && currentGroupIndex != control.groupIndex) {
@@ -639,7 +639,7 @@
 		};
 
 		this.destroy = function() {
-			for (var i in this.timers) {
+			for (var i = 0; i < this.timers.length; i++) {
 				clearTimeout(this.timers[i]);
 			}
 			
@@ -804,7 +804,7 @@
 			if (this.options.autoload) {
 				if (undefined !== $.wysiwyg.autoload) {
 					if (this.options.autoload.css) {
-						for (var i in this.options.autoload.css) {
+						for (var i = 0; i < this.options.autoload.css.length; i++) {
 							$.wysiwyg.autoload.css(this.options.autoload.css[i]);
 						}
 					}
