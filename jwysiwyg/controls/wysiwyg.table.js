@@ -69,20 +69,20 @@ $.wysiwyg.controls.table = function(Wysiwyg) {
 			width: self.defaults.formWidth,
 			height: self.defaults.formHeight,
 			open: function(event, ui) {
-				$("input:submit", $(self)).click(function(e) {
+				$("input:submit", dialog).click(function(e) {
 					e.preventDefault();
 					var rowCount = $('input[name="rowCount"]', dialog).val();
 					var colCount = $('input[name="colCount"]', dialog).val();
 					self.insertTable(colCount, rowCount, self.defaults.tableFiller);
 					$(dialog).dialog("close");
 				});
-				$("input:reset", $(self)).click(function(e) {
+				$("input:reset", dialog).click(function(e) {
 					e.preventDefault();
 					$(dialog).dialog("close");
 				});
 			},
 			close: function(event, ui){
-				$(self).dialog("destroy");
+				dialog.dialog("destroy");
 			}
 		});
 	}
