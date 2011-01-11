@@ -11,8 +11,8 @@ var Autoload = {
 		var collection = $("link[rel=stylesheet]");
 		var path = options.basePath + options.cssPath + file;
 
-		for (var i = 0; i < collection.length; i++) {
-			if (path == collection[i].href) {
+		for (var i in collection) {
+			if (path === collection[i].href) {
 				// is loaded
 				return true;
 			}
@@ -38,7 +38,7 @@ var Autoload = {
 		var reg = eval("/^(.*)" + baseFile + "$/");
 		var path = null;
 
-		for (var i = 0; i < collection.length; i++) {
+		for (var i in collection) {
 			if (null === path) {
 				var p = reg.exec(collection[i].src);
 				if (null !== p) {
@@ -56,8 +56,8 @@ var Autoload = {
 		var collection = $("script");
 		var path = options.basePath + options.jsPath + file;
 
-		for (var i = 0; i < collection.length; i++) {
-			if (path == collection[i].src) {
+		for (var i in collection) {
+			if (path === collection[i].src) {
 				// is loaded
 				return true;
 			}
@@ -86,28 +86,28 @@ var Autoload = {
 $.autoload = {
 	css: function(names, options) {
 		var basePath = Autoload.findPath(options.baseFile);
-		var cssPath = options.cssPath ? options.cssPath : "css/";
+		var cssPath = (undefined === options.cssPath) ? "css/" : options.cssPath;
 		options = {"basePath": basePath, "cssPath": cssPath};
 
 		if ("string" === typeof names) {
 			names = [names];
 		}
 
-		for (i in names) {
+		for (var i = 0; i < names.length; i++) {
 			Autoload.css(names[i], options);
 		}
 	},
 
 	js: function(names, options) {
 		var basePath = Autoload.findPath(options.baseFile);
-		var jsPath = options.jsPath ? options.jsPath : "plugins/";
+		var jsPath = (undefined === options.jsPath) ? "plugins/" : options.jsPath;
 		options = {"basePath": basePath, "jsPath": jsPath};
 
 		if ("string" === typeof names) {
 			names = [names];
 		}
 
-		for (i in names) {
+		for (var i = 0; i < names.length; i++) {
 			Autoload.js(names[i], options);
 		}
 	}
