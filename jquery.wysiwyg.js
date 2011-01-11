@@ -934,7 +934,8 @@
 				})
 				.replace(/STYLE_SHEET/, function() {
 					return style;
-				}));
+				})
+			);
 			this.editorDoc.close();
 
 			if ($.browser.msie) {
@@ -1361,9 +1362,12 @@
 				$.error("Method " +  method + " does not exist on jQuery.wysiwyg");
 			}
 			catch(e) {
-				if (typeof(window.console) !== 'undefined') {
-          console.error(e);
-        }
+				if (window.console) {
+					console.error(e);
+				}
+				else {
+					throw e;
+				}
 			}
 		}
 	};
