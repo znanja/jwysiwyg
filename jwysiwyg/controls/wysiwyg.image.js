@@ -49,7 +49,7 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 			width: self.defaults.formWidth,
 			height: self.defaults.formHeight,
 				open: function(ev, ui) {
-					$("input:submit", $(self)).click(function(e) {
+					$("input:submit", dialog).click(function(e) {
 					e.preventDefault();
 					var szURL = $('input[name="url"]', dialog).val();
 					var title = $('input[name="imagetitle"]', dialog).val();
@@ -58,13 +58,13 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 					self.insertHtml(img);
 					$(dialog).dialog("close");
 				});
-				$("input:reset", $(self)).click(function(e) {
+				$("input:reset", dialog).click(function(e) {
 					e.preventDefault();
 					$(dialog).dialog("close");
 				});
 			},
 			close: function(ev, ui){
-				$(self).dialog("destroy");
+				dialog.dialog("destroy");
 			}
 		});
 	}
