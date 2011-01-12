@@ -580,6 +580,11 @@
 			$.each(this.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
 				var tags, elm, css, el;
+				var checkActiveStatus = function(cssProperty, cssValue) {
+					if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
+						$("." + className, self.panel).addClass("active");
+					}
+				};
 
 				$("." + className, self.panel).removeClass("active");
 
@@ -600,16 +605,12 @@
 				if (control.css || (control.options && control.options.css)) {
 					css = control.css || (control.options && control.options.css);
 					el = $(element);
+
 					do {
 						if (el[0].nodeType !== 1) {
 							break;
 						}
-
-						$.each(css, function(cssProperty, cssValue) {
-							if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-								$("." + className, self.panel).addClass("active");
-							}
-						});
+						$.each(css, checkActiveStatus);
 					} while (!!(el = el.parent()));
 				}
 			});
