@@ -664,14 +664,14 @@
 		};
 //not used?
 		this.execute = function(command, arg) {
-			if (typeof(arg) == "undefined") {
+			if (typeof(arg) === "undefined") {
 				arg = null;
 			}
 			this.editorDoc.execCommand(command, false, arg);
 		};
 
 		this.extendOptions = function(options) {
-			var controls = {};
+			var controls = {}, namesToRemove = [];
 
 			/**
 			 * If the user set custom controls, we catch it, and merge with the
@@ -686,11 +686,14 @@
 			options.controls = $.extend(true, this.controls, controls);
 
 			if (options.rmUnusedControls) {
-				for (var controlName in options.controls) {
-					if (false === controlName in controls) {
-						delete options.controls[controlName];
+				$.each(options.controls, function(controlName) {
+					if (!(controlName in controls)) {
+						namesToRemove.push(controlName);
 					}
-				}
+				});
+				$.each(namesToRemove, function(nameToRemove) {
+					delete options.controls[nameToRemove];
+				});
 			}
 
 			return options;
