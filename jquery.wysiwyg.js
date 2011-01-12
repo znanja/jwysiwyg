@@ -21,6 +21,15 @@
 
 (function($) {
 	/* Wysiwyg namespace: private properties and methods */
+
+	var console = (typeof(window.console) !== 'undefined') ? window.console : {
+		log: $.noop,
+		error: function(msg)
+		{
+			throw msg;
+		}
+	};
+
 	function Wysiwyg() {
 		this.controls = {
 			bold: {
@@ -507,12 +516,7 @@
 							self.editorDoc.execCommand(cmd, false, args);
 						}
 						catch(e) {
-							if (undefined !== window.console) {
-								console.error(e);
-							}
-							else {
-								throw e;
-							}
+							console.error(e);
 						}
 					}
 					if (self.options.autoSave) {
@@ -552,12 +556,7 @@
 							}
 						}
 						catch(e) {
-							if (undefined !== window.console) {
-								console.error(e);
-							}
-							else {
-								throw e;
-							}
+							console.error(e);
 						}
 					}
 
@@ -717,12 +716,7 @@
 						s.addRange(this.savedRange);
 					}
 					catch(e) {
-						if (window.console) {
-							console.error(e);
-						}
-						else {
-							throw e;
-						}
+						console.error(e);
 					}
 				}
 				else if (document.createRange) { //non IE and no selection
@@ -1328,12 +1322,7 @@
 				$.error("Method " +  method + " does not exist on jQuery.wysiwyg");
 			}
 			catch(e) {
-				if (window.console) {
-					console.error(e);
-				}
-				else {
-					throw e;
-				}
+				console.error(e);
 			}
 		}
 	};
