@@ -422,9 +422,10 @@
 			var controls = this.parseControls();
 			var currentGroupIndex	= 0;
 			var hasVisibleControls = true; // to prevent separator before first item
-
+			var i, controlName, control; // jslint wants all vars at top of function
 			var groups = [];
 			var controlsByGroup = {};
+
 			$.each(controls, function(name, c) {
 				var index = "empty";
 
@@ -446,9 +447,9 @@
 
 			groups.sort(function (a, b) { return (a - b); });
 
-			for (var i = 0; i < groups.length; i++) {
-				for (var controlName in controlsByGroup[groups[i]]) {
-					var control = controls[controlName];
+			for (i = 0; i < groups.length; i++) {
+				for (controlName in controlsByGroup[groups[i]]) {
+					control = controls[controlName];
 					if (control.groupIndex && currentGroupIndex != control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
