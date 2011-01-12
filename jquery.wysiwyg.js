@@ -576,11 +576,12 @@
 		};
 
 		this.checkTargets = function(element) {
+			var self = this;
 			$.each(this.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
 				var tags, elm, css, el;
 
-				$("." + className, this.panel).removeClass("active");
+				$("." + className, self.panel).removeClass("active");
 
 				if (control.tags || (control.options && control.options.tags)) {
 					tags = control.tags || (control.options && control.options.tags);
@@ -591,7 +592,7 @@
 						}
 
 						if ($.inArray(elm.tagName.toLowerCase(), tags) !== -1) {
-							$("." + className, this.panel).addClass("active");
+							$("." + className, self.panel).addClass("active");
 						}
 					} while (!!(elm = elm.parentNode));
 				}
@@ -606,7 +607,7 @@
 
 						$.each(css, function(cssProperty, cssValue) {
 							if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-								$("." + className, this.panel).addClass("active");
+								$("." + className, self.panel).addClass("active");
 							}
 						});
 					} while (!!(el = el.parent()));
