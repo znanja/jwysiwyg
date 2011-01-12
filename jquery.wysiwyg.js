@@ -576,21 +576,23 @@
 
 		this.checkTargets = function(element) {
 			var self = this;
+			var checkActiveStatus = function(el, cssProperty, cssValue) {
+				if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
+					$("." + className, self.panel).addClass("active");
+				}
+			};
+
 			$.each(this.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
 				var tags, elm, css, el;
-				var checkActiveStatus = function(cssProperty, cssValue) {
-					if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-						$("." + className, self.panel).addClass("active");
-					}
-				};
 
 				$("." + className, self.panel).removeClass("active");
 
 				if (control.tags || (control.options && control.options.tags)) {
 					tags = control.tags || (control.options && control.options.tags);
+
 					elm = element;
-					do {
+					while (elm) {
 						if (elm.nodeType !== 1) {
 							break;
 						}
@@ -598,19 +600,23 @@
 						if ($.inArray(elm.tagName.toLowerCase(), tags) !== -1) {
 							$("." + className, self.panel).addClass("active");
 						}
-					} while (elm = elm.parentNode);
+
+						elm = elm.parentNode;
+					}
 				}
 
 				if (control.css || (control.options && control.options.css)) {
 					css = control.css || (control.options && control.options.css);
 					el = $(element);
 
-					do {
+					while (el) {
 						if (el[0].nodeType !== 1) {
 							break;
 						}
-						$.each(css, checkActiveStatus);
-					} while (el = el.parent());
+						$.each(el, css, checkActiveStatus);
+
+						el = el.parent();
+					}
 				}
 			});
 		};
