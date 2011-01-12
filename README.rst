@@ -2,7 +2,42 @@
 jWYSIWYG 0.94 User Manual
 ========================
 
+Copyright (c) 2009-2010 Juan M Martínez
+Dual licensed under the `MIT
+<http://github.com/akzhan/jwysiwyg/raw/master/MIT-LICENSE.txt>`_ and `GPL
+<http://github.com/akzhan/jwysiwyg/raw/master/GPL-LICENSE.txt>`_ licenses.
 
+========
+Requires
+========
+
+jQuery 1.3.2 or higher (tested with jQuery 1.4.4).
+
+========
+Supports
+========
+
+`jQuery UI Dialog
+<http://jqueryui.com/demos/dialog/>`_ and `SimpleModal
+<http://www.ericmmartin.com/projects/simplemodal/>`_ for insertTable and insertImage buttons.
+
+`jQuery UI Resizable
+<http://jqueryui.com/demos/resizable/>`_ for resize of editor.
+
+===========
+Tested with
+===========
+
+Tested in Safari 4, Firefox 3.5, Chrome 4.0, Internet Explorer 8.
+
+Some minor bugs still exist while 1.0 not reached.
+
+========
+Web site
+========
+
+`jWYSIWYG on GitHub
+<http://github.com/akzhan/jwysiwyg>`_
 
 ===========
 Quick Start
@@ -266,7 +301,6 @@ Built-in editor functions can be triggered manually with the .wysiwyg() call.
 ====================================
 Customizing the Editor Look and Feel
 ====================================
-
 
 
 ============
