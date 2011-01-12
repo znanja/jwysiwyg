@@ -1103,9 +1103,10 @@
 		};
 
 		this.parseControls = function() {
+			var self = this;
 			$.each(this.options.controls, function(controlName, control) {
 				$.each(control, function(propertyName) {
-					if (-1 === $.inArray(propertyName, this.availableControlProperties)) {
+					if (-1 === $.inArray(propertyName, self.availableControlProperties)) {
 						throw controlName + '["' + propertyName + '"]: property "' + propertyName + '" not exists in Wysiwyg.availableControlProperties';
 					}
 				});
