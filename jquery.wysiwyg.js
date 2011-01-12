@@ -737,17 +737,17 @@
 		};
 
 		this.getElementByAttributeValue = function(tagName, attributeName, attributeValue) {
-			var elements = this.editorDoc.getElementsByTagName(tagName);
+			var i, value, elements = this.editorDoc.getElementsByTagName(tagName);
 
-			for (var i = 0; i < elements.length; i++) {
-				var value = elements[i].getAttribute(attributeName);
+			for (i = 0; i < elements.length; i++) {
+				value = elements[i].getAttribute(attributeName);
 
 				if ($.browser.msie) {
 					/** IE add full path, so I check by the last chars. */
 					value = value.substr(value.length - attributeValue.length);
 				}
 
-				if (value == attributeValue) {
+				if (value === attributeValue) {
 					return elements[i];
 				}
 			}
