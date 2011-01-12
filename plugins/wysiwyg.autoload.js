@@ -20,7 +20,7 @@ if (undefined === $.autoload) {
 $.wysiwyg.autoload = {
 	defaults: {
 		baseFile:		"jquery.wysiwyg.js",
-		cssPath:		"css/",
+		cssPath:		"",
 		controlPath:	"controls/",
 		i18nPath:		"i18n/"
 	},
