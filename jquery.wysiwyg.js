@@ -610,7 +610,7 @@
 							break;
 						}
 						$.each(css, checkActiveStatus);
-					} while (!!(el = el.parent()));
+					} while (el = el.parent());
 				}
 			});
 		};
