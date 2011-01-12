@@ -654,11 +654,11 @@
 		};
 
 		this.documentSelection = function() {
-			if (this.get(0).contentWindow.document.selection) {
-				return this.get(0).contentWindow.document.selection.createRange().text;
+			if (this.editor.get(0).contentWindow.document.selection) {
+				return this.editor.get(0).contentWindow.document.selection.createRange().text;
 			}
 			else {
-				return this.get(0).contentWindow.getSelection().toString();
+				return this.editor.get(0).contentWindow.getSelection().toString();
 			}
 		};
 //not used?
