@@ -425,8 +425,7 @@
 
 			var groups = [];
 			var controlsByGroup = {};
-			for (var name in controls) {
-				var c = controls[name];
+			$.each(controls, function(name, c) {
 				var index = "empty";
 
 				if (undefined !== c.groupIndex) {
@@ -443,7 +442,7 @@
 					controlsByGroup[index] = {};
 				}
 				controlsByGroup[index][name] = c;
-			}
+			});
 
 			groups.sort(function (a, b) { return (a - b); });
 
