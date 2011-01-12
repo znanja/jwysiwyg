@@ -586,21 +586,21 @@
 					tags = control.tags || (control.options && control.options.tags);
 					elm = element;
 					do {
-						if (elm.nodeType != 1) {
+						if (elm.nodeType !== 1) {
 							break;
 						}
 
-						if ($.inArray(elm.tagName.toLowerCase(), tags) != -1) {
+						if ($.inArray(elm.tagName.toLowerCase(), tags) !== -1) {
 							$("." + className, this.panel).addClass("active");
 						}
-					} while ((elm = elm.parentNode));
+					} while (!!(elm = elm.parentNode));
 				}
 
 				if (control.css || (control.options && control.options.css)) {
 					css = control.css || (control.options && control.options.css);
 					el = $(element);
 					do {
-						if (el[0].nodeType != 1) {
+						if (el[0].nodeType !== 1) {
 							break;
 						}
 
@@ -609,7 +609,7 @@
 								$("." + className, this.panel).addClass("active");
 							}
 						});
-					} while ((el = el.parent()));
+					} while (!!(el = el.parent()));
 				}
 			});
 		};
@@ -639,12 +639,13 @@
 		};
 
 		this.destroy = function() {
-			for (var i = 0; i < this.timers.length; i++) {
+			var i, $form = $(this.element).closest("form");
+
+			for (i = 0; i < this.timers.length; i++) {
 				clearTimeout(this.timers[i]);
 			}
 			
 			// Remove bindings
-			var $form = $(this.element).closest("form");
 			$form.unbind("submit.wysiwyg", this.autoSaveFunction)
 				.unbind("reset.wysiwyg", this.resetFunction);
 			$(this.element).remove();
