@@ -1326,4 +1326,5 @@
 			}
 		}
 	};
+	$.fn.wysiwyg.console = console; // let our console be available for extensions
 })(jQuery);
