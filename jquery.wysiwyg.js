@@ -1142,7 +1142,7 @@
 
 				if (this.options.rmUnwantedBr) {
 					var brLength = ("<br/>".length) * -1;
-					content = (content.substr(brLength) == "<br/>") ? content.substr(0, brLength) : content;
+					content = (content.substr(brLength) === "<br/>") ? content.substr(0, brLength) : content;
 				}
 
 				$(this.original).val(content);
@@ -1270,42 +1270,15 @@
 			return this.each(function() {
 				var $this = $(this);
 				var opts = $.extend(true, {}, options);
+				var obj;
 
 				if ($this.data("wysiwyg")) {
-					return this;
+					return;
 				}
 
-				/*
-				 * :TODO:
-				 * this code do nothing, remove it? 
-				 */
-				if (false) {
-					if (arguments.length > 0 && arguments[0].constructor == String) {
-						var action = arguments[0].toString();
-						var params = [];
-	
-						if (action == "enabled") {
-							return this.data("wysiwyg") !== null;
-						}
-						for (var i = 1; i < arguments.length; i++) {
-							params[i - 1] = arguments[i];
-						}
-						var retValue = null;
-	
-						// .filter('textarea') is a fix for bug 29 ( http://github.com/akzhan/jwysiwyg/issues/issue/29 )
-						this.filter("textarea").each(function() {
-							$.data(this, "wysiwyg").designMode();
-							retValue = Wysiwyg[action].apply(this, params);
-						});
-						return retValue;
-					}
-				}
-				/* end */
-
-				var oWysiwyg = new Wysiwyg();
-				oWysiwyg.init(this, opts);
-
-				$.data(this, "wysiwyg", oWysiwyg);
+				obj = new Wysiwyg();
+				obj.init(this, opts);
+				$.data(this, "wysiwyg", obj);
 			});
 		},
 
