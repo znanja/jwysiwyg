@@ -598,7 +598,7 @@
 						if ($.inArray(elm.tagName.toLowerCase(), tags) !== -1) {
 							$("." + className, self.panel).addClass("active");
 						}
-					} while (!!(elm = elm.parentNode));
+					} while (elm = elm.parentNode);
 				}
 
 				if (control.css || (control.options && control.options.css)) {
