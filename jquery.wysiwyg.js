@@ -576,7 +576,8 @@
 
 		this.checkTargets = function(element) {
 			var self = this;
-			var checkActiveStatus = function(el, cssProperty, cssValue) {
+			var el;
+			var checkActiveStatus = function(cssProperty, cssValue) {
 				if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
 					$("." + className, self.panel).addClass("active");
 				}
@@ -584,7 +585,7 @@
 
 			$.each(this.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
-				var tags, elm, css, el;
+				var tags, elm, css;
 
 				$("." + className, self.panel).removeClass("active");
 
@@ -613,7 +614,7 @@
 						if (el[0].nodeType !== 1) {
 							break;
 						}
-						$.each(el, css, checkActiveStatus);
+						$.each(css, checkActiveStatus);
 
 						el = el.parent();
 					}
@@ -626,7 +627,7 @@
 			var runner;
 			var self = this;
 			var doc	= this.editorDoc;
-			runner = function() {
+			var runner = function() {
 				if (self.innerDocument() !== doc) {
 					self.initFrame();
 					return;
@@ -641,6 +642,7 @@
 					self.timers.designMode = setTimeout(runner, 100);
 				}
 			};
+
 			runner();
 			this.editorDoc_designMode = true;
 		};
