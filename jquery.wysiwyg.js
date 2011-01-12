@@ -802,13 +802,16 @@
 
 		this.init = function(element, options) {
 			var self = this;
+			var panel = this.panel = $('<ul role="menu" class="panel"></ul>');
+			var $form = $(element).closest("form");
+			var i, newX = element.width || element.clientWidth || 0, newY = element.height || element.clientHeight || 0;
 			this.editor = element;
 			this.options = this.extendOptions(options);
 
 			if (this.options.autoload) {
 				if (undefined !== $.wysiwyg.autoload) {
 					if (this.options.autoload.css) {
-						for (var i = 0; i < this.options.autoload.css.length; i++) {
+						for (i = 0; i < this.options.autoload.css.length; i++) {
 							$.wysiwyg.autoload.css(this.options.autoload.css[i]);
 						}
 					}
@@ -822,9 +825,6 @@
 			if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
 				this.options.autoGrow = false;
 			}
-
-			var newX = element.width || element.clientWidth || 0;
-			var newY = element.height || element.clientHeight || 0;
 
 			if (element.nodeName.toLowerCase() == "textarea") {
 				this.original = element;
@@ -862,8 +862,6 @@
 				 */
 				this.editor.attr("tabindex", $(element).attr("tabindex"));
 			}
-
-			var panel = this.panel = $('<ul role="menu" class="panel"></ul>');
 
 			this.appendControls();
 			this.element = $("<div/>").addClass("wysiwyg").append(panel)
@@ -903,8 +901,6 @@
 					alsoResize: this.editor
 				}, this.options.resizeOptions));
 			}
-
-			var $form = $(element).closest("form");
 
 			if (this.options.autoSave) {
 				$form.submit(self.autoSaveFunction);
