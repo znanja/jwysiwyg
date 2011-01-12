@@ -1216,6 +1216,8 @@
 				oWysiwyg.saveContent();
 			});
 		},
+		
+		console: console, // let our console be available for extensions
 
 		createLink: function(szURL) {
 			return this.each(function() {
@@ -1326,5 +1328,4 @@
 			}
 		}
 	};
-	$.fn.wysiwyg.console = console; // let our console be available for extensions
 })(jQuery);
