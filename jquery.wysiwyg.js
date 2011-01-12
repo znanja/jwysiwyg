@@ -627,7 +627,8 @@
 			var runner;
 			var self = this;
 			var doc	= this.editorDoc;
-			var runner = function() {
+
+			runner = function() {
 				if (self.innerDocument() !== doc) {
 					self.initFrame();
 					return;
