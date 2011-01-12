@@ -450,7 +450,7 @@
 			for (i = 0; i < groups.length; i++) {
 				for (controlName in controlsByGroup[groups[i]]) {
 					control = controls[controlName];
-					if (control.groupIndex && currentGroupIndex != control.groupIndex) {
+					if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
 					}
@@ -576,15 +576,15 @@
 		};
 
 		this.checkTargets = function(element) {
-			for (var name in this.options.controls) {
-				var control = this.options.controls[name];
+			$.each(this.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
+				var tags, elm, css, el;
 
 				$("." + className, this.panel).removeClass("active");
 
 				if (control.tags || (control.options && control.options.tags)) {
-					var tags = control.tags || (control.options && control.options.tags);
-					var elm = element;
+					tags = control.tags || (control.options && control.options.tags);
+					elm = element;
 					do {
 						if (elm.nodeType != 1) {
 							break;
@@ -597,21 +597,21 @@
 				}
 
 				if (control.css || (control.options && control.options.css)) {
-					var css = control.css || (control.options && control.options.css);
-					var el = $(element);
+					css = control.css || (control.options && control.options.css);
+					el = $(element);
 					do {
 						if (el[0].nodeType != 1) {
 							break;
 						}
 
-						for (var cssProperty in css) {
-							if (el.css(cssProperty).toString().toLowerCase() == css[cssProperty]) {
+						$.each(css, function(cssProperty, cssValue) {
+							if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
 								$("." + className, this.panel).addClass("active");
 							}
-						}
+						});
 					} while ((el = el.parent()));
 				}
-			}
+			});
 		};
 
 		this.designMode = function() {
