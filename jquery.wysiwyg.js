@@ -826,7 +826,7 @@
 				this.options.autoGrow = false;
 			}
 
-			if (element.nodeName.toLowerCase() == "textarea") {
+			if (element.nodeName.toLowerCase() === "textarea") {
 				this.original = element;
 
 				if (newX === 0 && element.cols) {
@@ -842,7 +842,7 @@
 					element.rows = 1;
 				}
 
-				this.editor = $(location.protocol == "https:" ? '<iframe src="javascript:false;"></iframe>' : "<iframe></iframe>").attr("frameborder", "0");
+				this.editor = $(location.protocol === "https:" ? '<iframe src="javascript:false;"></iframe>' : "<iframe></iframe>").attr("frameborder", "0");
 
 				if (this.options.iFrameClass) {
 					this.editor.addClass(this.options.iFrameClass);
@@ -916,7 +916,7 @@
 			/**
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
 			 */
-			if (this.options.css && this.options.css.constructor == String) {
+			if (this.options.css && this.options.css.constructor === String) {
 				style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '"/>';
 			}
 
@@ -962,7 +962,7 @@
 
 			this.emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>/;
 			$(this.editorDoc).keydown(function(event) {
-				if (event.keyCode == 8) { // backspace
+				if (event.keyCode === 8) { // backspace
 					var content = self.getContent();
 					if (self.emptyContentRegex.test(content)) { // if content is empty
 						event.stopPropagation(); // prevent remove single empty tag
@@ -996,7 +996,7 @@
 			}
 			else if (this.options.brIE) {
 				$(this.editorDoc).keydown(function(event) {
-					if (event.keyCode == 13) {
+					if (event.keyCode === 13) {
 						var rng = self.getRange();
 						rng.pasteHTML("<br/>");
 						rng.collapse(false);
@@ -1030,17 +1030,7 @@
 
 			if (this.options.css) {
 				this.timers.initFrame_Css = setTimeout(function() {
-					if (self.options.css.constructor == String) {
-						/**
-						 * $(self.editorDoc)
-						 * .find("head")
-						 * .append(
-						 *	 $('<link rel="stylesheet" type="text/css" media="screen"/>')
-						 *	 .attr("href", self.options.css)
-						 * );
-						 */
-					}
-					else {
+					if (self.options.css.constructor !== String) {
 						$(self.editorDoc).find("body").css(self.options.css);
 					}
 				}, 0);
@@ -1077,7 +1067,7 @@
 		this.innerDocument = function() {
 			var element = this.editor.get(0);
 
-			if (element.nodeName.toLowerCase() == "iframe") {
+			if (element.nodeName.toLowerCase() === "iframe") {
 				if (element.contentWindow) {
 					return element.contentWindow.document;
 				}
@@ -1113,13 +1103,13 @@
 		};
 
 		this.parseControls = function() {
-			for (var controlName in this.options.controls) {
-				for (var propertyName in this.options.controls[controlName]) {
+			$.each(this.options.controls, function(controlName, control) {
+				$.each(control, function(propertyName) {
 					if (-1 === $.inArray(propertyName, this.availableControlProperties)) {
 						throw controlName + '["' + propertyName + '"]: property "' + propertyName + '" not exists in Wysiwyg.availableControlProperties';
 					}
-				}
-			}
+				});
+			});
 
 			if (this.options.parseControls) {
 				return this.options.parseControls.call(this);
