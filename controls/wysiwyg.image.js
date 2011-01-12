@@ -6,7 +6,6 @@
 (function($) {
 if (undefined === $.wysiwyg) {
 	throw "wysiwyg.image.js depends on $.wysiwyg";
-	return false;
 }
 
 if (undefined === $.wysiwyg.controls) {

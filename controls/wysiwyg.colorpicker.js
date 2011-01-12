@@ -6,7 +6,6 @@
 (function($) {
 if (undefined === $.wysiwyg) {
 	throw "wysiwyg.colorpicker.js depends on $.wysiwyg";
-	return false;
 }
 
 if (undefined === $.wysiwyg.controls) {
@@ -70,7 +69,7 @@ $.wysiwyg.controls.colorpicker = function(Wysiwyg) {
 				});
 			},
 			close: function(event, ui){
-				$(self).dialog("destroy");
+				dialog.dialog("destroy");
 			}
 		});
 	}

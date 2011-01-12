@@ -6,11 +6,9 @@
 (function($) {
 if (undefined === $.wysiwyg) {
 	throw "lang.ru.js depends on $.wysiwyg";
-	return false;
 }
 if (undefined === $.wysiwyg.i18n) {
 	throw "lang.ru.js depends on $.wysiwyg.i18n";
-	return false;
 }
 
 $.wysiwyg.i18n.lang.ru = {

@@ -6,7 +6,6 @@
 (function($) {
 if (undefined === $.wysiwyg) {
 	throw "wysiwyg.i18n.js depends on $.wysiwyg";
-	return false;
 }
 
 /*
@@ -28,15 +27,13 @@ $.wysiwyg.i18n = {
 		if ((lang !== this.defaults.wysiwygLang) && (undefined === $.wysiwyg.i18n.lang[lang])) {
 			if (!$.wysiwyg.autoload) {
 				throw "wysiwyg.i18n.js depends on $.wysiwyg.autoload";
-				return false;
 			}
-			
+
 			$.wysiwyg.autoload.lang("lang." + lang + ".js", {success: (function(Wysiwyg, lang) {
-//				console.log("Language file is loaded");
 				$.wysiwyg.i18n.init(Wysiwyg, lang);
 			})(Wysiwyg, lang)});
 		}
-		
+
 		this.options.lang = lang;
 	},
 
@@ -48,7 +45,7 @@ $.wysiwyg.i18n = {
 		if ((lang !== this.defaults.wysiwygLang) && this.lang[lang] && this.lang[lang][phrase]) {
 			return this.lang[lang][phrase];
 		}
-		
+
 		return phrase;
 	}
 };

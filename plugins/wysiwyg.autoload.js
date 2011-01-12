@@ -6,12 +6,10 @@
 (function($) {
 if (undefined === $.wysiwyg) {
 	throw "wysiwyg.autoload.js depends on $.wysiwyg";
-	return false;
 }
 
 if (undefined === $.autoload) {
 	throw "wysiwyg.autoload.js depends on $.autoload";
-	return false;
 }
 
 /*
