@@ -102,13 +102,15 @@ Another way::
 Styling the Content Inside the Editor
 -------------------------------------
 
-To apply a CSS stylesheet to the content inside the editor, use the ``css`` configuration option::
+To apply a CSS stylesheet to the content inside the editor, use the ``css``
+configuration option::
 
     $('#wysiwyg').wysiwyg({
         css: 'editor.css'
     });
 
-The editor will not inherit the style of the containing page anyway, you must specify a CSS file to apply to it.
+The editor will not inherit the style of the containing page anyway, you must
+specify a CSS file to apply to it.
 
 
 Clear the Editor
@@ -122,7 +124,8 @@ To clear the editor at any time::
 Insert an Image
 ---------------
 
-When the #insertImage link is clicked, insert an image inline at the current cursor location in the editor::
+When the #insertImage link is clicked, insert an image inline at the current
+cursor location in the editor::
 
     $('a[href="#insertImage"]').click(function() {
         $('#wysiwyg').wysiwyg('insertImage', 'img/hourglass.gif');
@@ -138,29 +141,38 @@ Add some additional attributes to the image, as well::
         $('#wysiwyg').wysiwyg('insertImage', 'img/hourglass.gif', { 'class': 'myClass', 'className': 'myClass' });
     });
 
-Note that the class attribute is added twice, because the ``class`` DOM attribute is recognized on IE but not on Firefox, and the ``className`` attribute is recognized on Firefox but not on IE.
+Note that the class attribute is added twice, because the ``class`` DOM
+attribute is recognized on IE but not on Firefox, and the ``className``
+attribute is recognized on Firefox but not on IE.
 
 
 ===============================
 Available Configuration Options
 ===============================
 
-Additional configuration options are specified by passing a javascript object to the wysiwyg() function when it is first called on a textarea. Available keys are:
+Additional configuration options are specified by passing a javascript object to
+the wysiwyg() function when it is first called on a textarea. Available keys are:
 
 ``html``
-    A string containing the source HTML code used inside the editor's iframe. This is a template where ``STYLE_SHEET`` and ``INITIAL_CONTENT`` are later replaced by the appropriate code for the editor instance, so those two strings must be present in this option.
+    A string containing the source HTML code used inside the editor's iframe.
+    This is a template where ``STYLE_SHEET`` and ``INITIAL_CONTENT`` are later
+    replaced by the appropriate code for the editor instance, so those two
+    strings must be present in this option.
 
 ``debug``
     A boolean, enabling or disabling debugging.
 
 ``css``
-    A string containing the path to a CSS file which will be included in the editor's iframe.
+    A string containing the path to a CSS file which will be included in the
+    editor's iframe.
 
 ``autoGrow``
     A boolean.
 
 ``autoSave``
-    A boolean. If ``true``, the editor will copy its contents back to the original textarea anytime it is updated. If ``false``, this must be done manually.
+    A boolean. If ``true``, the editor will copy its contents back to the
+    original textarea anytime it is updated. If ``false``, this must be done
+    manually.
 
 ``brIE``
     A boolean. If ``true``, a ``<br/>`` will be inserted for a newline in IE.
@@ -172,7 +184,8 @@ Additional configuration options are specified by passing a javascript object to
     An integer. Width of dialog form.
 
 ``i18n``
-    A bool or string. If ``false`` then no internationalization, otherwise set to language (ex. ``ru``)
+    A bool or string. If ``false`` then no internationalization, otherwise set
+    to language (ex. ``ru``)
 
 ``initialContent``
     A string. Default ``<p>Initial Content</p>``
@@ -181,15 +194,28 @@ Additional configuration options are specified by passing a javascript object to
     An integer. autoGrow max height
 
 ``messages``
-    A javascript object with key, value pairs setting custom messages for certain conditions. Available keys are:
+    A javascript object with key, value pairs setting custom messages for
+    certain conditions. Available keys are:
     
-    * ``nonSelection`` : Message to display when the Create Link button is pressed with no text selected.
+    * ``nonSelection`` : Message to display when the Create Link button is
+    pressed with no text selected.
 
 ``resizeOptions``
-    A boolean. Depends on **jquery.ui.resizable**. If ``false`` the editor will not be resizeable.
+    A boolean. Depends on **jquery.ui.resizable**. If ``false`` the editor will
+    not be resizeable.
 
 ``rmUnusedControls``
-    A boolean. If ``true``, the editor will remove all controls which are not mentioned in ``controls`` option.
+    A boolean. If ``true``, the editor will remove all controls which are not
+    mentioned in ``controls`` option.
+    
+    In this example only bold control will be available in control panel:
+    
+    $("textarea").wysiwyg({
+        rmUnusedControls: true,
+        controls: {
+            bold: { visible : true },
+        }
+    });
 
 ``rmUnwantedBr``
     A boolean. If ``true``, the editor will not add extraneous ``<br/>`` tags.
@@ -198,7 +224,8 @@ Additional configuration options are specified by passing a javascript object to
     A string. Default ``Lorem ipsum``
 
 ``events``
-    A javascript object specifying events. Events are specified as ``key: value`` pairs in the javascript object,
+    A javascript object specifying events. Events are specified as ``key: value``
+    pairs in the javascript object,
     where the key is the name of the event and the value is javascript function::
 
 		{
@@ -211,7 +238,11 @@ Additional configuration options are specified by passing a javascript object to
 		}
 
 ``controls``
-    A javascript object specifying control buttons and separators to include in the toolbar. This can consist of built-in controls and custom controls. Controls are specified as key, value pairs in the javascript object, where the key is the name of the control and the value is another javascript object with a specific signature.
+    A javascript object specifying control buttons and separators to include in
+    the toolbar. This can consist of built-in controls and custom controls.
+    Controls are specified as key, value pairs in the javascript object, where
+    the key is the name of the control and the value is another javascript
+    object with a specific signature.
     
     The signature of a control object looks like this::
     
@@ -241,15 +272,23 @@ Additional configuration options are specified by passing a javascript object to
             exec: function() { ... },
         }
     
-    If you wish to override the default behavior of built-in controls, you can do so by specifying only the keys which you wish to change the behavior of. For example, since the ``strikeThrough`` control is not visibly by default, to enable it we only have to specify::
+    If you wish to override the default behavior of built-in controls, you can
+    do so by specifying only the keys which you wish to change the behavior of.
+    For example, since the ``strikeThrough`` control is not visibly by default,
+    to enable it we only have to specify::
     
         strikeThrough: { visible: true }
     
-    Additionally, custom controls may be specified by adding new keys with the same signature as a control object. For example, if we wish to create a ``quote`` control which creates ``<blockquote>`` tags, we could do specify this key::
+    Additionally, custom controls may be specified by adding new keys with the
+    same signature as a control object. For example, if we wish to create a
+    ``quote`` control which creates ``<blockquote>`` tags, we could do specify
+    this key::
     
         quote: { visible; true, tags: ['blockquote'], css: { class: 'quote', className: 'quote' } }
     
-    Note that when defining custom controls, you will most likely want to add additional CSS to style the resulting toolbar button. The CSS to style a button looks like this::
+    Note that when defining custom controls, you will most likely want to add
+    additional CSS to style the resulting toolbar button. The CSS to style a
+    button looks like this::
     
         div.wysiwyg ul.panel li a.quote {
             background: url('quote-button.gif') no-repeat 0px 0px;
@@ -274,7 +313,8 @@ Additional configuration options are specified by passing a javascript object to
     * ``insertOrderedList``: Insert ordered (numbered) list.
     * ``insertUnorderedList``: Insert unordered (bullet) list.
     * ``insertHorizontalRule``: Insert horizontal rule.
-    * ``createLink``: Create a link from the selected text, by prompting the user for the URL.
+    * ``createLink``: Create a link from the selected text, by prompting the
+      user for the URL.
     * ``insertImage``: Insert an image, by prompting the user for the image path.
     * ``h1mozilla``: Make text an h1 header, Mozilla-specific.
     * ``h2mozilla``: Make text an h2 header, Mozilla-specific.
@@ -287,16 +327,35 @@ Additional configuration options are specified by passing a javascript object to
     * ``paste``: Paste from clipboard.
     * ``increaseFontSize``: Increase font size.
     * ``decreaseFontSize``: Decrease font size.
-    * ``html``: Show the original textarea with HTML source. When clicked again, copy the textarea code back to the jWYSIWYG editor.
+    * ``html``: Show the original textarea with HTML source. When clicked again,
+      copy the textarea code back to the jWYSIWYG editor.
     * ``removeFormat``: Remove all formatting.
-    * ``insertTable``: Insert a table, by prompting the user for the table settings.
+    * ``insertTable``: Insert a table, by prompting the user for the table
+      settings.
 
 
 ============================
 Available Built-In Functions
 ============================
 
-Built-in editor functions can be triggered manually with the .wysiwyg() call.
+Built-in editor functions can be triggered manually with the
+.wysiwyg("functionName"[, arg1[, arg2[, ...]]]) call.
+
+    * addControl(name, settings)
+    * clear
+    * createLink(szURL)
+    * destroy
+    * document
+    * getContent
+    * insertHtml(szHTML)
+    * removeFormat
+    * save
+    * setContent
+
+For example, if you want to save the content to original textarea, and then
+remove the jWYSIWYG editor to bring original textarea back:
+
+    $("#original").wysiwyg("save").wysiwyg("destroy")
 
 ====================================
 Customizing the Editor Look and Feel
@@ -311,9 +370,11 @@ When jWYSIWYG is called on a textarea, it does the following things:
 
 1. Creates an additional container div to encapsulate the new editor.
 2. Hides the existing textarea.
-3. Creates an iframe inside the container div, populated with editor window and toolbar.
+3. Creates an iframe inside the container div, populated with editor window and
+   toolbar.
 4. When ``saveContent()`` is called, copy its content to existing textarea.
-5. Listen for ``submit`` event of closest form to apply ``saveContent()`` before form submition.
+5. Listen for ``submit`` event of closest form to apply ``saveContent()`` before
+   form submition.
 
 ====================
 Additional Resources
