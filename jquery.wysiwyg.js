@@ -697,12 +697,13 @@
 
 			if (options.rmUnusedControls) {
 				$.each(options.controls, function(controlName) {
-					if (!(controlName in controls)) {
+					if (!controls[controlName]) {
 						namesToRemove.push(controlName);
 					}
 				});
-				$.each(namesToRemove, function(nameToRemove) {
-					delete options.controls[nameToRemove];
+
+				$.each(namesToRemove, function(name) {
+					delete options.controls[namesToRemove[name]];
 				});
 			}
 
