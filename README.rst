@@ -383,7 +383,7 @@ When jWYSIWYG is called on a textarea, it does the following things:
 Contributing
 ============
 
-Read document `_help/docs/contributing.rst <blob/master/_help/docs/contributing.rst>`_
+Read document `_help/docs/contributing.rst <https://github.com/akzhan/jwysiwyg/blob/master/_help/docs/contributing.rst>`_
 
 ====================
 Additional Resources

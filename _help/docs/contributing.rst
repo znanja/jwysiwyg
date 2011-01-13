@@ -9,7 +9,7 @@ Feel free to contribute everywhere
 Code
 ----
 
-Read document `_help/docs/Programming Style Guidelines.rst <Programming Style Guidelines.rst>`_
+Read document `_help/docs/code_style.rst <code_style.rst>`_
 
 Internationalization
 --------------------
