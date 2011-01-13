@@ -219,6 +219,9 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
                 bold: { visible : true },
             }
         });
+    
+    See also `_help/examples/11-custom-controls.html
+    <https://github.com/akzhan/jwysiwyg/blob/master/_help/examples/11-custom-controls.html>`_
 
 ``rmUnwantedBr``
     A boolean. If ``true``, the editor will not add extraneous ``<br/>`` tags.
