@@ -207,15 +207,14 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
 ``rmUnusedControls``
     A boolean. If ``true``, the editor will remove all controls which are not
     mentioned in ``controls`` option.
-    
     In this example only bold control will be available in control panel:
     
-    $("textarea").wysiwyg({
-        rmUnusedControls: true,
-        controls: {
-            bold: { visible : true },
-        }
-    });
+        $("textarea").wysiwyg({
+            rmUnusedControls: true,
+            controls: {
+                bold: { visible : true },
+            }
+        });
 
 ``rmUnwantedBr``
     A boolean. If ``true``, the editor will not add extraneous ``<br/>`` tags.
@@ -341,16 +340,16 @@ Available Built-In Functions
 Built-in editor functions can be triggered manually with the
 .wysiwyg("functionName"[, arg1[, arg2[, ...]]]) call.
 
-    * addControl(name, settings)
-    * clear
-    * createLink(szURL)
-    * destroy
-    * document
-    * getContent
-    * insertHtml(szHTML)
-    * removeFormat
-    * save
-    * setContent
+* addControl(name, settings)
+* clear
+* createLink(szURL)
+* destroy
+* document
+* getContent
+* insertHtml(szHTML)
+* removeFormat
+* save
+* setContent
 
 For example, if you want to save the content to original textarea, and then
 remove the jWYSIWYG editor to bring original textarea back:
