@@ -18,9 +18,9 @@ You can contribute in internationalization. Go under *i18n* directory and copy
 one of lang.\ **langName**\ .js file. Rename **langName** part to your language.
 Open this file, and change line
 
-::
+.. parsed-literal::
 
-    $.wysiwyg.i18n.lang.langName = {
+    $.wysiwyg.i18n.lang.\ **langName**\  = {
 
 to your language then translate tooltips.
 

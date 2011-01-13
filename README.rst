@@ -38,8 +38,7 @@ Some minor bugs still exist while 1.0 not reached.
 Web site
 ========
 
-`jWYSIWYG on GitHub
-<http://github.com/akzhan/jwysiwyg>`_
+`jWYSIWYG on GitHub <http://github.com/akzhan/jwysiwyg>`_
 
 ===========
 Quick Start
@@ -383,7 +382,8 @@ When jWYSIWYG is called on a textarea, it does the following things:
 Contributing
 ============
 
-Read document `_help/docs/contributing.rst <https://github.com/akzhan/jwysiwyg/blob/master/_help/docs/contributing.rst>`_
+Read document `_help/docs/contributing.rst
+<https://github.com/akzhan/jwysiwyg/blob/master/_help/docs/contributing.rst>`_
 
 ====================
 Additional Resources

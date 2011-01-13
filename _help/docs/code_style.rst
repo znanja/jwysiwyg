@@ -8,10 +8,8 @@ Naming Conventions
 ------------------
 
 * Iterator variables should be called i, j, k etc.
-* The prefix is should be used for boolean variables and methods
-
-    ::
-
+* The prefix is should be used for boolean variables and methods ::
+    
         isSet, isVisible, isFinished, isFound, isOpen
 
     There are a few alternatives to the is prefix that fit better in some situations.
@@ -21,19 +19,14 @@ Naming Conventions
         bool canEvaluate();
         bool shouldSort();
 
-* Negated boolean variable names must be avoided
-
-    ::
+* Negated boolean variable names must be avoided ::
 
         bool isError; // NOT: isNoError
         bool isFound; // NOT: isNotFound
 
-* Exception classes should be suffixed with Exception
-
-    ::
+* Exception classes should be suffixed with Exception ::
 
         AccessException
-
 
 Files
 -----
@@ -58,9 +51,7 @@ Layout
 Comments
 --------
 
-* Comments should be included relative to their position in the code
-
-    ::
+* Comments should be included relative to their position in the code ::
 
         if (true) {
             // Do something
