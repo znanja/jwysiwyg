@@ -1,11 +1,13 @@
-========================
+=========================
 jWYSIWYG 0.94 User Manual
-========================
+=========================
 
 Copyright (c) 2009-2010 Juan M Martínez
 Dual licensed under the `MIT
 <http://github.com/akzhan/jwysiwyg/raw/master/MIT-LICENSE.txt>`_ and `GPL
 <http://github.com/akzhan/jwysiwyg/raw/master/GPL-LICENSE.txt>`_ licenses.
+
+.. contents::
 
 ========
 Requires
@@ -91,12 +93,12 @@ Custom controls can also be specified with the ``controls`` option::
 Another way::
 
     $('#wysiwyg').wysiwyg("addControl",
-		"controlName",
-		{
-			icon: "/path/to/icon.png",
-			exec:  function() { alert('Hello World'); }
-		}
-	);
+        "controlName",
+        {
+            icon: "/path/to/icon.png",
+            exec:  function() { alert('Hello World'); }
+        }
+    );
 
 
 Styling the Content Inside the Editor
@@ -146,9 +148,12 @@ attribute is recognized on IE but not on Firefox, and the ``className``
 attribute is recognized on Firefox but not on IE.
 
 
-===============================
+======================
+Advanced Customization
+======================
+
 Available Configuration Options
-===============================
+-------------------------------
 
 Additional configuration options are specified by passing a javascript object to
 the wysiwyg() function when it is first called on a textarea. Available keys are:
@@ -197,8 +202,8 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     A javascript object with key, value pairs setting custom messages for
     certain conditions. Available keys are:
     
-    * ``nonSelection`` : Message to display when the Create Link button is
-    pressed with no text selected.
+    * ``nonSelection``: Message to display when the Create Link button is
+      pressed with no text selected.
 
 ``resizeOptions``
     A boolean. Depends on **jquery.ui.resizable**. If ``false`` the editor will
@@ -207,7 +212,7 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
 ``rmUnusedControls``
     A boolean. If ``true``, the editor will remove all controls which are not
     mentioned in ``controls`` option.
-    In this example only bold control will be available in control panel:
+    In this example only bold control will be available in control panel::
     
         $("textarea").wysiwyg({
             rmUnusedControls: true,
@@ -227,14 +232,14 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     pairs in the javascript object,
     where the key is the name of the event and the value is javascript function::
 
-		{
-			click: function(event) {
-				if ($("#click-inform:checked").length > 0) {
-					event.preventDefault();
-					alert("You have clicked jWysiwyg content!");
-				}
-			}
-		}
+        {
+            click: function(event) {
+                if ($("#click-inform:checked").length > 0) {
+                    event.preventDefault();
+                    alert("You have clicked jWysiwyg content!");
+                }
+            }
+        }
 
 ``controls``
     A javascript object specifying control buttons and separators to include in
@@ -333,12 +338,11 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
       settings.
 
 
-============================
 Available Built-In Functions
-============================
+----------------------------
 
 Built-in editor functions can be triggered manually with the
-.wysiwyg("functionName"[, arg1[, arg2[, ...]]]) call.
+``.wysiwyg("functionName"[, arg1[, arg2[, ...]]])`` call.
 
 * addControl(name, settings)
 * clear
@@ -352,7 +356,7 @@ Built-in editor functions can be triggered manually with the
 * setContent
 
 For example, if you want to save the content to original textarea, and then
-remove the jWYSIWYG editor to bring original textarea back:
+remove the jWYSIWYG editor to bring original textarea back::
 
     $("#original").wysiwyg("save").wysiwyg("destroy")
 
@@ -374,6 +378,12 @@ When jWYSIWYG is called on a textarea, it does the following things:
 4. When ``saveContent()`` is called, copy its content to existing textarea.
 5. Listen for ``submit`` event of closest form to apply ``saveContent()`` before
    form submition.
+
+============
+Contributing
+============
+
+Read document `_help/docs/contributing.rst <blob/master/_help/docs/contributing.rst>`_
 
 ====================
 Additional Resources
