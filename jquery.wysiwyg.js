@@ -872,13 +872,7 @@
 			 */
 			this.editor.attr("tabindex", $(element).attr("tabindex"));
 
-			this.appendControls();
-			this.element = $("<div/>").addClass("wysiwyg").append(panel)
-				.append($("<div><!-- --></div>")
-				.css({
-					clear: "both"
-				}))
-				.append(this.editor);
+			this.element = $("<div/>").addClass("wysiwyg");
 
 			if (!this.options.iFrameClass) {
 				this.element.css({
@@ -912,6 +906,14 @@
 		this.initFrame = function() {
 			var self = this;
 			var style = "";
+			
+			this.appendControls();
+			this.element.append(this.panel)
+				.append($("<div><!-- --></div>")
+					.css({
+						clear: "both"
+					}))
+				.append(this.editor);
 
 			/**
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
