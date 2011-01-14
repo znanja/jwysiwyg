@@ -743,7 +743,7 @@
 		};
 
 		this.getContent = function() {
-			return $(this.innerDocument()).find("body").html();
+			return $(this.editorDoc.body).html();
 		};
 
 		this.getElementByAttributeValue = function(tagName, attributeName, attributeValue) {
@@ -796,7 +796,7 @@
 
 		// :TODO: you can type long string and letters will be hidden because of overflow
 		this.grow = function() {
-			var innerBody = $(this.innerDocument().body);
+			var innerBody = $(this.editorDoc.body);
 			var innerHeight = $.browser.msie ? innerBody[0].scrollHeight : innerBody.height() + 2 + 20; // 2 - borders, 20 - to prevent content jumping on grow
 
 			var minHeight = this.initialHeight;
@@ -1021,7 +1021,7 @@
 
 			if (this.options.autoGrow) {
 				this.initialHeight = $(this.editorDoc).height();
-				$(this.editorDoc).find("body").css("border", "1px solid white"); // cancel margin collapsing
+				$(this.editorDoc.body).css("border", "1px solid white"); // cancel margin collapsing
 				var growHandler = function() {
 					self.grow();
 				};
@@ -1162,7 +1162,7 @@
 		};
 
 		this.setContent = function(newContent) {
-			$(this.innerDocument()).find("body").html(newContent);
+			$(this.editorDoc.body).html(newContent);
 			return this;
 		};
 
