@@ -619,28 +619,34 @@
 
 		this.designMode = function() {
 			var attempts = 3;
-			var runner;
 			var self = this;
-			var doc	= this.editorDoc;
+			var runner = function(attempts) {
+				if ("on" === self.editorDoc.designMode) {
+					if (self.timers.designMode) {
+						clearTimeout(self.timers.designMode);
+					}
 
-			runner = function() {
-				if (self.innerDocument() !== doc) {
-					self.initFrame();
+					// IE needs to reget the document element (this.editorDoc) after designMode was set
+					if (self.innerDocument() !== self.editorDoc) {
+						self.initFrame();
+					}
+
 					return;
 				}
+
 				try {
-					doc.designMode = "on";
+					self.editorDoc.designMode = "on";
 				}
 				catch(e) {
 				}
+
 				attempts--;
-				if (attempts > 0 && $.browser.mozilla) {
-					self.timers.designMode = setTimeout(runner, 100);
+				if (attempts > 0) {
+					self.timers.designMode = setTimeout(function() { runner(attempts); }, 100);
 				}
 			};
 
-			runner();
-			this.editorDoc_designMode = true;
+			runner(attempts);
 		};
 
 		this.destroy = function() {
@@ -922,7 +928,6 @@
 			}
 
 			this.editorDoc = this.innerDocument();
-			this.editorDoc_designMode = false;
 			this.designMode();
 			this.editorDoc.open();
 			this.editorDoc.write(
