@@ -132,6 +132,9 @@ cursor location in the editor::
         $('#wysiwyg').wysiwyg('insertImage', 'img/hourglass.gif');
     });
 
+.. note::
+
+    Include file wysiwyg.image.js to provide this function
 
 Insert an Image with Attributes
 -------------------------------
@@ -146,6 +149,9 @@ Note that the class attribute is added twice, because the ``class`` DOM
 attribute is recognized on IE but not on Firefox, and the ``className``
 attribute is recognized on Firefox but not on IE.
 
+.. note::
+
+    Include file wysiwyg.image.js to provide this function
 
 ======================
 Advanced Customization
