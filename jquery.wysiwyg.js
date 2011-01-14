@@ -130,8 +130,8 @@
 					else {
 						this.saveContent();
 						$(this.original).css({
-							width:	$(this.element).outerWidth() - 6,
-							height: $(this.element).height() - $(this.panel).height() - 6,
+							width:	this.element.outerWidth() - 6,
+							height: this.element.height() - this.panel.height() - 6,
 							resize: "none"
 						}).show();
 						this.editor.hide();
@@ -388,6 +388,7 @@
 			messages: {
 				nonSelection: "Select the text you wish to link"
 			},
+			panelHtml: '<ul role="menu" class="panel"></ul>',
 			resizeOptions: false,
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
@@ -414,6 +415,7 @@
 		this.element	= null;
 		this.options	= {};
 		this.original	= null;
+		this.panel		= null;
 		this.savedRange	= null;
 		this.timers		= [];
 
@@ -649,16 +651,15 @@
 		};
 
 		this.destroy = function() {
-			var i, $form = $(this.element).closest("form");
+			var i, $form = this.element.closest("form");
 
 			for (i = 0; i < this.timers.length; i++) {
 				clearTimeout(this.timers[i]);
 			}
 			
 			// Remove bindings
-			$form.unbind("submit.wysiwyg", this.autoSaveFunction)
-				.unbind("reset.wysiwyg", this.resetFunction);
-			$(this.element).remove();
+			$form.unbind(".wysiwyg");
+			this.element.remove();
 			$.removeData(this.original, "wysiwyg");
 			$(this.original).show();
 			return this;
@@ -808,14 +809,17 @@
 
 		this.init = function(element, options) {
 			var self = this;
-			this.original = element;
-			var panel = this.panel = $('<ul role="menu" class="panel"></ul>');
 			var $form = $(element).closest("form");
-			var i, newX = element.width || element.clientWidth || 0, newY = element.height || element.clientHeight || 0;
-			this.options = this.extendOptions(options);
+			var i,
+				newX = element.width || element.clientWidth || 0,
+				newY = element.height || element.clientHeight || 0;
+
+			this.options	= this.extendOptions(options);
+			this.original	= element;
+			this.panel		= $(this.options.panelHtml);
 
 			if (this.options.autoload) {
-				if (undefined !== $.wysiwyg.autoload) {
+				if ($.wysiwyg.autoload) {
 					if (this.options.autoload.css) {
 						for (i = 0; i < this.options.autoload.css.length; i++) {
 							$.wysiwyg.autoload.css(this.options.autoload.css[i]);
@@ -905,7 +909,7 @@
 			}
 
 			if (this.options.autoSave) {
-				$form.submit(self.autoSaveFunction);
+				$form.bind("submit.wysiwyg", this.autoSaveFunction);
 			}
 
 			$form.bind("reset.wysiwyg", self.resetFunction);
@@ -1208,7 +1212,7 @@
 				$.extend(true, oWysiwyg.controls, customControl);
 
 				// render new panel
-				oWysiwyg.panel = $('<ul role="menu" class="panel"></ul>');
+				oWysiwyg.panel = $(oWysiwyg.options.panelHtml);
 				oWysiwyg.appendControls();
 				$(".panel", oWysiwyg.element).remove();
 				$(oWysiwyg.element).prepend(oWysiwyg.panel);

@@ -204,6 +204,9 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     * ``nonSelection``: Message to display when the Create Link button is
       pressed with no text selected.
 
+``panelHtml``
+    A string containing the source HTML code
+
 ``resizeOptions``
     A boolean. Depends on **jquery.ui.resizable**. If ``false`` the editor will
     not be resizeable.
