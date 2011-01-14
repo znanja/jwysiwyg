@@ -12,34 +12,38 @@ if (undefined === $.wysiwyg.controls) {
 	$.wysiwyg.controls = {};
 }
 
+var insertTable = function(colCount, rowCount, filler) {
+	if (isNaN(rowCount) || isNaN(colCount) || rowCount === null || colCount === null) {
+		return;
+	}
+	colCount = parseInt(colCount, 10);
+	rowCount = parseInt(rowCount, 10);
+	if (filler === null) {
+		filler = "&nbsp;";
+	}
+	filler = "<td>" + filler + "</td>";
+	var html = ['<table border="1" style="width: 100%;"><tbody>'];
+	for (var i = rowCount; i > 0; i--) {
+		html.push("<tr>");
+		for (var j = colCount; j > 0; j--) {
+			html.push(filler);
+		}
+		html.push("</tr>");
+	}
+	html.push("</tbody></table>");
+	return this.insertHtml(html.join(""));
+};
+
 /*
  * Wysiwyg namespace: public properties and methods
  */
 $.wysiwyg.controls.table = function(Wysiwyg) {
-	Wysiwyg.insertTable = function(colCount, rowCount, filler) {
-		if (isNaN(rowCount) || isNaN(colCount) || rowCount === null || colCount === null) {
-			return;
-		}
-		colCount = parseInt(colCount, 10);
-		rowCount = parseInt(rowCount, 10);
-		if (filler === null) {
-			filler = "&nbsp;";
-		}
-		filler = "<td>" + filler + "</td>";
-		var html = ['<table border="1" style="width: 100%;"><tbody>'];
-		for (var i = rowCount; i > 0; i--) {
-			html.push("<tr>");
-			for (var j = colCount; j > 0; j--) {
-				html.push(filler);
-			}
-			html.push("</tr>");
-		}
-		html.push("</tbody></table>");
-		return this.insertHtml(html.join(""));
-	};
-
 	var self = Wysiwyg;
 	var formTableHtml = '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label><br />Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>';
+	
+	if (!Wysiwyg.insertTable) {
+		Wysiwyg.insertTable = insertTable;
+	}
 
 	if ($.fn.modal) {
 		$.modal(formTableHtml, {
@@ -95,16 +99,22 @@ $.wysiwyg.controls.table = function(Wysiwyg) {
 };
 
 $.wysiwyg.insertTable = function(colCount, rowCount, filler) {
-	var self = this.data("wysiwyg");
+	return this.each(function() {
+		var self = $(this).data("wysiwyg");
+		
+		if (!self.insertTable) {
+			self.insertTable = insertTable;
+		}
 
-	if (!self) {
+		if (!self) {
+			return this;
+		}
+
+		self.insertTable(colCount, rowCount, filler);
+		$(self.editorDoc).trigger("wysiwyg:refresh");
+	
 		return this;
-	}
-
-	self.insertTable(colCount, rowCount, filler);
-	$(self.editorDoc).trigger("wysiwyg:refresh");
-
-	return this;
+	});
 };
 
 })(jQuery);

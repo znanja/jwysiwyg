@@ -84,38 +84,40 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 };
 
 $.wysiwyg.insertImage = function(szURL, attributes) {
-	var self = this.data("wysiwyg");
+	return this.each(function() {
+		var self = $(this).data("wysiwyg");
+		
+		if (!self) {
+			return this;
+		}
 
-	if (!self) {
-		return this;
-	}
-
-	if (!szURL || szURL.length === 0) {
-		return this;
-	}
+		if (!szURL || szURL.length === 0) {
+			return this;
+		}
+		
+		if ($.browser.msie) {
+			self.focus();
+		}
+		if (attributes) {
+			self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
+			var img = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
 	
-	if ($.browser.msie) {
-		self.focus();
-	}
-	if (attributes) {
-		self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
-		var img = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
-
-		if (img) {
-			img.src = szURL;
-
-			for (var attribute in attributes) {
-				img.setAttribute(attribute, attributes[attribute]);
+			if (img) {
+				img.src = szURL;
+	
+				for (var attribute in attributes) {
+					img.setAttribute(attribute, attributes[attribute]);
+				}
 			}
 		}
-	}
-	else {
-		self.editorDoc.execCommand("insertImage", false, szURL);
-	}
-
-	$(self.editorDoc).trigger("wysiwyg:refresh");
-
-	return this;
+		else {
+			self.editorDoc.execCommand("insertImage", false, szURL);
+		}
+	
+		$(self.editorDoc).trigger("wysiwyg:refresh");
+	
+		return this;
+	});
 };
 
 })(jQuery);
