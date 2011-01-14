@@ -27,12 +27,12 @@ $.wysiwyg.autoload = {
 		$.autoload.css(names, this.defaults);
 	},
 
-	control: function(names, success) {
-		$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.controlPath, "success": success});
+	control: function(names, successCallback) {
+		$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.controlPath, "successCallback": successCallback});
 	},
 
-	lang: function(names, success) {
-		$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.i18nPath, "success": success});
+	lang: function(names, successCallback) {
+		$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.i18nPath, "successCallback": successCallback});
 	}
 };
 

@@ -167,23 +167,20 @@
 				groupIndex: 6,
 				visible: true,
 				exec: function() {
-					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.image)) {
-						// if not set try to load
-						if ($.wysiwyg.autoload) {
-							$.wysiwyg.autoload.control("wysiwyg.image.js", {"success": (function(object) {
-									alert("Image control load succesfull. Click again on Insert image");
-//									object.insertImage();
-//									$.wysiwyg.controls.image(object);
-								})(this)
-							});
-							return true;
-						}
-						else {
-							return false;
-						}
-					}
+					var self = this;
 
-					$.wysiwyg.controls.image(this);
+					if ($.wysiwyg.controls && $.wysiwyg.controls.image) {
+						$.wysiwyg.controls.image(this);
+					}
+					else if ($.wysiwyg.autoload) {
+						$.wysiwyg.autoload.control("wysiwyg.image.js", function() {
+								self.controls.insertImage.exec();
+							}
+						);
+					}
+					else {
+						console.error("$.wysiwyg.controls.image not defined. You need to include wysiwyg.image.js file");
+					}
 				},
 				tags: ["img"],
 				tooltip: "Insert image"
@@ -200,22 +197,20 @@
 				groupIndex: 6,
 				visible: true,
 				exec: function() {
-					if ((undefined === $.wysiwyg.controls) || (undefined === $.wysiwyg.controls.table)) {
-						// if not set try to load
-						if ($.wysiwyg.autoload) {
-							$.wysiwyg.autoload.control("wysiwyg.table.js", {"success": (function(object) {
-									alert("Table control load succesfull. Click again on Insert table");
-//									$.wysiwyg.controls.table(object);
-								})(this)
-							});
-							return true;
-						}
-						else {
-							return false;
-						}
-					}
+					var self = this;
 
-					$.wysiwyg.controls.table(this);
+					if ($.wysiwyg.controls && $.wysiwyg.controls.table) {
+						$.wysiwyg.controls.table(this);
+					}
+					else if ($.wysiwyg.autoload) {
+						$.wysiwyg.autoload.control("wysiwyg.table.js", function() {
+								self.controls.insertTable.exec();
+							}
+						);
+					}
+					else {
+						console.error("$.wysiwyg.controls.table not defined. You need to include wysiwyg.table.js file");
+					}
 				},
 				tags: ["table"],
 				tooltip: "Insert table"
@@ -1330,12 +1325,7 @@
 			return $.wysiwyg.init.apply(this, arguments);
 		}
 		else {
-			try {
-				$.error("Method " +  method + " does not exist on jQuery.wysiwyg");
-			}
-			catch(e) {
-				console.error(e);
-			}
+			console.error("Method " +  method + " does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");
 		}
 	};
 })(jQuery);
