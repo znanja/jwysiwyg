@@ -576,16 +576,15 @@
 
 		this.checkTargets = function(element) {
 			var self = this;
-			var el;
-			var checkActiveStatus = function(cssProperty, cssValue) {
-				if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-					$("." + className, self.panel).addClass("active");
-				}
-			};
 
 			$.each(this.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
-				var tags, elm, css;
+				var tags, elm, css, el;
+				var checkActiveStatus = function(cssProperty, cssValue) {
+					if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
+						$("." + className, self.panel).addClass("active");
+					}
+				};
 
 				$("." + className, self.panel).removeClass("active");
 
