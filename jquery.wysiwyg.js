@@ -669,11 +669,11 @@
 		};
 
 		this.documentSelection = function() {
-			if (this.editor.get(0).contentWindow.document.selection) {
-				return this.editor.get(0).contentWindow.document.selection.createRange().text;
+			if (this.editorDoc.getSelection) {
+				return this.editorDoc.getSelection().toString();
 			}
-			else {
-				return this.editor.get(0).contentWindow.getSelection().toString();
+			if (this.editorDoc.selection) {
+				return this.editorDoc.selection().createRange().text;
 			}
 		};
 //not used?
@@ -765,7 +765,6 @@
 			return false;
 		};
 
-//2 times
 		this.getInternalRange = function() {
 			var selection = this.getInternalSelection();
 
@@ -775,11 +774,26 @@
 
 			return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
 		};
-// 2 times
+
 		this.getInternalSelection = function() {
-			return (this.editor.get(0).contentWindow.getSelection) ? this.editor.get(0).contentWindow.getSelection() : this.editor.get(0).contentDocument.selection;
+			if (this.editorDoc.getSelection) {
+				return this.editorDoc.getSelection();
+			}
+			if (this.editorDoc.selection) {
+				return this.editorDoc.selection;
+			}
+			if (this.editor.get(0).contentWindow) {
+				if (this.editor.get(0).contentWindow.getSelection) {
+					return this.editor.get(0).contentWindow.getSelection();
+				}
+				if (this.editor.get(0).contentWindow.selection) {
+					return this.editor.get(0).contentWindow.selection;
+				}
+			}
+
+			return null;
 		};
-// used once in initFrame
+
 		this.getRange = function() {
 			var selection = this.getSelection();
 
@@ -789,7 +803,7 @@
 
 			return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
 		};
-//used once in getRange
+
 		this.getSelection = function() {
 			return (window.getSelection) ? window.getSelection() : document.selection;
 		};
@@ -1047,7 +1061,7 @@
 			});
 
 			// restores selection properly on focus
-			self.editor.blur(function() {
+			$(this.editorDoc).bind("blur.wysiwyg", function() {
 				self.savedRange = self.getInternalRange();
 			});
 
@@ -1070,18 +1084,21 @@
 			var element = this.editor.get(0);
 
 			if (element.nodeName.toLowerCase() === "iframe") {
-				if (element.contentWindow) {
+				if (element.contentDocument) {				// Gecko
+					return element.contentDocument;
+				}
+				else if (element.contentWindow) {			// IE
 					return element.contentWindow.document;
 				}
-				else {
-					return element;
-				}
+
+				console.error("Unexpected error in innerDocument");
 				/*
 				 return ( $.browser.msie )
 				 ? document.frames[element.id].document
 				 : element.contentWindow.document // contentDocument;
 				 */
 			}
+
 			return element;
 		};
 
