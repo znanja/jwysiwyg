@@ -353,6 +353,16 @@ Built-in editor functions can be triggered manually with the
 * document
 * getContent
 * insertHtml(szHTML)
+* insertImage(szURL, attributes)
+    .. note::
+
+        Include file wysiwyg.image.js to provide this function
+
+* insertTable(colCount, rowCount, filler)
+    .. note::
+
+        Include file wysiwyg.table.js to provide this function
+
 * removeFormat
 * save
 * setContent
