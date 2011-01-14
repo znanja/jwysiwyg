@@ -79,6 +79,8 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 			}
 		}
 	}
+
+	$(self.editorDoc).trigger("wysiwyg:refresh");
 };
 
 $.wysiwyg.insertImage = function(szURL, attributes) {
@@ -106,7 +108,9 @@ $.wysiwyg.insertImage = function(szURL, attributes) {
 	else {
 		self.editorDoc.execCommand("insertImage", false, szURL);
 	}
+
 	$(self.editorDoc).trigger("wysiwyg:refresh");
+
 	return this;
 };
 
