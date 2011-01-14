@@ -86,6 +86,10 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 $.wysiwyg.insertImage = function(szURL, attributes) {
 	var self = this.data("wysiwyg");
 
+	if (!self) {
+		return this;
+	}
+
 	if (!szURL || szURL.length === 0) {
 		return this;
 	}

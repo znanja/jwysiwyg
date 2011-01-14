@@ -90,11 +90,20 @@ $.wysiwyg.controls.table = function(Wysiwyg) {
 		var rowCount = prompt("Count of rows", "3");
 		self.insertTable(colCount, rowCount, self.defaults.tableFiller);
 	}
+
+	$(self.editorDoc).trigger("wysiwyg:refresh");
 };
 
 $.wysiwyg.insertTable = function(colCount, rowCount, filler) {
 	var self = this.data("wysiwyg");
+
+	if (!self) {
+		return this;
+	}
+
 	self.insertTable(colCount, rowCount, filler);
+	$(self.editorDoc).trigger("wysiwyg:refresh");
+
 	return this;
 };
 
