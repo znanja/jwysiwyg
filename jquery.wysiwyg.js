@@ -1267,17 +1267,16 @@
 
 		getContent: function() {
 			// no chains because of return
-			var oWysiwyg = this.data("wysiwyg");
+			var oWysiwyg = $(this).data("wysiwyg");
 			return oWysiwyg.getContent();
 		},
 
 		init: function(options) {
 			return this.each(function() {
-				var $this = $(this);
 				var opts = $.extend(true, {}, options);
 				var obj;
 
-				if ($this.data("wysiwyg")) {
+				if ($(this).data("wysiwyg")) {
 					return;
 				}
 
