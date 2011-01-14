@@ -106,6 +106,7 @@ $.wysiwyg.insertImage = function(szURL, attributes) {
 	else {
 		self.editorDoc.execCommand("insertImage", false, szURL);
 	}
+	$(self.editorDoc).trigger("wysiwyg:refresh");
 	return this;
 };
 

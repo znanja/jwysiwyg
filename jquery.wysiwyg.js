@@ -1040,6 +1040,7 @@
 					self.grow();
 				};
 				$(this.editorDoc).keyup(growHandler);
+				$(this.editorDoc).bind("wysiwyg:refresh", growHandler);
 				// fix when content height > textarea height
 				this.grow();
 			}
