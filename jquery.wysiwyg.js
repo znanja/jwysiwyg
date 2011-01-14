@@ -570,6 +570,10 @@
 			return $('<li role="separator" class="separator"></li>').appendTo(this.panel);
 		};
 
+		this.autoSaveFunction = function() {
+			this.saveContent();
+		};
+
 		this.checkTargets = function(element) {
 			var self = this;
 			var el;
@@ -893,15 +897,6 @@
 			this.initialContent = $(element).val();
 			this.initFrame();
 
-			this.autoSaveFunction = function() {
-				self.saveContent();
-			};
-
-			this.resetFunction = function() {
-				self.setContent(self.initialContent);
-				self.saveContent();
-			};
-
 			if (this.options.resizeOptions && $.fn.resizable) {
 				this.element.resizable($.extend(true, {
 					alsoResize: this.editor
@@ -952,7 +947,7 @@
 				}, 0);
 			}
 
-			$(this.editorDoc).click(function(event) {
+			$(this.editorDoc).bind("click.wysiwyg", function(event) {
 				self.checkTargets(event.target ? event.target : event.srcElement);
 			});
 
@@ -966,11 +961,11 @@
 				self.focus();
 			});
 
-			this.emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>/;
 			$(this.editorDoc).keydown(function(event) {
+				var emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>/;
 				if (event.keyCode === 8) { // backspace
 					var content = self.getContent();
-					if (self.emptyContentRegex.test(content)) { // if content is empty
+					if (emptyContentRegex.test(content)) { // if content is empty
 						event.stopPropagation(); // prevent remove single empty tag
 						return false;
 					}
@@ -1137,6 +1132,11 @@
 
 		this.removeHoverClass = function() {
 			$(this).removeClass("wysiwyg-button-hover");
+		};
+
+		this.resetFunction = function() {
+			this.setContent(this.initialContent);
+			this.saveContent();
 		};
 
 		this.saveContent = function() {
