@@ -1384,8 +1384,10 @@
 				if (!data.name) {
 					console.error("Plugin name missing");
 				}
+				
+				var pluginName;
 
-				for (var pluginName in this.list) {
+				for (pluginName in this.list) {
 					if (pluginName === data.name) {
 						console.error("Plugin with this name registered");
 					}
