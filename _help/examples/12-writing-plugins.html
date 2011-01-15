@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Example: Custom controls - jWYSIWYG</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="../../jquery.wysiwyg.css" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../../jquery.wysiwyg.js"></script>
+<script type="text/javascript">
+(function($) {
+	$(document).ready(function() {
+		var MyPluginHello = {
+			name:	"hello",					// required
+
+			world:	function() {
+				alert("Hello world!");
+			},
+
+			methodForRealLife: function() {
+				// standard operations
+				this.each(function() {
+					var Wysiwyg = $(this).data("wysiwyg");
+
+					if (!Wysiwyg) {
+						return this;
+					}
+
+					// Plugin code
+					// Wysiwyg gives access to all methods and properties, also
+					// you can extend base functionality
+					Wysiwyg.newPropertyName = "methodForRealLife";
+					Wysiwyg.newMethodName = function() {
+						this.setContent(this.newPropertyName);
+					};
+
+					Wysiwyg.newMethodName();
+				});
+			}
+		};
+
+		// Register your plugin
+		$.wysiwyg.plugin.register(MyPluginHello);
+
+		$("textarea").wysiwyg();
+
+		$("#pluginButton1").click(function() {
+			// run plugin "hello" with method "world"
+			$("textarea").wysiwyg("hello.world");
+		});
+		
+		$("#pluginButton2").click(function() {
+			// run plugin "hello" with method "methodForRealLife"
+			$("textarea").wysiwyg("hello.methodForRealLife");
+		});
+	});
+})(jQuery);
+</script>
+<style type="text/css">
+textarea { width: 400px; height: 100px; }
+</style>
+</head>
+<body>
+	<h1>jWYSIWYG</h1>
+	<h2>Example: Writing Plugins</h2>
+
+	<input type="button" value="Run hello.world()" id="pluginButton1"/>
+	<input type="button" value="Run hello.methodForRealLife()" id="pluginButton2"/>
+
+	<textarea></textarea>
+
+	<hr/>
+	<a href="index.html">Index</a>
+</body>
+</html>

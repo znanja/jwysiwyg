@@ -28,3 +28,6 @@ Sample
             }
         }
     })(jQuery);
+
+See also `_help/examples/12-writing-plugins.html
+<https://github.com/akzhan/jwysiwyg/blob/master/_help/examples/12-writing-plugins.html>`_

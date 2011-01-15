@@ -1345,6 +1345,58 @@
 			});
 		},
 
+		plugin: {
+			list: {},
+
+			exists: function(name) {
+				if ("string" !== typeof(name)) {
+					return false;
+				}
+				
+				var plugin = this.parseName(name);
+
+				if (!this.list[plugin.name]) {
+					return false;
+				}
+
+				if (!this.list[plugin.name][plugin.method]) {
+					return false;
+				}
+
+				return true;
+			},
+
+			parseName: function(name) {
+				if ("string" !== typeof(name)) {
+					return false;
+				}
+				
+				var elements = name.split(".");
+
+				if (2 > elements.length) {
+					return false;
+				}
+
+				return {name: elements[0], method: elements[1]};
+			},
+			
+			register: function(data) {
+				if (!data.name) {
+					console.error("Plugin name missing");
+				}
+
+				for (var pluginName in this.list) {
+					if (pluginName === data.name) {
+						console.error("Plugin with this name registered");
+					}
+				}
+
+				this.list[data.name] = data;
+
+				return true;
+			}
+		},
+
 		removeFormat: function() {
 			return this.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
@@ -1389,6 +1441,10 @@
 		}
 		else if ("object" === typeof method || !method) {
 			return $.wysiwyg.init.apply(this, arguments);
+		}
+		else if ($.wysiwyg.plugin.exists(method)) {
+			var plugin = $.wysiwyg.plugin.parseName(method);
+			return $.wysiwyg.plugin.list[plugin.name][plugin.method].apply(this, Array.prototype.slice.call(arguments, 1));
 		}
 		else {
 			console.error("Method " +  method + " does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");
