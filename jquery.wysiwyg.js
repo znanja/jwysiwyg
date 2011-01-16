@@ -22,11 +22,10 @@
 (function($) {
 	/* Wysiwyg namespace: private properties and methods */
 
-	var console = (typeof(window.console) !== 'undefined') ? window.console : {
+	var console = window.console ? window.console : {
 		log: $.noop,
-		error: function(msg)
-		{
-			throw msg;
+		error: function(msg) {
+			$.error(msg);
 		}
 	};
 
@@ -1036,11 +1035,14 @@
 			if (this.options.autoGrow) {
 				this.initialHeight = $(this.editorDoc).height();
 				$(this.editorDoc.body).css("border", "1px solid white"); // cancel margin collapsing
+
 				var growHandler = function() {
 					self.grow();
 				};
+
 				$(this.editorDoc).keyup(growHandler);
 				$(this.editorDoc).bind("wysiwyg:refresh", growHandler);
+
 				// fix when content height > textarea height
 				this.grow();
 			}
@@ -1218,8 +1220,16 @@
 		/**
 		 * Custom control support by Alec Gorge ( http://github.com/alecgorge )
 		 */
-		addControl: function(name, settings) {
-			return this.each(function() {
+		addControl: function(object, name, settings) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1238,8 +1248,16 @@
 			});
 		},
 
-		clear: function() {
-			return this.each(function() {
+		clear: function(object) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1253,8 +1271,16 @@
 		
 		console: console, // let our console be available for extensions
 
-		createLink: function(szURL) {
-			return this.each(function() {
+		createLink: function(object, szURL) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1280,8 +1306,16 @@
 			});
 		},
 
-		destroy: function() {
-			return this.each(function() {
+		destroy: function(object) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1292,30 +1326,54 @@
 			});
 		},
 
-		"document": function() {
+		"document": function(object) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
 			// no chains because of return
-			var oWysiwyg = $(this).data("wysiwyg");
+			var oWysiwyg = object.data("wysiwyg");
 
 			if (!oWysiwyg) {
-				return this;
+				return undefined;
 			}
 
 			return $(oWysiwyg.editorDoc);
 		},
 
-		getContent: function() {
+		getContent: function(object) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
 			// no chains because of return
-			var oWysiwyg = $(this).data("wysiwyg");
+			var oWysiwyg = object.data("wysiwyg");
 
 			if (!oWysiwyg) {
-				return this;
+				return undefined;
 			}
 
 			return oWysiwyg.getContent();
 		},
 
-		init: function(options) {
-			return this.each(function() {
+		init: function(object, options) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var opts = $.extend(true, {}, options);
 				var obj;
 
@@ -1333,8 +1391,16 @@
 			});
 		},
 
-		insertHtml: function(szHTML) {
-			return this.each(function() {
+		insertHtml: function(object, szHTML) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1346,8 +1412,6 @@
 		},
 
 		plugin: {
-			list: {},
-
 			exists: function(name) {
 				if ("string" !== typeof(name)) {
 					return false;
@@ -1355,11 +1419,11 @@
 				
 				var plugin = this.parseName(name);
 
-				if (!this.list[plugin.name]) {
+				if (!$.wysiwyg[plugin.name]) {
 					return false;
 				}
 
-				if (!this.list[plugin.name][plugin.method]) {
+				if (!$.wysiwyg[plugin.name][plugin.method]) {
 					return false;
 				}
 
@@ -1387,20 +1451,30 @@
 				
 				var pluginName;
 
-				for (pluginName in this.list) {
+				for (pluginName in $.wysiwyg) {
 					if (pluginName === data.name) {
 						console.error("Plugin with this name registered");
 					}
 				}
 
-				this.list[data.name] = data;
+				$.wysiwyg[data.name] = data;
 
 				return true;
 			}
 		},
 
-		removeFormat: function() {
-			return this.each(function() {
+		removeFormat: function(object) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+			console.log("this", object, object.context, typeof(object));
+			console.log("$this", $(object), $(object).context, typeof($(object)));
+			console.log("object", object, (object) ? object.context : "object undef", typeof(object));
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1411,8 +1485,16 @@
 			});
 		},
 
-		save: function() {
-			return this.each(function() {
+		save: function(object) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1423,8 +1505,16 @@
 			});
 		},
 
-		setContent: function(newContent) {
-			return this.each(function() {
+		setContent: function(object, newContent) {
+			if ("object" !== typeof(object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
 				if (!oWysiwyg) {
@@ -1439,14 +1529,18 @@
 
 	$.fn.wysiwyg = function(method) {
 		if ("undefined" !== typeof $.wysiwyg[method]) {
+			// set argument object to undefined
+			arguments = Array.prototype.concat.call([arguments[0]], [undefined], Array.prototype.slice.call(arguments, 1));
 			return $.wysiwyg[method].apply(this, Array.prototype.slice.call(arguments, 1));
 		}
 		else if ("object" === typeof method || !method) {
+			Array.prototype.unshift.call(arguments, undefined);
 			return $.wysiwyg.init.apply(this, arguments);
 		}
 		else if ($.wysiwyg.plugin.exists(method)) {
 			var plugin = $.wysiwyg.plugin.parseName(method);
-			return $.wysiwyg.plugin.list[plugin.name][plugin.method].apply(this, Array.prototype.slice.call(arguments, 1));
+			arguments = Array.prototype.concat.call([arguments[0]], [undefined], Array.prototype.slice.call(arguments, 1));
+			return $.wysiwyg[plugin.name][plugin.method].apply(this, Array.prototype.slice.call(arguments, 1));
 		}
 		else {
 			console.error("Method " +  method + " does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");

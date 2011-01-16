@@ -400,6 +400,13 @@ When jWYSIWYG is called on a textarea, it does the following things:
 5. Listen for ``submit`` event of closest form to apply ``saveContent()`` before
    form submition.
 
+=======
+Plugins
+=======
+
+Read document `_help/docs/plugins.rst
+<https://github.com/akzhan/jwysiwyg/blob/master/_help/docs/plugins.rst>`_
+
 ============
 Contributing
 ============

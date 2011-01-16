@@ -10,15 +10,24 @@
 (function($) {
 	$(document).ready(function() {
 		var MyPluginHello = {
-			name:	"hello",					// required
+			// required
+			name:	"hello",
 
 			world:	function() {
 				alert("Hello world!");
 			},
 
-			methodForRealLife: function() {
+			methodForRealLife: function(object, text) {
 				// standard operations
-				this.each(function() {
+				if ("object" !== typeof(object) || !object.context) {
+					object = this;
+				}
+
+				if (!object.each) {
+					console.error("Something goes wrong, check object");
+				}
+
+				return object.each(function() {
 					var Wysiwyg = $(this).data("wysiwyg");
 
 					if (!Wysiwyg) {
@@ -30,7 +39,7 @@
 					// you can extend base functionality
 					Wysiwyg.newPropertyName = "methodForRealLife";
 					Wysiwyg.newMethodName = function() {
-						this.setContent(this.newPropertyName);
+						this.setContent(this.newPropertyName + "<br>" + text);
 					};
 
 					Wysiwyg.newMethodName();
@@ -47,10 +56,20 @@
 			// run plugin "hello" with method "world"
 			$("textarea").wysiwyg("hello.world");
 		});
-		
+
 		$("#pluginButton2").click(function() {
+			// another way to run plugin "hello" with method "world"
+			$.wysiwyg.hello.world($("textarea"));
+		});
+
+		$("#pluginButton3").click(function() {
 			// run plugin "hello" with method "methodForRealLife"
-			$("textarea").wysiwyg("hello.methodForRealLife");
+			$("textarea").wysiwyg("hello.methodForRealLife", "Argument Text 1");
+		});
+
+		$("#pluginButton4").click(function() {
+			// another way to run plugin "hello" with method "methodForRealLife"
+			$.wysiwyg.hello.methodForRealLife($("textarea"), "Argument Text 2");
 		});
 	});
 })(jQuery);
@@ -64,9 +83,16 @@ textarea { width: 400px; height: 100px; }
 	<h2>Example: Writing Plugins</h2>
 
 	<input type="button" value="Run hello.world()" id="pluginButton1"/>
-	<input type="button" value="Run hello.methodForRealLife()" id="pluginButton2"/>
+	<input type="button" value="Run hello.world()" id="pluginButton2"/>
+	<input type="button" value="Run hello.methodForRealLife()" id="pluginButton3"/>
+	<input type="button" value="Run hello.methodForRealLife()" id="pluginButton4"/>
 
-	<textarea></textarea>
+	<table>
+		<tr>
+			<td><textarea></textarea></td>
+			<td><textarea></textarea></td>
+		</tr>
+	</table>
 
 	<hr/>
 	<a href="index.html">Index</a>
