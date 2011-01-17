@@ -8,7 +8,7 @@ if (undefined === $.wysiwyg) {
 	throw "wysiwyg.image.js depends on $.wysiwyg";
 }
 
-if (undefined === $.wysiwyg.controls) {
+if (!$.wysiwyg.controls) {
 	$.wysiwyg.controls = {};
 }
 

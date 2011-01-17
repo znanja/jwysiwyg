@@ -15,7 +15,9 @@ if (undefined === $.autoload) {
 /*
  * Wysiwyg namespace: public properties and methods
  */
-$.wysiwyg.autoload = {
+var autoload = {
+	name: "autoload",
+	version: "",
 	defaults: {
 		baseFile:		"jquery.wysiwyg.js",
 		cssPath:		"",
@@ -35,5 +37,7 @@ $.wysiwyg.autoload = {
 		$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.i18nPath, "successCallback": successCallback});
 	}
 };
+
+$.wysiwyg.plugin.register(autoload);
 
 })(jQuery);

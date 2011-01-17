@@ -11,16 +11,18 @@ if (undefined === $.wysiwyg) {
 /*
  * Wysiwyg namespace: public properties and methods
  */
-$.wysiwyg.i18n = {
+var i18n = {
+	name: "i18n",
+	version: "",
 	defaults: {
-		lang: "en", // change to your language
-		wysiwygLang: "en" // default WYSIWYG language
+		lang: "en",			// change to your language by passing lang option
+		wysiwygLang: "en"	// default WYSIWYG language
 	},
 	lang: {},
 	options: {},
 
 	init: function(Wysiwyg, lang) {
-		if (undefined === lang) {
+		if (!lang) {
 			lang = this.defaults.lang;
 		}
 
@@ -40,7 +42,7 @@ $.wysiwyg.i18n = {
 	},
 
 	t: function(phrase, lang) {
-		if (undefined === lang) {
+		if (!lang) {
 			lang = this.options.lang;
 		}
 
@@ -51,5 +53,7 @@ $.wysiwyg.i18n = {
 		return phrase;
 	}
 };
+
+$.wysiwyg.plugin.register(i18n);
 
 })(jQuery);
