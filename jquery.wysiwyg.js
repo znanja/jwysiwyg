@@ -424,9 +424,8 @@
 
 		this.appendControls = function() {
 			var controls = this.parseControls();
-			var currentGroupIndex	= 0;
-			var hasVisibleControls = true; // to prevent separator before first item
-			var i, controlName, control; // jslint wants all vars at top of function
+			var hasVisibleControls	= true; // to prevent separator before first item
+			var i, controlName, control, currentGroupIndex; // jslint wants all vars at top of function
 			var groups = [];
 			var controlsByGroup = {};
 
@@ -450,6 +449,11 @@
 			});
 
 			groups.sort(function (a, b) { return (a - b); });
+
+			if (0 < groups.length) {
+				// set to first index in groups to proper placement of separator
+				currentGroupIndex = groups[0];
+			}
 
 			for (i = 0; i < groups.length; i++) {
 				for (controlName in controlsByGroup[groups[i]]) {
@@ -1467,9 +1471,7 @@
 			if ("object" !== typeof(object) || !object.context) {
 				object = this;
 			}
-			console.log("this", object, object.context, typeof(object));
-			console.log("$this", $(object), $(object).context, typeof($(object)));
-			console.log("object", object, (object) ? object.context : "object undef", typeof(object));
+
 			if (!object.each) {
 				console.error("Something goes wrong, check object");
 			}
