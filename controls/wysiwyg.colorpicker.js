@@ -46,10 +46,6 @@ $.wysiwyg.controls.colorpicker = {
 		var self = this;
 		var colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>Colorpicker</legend><ul class="palette"></ul><label>Color: <input type="text" name="color" value="#123456"/></label><div class="wheel"></div><input type="submit" class="button" value="Apply"/> <input type="reset" value="Cancel"/></fieldset></form>';
 	
-		if (!Wysiwyg.color) {
-			
-		}
-	
 		if ($.modal) {
 			var elements = $(colorpickerHtml);
 	

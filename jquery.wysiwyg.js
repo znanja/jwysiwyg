@@ -1191,11 +1191,7 @@
 		};
 
 		this.triggerCallback = function(name) {
-			$(window).trigger("trigger-" + name + ".wysiwyg", [
-				this.getInternalRange(),
-				this,
-				this.getInternalSelection()
-			]);
+			$(window).trigger("trigger-" + name + ".wysiwyg", [this]);
 			$(".custom-command-" + name, this.panel).blur();
 			this.focusEditor();
 		};
