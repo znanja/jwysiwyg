@@ -582,10 +582,18 @@
 
 			$.each(this.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
-				var tags, elm, css, el;
+				var tags, elm, css, el, handler;
 				var checkActiveStatus = function(cssProperty, cssValue) {
-					if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-						$("." + className, self.panel).addClass("active");
+					if ("function" === typeof(cssValue)) {
+						var handler = cssValue;
+						if (handler(el.css(cssProperty).toString().toLowerCase(), self)) {
+							$("." + className, self.panel).addClass("active");
+						}
+					}
+					else {
+						if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
+							$("." + className, self.panel).addClass("active");
+						}
 					}
 				};
 

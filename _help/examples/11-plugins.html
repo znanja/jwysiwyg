@@ -28,6 +28,17 @@
 					colorpicker: {
 						groupIndex: 11,
 						visible: true,
+						css: {
+							"color": function(cssValue, Wysiwyg) {
+								var defaultTextareaColor = Wysiwyg.editor.css("color");
+
+								if (cssValue !== defaultTextareaColor) {
+									return true;
+								}
+
+								return false;
+							}
+						},
 						exec: function() {
 							if ($.wysiwyg.controls.colorpicker) {
 								$.wysiwyg.controls.colorpicker.init(this);
