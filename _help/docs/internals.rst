@@ -34,20 +34,43 @@ element
 original
     textarea element provided by $("textarea").wysiwyg()
 
-panel
+ui
+    UI related properties and methods
+
+ui.panel
     jQuery("<ul class="panel">") object
+
+ui.self
+    link to parent object (Wysiwyg)
 
 Methods
 -------
+
+init
+    create new instance of Wysiwyg object
 
 TODO
 
 $.wysiwyg object
 ================
 
-TODO
+Defines several methods::
+
+    $.wysiwyg.methodName($(selector), args)
+    $.wysiwyg.pluginName.methodName($(selector), args)
+
+Also provides method to register your own plugins::
+
+    $.wysiwyg.plugin.register(YourPlugin)
+
+To learn more about plugins read `_help/docs/plugins.rst <plugins.rst>`_
 
 $.fn.wysiwyg object
 ===================
 
-TODO
+Provides method to wrap around $.wysiwyg object, that provide ability to call
+its methods in another way::
+
+    $(selector).wysiwyg("methodName", args)
+    $(selector).wysiwyg("pluginName.methodName", args)
+

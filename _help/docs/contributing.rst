@@ -32,4 +32,5 @@ Read document `_help/docs/plugins.rst <plugins.rst>`_
 UML scheme
 ----------
 
-Read document `_help/docs/get_dia.rst <get_dia.rst>`_
+Read document `_help/docs/get_dia.rst <get_dia.rst>`_ and take a look at picture
+`_help/docs/scheme.png <scheme.png>`_
