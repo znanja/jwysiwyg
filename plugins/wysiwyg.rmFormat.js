@@ -14,19 +14,35 @@ if (undefined === $.wysiwyg) {
 var rmFormat = {
 	name: "rmFormat",
 	version: "",
-	defaults: {},
+	defaults: {
+		rules: {
+			heading: true,
+			table: true
+		}
+	},
 	options: {},
 	enabled: false,
 	debug:	false,
 
 	domRemove: function(node) {
 		// replace h1-h6 with p
-		if (node.nodeName.toLowerCase().match(/^h[1-6]$/)) {
-			$(node).replaceWith($('<p/>').html($(node).contents()));
-			
-			return true;
+		if (this.defaults.rules.heading) {
+			if (node.nodeName.toLowerCase().match(/^h[1-6]$/)) {
+				$(node).replaceWith($('<p/>').html($(node).contents()));
+
+				return true;
+			}
 		}
-	
+
+		// remove tables not smart enough )
+		if (this.defaults.rules.table) {
+			if (node.nodeName.toLowerCase().match(/^(table|t[dhr]|t(body|foot|head))$/)) {
+				$(node).replaceWith($(node).contents());
+
+				return true;
+			}
+		}
+
 		return false;
 	},
 
