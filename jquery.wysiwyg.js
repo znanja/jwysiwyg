@@ -1172,6 +1172,11 @@
 //			this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
 			this.editorDoc.execCommand("removeFormat", false, null);
 			this.editorDoc.execCommand("unlink", false, null);
+			
+			if ($.wysiwyg.rmFormat && $.wysiwyg.rmFormat.enabled) {
+				$.wysiwyg.rmFormat.run(this);
+			}
+
 			return this;
 		};
 

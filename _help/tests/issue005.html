@@ -7,6 +7,7 @@
 <script type="text/javascript" src="../lib/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="../../jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="../../controls/wysiwyg.table.js"></script>
+<script type="text/javascript" src="../../plugins/wysiwyg.rmFormat.js"></script>
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
@@ -50,8 +51,13 @@
 		};
 
 		$("#buttonRun").click(function() {
-			$.wysiwyg.removeFormat($("textarea:first"));
-			$.wysiwyg.removeFormat2($("textarea:last"));
+			$.wysiwyg.removeFormat($("textarea.first"));
+
+			$.wysiwyg.removeFormat2($("textarea.second"));
+
+			$.wysiwyg.rmFormat.enabled = true;
+			$.wysiwyg.removeFormat($("textarea.third"));
+			$.wysiwyg.rmFormat.enabled = false;
 		});
 	});
 })(jQuery);
@@ -90,10 +96,12 @@ dt { font-weight: bold; }
 
 	<table>
 		<tr>
-			<td><textarea>&lt;h2>H2 heading&lt;/h2>
-					&lt;table border="1">&lt;tr>&lt;td>Text&lt;/td>&lt;td>Text&lt;/td>&lt;/tr>&lt;/table></textarea></td>
-			<td><textarea>&lt;h2>H2 heading&lt;/h2>
-					&lt;table border="1">&lt;tr>&lt;td>Text&lt;/td>&lt;td>Text&lt;/td>&lt;/tr>&lt;/table></textarea></td>
+			<td><textarea class="first">&lt;h2>H2 heading&lt;/h2>
+					&lt;table border="1">&lt;tr>&lt;td>Text&lt;/td>&lt;td>Text&lt;/td>&lt;/tr>&lt;/table>&lt;p>Text</p></textarea></td>
+			<td><textarea class="second">&lt;h2>H2 heading&lt;/h2>
+					&lt;table border="1">&lt;tr>&lt;td>Text&lt;/td>&lt;td>Text&lt;/td>&lt;/tr>&lt;/table>&lt;p>Text</p></textarea></td>
+			<td><textarea class="third">&lt;h2>H2 heading&lt;/h2>
+					&lt;table border="1">&lt;tr>&lt;td>Text&lt;/td>&lt;td>Text&lt;/td>&lt;/tr>&lt;/table>&lt;p>Text</p></textarea></td>
 		</tr>
 	</table>
 
