@@ -69,7 +69,7 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 	}
 	else {
 		if ($.browser.msie) {
-			self.focus();
+			self.ui.focus();
 			self.editorDoc.execCommand("insertImage", true, null);
 		}
 		else {
@@ -96,7 +96,7 @@ $.wysiwyg.insertImage = function(szURL, attributes) {
 		}
 		
 		if ($.browser.msie) {
-			self.focus();
+			self.ui.focus();
 		}
 		if (attributes) {
 			self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");

@@ -55,7 +55,7 @@
 
 					if (selection && selection.length > 0) {
 						if ($.browser.msie) {
-							this.focus();
+							this.ui.focus();
 							this.editorDoc.execCommand("createLink", true, null);
 						}
 						else {
@@ -130,7 +130,7 @@
 						this.saveContent();
 						$(this.original).css({
 							width:	this.element.outerWidth() - 6,
-							height: this.element.height() - this.panel.height() - 6,
+							height: this.element.height() - this.ui.panel.height() - 6,
 							resize: "none"
 						}).show();
 						this.editor.hide();
@@ -414,16 +414,20 @@
 		this.element	= null;
 		this.options	= {};
 		this.original	= null;
-		this.panel		= null;
 		this.savedRange	= null;
 		this.timers		= [];
+		this.ui			= {};	// UI related properties and methods
+		this.ui.self	= this;
+		this.ui.panel	= null;
+		this.ui.initialHeight = null; // ui.grow
 
-		this.addHoverClass = function() {
+		this.ui.addHoverClass = function() {
 			$(this).addClass("wysiwyg-button-hover");
 		};
 
-		this.appendControls = function() {
-			var controls = this.parseControls();
+		this.ui.appendControls = function() {
+			var self = this.self;
+			var controls = self.parseControls();
 			var hasVisibleControls	= true; // to prevent separator before first item
 			var i, controlName, control, currentGroupIndex; // jslint wants all vars at top of function
 			var groups = [];
@@ -494,8 +498,8 @@
 			}
 		};
 
-		this.appendMenu = function(cmd, args, className, fn, tooltip) {
-			var self = this;
+		this.ui.appendMenu = function(cmd, args, className, fn, tooltip) {
+			var self = this.self;
 			args = args || [];
 
 			return $('<li role="menuitem" unselectable="on">' + (className || cmd) + "</li>")
@@ -507,8 +511,8 @@
 						fn.apply(self);
 					}
 					else {
-						self.focus();
-						self.withoutCss();
+						self.ui.focus();
+						self.ui.withoutCss();
 						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
 						// in Firefox untrusted JavaScript is not allowed to access the clipboard
 						try {
@@ -522,13 +526,13 @@
 						self.saveContent();
 					}
 					this.blur();
-					self.focusEditor();
+					self.ui.focusEditor();
 				})
-				.appendTo(this.panel);
+				.appendTo(self.ui.panel);
 		};
 
-		this.appendMenuCustom = function(name, control) {
-			var self = this;
+		this.ui.appendMenuCustom = function(name, control) {
+			var self = this.self;
 
 			if (control.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
@@ -545,8 +549,8 @@
 						control.exec.apply(self);
 					}
 					else {
-						self.focus();
-						self.withoutCss();
+						self.ui.focus();
+						self.ui.withoutCss();
 						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
 						// in Firefox untrusted JavaScript is not allowed to access the clipboard
 						try {
@@ -563,41 +567,42 @@
 						self.saveContent();
 					}
 					this.blur();
-					self.focusEditor();
+					self.ui.focusEditor();
 					self.triggerCallback(name);
 				})
-				.appendTo(this.panel);
+				.appendTo(self.ui.panel);
 		};
 
-		this.appendMenuSeparator = function() {
-			return $('<li role="separator" class="separator"></li>').appendTo(this.panel);
+		this.ui.appendMenuSeparator = function() {
+			var self = this.self;
+			return $('<li role="separator" class="separator"></li>').appendTo(self.ui.panel);
 		};
 
 		this.autoSaveFunction = function() {
 			this.saveContent();
 		};
 
-		this.checkTargets = function(element) {
-			var self = this;
+		this.ui.checkTargets = function(element) {
+			var self = this.self;
 
-			$.each(this.options.controls, function(name, control) {
+			$.each(self.options.controls, function(name, control) {
 				var className = control.className || control.command || name || "empty";
 				var tags, elm, css, el, handler;
 				var checkActiveStatus = function(cssProperty, cssValue) {
 					if ("function" === typeof(cssValue)) {
 						var handler = cssValue;
 						if (handler(el.css(cssProperty).toString().toLowerCase(), self)) {
-							$("." + className, self.panel).addClass("active");
+							$("." + className, self.ui.panel).addClass("active");
 						}
 					}
 					else {
 						if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-							$("." + className, self.panel).addClass("active");
+							$("." + className, self.ui.panel).addClass("active");
 						}
 					}
 				};
 
-				$("." + className, self.panel).removeClass("active");
+				$("." + className, self.ui.panel).removeClass("active");
 
 				if (control.tags || (control.options && control.options.tags)) {
 					tags = control.tags || (control.options && control.options.tags);
@@ -609,7 +614,7 @@
 						}
 
 						if ($.inArray(elm.tagName.toLowerCase(), tags) !== -1) {
-							$("." + className, self.panel).addClass("active");
+							$("." + className, self.ui.panel).addClass("active");
 						}
 
 						elm = elm.parentNode;
@@ -632,9 +637,9 @@
 			});
 		};
 
-		this.designMode = function() {
+		this.ui.designMode = function() {
 			var attempts = 3;
-			var self = this;
+			var self = this.self;
 			var runner = function(attempts) {
 				if ("on" === self.editorDoc.designMode) {
 					if (self.timers.designMode) {
@@ -643,7 +648,7 @@
 
 					// IE needs to reget the document element (this.editorDoc) after designMode was set
 					if (self.innerDocument() !== self.editorDoc) {
-						self.initFrame();
+						self.ui.initFrame();
 					}
 
 					return;
@@ -725,30 +730,34 @@
 			return options;
 		};
 
-		this.focus = function() {
-			this.editor.get(0).contentWindow.focus();
-			return this;
+		this.ui.focus = function() {
+			var self = this.self;
+
+			self.editor.get(0).contentWindow.focus();
+			return self;
 		};
 
-		this.focusEditor = function() {
-			if (this.savedRange !== null) {
+		this.ui.focusEditor = function() {
+			var self = this.self;
+
+			if (self.savedRange !== null) {
 				if (window.getSelection) { //non IE and there is already a selection
 					var s = window.getSelection();
 					if (s.rangeCount > 0) {
 						s.removeAllRanges();
 					}
 					try {
-						s.addRange(this.savedRange);
+						s.addRange(self.savedRange);
 					}
 					catch(e) {
 						console.error(e);
 					}
 				}
 				else if (document.createRange) { //non IE and no selection
-					window.getSelection().addRange(this.savedRange);
+					window.getSelection().addRange(self.savedRange);
 				}
 				else if (document.selection) { //IE
-					this.savedRange.select();
+					self.savedRange.select();
 				}
 			}
 		};
@@ -820,19 +829,21 @@
 		};
 
 		// :TODO: you can type long string and letters will be hidden because of overflow
-		this.grow = function() {
-			var innerBody = $(this.editorDoc.body);
+		this.ui.grow = function() {
+			var self = this.self;
+			var innerBody = $(self.editorDoc.body);
 			var innerHeight = $.browser.msie ? innerBody[0].scrollHeight : innerBody.height() + 2 + 20; // 2 - borders, 20 - to prevent content jumping on grow
 
-			var minHeight = this.initialHeight;
+			var minHeight = self.ui.initialHeight;
 			var height = Math.max(innerHeight, minHeight);
-			height = Math.min(height, this.options.maxHeight);
+			height = Math.min(height, self.options.maxHeight);
 
-			this.editor.attr("scrolling", height < this.options.maxHeight ? "no" : "auto"); // hide scrollbar firefox
-			innerBody.css("overflow", height < this.options.maxHeight ? "hidden" : ""); // hide scrollbar chrome
+			self.editor.attr("scrolling", height < self.options.maxHeight ? "no" : "auto"); // hide scrollbar firefox
+			innerBody.css("overflow", height < self.options.maxHeight ? "hidden" : ""); // hide scrollbar chrome
 
-			this.editor.get(0).height = height;
-			return this;
+			self.editor.get(0).height = height;
+
+			return self;
 		};
 
 		this.init = function(element, options) {
@@ -844,7 +855,7 @@
 
 			this.options	= this.extendOptions(options);
 			this.original	= element;
-			this.panel		= $(this.options.panelHtml);
+			this.ui.panel	= $(this.options.panelHtml);
 
 			if (this.options.autoload) {
 				if ($.wysiwyg.autoload) {
@@ -913,7 +924,7 @@
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=52
 			 */
 			this.initialContent = $(element).val();
-			this.initFrame();
+			this.ui.initFrame();
 
 			if (this.options.resizeOptions && $.fn.resizable) {
 				this.element.resizable($.extend(true, {
@@ -928,30 +939,30 @@
 			$form.bind("reset.wysiwyg", self.resetFunction);
 		};
 
-		this.initFrame = function() {
-			var self = this;
+		this.ui.initFrame = function() {
+			var self = this.self;
 			var style = "";
-			
-			this.appendControls();
-			this.element.append(this.panel)
+
+			self.ui.appendControls();
+			self.element.append(self.ui.panel)
 				.append($("<div><!-- --></div>")
 					.css({
 						clear: "both"
 					}))
-				.append(this.editor);
+				.append(self.editor);
 
 			/**
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
 			 */
-			if (this.options.css && this.options.css.constructor === String) {
-				style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '"/>';
+			if (self.options.css && self.options.css.constructor === String) {
+				style = '<link rel="stylesheet" type="text/css" media="screen" href="' + self.options.css + '"/>';
 			}
 
-			this.editorDoc = this.innerDocument();
-			this.designMode();
-			this.editorDoc.open();
-			this.editorDoc.write(
-				this.options.html
+			self.editorDoc = self.innerDocument();
+			self.ui.designMode();
+			self.editorDoc.open();
+			self.editorDoc.write(
+				self.options.html
 				/**
 				 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=144
 				 */
@@ -962,32 +973,32 @@
 					return style;
 				})
 			);
-			this.editorDoc.close();
+			self.editorDoc.close();
 
 			if ($.browser.msie) {
 				/**
 				 * Remove the horrible border it has on IE.
 				 */
-				this.timers.initFrame_IeBorder = setTimeout(function() {
+				self.timers.initFrame_IeBorder = setTimeout(function() {
 					$(self.editorDoc.body).css("border", "none");
 				}, 0);
 			}
 
-			$(this.editorDoc).bind("click.wysiwyg", function(event) {
-				self.checkTargets(event.target ? event.target : event.srcElement);
+			$(self.editorDoc).bind("click.wysiwyg", function(event) {
+				self.ui.checkTargets(event.target ? event.target : event.srcElement);
 			});
 
 			/**
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			 */
-			$(this.original).focus(function() {
+			$(self.original).focus(function() {
 				if ($(this).filter(":visible")) {
 					return;
 				}
-				self.focus();
+				self.ui.focus();
 			});
 
-			$(this.editorDoc).keydown(function(event) {
+			$(self.editorDoc).keydown(function(event) {
 				var emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>/;
 				if (event.keyCode === 8) { // backspace
 					var content = self.getContent();
@@ -1000,7 +1011,7 @@
 			});
 
 			if (!$.browser.msie) {
-				$(this.editorDoc).keydown(function(event) {
+				$(self.editorDoc).keydown(function(event) {
 					/* Meta for Macs. tom@punkave.com */
 					if (event.ctrlKey || event.metaKey) {
 						switch (event.keyCode) {
@@ -1021,8 +1032,8 @@
 					return true;
 				});
 			}
-			else if (this.options.brIE) {
-				$(this.editorDoc).keydown(function(event) {
+			else if (self.options.brIE) {
+				$(self.editorDoc).keydown(function(event) {
 					if (event.keyCode === 13) {
 						var rng = self.getRange();
 						rng.pasteHTML("<br/>");
@@ -1034,55 +1045,55 @@
 				});
 			}
 
-			if (this.options.autoSave) {
+			if (self.options.autoSave) {
 				/**
 				 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=11
 				 */
 				var handler = function() {
 					self.saveContent();
 				};
-				$(this.editorDoc).keydown(handler).keyup(handler).mousedown(handler).bind($.support.noCloneEvent ? "input.wysiwyg" : "paste.wysiwyg", handler);
+				$(self.editorDoc).keydown(handler).keyup(handler).mousedown(handler).bind($.support.noCloneEvent ? "input.wysiwyg" : "paste.wysiwyg", handler);
 			}
 
-			if (this.options.autoGrow) {
-				this.initialHeight = $(this.editorDoc).height();
-				$(this.editorDoc.body).css("border", "1px solid white"); // cancel margin collapsing
+			if (self.options.autoGrow) {
+				self.ui.initialHeight = $(self.editorDoc).height();
+				$(self.editorDoc.body).css("border", "1px solid white"); // cancel margin collapsing
 
 				var growHandler = function() {
-					self.grow();
+					self.ui.grow();
 				};
 
-				$(this.editorDoc).keyup(growHandler);
-				$(this.editorDoc).bind("wysiwyg:refresh", growHandler);
+				$(self.editorDoc).keyup(growHandler);
+				$(self.editorDoc).bind("wysiwyg:refresh", growHandler);
 
 				// fix when content height > textarea height
-				this.grow();
+				self.ui.grow();
 			}
 
-			if (this.options.css) {
-				this.timers.initFrame_Css = setTimeout(function() {
+			if (self.options.css) {
+				self.timers.initFrame_Css = setTimeout(function() {
 					if (self.options.css.constructor !== String) {
 						$(self.editorDoc).find("body").css(self.options.css);
 					}
 				}, 0);
 			}
 
-			if (this.initialContent.length === 0) {
-				this.setContent(this.options.initialContent);
+			if (self.initialContent.length === 0) {
+				self.setContent(self.options.initialContent);
 			}
 
-			$.each(this.options.events, function(key, handler) {
+			$.each(self.options.events, function(key, handler) {
 				$(self.editorDoc).bind(key + ".wysiwyg", handler);
 			});
 
 			// restores selection properly on focus
-			$(this.editorDoc).bind("blur.wysiwyg", function() {
+			$(self.editorDoc).bind("blur.wysiwyg", function() {
 				self.savedRange = self.getInternalRange();
 			});
 
-			$(this.editorDoc.body).addClass("wysiwyg");
-			if (this.options.events && this.options.events.save) {
-				var saveHandler = this.options.events.save;
+			$(self.editorDoc.body).addClass("wysiwyg");
+			if (self.options.events && self.options.events.save) {
+				var saveHandler = self.options.events.save;
 				$(self.editorDoc).bind("keyup.wysiwyg", saveHandler);
 				$(self.editorDoc).bind("change.wysiwyg",saveHandler);
 				if ($.support.noCloneEvent) {
@@ -1123,7 +1134,7 @@
 			}
 			
 			if ($.browser.msie) {
-				this.focus();
+				this.ui.focus();
 				this.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
 				var img = this.getElementByAttributeValue("img", "src", "#jwysiwyg#");
 				if (img) {
@@ -1154,7 +1165,7 @@
 
 		this.removeFormat = function() {
 			if ($.browser.msie) {
-				this.focus();
+				this.ui.focus();
 			}
 
 //			this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
@@ -1163,7 +1174,7 @@
 			return this;
 		};
 
-		this.removeHoverClass = function() {
+		this.ui.removeHoverClass = function() {
 			$(this).removeClass("wysiwyg-button-hover");
 		};
 
@@ -1200,24 +1211,27 @@
 
 		this.triggerCallback = function(name) {
 			$(window).trigger("trigger-" + name + ".wysiwyg", [this]);
-			$(".custom-command-" + name, this.panel).blur();
-			this.focusEditor();
+			$(".custom-command-" + name, this.ui.panel).blur();
+			this.ui.focusEditor();
 		};
 
-		this.withoutCss = function() {
+		this.ui.withoutCss = function() {
+			var self = this.self;
+
 			if ($.browser.mozilla) {
 				try {
-					this.editorDoc.execCommand("styleWithCSS", false, false);
+					self.editorDoc.execCommand("styleWithCSS", false, false);
 				}
 				catch(e) {
 					try {
-						this.editorDoc.execCommand("useCSS", false, true);
+						self.editorDoc.execCommand("useCSS", false, true);
 					}
 					catch(e2) {
 					}
 				}
 			}
-			return this;
+
+			return self;
 		};
 	}
 
@@ -1249,10 +1263,10 @@
 				$.extend(true, oWysiwyg.controls, customControl);
 
 				// render new panel
-				oWysiwyg.panel = $(oWysiwyg.options.panelHtml);
-				oWysiwyg.appendControls();
-				$(".panel", oWysiwyg.element).remove();
-				$(oWysiwyg.element).prepend(oWysiwyg.panel);
+				oWysiwyg.ui.panel.remove();
+				oWysiwyg.ui.panel = $(oWysiwyg.options.panelHtml);
+				oWysiwyg.ui.appendControls();
+				$(oWysiwyg.element).prepend(oWysiwyg.ui.panel);
 			});
 		},
 
@@ -1303,7 +1317,7 @@
 	
 				if (selection && selection.length > 0) {
 					if ($.browser.msie) {
-						oWysiwyg.focus();
+						oWysiwyg.ui.focus();
 					}
 					oWysiwyg.editorDoc.execCommand("unlink", false, null);
 					oWysiwyg.editorDoc.execCommand("createLink", false, szURL);
