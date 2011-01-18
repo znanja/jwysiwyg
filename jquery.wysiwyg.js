@@ -51,8 +51,25 @@
 				groupIndex: 6,
 				visible: true,
 				exec: function() {
-					var selection = this.documentSelection();
+					var selection = this.getInternalRange();
 
+					if (selection.startContainer && selection.endContainer && (selection.startContainer === selection.endContainer)
+						&& selection.startContainer.parentNode
+						&& "a" === selection.startContainer.parentNode.nodeName.toLowerCase()) {
+						var a = selection.startContainer.parentNode;
+						var href = a.href;
+						var szURL = prompt("URL", href);
+
+						if (szURL && szURL.length > 0) {
+							a.href = szURL;
+
+							return true;
+						}
+
+						return false;
+					}
+
+					selection = selection.toString();
 					if (selection && selection.length > 0) {
 						if ($.browser.msie) {
 							this.ui.focus();
@@ -686,7 +703,7 @@
 
 		this.documentSelection = function() {
 			if (this.editorDoc.getSelection) {
-				return this.editorDoc.getSelection().toString();
+				return this.getInternalSelection().toString();
 			}
 			if (this.editorDoc.selection) {
 				return this.editorDoc.selection().createRange().text;
