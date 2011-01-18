@@ -796,12 +796,7 @@
 		};
 
 		this.getInternalSelection = function() {
-			if (this.editorDoc.getSelection) {
-				return this.editorDoc.getSelection();
-			}
-			if (this.editorDoc.selection) {
-				return this.editorDoc.selection;
-			}
+			// firefox: document.getSelection is deprecated
 			if (this.editor.get(0).contentWindow) {
 				if (this.editor.get(0).contentWindow.getSelection) {
 					return this.editor.get(0).contentWindow.getSelection();
@@ -809,6 +804,12 @@
 				if (this.editor.get(0).contentWindow.selection) {
 					return this.editor.get(0).contentWindow.selection;
 				}
+			}
+			if (this.editorDoc.getSelection) {
+				return this.editorDoc.getSelection();
+			}
+			if (this.editorDoc.selection) {
+				return this.editorDoc.selection;
 			}
 
 			return null;

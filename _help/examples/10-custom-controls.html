@@ -25,7 +25,20 @@
 				tooltip: 'Quote',
 				tags: ['blockquote'],
 				callback: function (e, Wysiwyg) {
-					Wysiwyg.editorDoc.execCommand("formatBlock", false, "BLOCKQUOTE");
+					var range = Wysiwyg.getInternalRange();
+					var common = range.commonAncestorContainer;
+
+					// if a text node is selected, we want to make the wrap the whole element, not just some text
+					if (common.nodeType == 3) {
+						common = common.parentNode;
+					}
+
+					if (common.parentNode.nodeName == "BLOCKQUOTE" || (common.parentNode.nodeName == "BODY" && common.nodeName == "BLOCKQUOTE")) {
+						$(common).unwrap();
+					}
+					else {
+						$(common).wrap("<blockquote class='quote' />");
+					}
 				}
 			});
 		});
