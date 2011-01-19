@@ -44,10 +44,10 @@ $.wysiwyg.controls.colorpicker = {
 
 	init: function(Wysiwyg) {
 		var self = this;
-		var colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>Colorpicker</legend><ul class="palette"></ul><label>Color: <input type="text" name="color" value="#123456"/></label><div class="wheel"></div><input type="submit" class="button" value="Apply"/> <input type="reset" value="Cancel"/></fieldset></form>';
-	
+		var elements, colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>Colorpicker</legend><ul class="palette"></ul><label>Color: <input type="text" name="color" value="#123456"/></label><div class="wheel"></div><input type="submit" class="button" value="Apply"/> <input type="reset" value="Cancel"/></fieldset></form>';
+
 		if ($.modal) {
-			var elements = $(colorpickerHtml);
+			elements = $(colorpickerHtml);
 	
 			if ($.farbtastic) {
 				this.renderPalette(elements, "fore");
@@ -75,7 +75,7 @@ $.wysiwyg.controls.colorpicker = {
 			});
 		}
 		else if ($.fn.dialog) {
-			var elements = $(colorpickerHtml);
+			elements = $(colorpickerHtml);
 	
 			if ($.farbtastic) {
 				this.renderPalette(elements, "fore");
@@ -108,7 +108,7 @@ $.wysiwyg.controls.colorpicker = {
 		}
 		else {
 			if ($.farbtastic) {
-				var elements = $("<div/>")
+				elements = $("<div/>")
 					.css({"position": "absolute",
 						"left": "50%", "top": "50%", "background": "rgb(0, 0, 0)",
 						"margin-top": -1 * Math.round(Wysiwyg.defaults.formHeight / 2),
@@ -136,6 +136,12 @@ $.wysiwyg.controls.colorpicker = {
 
 	renderPalette: function(jqObj, type) {
 		var i, palette = jqObj.find(".palette");
+		var bind = function() {
+			var color = $(this).text();
+			jqObj.find("input[name=color]").val(color);
+			// farbtastic binds on keyup
+			jqObj.find("input[name=color]").trigger("keyup");
+		};
 
 		for (i = this.color[type].palette.length; i-- > 0; i) {
 			var colorExample = $("<div/>").css({
@@ -149,12 +155,7 @@ $.wysiwyg.controls.colorpicker = {
 			var colorSelect = $("<li>" + this.color[type].palette[i] + "</li>")
 				.css({"float": "left", "list-style": "none"})
 				.append(colorExample)
-				.bind("click.wysiwyg", function() {
-					var color = $(this).text();
-					jqObj.find("input[name=color]").val(color);
-					// farbtastic binds on keyup
-					jqObj.find("input[name=color]").trigger("keyup");
-				});
+				.bind("click.wysiwyg", bind);
 
 			palette.append(colorSelect).css({"margin": "0px", "padding": "0px"});
 		}
