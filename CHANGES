@@ -5,7 +5,8 @@
 * Internationalization API implemented - frost-nzcr4
 * Color picker plugin - arincool, frost-nzcr4
 * rmFormat plugin - frost-nzcr4
-* Some core functionality has been splitted into plugins (like inserting of images or tables) - frost-nzcr4
+* Some core functionality has been splitted into plugins and has been extended (like inserting of images or tables) - frost-nzcr4
+* Image tag editing implemented in image control  - frost-nzcr4
 * jQuery UI Dialog integration code fixed - mydevel
 * "this.get is not a function" error when trying to add a link fixed - everlee
 * In the saveContent function, the html needs to be saved if in html view - Justin Lewis
