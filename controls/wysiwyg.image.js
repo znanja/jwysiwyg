@@ -116,8 +116,14 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 					var szURL = $('input[name="src"]', dialog.data).val();
 					var title = $('input[name="imgtitle"]', dialog.data).val();
 					var description = $('input[name="description"]', dialog.data).val();
-					var image = '<img src="' + szURL + '" title="' + title + '" alt="' + description + '"/>';
-					self.insertHtml(image);
+					if (img.self) {
+						// to preserve all img attributes
+						$(img.self).attr("src", szURL).attr("title", title).attr("description", description);
+					}
+					else {
+						var image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+						self.insertHtml(image);
+					}
 					$.modal.close();
 				});
 				$("input:reset", dialog.data).click(function(e) {
@@ -147,8 +153,14 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 					var szURL = $('input[name="src"]', dialog).val();
 					var title = $('input[name="imgtitle"]', dialog).val();
 					var description = $('input[name="description"]', dialog).val();
-					var image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
-					self.insertHtml(image);
+					if (img.self) {
+						// to preserve all img attributes
+						$(img.self).attr("src", szURL).attr("title", title).attr("description", description);
+					}
+					else {
+						var image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+						self.insertHtml(image);
+					}
 					$(dialog).dialog("close");
 				});
 				$("input:reset", dialog).click(function(e) {

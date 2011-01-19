@@ -18,7 +18,10 @@
 (function($) {
 	$(document).ready(function() {
 		$('#wysiwyg').wysiwyg({
-			autoload: false
+			autoload: false,
+			controls: {
+				"html": {visible: true}
+			}
 		});
 	});
 })(jQuery);
