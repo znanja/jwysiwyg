@@ -12,7 +12,7 @@ if (!$.wysiwyg.controls) {
 	$.wysiwyg.controls = {};
 }
 
-var domTraversingSameLevel = function(range, el, cnt) {
+function domTraversingSameLevel(range, el, cnt) {
 	this.debug = false;
 	var foundElements = [];
 
@@ -46,7 +46,7 @@ if (this.debug) { console.log("Elements found = ", foundElements); }
  */
 $.wysiwyg.controls.image = function(Wysiwyg) {
 	var self = Wysiwyg;
-	var formImageHtml = '<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="src" value=""/></label><label>Image Title: <input type="text" name="imgtitle" value=""/></label><label>Image Description: <input type="text" name="description" value=""/></label><input type="submit" class="button" value="Insert Image"/> <input type="reset" value="Cancel"/></fieldset></form>';
+	var elements, formImageHtml = '<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="src" value=""/></label><label>Image Title: <input type="text" name="imgtitle" value=""/></label><label>Image Description: <input type="text" name="description" value=""/></label><input type="submit" class="button" value="Insert Image"/> <input type="reset" value="Cancel"/></fieldset></form>';
 	var img = {
 		alt: "",
 		self: null,			// link to element node
@@ -104,7 +104,7 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 	}
 
 	if ($.modal) {
-		var elements = $(formImageHtml);
+		elements = $(formImageHtml);
 		elements.find('input[name="src"]').val(img.src);
 		elements.find('input[name="imgtitle"]').val(img.title);
 		elements.find('input[name="description"]').val(img.alt);
@@ -131,7 +131,7 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 		});
 	}
 	else if ($.fn.dialog) {
-		var elements = $(formImageHtml);
+		elements = $(formImageHtml);
 		elements.find("input[name=src]").val(img.src);
 		elements.find("input[name=imgtitle]").val(img.title);
 		elements.find("input[name=description]").val(img.alt);
@@ -209,7 +209,8 @@ $.wysiwyg.insertImage = function(object, szURL, attributes) {
 			if (image) {
 				image.src = szURL;
 	
-				for (var attribute in attributes) {
+				var attribute;
+				for (attribute in attributes) {
 					image.setAttribute(attribute, attributes[attribute]);
 				}
 			}
