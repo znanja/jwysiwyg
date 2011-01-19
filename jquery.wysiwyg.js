@@ -450,6 +450,41 @@
 			var i, currentGroupIndex; // jslint wants all vars at top of function
 			var groups = [];
 			var controlsByGroup = {};
+      var iterateGroup = function(controlName, control) {
+        var tooltip;
+  			if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
+					currentGroupIndex = control.groupIndex;
+					hasVisibleControls = false;
+				}
+
+        if (!control.visible) {
+					return;
+				}
+
+				if (!hasVisibleControls) {
+					ui.appendMenuSeparator();
+					hasVisibleControls = true;
+				}
+
+				if (control.custom) {
+					ui.appendMenuCustom(
+						control.command || controlName,
+						control);
+				}
+				else {
+					tooltip = control.tooltip || control.command || controlName || "";
+					if ($.wysiwyg.i18n) {
+						tooltip = $.wysiwyg.i18n.t(tooltip);
+					}
+					ui.appendMenu(
+						control.command || controlName,
+						control["arguments"] || "",
+						control.className || control.command || controlName || "empty",
+						control.exec,
+						tooltip
+					);
+				}
+			};
 
 			$.each(controls, function(name, c) {
 				var index = "empty";
@@ -478,41 +513,7 @@
 			}
 
 			for (i = 0; i < groups.length; i++) {
-				$.each(controlsByGroup[groups[i]], function(controlName, control) {
-          var tooltip;
-					if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
-						currentGroupIndex = control.groupIndex;
-						hasVisibleControls = false;
-					}
-
-					if (!control.visible) {
-						return;
-					}
-
-					if (!hasVisibleControls) {
-						ui.appendMenuSeparator();
-						hasVisibleControls = true;
-					}
-
-					if (control.custom) {
-						ui.appendMenuCustom(
-							control.command || controlName,
-							control);
-					}
-					else {
-						tooltip = control.tooltip || control.command || controlName || "";
-						if ($.wysiwyg.i18n) {
-							tooltip = $.wysiwyg.i18n.t(tooltip);
-						}
-						ui.appendMenu(
-							control.command || controlName,
-							control["arguments"] || "",
-							control.className || control.command || controlName || "empty",
-							control.exec,
-							tooltip
-						);
-					}
-				});
+				$.each(controlsByGroup[groups[i]], iterateGroup);
 			}
 		};
 
