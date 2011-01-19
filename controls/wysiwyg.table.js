@@ -22,10 +22,10 @@ var insertTable = function(colCount, rowCount, filler) {
 		filler = "&nbsp;";
 	}
 	filler = "<td>" + filler + "</td>";
-	var html = ['<table border="1" style="width: 100%;"><tbody>'];
-	for (var i = rowCount; i > 0; i--) {
+	var i, j, html = ['<table border="1" style="width: 100%;"><tbody>'];
+	for (i = rowCount; i > 0; i--) {
 		html.push("<tr>");
-		for (var j = colCount; j > 0; j--) {
+		for (j = colCount; j > 0; j--) {
 			html.push(filler);
 		}
 		html.push("</tr>");
