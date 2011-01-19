@@ -83,8 +83,16 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 	$(self.editorDoc).trigger("wysiwyg:refresh");
 };
 
-$.wysiwyg.insertImage = function(szURL, attributes) {
-	return this.each(function() {
+$.wysiwyg.insertImage = function(object, szURL, attributes) {
+	if ("object" !== typeof(object) || !object.context) {
+		object = this;
+	}
+
+	if (!object.each) {
+		console.error("Something goes wrong, check object");
+	}
+
+	return object.each(function() {
 		var self = $(this).data("wysiwyg");
 		
 		if (!self) {
@@ -98,15 +106,16 @@ $.wysiwyg.insertImage = function(szURL, attributes) {
 		if ($.browser.msie) {
 			self.ui.focus();
 		}
+		
 		if (attributes) {
 			self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
-			var img = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
+			var image = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
 	
-			if (img) {
-				img.src = szURL;
+			if (image) {
+				image.src = szURL;
 	
 				for (var attribute in attributes) {
-					img.setAttribute(attribute, attributes[attribute]);
+					image.setAttribute(attribute, attributes[attribute]);
 				}
 			}
 		}

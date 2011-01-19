@@ -98,8 +98,16 @@ $.wysiwyg.controls.table = function(Wysiwyg) {
 	$(self.editorDoc).trigger("wysiwyg:refresh");
 };
 
-$.wysiwyg.insertTable = function(colCount, rowCount, filler) {
-	return this.each(function() {
+$.wysiwyg.insertTable = function(object, colCount, rowCount, filler) {
+	if ("object" !== typeof(object) || !object.context) {
+		object = this;
+	}
+
+	if (!object.each) {
+		console.error("Something goes wrong, check object");
+	}
+
+	return object.each(function() {
 		var self = $(this).data("wysiwyg");
 		
 		if (!self.insertTable) {
