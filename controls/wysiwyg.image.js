@@ -12,7 +12,7 @@ if (!$.wysiwyg.controls) {
 	$.wysiwyg.controls = {};
 }
 
-function domTraversingSameLevel(range, el, cnt) {
+var domTraversingSameLevel = function(range, el, cnt) {
 	this.debug = false;
 	var foundElements = [];
 
@@ -39,7 +39,7 @@ if (this.debug) { console.log("Elements found = ", foundElements); }
 	}
 
 	return foundElements;
-}
+};
 
 /*
  * Wysiwyg namespace: public properties and methods
@@ -169,8 +169,13 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 		else {
 			var szURL = prompt("URL", img.src);
 			if (szURL && szURL.length > 0) {
-				$(img.self).remove();
-				self.editorDoc.execCommand("insertImage", false, szURL);
+				if (img.self) {
+					// to preserve all img attributes
+					$(img.self).attr("src", szURL);
+				}
+				else {
+					self.editorDoc.execCommand("insertImage", false, szURL);
+				}
 			}
 		}
 	}
