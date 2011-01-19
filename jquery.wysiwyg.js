@@ -443,10 +443,11 @@
 		};
 
 		this.ui.appendControls = function() {
+      var ui = this;
 			var self = this.self;
 			var controls = self.parseControls();
 			var hasVisibleControls	= true; // to prevent separator before first item
-			var i, controlName, control, currentGroupIndex; // jslint wants all vars at top of function
+			var i, currentGroupIndex; // jslint wants all vars at top of function
 			var groups = [];
 			var controlsByGroup = {};
 
@@ -477,8 +478,8 @@
 			}
 
 			for (i = 0; i < groups.length; i++) {
-				for (controlName in controlsByGroup[groups[i]]) {
-					control = controls[controlName];
+				$.each(controlsByGroup[groups[i]], function(controlName, control) {
+          var tooltip;
 					if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
@@ -489,21 +490,21 @@
 					}
 
 					if (!hasVisibleControls) {
-						this.appendMenuSeparator();
+						ui.appendMenuSeparator();
 						hasVisibleControls = true;
 					}
 
 					if (control.custom) {
-						this.appendMenuCustom(
+						ui.appendMenuCustom(
 							control.command || controlName,
 							control);
 					}
 					else {
-						var tooltip = control.tooltip || control.command || controlName || "";
+						tooltip = control.tooltip || control.command || controlName || "";
 						if ($.wysiwyg.i18n) {
 							tooltip = $.wysiwyg.i18n.t(tooltip);
 						}
-						this.appendMenu(
+						ui.appendMenu(
 							control.command || controlName,
 							control["arguments"] || "",
 							control.className || control.command || controlName || "empty",
@@ -511,7 +512,7 @@
 							tooltip
 						);
 					}
-				}
+				});
 			}
 		};
 
@@ -1494,13 +1495,11 @@
 					console.error("Plugin name missing");
 				}
 				
-				var pluginName;
-
-				for (pluginName in $.wysiwyg) {
+				$.each($.wysiwyg, function(pluginName) {
 					if (pluginName === data.name) {
-						console.error("Plugin with this name registered");
+						console.error("Plugin with name '" + data.name + "' was already registered");
 					}
-				}
+				});
 
 				$.wysiwyg[data.name] = data;
 
