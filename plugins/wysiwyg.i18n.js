@@ -39,6 +39,36 @@ var i18n = {
 		}
 
 		this.options.lang = lang;
+		
+		this.translateControls(Wysiwyg);
+	},
+
+	translateControls: function(Wysiwyg) {
+		Wysiwyg.ui.panel.find("li").each(function() {
+			if (Wysiwyg.controls[$(this).attr("class")]) {
+				$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.controls[$(this).attr("class")]["tooltip"]));
+			}
+		});
+	},
+
+	run: function(object, lang) {
+		if ("object" !== typeof(object) || !object.context) {
+			object = this;
+		}
+
+		if (!object.each) {
+			console.error("Something goes wrong, check object");
+		}
+
+		return object.each(function() {
+			var oWysiwyg = $(this).data("wysiwyg");
+
+			if (!oWysiwyg) {
+				return this;
+			}
+
+			$.wysiwyg.i18n.init(oWysiwyg, lang);
+		});
 	},
 
 	t: function(phrase, lang) {

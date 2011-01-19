@@ -10,7 +10,9 @@
 <script type="text/javascript" src="../../jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="../../plugins/wysiwyg.autoload.js"></script>
 <script type="text/javascript" src="../../plugins/wysiwyg.i18n.js"></script>
+<script type="text/javascript" src="../../i18n/lang.fr.js"></script>
 <script type="text/javascript" src="../../i18n/lang.ru.js"></script>
+<script type="text/javascript" src="../../i18n/lang.se.js"></script>
 <script type="text/javascript" src="../../controls/wysiwyg.colorpicker.js"></script>
 <script type="text/javascript" src="../../controls/wysiwyg.image.js"></script>
 <script type="text/javascript" src="../../controls/wysiwyg.table.js"></script>
@@ -47,7 +49,7 @@
 						tooltip: "Colorpicker"
 					}
 				},
-				i18n: "ru",
+				i18n: "en",
 				initialContent: function() {
 					var $get = [];
 					var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split("&amp;");
@@ -65,6 +67,11 @@
 				}
 			});
 		});
+
+		$("select").change(function() {
+			var lang = $(this).find(":selected").val();
+			$("textarea[name=text]").wysiwyg("i18n.run", lang);
+		});
 	});
 })(jQuery);
 </script>
@@ -76,6 +83,8 @@ textarea { width: 400px; height: 100px; }
 <body>
 	<h1>jWYSIWYG</h1>
 	<h2>Example: Test Plugins &ndash; Image, Table, Colorpicker, i18n, autoload</h2>
+
+	<label>Choose language: <select name="i18n"><option value="en">English</option><option value="ru">Русский</option><option value="fr">Français</option><option value="se">Svenska</option></select></label>
 
 	<form action="" method="get">
 	<textarea name="text"></textarea>
