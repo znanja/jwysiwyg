@@ -452,7 +452,7 @@
 			var controlsByGroup = {};
       var iterateGroup = function(controlName, control) {
         var tooltip;
-  			if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
+        if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
 					currentGroupIndex = control.groupIndex;
 					hasVisibleControls = false;
 				}
