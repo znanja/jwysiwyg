@@ -443,21 +443,21 @@
 		};
 
 		this.ui.appendControls = function() {
-      var ui = this;
+			var ui = this;
 			var self = this.self;
 			var controls = self.parseControls();
 			var hasVisibleControls	= true; // to prevent separator before first item
 			var i, currentGroupIndex; // jslint wants all vars at top of function
 			var groups = [];
 			var controlsByGroup = {};
-      var iterateGroup = function(controlName, control) {
-        var tooltip;
-        if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
+			var iterateGroup = function(controlName, control) {
+			var tooltip;
+				if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
 					currentGroupIndex = control.groupIndex;
 					hasVisibleControls = false;
 				}
 
-        if (!control.visible) {
+				if (!control.visible) {
 					return;
 				}
 
