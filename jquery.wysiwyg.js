@@ -609,7 +609,7 @@
 				var tags, elm, css, el, handler;
 				var checkActiveStatus = function(cssProperty, cssValue) {
 					if ("function" === typeof(cssValue)) {
-						var handler = cssValue;
+						handler = cssValue;
 						if (handler(el.css(cssProperty).toString().toLowerCase(), self)) {
 							$("." + className, self.ui.panel).addClass("active");
 						}
@@ -1571,22 +1571,23 @@
 	};
 
 	$.fn.wysiwyg = function(method) {
+    var args = arguments, plugin;
 		if ("undefined" !== typeof $.wysiwyg[method]) {
 			// set argument object to undefined
-			arguments = Array.prototype.concat.call([arguments[0]], [undefined], Array.prototype.slice.call(arguments, 1));
-			return $.wysiwyg[method].apply(this, Array.prototype.slice.call(arguments, 1));
+			args = Array.prototype.concat.call([args[0]], [undefined], Array.prototype.slice.call(args, 1));
+			return $.wysiwyg[method].apply(this, Array.prototype.slice.call(args, 1));
 		}
 		else if ("object" === typeof method || !method) {
-			Array.prototype.unshift.call(arguments, undefined);
-			return $.wysiwyg.init.apply(this, arguments);
+			Array.prototype.unshift.call(args, undefined);
+			return $.wysiwyg.init.apply(this, args);
 		}
 		else if ($.wysiwyg.plugin.exists(method)) {
-			var plugin = $.wysiwyg.plugin.parseName(method);
-			arguments = Array.prototype.concat.call([arguments[0]], [undefined], Array.prototype.slice.call(arguments, 1));
-			return $.wysiwyg[plugin.name][plugin.method].apply(this, Array.prototype.slice.call(arguments, 1));
+			plugin = $.wysiwyg.plugin.parseName(method);
+			args = Array.prototype.concat.call([args[0]], [undefined], Array.prototype.slice.call(args, 1));
+			return $.wysiwyg[plugin.name][plugin.method].apply(this, Array.prototype.slice.call(args, 1));
 		}
 		else {
-			console.error("Method " +  method + " does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");
+			console.error("Method '" +  method + "' does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");
 		}
 	};
 })(jQuery);
