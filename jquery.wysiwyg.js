@@ -51,14 +51,14 @@
 				groupIndex: 6,
 				visible: true,
 				exec: function() {
-					var selection = this.getInternalRange();
+					var szURL, selection = this.getInternalRange();
 
 					if (selection.startContainer && selection.endContainer && (selection.startContainer === selection.endContainer)
 						&& selection.startContainer.parentNode
 						&& "a" === selection.startContainer.parentNode.nodeName.toLowerCase()) {
 						var a = selection.startContainer.parentNode;
 						var href = a.href;
-						var szURL = prompt("URL", href);
+						szURL = prompt("URL", href);
 
 						if (szURL && szURL.length > 0) {
 							a.href = szURL;
@@ -76,7 +76,7 @@
 							this.editorDoc.execCommand("createLink", true, null);
 						}
 						else {
-							var szURL = prompt("URL", "http://");
+							szURL = prompt("URL", "http://");
 							if (szURL && szURL.length > 0) {
 								this.editorDoc.execCommand("unlink", false, null);
 								this.editorDoc.execCommand("createLink", false, szURL);
@@ -486,7 +486,7 @@
 					}
 
 					if (!control.visible) {
-						continue;
+						return;
 					}
 
 					if (!hasVisibleControls) {
