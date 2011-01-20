@@ -1,5 +1,7 @@
 == master (not tagged yet) ==
 
+== Version 0.95 (Kino)
+
 * Directory structure of repository has been reorganized to be more friendly for Drupal users - frost-nzcr4, sun
 * Plugins API implemented - frost-nzcr4
 * Internationalization API implemented - frost-nzcr4

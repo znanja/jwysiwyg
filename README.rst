@@ -1,5 +1,5 @@
 =========================
-jWYSIWYG 0.94 User Manual
+jWYSIWYG 0.95 User Manual
 =========================
 
 Copyright (c) 2009-2010 Juan M Martínez
