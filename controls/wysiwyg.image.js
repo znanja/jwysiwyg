@@ -12,35 +12,6 @@ if (!$.wysiwyg.controls) {
 	$.wysiwyg.controls = {};
 }
 
-var domTraversingSameLevel = function(range, el, cnt) {
-	this.debug = false;
-	var foundElements = [];
-
-	while (el) {
-if (this.debug) { console.log(cnt, "routine", el); }
-if (this.debug) { console.log(cnt, el.nodeName.toLowerCase(), el.previousElementSibling, el.parentNode); }
-
-		if ("img" === el.nodeName.toLowerCase()) {
-			// gecko
-			if (range.isPointInRange) {
-				if (range.isPointInRange(el, 1)) {
-					foundElements.push(el);
-				}
-			}
-			// opera
-			else {
-				foundElements.push(el);
-			}
-
-if (this.debug) { console.log("Elements found = ", foundElements); }
-		}
-
-		el = el.nextElementSibling;
-	}
-
-	return foundElements;
-};
-
 /*
  * Wysiwyg namespace: public properties and methods
  */
@@ -49,58 +20,15 @@ $.wysiwyg.controls.image = function(Wysiwyg) {
 	var elements, formImageHtml = '<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="src" value=""/></label><label>Image Title: <input type="text" name="imgtitle" value=""/></label><label>Image Description: <input type="text" name="description" value=""/></label><input type="submit" class="button" value="Insert Image"/> <input type="reset" value="Cancel"/></fieldset></form>';
 	var img = {
 		alt: "",
-		self: null,			// link to element node
+		self: Wysiwyg.dom.getElement("img"),	// link to element node
 		src: "http://",
 		title: ""
 	};
 
-	var range = Wysiwyg.getInternalRange();
-
-	if (range.startContainer && range.endContainer) {
-		var start = range.startContainer;
-		if (start.nodeType === 3) {
-			start = start.parentNode;
-		}
-
-		var end = range.endContainer;
-		if (end.nodeType === 3) {
-			end = end.parentNode;
-		}
-
-		if (start === end) {
-			var node = range.commonAncestorContainer;
-			if (node.nodeType === 3) {
-				node = node.parentNode;
-			}
-
-			var traversing = domTraversingSameLevel(range, node.firstElementChild, 1);
-
-			if (1 === traversing.length) {
-				img.self = traversing[0];
-				// reduce range to img element work in Firefox 3.6, Opera 11
-//				range.selectNode(img.self);
-
-				var selection = Wysiwyg.getInternalSelection();
-				selection.collapse(img.self, 0);
-				if (img.self.nextSibling) {
-					selection.extend(img.self.nextSibling, 0);
-				}
-				else {
-					selection.extend(img.self, 0);
-				}
-
-				img.src = img.self.src;
-				img.alt = img.self.alt;
-				img.title = img.self.title;
-
-				var i;
-				for (i in img) {
-					if (undefined === img[i]) {
-						img[i] = "";
-					}
-				}
-			}
-		}
+	if (img.self) {
+		img.src = img.self.src ? img.self.src : "";
+		img.alt = img.self.alt ? img.self.alt : "";
+		img.title = img.self.title ? img.self.title : "";
 	}
 
 	if ($.modal) {

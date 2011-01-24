@@ -50,12 +50,9 @@
 				groupIndex: 6,
 				visible: true,
 				exec: function() {
-					var szURL, selection = this.getInternalRange();
+					var szURL, a = this.dom.getElement("a");
 
-					if (selection.startContainer && selection.endContainer && (selection.startContainer === selection.endContainer)
-						&& selection.startContainer.parentNode
-						&& "a" === selection.startContainer.parentNode.nodeName.toLowerCase()) {
-						var a = selection.startContainer.parentNode;
+					if (a) {
 						var href = a.href;
 						szURL = prompt("URL", href);
 
@@ -67,23 +64,26 @@
 
 						return false;
 					}
+					else {
+						var selection = this.getInternalRange();
+						selection = selection.toString();
 
-					selection = selection.toString();
-					if (selection && selection.length > 0) {
-						if ($.browser.msie) {
-							this.ui.focus();
-							this.editorDoc.execCommand("createLink", true, null);
-						}
-						else {
-							szURL = prompt("URL", "http://");
-							if (szURL && szURL.length > 0) {
-								this.editorDoc.execCommand("unlink", false, null);
-								this.editorDoc.execCommand("createLink", false, szURL);
+						if (selection && selection.length > 0) {
+							if ($.browser.msie) {
+								this.ui.focus();
+								this.editorDoc.execCommand("createLink", true, null);
+							}
+							else {
+								szURL = prompt("URL", "http://");
+								if (szURL && szURL.length > 0) {
+									this.editorDoc.execCommand("unlink", false, null);
+									this.editorDoc.execCommand("createLink", false, szURL);
+								}
 							}
 						}
-					}
-					else if (this.options.messages.nonSelection) {
-						alert(this.options.messages.nonSelection);
+						else if (this.options.messages.nonSelection) {
+							alert(this.options.messages.nonSelection);
+						}
 					}
 				},
 				tags: ["a"],
@@ -432,10 +432,91 @@
 		this.original	= null;
 		this.savedRange	= null;
 		this.timers		= [];
+
+		this.dom		= { // DOM related properties and methods
+			ie:		{
+				parent: null // link to dom
+			},
+			w3c:	{
+				parent: null // link to dom
+			}
+		};
+		this.dom.parent		= this;
+		this.dom.ie.parent	= this.dom;
+		this.dom.w3c.parent	= this.dom;
+
 		this.ui			= {};	// UI related properties and methods
 		this.ui.self	= this;
 		this.ui.panel	= null;
 		this.ui.initialHeight = null; // ui.grow
+
+		this.dom.getAncestor = function(element, filterTagName) {
+			filterTagName = filterTagName.toLowerCase();
+
+			while ("body" !== element.tagName.toLowerCase()) {
+				if (filterTagName === element.tagName.toLowerCase()) {
+					return element;
+				}
+
+				element = element.parentNode;
+			}
+
+			return null;
+		};
+
+		this.dom.getElement = function(filterTagName) {
+			var dom = this;
+
+			if (window.getSelection) {
+				return dom.w3c.getElement(filterTagName);
+			}
+			else {
+				return dom.ie.getElement(filterTagName);
+			}
+		};
+
+		this.dom.ie.getElement = function(filterTagName) {
+			var dom = this.parent;
+			var element,
+				selection	= dom.parent.getInternalSelection(),
+				range		= selection.createRange();
+
+			if ("Control" === selection.type) {
+				// control selection
+				if (1 === range.length) { 
+					element = range.item(0);
+				}
+				else { 
+					// multiple control selection 
+					return null;
+				}
+			}
+			else {
+				element = range.parentElement();
+			}
+
+			return dom.getAncestor(element, filterTagName);
+		};
+
+		this.dom.w3c.getElement = function(filterTagName) {
+			var dom = this.parent;
+
+			var range	= dom.parent.getInternalRange(),
+				element	= range.commonAncestorContainer;
+
+			if (3 === element.nodeType) {
+				element = element.parentNode;
+			}
+
+			// if startContainer not Text, Comment, or CDATASection element then
+			// startOffset is the number of child nodes between the start of the
+			// startContainer and the boundary point of the Range
+			if (element === range.startContainer) {
+				element = element.childNodes[range.startOffset];
+			}
+
+			return dom.getAncestor(element, filterTagName);	
+		};
 
 		this.ui.addHoverClass = function() {
 			$(this).addClass("wysiwyg-button-hover");
@@ -810,7 +891,14 @@
 				return null;
 			}
 
-			return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
+			if (selection.rangeCount > 0) {
+				return selection.getRangeAt(0);
+			}
+			else if (selection.createRange) {
+				return selection.createRange();
+			}
+
+			return null;
 		};
 
 		this.getInternalSelection = function() {
