@@ -59,13 +59,15 @@
 
 						if (szURL && szURL.length > 0) {
 							a.href = szURL;
-
-							return true;
 						}
-
-						return false;
 					} else {
-						selection = this.getInternalRange().toString();
+						selection = this.getInternalRange();
+
+						if (selection.toString) {
+							selection = selection.toString();
+						} else if (selection.text) {	// IE
+							selection = selection.text;
+						}
 
 						if (selection && selection.length > 0) {
 							if ($.browser.msie) {
@@ -570,7 +572,24 @@
 				controlsByGroup[index][name] = c;
 			});
 
-			groups.sort(function (a, b) { return (a - b); });
+			groups.sort(function (a, b) {
+				if ("number" === typeof (a) && typeof (a) === typeof (b)) {
+					return (a - b);
+				} else {
+					a = "" + a;
+					b = "" + b;
+
+					if (a > b) {
+						return 1;
+					}
+
+					if (a === b) {
+						return 0;
+					}
+
+					return -1;
+				}
+			});
 
 			if (0 < groups.length) {
 				// set to first index in groups to proper placement of separator
@@ -834,7 +853,7 @@
 					} catch (e) {
 						console.error(e);
 					}
-				} else if (window.document.createRange) { //non IE and no selection
+				} else if (window.document.createRange) { // non IE and no selection
 					window.getSelection().addRange(self.savedRange);
 				} else if (window.document.selection) { //IE
 					self.savedRange.select();
@@ -872,9 +891,9 @@
 				return null;
 			}
 
-			if (selection.rangeCount > 0) {
+			if (selection.rangeCount && selection.rangeCount > 0) { // w3c
 				return selection.getRangeAt(0);
-			} else if (selection.createRange) {
+			} else if (selection.createRange) { // ie
 				return selection.createRange();
 			}
 
