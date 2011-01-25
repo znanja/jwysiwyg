@@ -1054,7 +1054,7 @@
 
 		this.ui.initFrame = function () {
 			var self = this.self,
-				style = "",
+				stylesheet,
 				autoSaveHandler,
 				growHandler,
 				saveHandler;
@@ -1067,13 +1067,6 @@
 					}))
 				.append(self.editor);
 
-			/**
-			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
-			 */
-			if (self.options.css && self.options.css.constructor === String) {
-				style = '<link rel="stylesheet" type="text/css" media="screen" href="' + self.options.css + '"/>';
-			}
-
 			self.editorDoc = self.innerDocument();
 			self.ui.designMode();
 			self.editorDoc.open();
@@ -1083,9 +1076,29 @@
 					 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=144
 					 */
 					.replace(/INITIAL_CONTENT/, function () { return self.initialContent; })
-					.replace(/STYLE_SHEET/, function () { return style; })
 			);
 			self.editorDoc.close();
+
+			/**
+			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
+			 */
+			if (self.options.css && self.options.css.constructor === String) {
+				if ($.browser.msie) {
+					stylesheet = self.editorDoc.createStyleSheet(self.options.css);
+					$(stylesheet).attr({
+						"media":	"all"
+					});
+				} else {
+					stylesheet = $("<link/>").attr({
+						"href":		self.options.css,
+						"media":	"all",
+						"rel":		"stylesheet",
+						"type":		"text/css"
+					});
+					console.log($(self.editorDoc).find("head"));
+					$(self.editorDoc).find("head").append(stylesheet);
+				}
+			}
 
 			if ($.browser.msie) {
 				/**
