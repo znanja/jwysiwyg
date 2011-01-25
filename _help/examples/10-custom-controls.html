@@ -13,6 +13,7 @@
 			rmUnusedControls: true,
 			controls: {
 				bold: { visible : true },
+				html: { visible : true },
 				insertOrderedList: { visible : true },
 				removeFormat: { visible : true }
 			}
@@ -25,15 +26,16 @@
 				tooltip: 'Quote',
 				tags: ['blockquote'],
 				callback: function (e, Wysiwyg) {
-					var range = Wysiwyg.getInternalRange();
-					var common = range.commonAncestorContainer;
+					var range	= Wysiwyg.getInternalRange(),
+						common	= range.commonAncestorContainer,
+						blockquote = Wysiwyg.dom.getElement("blockquote");
 
 					// if a text node is selected, we want to make the wrap the whole element, not just some text
-					if (common.nodeType == 3) {
+					if (common.nodeType === 3) {
 						common = common.parentNode;
 					}
 
-					if (common.parentNode.nodeName == "BLOCKQUOTE" || (common.parentNode.nodeName == "BODY" && common.nodeName == "BLOCKQUOTE")) {
+					if (blockquote && $(blockquote).hasClass("quote")) {
 						$(common).unwrap();
 					}
 					else {
