@@ -165,9 +165,9 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
 
 ``html``
     A string containing the source HTML code used inside the editor's iframe.
-    This is a template where ``STYLE_SHEET`` and ``INITIAL_CONTENT`` are later
-    replaced by the appropriate code for the editor instance, so those two
-    strings must be present in this option.
+    This is a template where ``INITIAL_CONTENT`` later replaced by the
+    appropriate code for the editor instance, so this string must be present in
+    this option.
 
 ``debug``
     A boolean, enabling or disabling debugging.
