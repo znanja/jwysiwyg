@@ -1,17 +1,17 @@
 /**
- * Internationalization: french language
+ * Internationalization: Spanish language
  * 
  * Depends on jWYSIWYG, $.wysiwyg.i18n
  *
- * By: Tom Barbette <mappam0@gmail.com>
+ * By: Esteban Beltran <academo@gmail.com>
  *
  */
 (function($) {
 if (undefined === $.wysiwyg) {
-	throw "lang.fr.js depends on $.wysiwyg";
+	throw "lang.es.js depends on $.wysiwyg";
 }
 if (undefined === $.wysiwyg.i18n) {
-	throw "lang.fr.js depends on $.wysiwyg.i18n";
+	throw "lang.es.js depends on $.wysiwyg.i18n";
 }
 
 $.wysiwyg.i18n.lang.fr = {
