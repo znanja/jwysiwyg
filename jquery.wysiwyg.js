@@ -1685,7 +1685,28 @@
 				oWysiwyg.setContent(newContent);
 				oWysiwyg.saveContent();
 			});
-		}
+		},
+    utils: {
+      extraSafeEntities:[["<", ">", "'", '"', ' '], [32]],
+      encodeEntities : function (str) {
+        var self = this;
+        if (this.extraSafeEntities[1].length === 0) {
+          $.each(this.extraSafeEntities[0], function(i, ch) {
+            self.extraSafeEntities[1].push(ch.charCodeAt());
+          });
+        }
+        var aStr = str.split(''), i = aStr.length, aRet = [];
+        $.each(aStr, function(i) {
+          var iC = aStr[i].charCodeAt();
+          if ($.inArray(iC, self.extraSafeEntities[1]) && (iC < 65 || iC > 127 || (iC > 90 && iC < 97))) {
+            aRet.push('&#' + iC + ';');
+          } else {
+            aRet.push(aStr[i]);
+          }
+        });
+        return aRet.join('');
+      }
+    }
 	};
 
 	$.fn.wysiwyg = function (method) {
