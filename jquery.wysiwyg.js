@@ -864,7 +864,7 @@
 		};
 
 		this.getContent = function () {
-			return $(this.editorDoc.body).html();
+			return this.editorDoc.body.innerHTML;
 		};
 
 		this.getElementByAttributeValue = function (tagName, attributeName, attributeValue) {
@@ -1346,7 +1346,7 @@
 		};
 
 		this.setContent = function (newContent) {
-			$(this.editorDoc.body).html(newContent);
+			this.editorDoc.body.innerHTML = newContent;
 			return this;
 		};
 
