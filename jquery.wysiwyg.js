@@ -1324,8 +1324,7 @@
 
 		this.saveContent = function () {
 			if (this.original) {
-				var content,
-					brLength;
+				var content;
 
 				if (this.viewHTML) {
 					this.setContent($(this.original).val());
@@ -1334,8 +1333,7 @@
 				content = this.getContent();
 
 				if (this.options.rmUnwantedBr) {
-					brLength = ("<br/>".length) * -1;
-					content = (content.substr(brLength) === "<br/>") ? content.substr(0, brLength) : content;
+					content = content.replace(/<br\/?>$/, "");
 				}
 
 				$(this.original).val(content);
