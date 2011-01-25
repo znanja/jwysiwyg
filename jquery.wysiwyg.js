@@ -1079,27 +1079,6 @@
 			);
 			self.editorDoc.close();
 
-			/**
-			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
-			 */
-			if (self.options.css && self.options.css.constructor === String) {
-				if ($.browser.msie) {
-					stylesheet = self.editorDoc.createStyleSheet(self.options.css);
-					$(stylesheet).attr({
-						"media":	"all"
-					});
-				} else {
-					stylesheet = $("<link/>").attr({
-						"href":		self.options.css,
-						"media":	"all",
-						"rel":		"stylesheet",
-						"type":		"text/css"
-					});
-					console.log($(self.editorDoc).find("head"));
-					$(self.editorDoc).find("head").append(stylesheet);
-				}
-			}
-
 			if ($.browser.msie) {
 				/**
 				 * Remove the horrible border it has on IE.
@@ -1201,11 +1180,27 @@
 			}
 
 			if (self.options.css) {
-				self.timers.initFrame_Css = window.setTimeout(function () {
-					if (self.options.css.constructor !== String) {
-						$(self.editorDoc).find("body").css(self.options.css);
+				if (String === self.options.css.constructor) {
+					if ($.browser.msie) {
+						stylesheet = self.editorDoc.createStyleSheet(self.options.css);
+						$(stylesheet).attr({
+							"media":	"all"
+						});
+					} else {
+						stylesheet = $("<link/>").attr({
+							"href":		self.options.css,
+							"media":	"all",
+							"rel":		"stylesheet",
+							"type":		"text/css"
+						});
+						console.log($(self.editorDoc).find("head"));
+						$(self.editorDoc).find("head").append(stylesheet);
 					}
-				}, 0);
+				} else {
+					self.timers.initFrame_Css = window.setTimeout(function () {
+						$(self.editorDoc.body).css(self.options.css);
+					}, 0);
+				}
 			}
 
 			if (self.initialContent.length === 0) {
