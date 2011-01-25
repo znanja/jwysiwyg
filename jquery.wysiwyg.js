@@ -858,6 +858,8 @@
 				} else if (window.document.selection) { //IE
 					self.savedRange.select();
 				}
+
+				self.savedRange = null;
 			}
 		};
 
