@@ -38,7 +38,7 @@ $.wysiwyg.i18n.lang.es = {
 "Justify Right": "Alinear a la derecha",
 "Left to Right": "Izquierda a derecha",
 "Outdent": "Quitar Sangría",
-"Paste": "Pegar
+"Paste": "Pegar",
 "Redo": "Restaurar",
 "Remove formatting": "Quitar Formato",
 "Right to Left": "Derecha a izquierda",
