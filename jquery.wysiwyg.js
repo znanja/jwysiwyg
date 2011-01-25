@@ -929,7 +929,13 @@
 				return null;
 			}
 
-			return (selection.rangeCount > 0) ? selection.getRangeAt(0) : (selection.createRange ? selection.createRange() : null);
+			if (selection.rangeCount && selection.rangeCount > 0) { // w3c
+				selection.getRangeAt(0);
+			} else if (selection.createRange) { // ie
+				return selection.createRange();
+			}
+
+			return null;
 		};
 
 		this.getSelection = function () {
