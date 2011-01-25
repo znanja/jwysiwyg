@@ -444,7 +444,7 @@
 		this.dom.getAncestor = function (element, filterTagName) {
 			filterTagName = filterTagName.toLowerCase();
 
-			while ("body" !== element.tagName.toLowerCase()) {
+			while (element && "body" !== element.tagName.toLowerCase()) {
 				if (filterTagName === element.tagName.toLowerCase()) {
 					return element;
 				}
