@@ -186,7 +186,7 @@
 						$.wysiwyg.controls.image(this);
 					} else if ($.wysiwyg.autoload) {
 						$.wysiwyg.autoload.control("wysiwyg.image.js", function () {
-							self.controls.insertImage.exec();
+							self.controls.insertImage.exec.apply(self);
 						});
 					} else {
 						console.error("$.wysiwyg.controls.image not defined. You need to include wysiwyg.image.js file");
@@ -213,7 +213,7 @@
 						$.wysiwyg.controls.table(this);
 					} else if ($.wysiwyg.autoload) {
 						$.wysiwyg.autoload.control("wysiwyg.table.js", function () {
-							self.controls.insertTable.exec();
+							self.controls.insertTable.exec.apply(self);
 						});
 					} else {
 						console.error("$.wysiwyg.controls.table not defined. You need to include wysiwyg.table.js file");
