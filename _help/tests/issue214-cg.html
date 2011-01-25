@@ -28,7 +28,8 @@
       $('#shower').click(function(e)
       {
         e.preventDefault();
-        alert($('.wysiwyg').wysiwyg('getContent'));
+        var content = $.wysiwyg.utils.encodeEntities($('#wysiwyg').wysiwyg('getContent'));
+        alert($('#wysiwyg').wysiwyg('getContent') + "\n" + content);
       });
   });
   </script>
