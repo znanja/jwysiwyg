@@ -1204,7 +1204,11 @@
 			}
 
 			if (self.initialContent.length === 0) {
-				self.setContent(self.options.initialContent);
+				if ("function" === typeof (self.options.initialContent)) {
+					self.setContent(self.options.initialContent());
+				} else {
+					self.setContent(self.options.initialContent);
+				}
 			}
 
 			$.each(self.options.events, function (key, handler) {
