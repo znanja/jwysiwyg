@@ -61,11 +61,21 @@ $.wysiwyg.controls.colorpicker = {
 						var color = $('input[name="color"]', dialog.data).val();
 						self.color.fore.prev = color;
 						self.addColorToPalette("fore", color);
+
+						if ($.browser.msie) {
+							Wysiwyg.ui.focusEditor();
+						}
+
 						Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 						$.modal.close();
 					});
 					$("input:reset", dialog.data).click(function(e) {
 						e.preventDefault();
+
+						if ($.browser.msie) {
+							Wysiwyg.ui.focusEditor();
+						}
+
 						$.modal.close();
 					});
 				},
@@ -93,11 +103,21 @@ $.wysiwyg.controls.colorpicker = {
 						var color = $('input[name="color"]', dialog).val();
 						self.color.fore.prev = color;
 						self.addColorToPalette("fore", color);
+
+						if ($.browser.msie) {
+							Wysiwyg.ui.focusEditor();
+						}
+
 						Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 						$(dialog).dialog("close");
 					});
 					$("input:reset", elements).click(function(e) {
 						e.preventDefault();
+
+						if ($.browser.msie) {
+							Wysiwyg.ui.focusEditor();
+						}
+
 						$(dialog).dialog("close");
 					});
 				},
@@ -122,11 +142,22 @@ $.wysiwyg.controls.colorpicker = {
 					var color = $('input[name="color"]', elements).val();
 					self.color.fore.prev = color;
 					self.addColorToPalette("fore", color);
+
+					if ($.browser.msie) {
+						Wysiwyg.ui.focusEditor();
+					}
+
 					Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
+
 					$(elements).remove();
 				});
 				$("input:reset", elements).click(function(event) {
 					event.preventDefault();
+
+					if ($.browser.msie) {
+						Wysiwyg.ui.focusEditor();
+					}
+
 					$(elements).remove();
 				});
 				$("body").append(elements);

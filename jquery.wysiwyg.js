@@ -1196,9 +1196,15 @@
 			});
 
 			// restores selection properly on focus
-			$(self.editorDoc).bind("blur.wysiwyg", function () {
-				self.savedRange = self.getInternalRange();
-			});
+			if ($.browser.msie) {
+				$(self.editorDoc).bind("focusout.wysiwyg", function () {
+					self.savedRange = self.getInternalRange();
+				});
+			} else {
+				$(self.editorDoc).bind("blur.wysiwyg", function () {
+					self.savedRange = self.getInternalRange();
+				});
+			}
 
 			$(self.editorDoc.body).addClass("wysiwyg");
 			if (self.options.events && self.options.events.save) {
