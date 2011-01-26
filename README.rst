@@ -269,6 +269,11 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
             // If false, this button will be hidden.
             visible: { true | false },
             
+            // In toolbar there are groups of controls. At the end of each group
+            // is placed an auto separator.
+            // Set which group to assign or create a new group with unique number.
+            groupIndex: { number },
+            
             // Tags to use to wrap the selected text when this control is
             // triggered.
             tags: ['b', 'strong'],
@@ -285,6 +290,23 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
             // key is provided, CSS classes/tags will not be applied, and
             // any built-in functionality will not be triggered.
             exec: function() { ... },
+            
+            // Hotkeys binds on keydown event
+            hotkey: {
+            	"alt":   1 | 0,
+            	"ctrl":  1 | 0,
+            	"shift": 1 | 0,
+            	"key":   { event.keyCode }
+            },
+            
+            // Tooltip
+            tooltip: { string },
+            
+            // Path to icon
+            icon: { string },
+            
+            // Automatically set when custom control is used
+            custom: { true | false }
         }
     
     If you wish to override the default behavior of built-in controls, you can
