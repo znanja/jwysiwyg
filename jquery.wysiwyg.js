@@ -37,7 +37,8 @@
 				css: {
 					fontWeight: "bold"
 				},
-				tooltip: "Bold"
+				tooltip: "Bold",
+				hotkey: {"ctrl": 1, "key": 66}
 			},
 
 			copy: {
@@ -237,7 +238,8 @@
 				css: {
 					fontStyle: "italic"
 				},
-				tooltip: "Italic"
+				tooltip: "Italic",
+				hotkey: {"ctrl": 1, "key": 73}
 			},
 
 			justifyCenter: {
@@ -365,7 +367,8 @@
 				css: {
 					textDecoration: "underline"
 				},
-				tooltip: "Underline"
+				tooltip: "Underline",
+				hotkey: {"ctrl": 1, "key": 85}
 			},
 
 			undo: {
@@ -410,6 +413,7 @@
 			"custom",
 			"exec",
 			"groupIndex",
+			"hotkey",
 			"icon",
 			"tags",
 			"tooltip",
@@ -1115,23 +1119,40 @@
 
 			if (!$.browser.msie) {
 				$(self.editorDoc).keydown(function (event) {
+					var controlName, cmd, args, fn;
+
 					/* Meta for Macs. tom@punkave.com */
 					if (event.ctrlKey || event.metaKey) {
-						switch (event.keyCode) {
-						case 66:
-							// Ctrl + B
-							this.execCommand("Bold", false, false);
-							return false;
+						for (controlName in self.controls) {
+							if (self.controls[controlName].hotkey && self.controls[controlName].hotkey.ctrl) {
+								if (event.keyCode === self.controls[controlName].hotkey.key) {
 
-						case 73:
-							// Ctrl + I
-							this.execCommand("Italic", false, false);
-							return false;
+									cmd		= self.controls[controlName].command || controlName;
+									args	= self.controls[controlName]["arguments"] || "";
+									fn		= self.controls[controlName].exec;
 
-						case 85:
-							// Ctrl + U
-							this.execCommand("Underline", false, false);
-							return false;
+									// code from this.ui.appendMenu
+									if (fn) {
+										fn.apply(self);
+									} else {
+										self.ui.focus();
+										self.ui.withoutCss();
+										// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
+										// in Firefox untrusted JavaScript is not allowed to access the clipboard
+										try {
+											self.editorDoc.execCommand(cmd, false, args);
+										} catch (e) {
+											console.error(e);
+										}
+									}
+									if (self.options.autoSave) {
+										self.saveContent();
+									}
+									// end
+
+									return false;
+								}
+							}
 						}
 					}
 
