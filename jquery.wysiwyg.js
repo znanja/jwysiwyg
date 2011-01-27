@@ -1323,11 +1323,13 @@
 		};
 
 		this.removeFormat = function () {
+                        var self = this;
 			if ($.browser.msie) {
 				this.ui.focus();
 			}
-
-//			this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
+                        if(self.options.removeHeadings) {
+  			        this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
+  			}
 			this.editorDoc.execCommand("removeFormat", false, null);
 			this.editorDoc.execCommand("unlink", false, null);
 			
