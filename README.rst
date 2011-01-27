@@ -220,6 +220,9 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     A boolean. Depends on **jquery.ui.resizable**. If ``false`` the editor will
     not be resizeable.
 
+``removeHeadings``
+    A boolean. Controls weather the removeFormat function will remove headings. 
+
 ``rmUnusedControls``
     A boolean. If ``true``, the editor will remove all controls which are not
     mentioned in ``controls`` option.
