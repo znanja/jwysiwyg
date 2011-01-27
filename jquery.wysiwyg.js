@@ -1053,7 +1053,7 @@
 				$form.bind("submit.wysiwyg", function() { self.autoSaveFunction(); });
 			}
 
-			$form.bind("reset.wysiwyg", self.resetFunction);
+			$form.bind("reset.wysiwyg", function() { self.resetFunction(); });
 		};
 
 		this.ui.initFrame = function () {
