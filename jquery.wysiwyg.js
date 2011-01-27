@@ -1050,7 +1050,7 @@
 			}
 
 			if (this.options.autoSave) {
-				$form.bind("submit.wysiwyg", this.autoSaveFunction);
+				$form.bind("submit.wysiwyg", function() { this.autoSaveFunction });
 			}
 
 			$form.bind("reset.wysiwyg", self.resetFunction);
