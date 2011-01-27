@@ -197,6 +197,9 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     A bool or string. If ``false`` then no internationalization, otherwise set
     to language (ex. ``ru``)
 
+``iFrameClass``
+    A string, that specify ``class`` attribute of iframe element
+
 ``initialContent``
     A string. Default ``<p>Initial Content</p>``
 
