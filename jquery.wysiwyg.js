@@ -398,6 +398,7 @@
 				nonSelection: "Select the text you wish to link"
 			},
 			panelHtml: '<ul role="menu" class="panel"></ul>',
+			removeHeadings: false,
 			resizeOptions: false,
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
@@ -1050,10 +1051,10 @@
 			}
 
 			if (this.options.autoSave) {
-				$form.bind("submit.wysiwyg", function() { self.autoSaveFunction(); });
+				$form.bind("submit.wysiwyg", function () { self.autoSaveFunction(); });
 			}
 
-			$form.bind("reset.wysiwyg", function() { self.resetFunction(); });
+			$form.bind("reset.wysiwyg", function () { self.resetFunction(); });
 		};
 
 		this.ui.initFrame = function () {
@@ -1323,13 +1324,14 @@
 		};
 
 		this.removeFormat = function () {
-                        var self = this;
 			if ($.browser.msie) {
 				this.ui.focus();
 			}
-                        if(self.options.removeHeadings) {
-  			        this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
-  			}
+
+			if (this.options.removeHeadings) {
+				this.editorDoc.execCommand("formatBlock", false, "<p>"); // remove headings
+			}
+
 			this.editorDoc.execCommand("removeFormat", false, null);
 			this.editorDoc.execCommand("unlink", false, null);
 			
