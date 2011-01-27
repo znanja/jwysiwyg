@@ -221,7 +221,8 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     not be resizeable.
 
 ``removeHeadings``
-    A boolean. Controls weather the removeFormat function will remove headings. 
+    A boolean. If ``true``, the editor will remove also headings when remove format 
+    is used. Otherwise headings will not be removed. Default is ``false``.
 
 ``rmUnusedControls``
     A boolean. If ``true``, the editor will remove all controls which are not
