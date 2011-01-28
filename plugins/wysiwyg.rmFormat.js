@@ -28,6 +28,9 @@ var rmFormat = {
 		// replace h1-h6 with p
 		if (this.defaults.rules.heading) {
 			if (node.nodeName.toLowerCase().match(/^h[1-6]$/)) {
+				// in chromium change this to
+				// $(node).replaceWith($('<p/>').html(node.innerHTML));
+				// to except DOM error: also try in other browsers
 				$(node).replaceWith($('<p/>').html($(node).contents()));
 
 				return true;
