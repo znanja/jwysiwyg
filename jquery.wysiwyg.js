@@ -184,7 +184,7 @@
 					var self = this;
 
 					if ($.wysiwyg.controls && $.wysiwyg.controls.image) {
-						$.wysiwyg.controls.image(this);
+						$.wysiwyg.controls.image.init(this);
 					} else if ($.wysiwyg.autoload) {
 						$.wysiwyg.autoload.control("wysiwyg.image.js", function () {
 							self.controls.insertImage.exec.apply(self);
