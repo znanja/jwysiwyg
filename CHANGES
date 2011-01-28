@@ -1,5 +1,10 @@
 == master (not tagged yet) ==
 
+* Proper dialog focus with IE7/8 - frost-nczr4, academo
+* Closure for autoSaveFunction - mbj
+* New options - mbj, frost-nczr4
+* Encode entities - alecgorge
+* Link control - academo
 * Fixes for Internet Explorer - frost-nczr4
 * Spanish locale for jwysiwyg - academo
 
