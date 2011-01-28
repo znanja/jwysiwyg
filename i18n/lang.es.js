@@ -3,7 +3,7 @@
  * 
  * Depends on jWYSIWYG, $.wysiwyg.i18n
  *
- * By: Esteban Beltran <academo@gmail.com>
+ * By: Esteban Beltran (academo) <sergies@gmail.com>
  *
  */
 (function($) {
