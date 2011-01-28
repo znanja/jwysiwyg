@@ -634,7 +634,7 @@
 					}
 
 					this.blur();
-					self.ui.focusEditor();
+					self.ui.returnRange();
 					self.ui.focus();
 				})
 				.appendTo(self.ui.panel);
@@ -675,7 +675,7 @@
 					}
 
 					this.blur();
-					self.ui.focusEditor();
+					self.ui.returnRange();
 					self.ui.focus();
 
 					self.triggerCallback(name);
@@ -850,7 +850,7 @@
 			return self;
 		};
 
-		this.ui.focusEditor = function () {
+		this.ui.returnRange = function () {
 			var self = this.self, sel;
 
 			if (self.savedRange !== null) {
@@ -1391,7 +1391,7 @@
 		this.triggerCallback = function (name) {
 			$(window).trigger("trigger-" + name + ".wysiwyg", [this]);
 			$(".custom-command-" + name, this.ui.panel).blur();
-			this.ui.focusEditor();
+			this.ui.returnRange();
 		};
 
 		this.ui.withoutCss = function () {

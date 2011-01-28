@@ -64,7 +64,7 @@
 							self.addColorToPalette("fore", color);
 
 							if ($.browser.msie) {
-								Wysiwyg.ui.focusEditor();
+								Wysiwyg.ui.returnRange();
 							}
 
 							Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
@@ -74,7 +74,7 @@
 							e.preventDefault();
 
 							if ($.browser.msie) {
-								Wysiwyg.ui.focusEditor();
+								Wysiwyg.ui.returnRange();
 							}
 
 							$.modal.close();
@@ -105,7 +105,7 @@
 							self.addColorToPalette("fore", color);
 
 							if ($.browser.msie) {
-								Wysiwyg.ui.focusEditor();
+								Wysiwyg.ui.returnRange();
 							}
 
 							Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
@@ -115,7 +115,7 @@
 							e.preventDefault();
 
 							if ($.browser.msie) {
-								Wysiwyg.ui.focusEditor();
+								Wysiwyg.ui.returnRange();
 							}
 
 							$(dialog).dialog("close");
@@ -144,7 +144,7 @@
 						self.addColorToPalette("fore", color);
 
 						if ($.browser.msie) {
-							Wysiwyg.ui.focusEditor();
+							Wysiwyg.ui.returnRange();
 						}
 
 						Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
@@ -155,7 +155,7 @@
 						event.preventDefault();
 
 						if ($.browser.msie) {
-							Wysiwyg.ui.focusEditor();
+							Wysiwyg.ui.returnRange();
 						}
 
 						$(elements).remove();
