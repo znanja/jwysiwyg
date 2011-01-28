@@ -146,14 +146,15 @@
 				$(img.self).attr("src", szURL)
 					.attr("title", title)
 					.attr("alt", description);
-				if (width) {
+
+				if (width.toString().match(/^[0-9]+(px|%)?$/)) {
 					$(img.self).css("width", width);
 				}
 				else {
 					$(img.self).css("width", "");
 				}
 
-				if (height) {
+				if (height.toString().match(/^[0-9]+(px|%)?$/)) {
 					$(img.self).css("height", height);
 				}
 				else {
