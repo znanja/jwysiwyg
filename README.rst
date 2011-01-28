@@ -387,6 +387,10 @@ Built-in editor functions can be triggered manually with the
 * addControl(name, settings)
 * clear
 * createLink(szURL)
+    .. note::
+
+        Include file wysiwyg.link.js to provide this function
+
 * destroy
 * document
 * getContent
