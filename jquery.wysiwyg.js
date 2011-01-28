@@ -628,11 +628,14 @@
 							console.error(e);
 						}
 					}
+
 					if (self.options.autoSave) {
 						self.saveContent();
 					}
+
 					this.blur();
 					self.ui.focusEditor();
+					self.ui.focus();
 				})
 				.appendTo(self.ui.panel);
 		};
@@ -670,8 +673,11 @@
 					if (self.options.autoSave) {
 						self.saveContent();
 					}
+
 					this.blur();
 					self.ui.focusEditor();
+					self.ui.focus();
+
 					self.triggerCallback(name);
 				})
 				.appendTo(self.ui.panel);
@@ -1239,7 +1245,10 @@
 
 			// restores selection properly on focus
 			if ($.browser.msie) {
-				$(self.editorDoc).bind("focusout.wysiwyg", function () {
+				// Event chain: beforedeactivate => focusout => blur.
+				// Focusout & blur fired too late to handle internalRange() in dialogs.
+				// When clicked on input boxes both got range = null
+				$(self.editorDoc).bind("beforedeactivate.wysiwyg", function () {
 					self.savedRange = self.getInternalRange();
 				});
 			} else {
