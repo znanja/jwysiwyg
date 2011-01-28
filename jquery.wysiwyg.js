@@ -630,7 +630,7 @@
 					}
 
 					if (self.options.autoSave) {
-						self.saveContent();
+						self.autoSaveFunction();
 					}
 
 					this.blur();
@@ -671,7 +671,7 @@
 					}
 
 					if (self.options.autoSave) {
-						self.saveContent();
+						self.autoSaveFunction();
 					}
 
 					this.blur();
@@ -1066,7 +1066,6 @@
 		this.ui.initFrame = function () {
 			var self = this.self,
 				stylesheet,
-				autoSaveHandler,
 				growHandler,
 				saveHandler;
 
@@ -1153,7 +1152,7 @@
 										}
 									}
 									if (self.options.autoSave) {
-										self.saveContent();
+										self.autoSaveFunction();
 									}
 									// end
 
@@ -1181,15 +1180,10 @@
 			}
 
 			if (self.options.autoSave) {
-				/**
-				 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=11
-				 */
-				autoSaveHandler = function () {
-					self.saveContent();
-				};
-
-				$(self.editorDoc).keydown(autoSaveHandler).keyup(autoSaveHandler).mousedown(autoSaveHandler)
-					.bind($.support.noCloneEvent ? "input.wysiwyg" : "paste.wysiwyg", autoSaveHandler);
+				$(self.editorDoc).keydown(function () { self.autoSaveFunction(); })
+					.keyup(function () { self.autoSaveFunction(); })
+					.mousedown(function () { self.autoSaveFunction(); })
+					.bind($.support.noCloneEvent ? "input.wysiwyg" : "paste.wysiwyg", function () { self.autoSaveFunction(); });
 			}
 
 			if (self.options.autoGrow) {
