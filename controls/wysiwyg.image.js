@@ -139,8 +139,9 @@
 				description = $('input[name="description"]', form).val(),
 				width = $('input[name="width"]', form).val(),
 				height = $('input[name="height"]', form).val(),
-				style = [];
-	
+				style = [],
+				found;
+
 			if (img.self) {
 				// to preserve all img attributes
 				$(img.self).attr("src", szURL)
@@ -149,29 +150,38 @@
 
 				if (width.toString().match(/^[0-9]+(px|%)?$/)) {
 					$(img.self).css("width", width);
-				}
-				else {
+				} else {
 					$(img.self).css("width", "");
 				}
 
 				if (height.toString().match(/^[0-9]+(px|%)?$/)) {
 					$(img.self).css("height", height);
-				}
-				else {
+				} else {
 					$(img.self).css("height", "");
 				}
 			} else {
-				if (width) {
-					style.push("width: " + width + "px;");
+				found = width.toString().match(/^[0-9]+(px|%)?$/);
+				if (found) {
+					if (found[1]) {
+						style.push("width: " + width + ";");
+					} else {
+						style.push("width: " + width + "px;");
+					}
 				}
-				if (height) {
-					style.push("height: " + height + "px;");
+
+				found = height.toString().match(/^[0-9]+(px|%)?$/);
+				if (found) {
+					if (found[1]) {
+						style.push("height: " + height + ";");
+					} else {
+						style.push("height: " + height + "px;");
+					}
 				}
-	
+
 				if (style.length > 0) {
 					style = ' style="' + style.join(" ") + '"';
 				}
-	
+
 				image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "'" + style + "/>";
 				Wysiwyg.insertHtml(image);
 			}
