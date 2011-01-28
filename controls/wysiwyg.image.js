@@ -37,7 +37,7 @@
 				elements,
 				dialog,
 				szURL;
-	
+
 			if (img.self) {
 				img.src = img.self.src ? img.self.src : "";
 				img.alt = img.self.alt ? img.self.alt : "";
@@ -45,49 +45,17 @@
 				img.width = img.self.width ? img.self.width : "";
 				img.height = img.self.height ? img.self.height : "";
 			}
-	
+
 			if ($.modal) {
 				elements = $(formImageHtml);
 				elements = self.makeForm(elements, img);
-	
+
 				$.modal(elements, {
 					onShow: function (dialog) {
 						$("input:submit", dialog.data).click(function (e) {
 							e.preventDefault();
-							var image,
-								szURL = $('input[name="src"]', dialog.data).val(),
-								title = $('input[name="imgtitle"]', dialog.data).val(),
-								description = $('input[name="description"]', dialog.data).val(),
-								width = $('input[name="width"]', dialog).val(),
-								height = $('input[name="height"]', dialog).val(),
-								style = [];
-	
-							if (img.self) {
-								// to preserve all img attributes
-								$(img.self).attr("src", szURL)
-									.attr("title", title)
-									.attr("alt", description);
-								if (width) {
-									$(img.self).attr("width", width);
-								}
-								if (height) {
-									$(img.self).attr("height", height);
-								}
-							} else {
-								if (width) {
-									style.push("width: " + width + "px;");
-								}
-								if (height) {
-									style.push("height: " + height + "px;");
-								}
-								
-								if (style.length > 0) {
-									style = ' style="' + style.join(" ") + '"';
-								}
-		
-								image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "'" + style + "/>";
-								Wysiwyg.insertHtml(image);
-							}
+
+							self.processInsert(dialog, Wysiwyg, img);
 
 							$.modal.close();
 						});
@@ -103,7 +71,7 @@
 			} else if ($.fn.dialog) {
 				elements = $(formImageHtml);
 				elements = self.makeForm(elements, img);
-	
+
 				dialog = elements.appendTo("body");
 				dialog.dialog({
 					modal: true,
@@ -112,40 +80,8 @@
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
 							e.preventDefault();
-							var image,
-								szURL = $('input[name="src"]', dialog).val(),
-								title = $('input[name="imgtitle"]', dialog).val(),
-								description = $('input[name="description"]', dialog).val(),
-								width = $('input[name="width"]', dialog).val(),
-								height = $('input[name="height"]', dialog).val(),
-								style = [];
-	
-							if (img.self) {
-								// to preserve all img attributes
-								$(img.self).attr("src", szURL)
-									.attr("title", title)
-									.attr("alt", description);
-								if (width) {
-									$(img.self).attr("width", width);
-								}
-								if (height) {
-									$(img.self).attr("height", height);
-								}
-							} else {
-								if (width) {
-									style.push("width: " + width + "px;");
-								}
-								if (height) {
-									style.push("height: " + height + "px;");
-								}
-								
-								if (style.length > 0) {
-									style = ' style="' + style.join(" ") + '"';
-								}
-		
-								image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "'" + style + "/>";
-								Wysiwyg.insertHtml(image);
-							}
+
+							self.processInsert(dialog, Wysiwyg, img);
 
 							$(dialog).dialog("close");
 						});
@@ -171,64 +107,75 @@
 							"margin-left": -1 * Math.round(Wysiwyg.defaults.formWidth / 2)})
 						.html(formImageHtml);
 					elements = self.makeForm(elements, img);
-	
+
 					$("input:submit", elements).click(function (event) {
 						event.preventDefault();
-	
-						var image,
-							szURL = $('input[name="src"]', elements).val(),
-							title = $('input[name="imgtitle"]', elements).val(),
-							description = $('input[name="description"]', elements).val(),
-							width = $('input[name="width"]', elements).val(),
-							height = $('input[name="height"]', elements).val(),
-							style = [];
-	
-						if (img.self) {
-							// to preserve all img attributes
-							$(img.self).attr("src", szURL)
-								.attr("title", title)
-								.attr("alt", description);
-							if (width) {
-								$(img.self).attr("width", width);
-							}
-							if (height) {
-								$(img.self).attr("height", height);
-							}
-						} else {
-							if (width) {
-								style.push("width: " + width + "px;");
-							}
-							if (height) {
-								style.push("height: " + height + "px;");
-							}
-							
-							if (style.length > 0) {
-								style = ' style="' + style.join(" ") + '"';
-							}
-	
-							image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "'" + style + "/>";
-							Wysiwyg.insertHtml(image);
-						}
-						
+
+						self.processInsert(elements, Wysiwyg, img);
+
 						$(elements).remove();
 					});
 					$("input:reset", elements).click(function (event) {
 						event.preventDefault();
-	
+
 						if ($.browser.msie) {
 							Wysiwyg.ui.returnRange();
 						}
-	
+
 						$(elements).remove();
 					});
-					
+
 					$("body").append(elements);
 				}
 			}
-	
+
 			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
 		},
-		
+
+		processInsert: function (form, Wysiwyg, img) {
+			var image,
+				szURL = $('input[name="src"]', form).val(),
+				title = $('input[name="imgtitle"]', form).val(),
+				description = $('input[name="description"]', form).val(),
+				width = $('input[name="width"]', form).val(),
+				height = $('input[name="height"]', form).val(),
+				style = [];
+	
+			if (img.self) {
+				// to preserve all img attributes
+				$(img.self).attr("src", szURL)
+					.attr("title", title)
+					.attr("alt", description);
+				if (width) {
+					$(img.self).css("width", width);
+				}
+				else {
+					$(img.self).css("width", "");
+				}
+
+				if (height) {
+					$(img.self).css("height", height);
+				}
+				else {
+					$(img.self).css("height", "");
+				}
+			} else {
+				if (width) {
+					style.push("width: " + width + "px;");
+				}
+				if (height) {
+					style.push("height: " + height + "px;");
+				}
+	
+				if (style.length > 0) {
+					style = ' style="' + style.join(" ") + '"';
+				}
+	
+				image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "'" + style + "/>";
+				Wysiwyg.insertHtml(image);
+			}
+		},
+
 		makeForm: function (form, img) {
 			form.find("input[name=src]").val(img.src);
 			form.find("input[name=imgtitle]").val(img.title);
