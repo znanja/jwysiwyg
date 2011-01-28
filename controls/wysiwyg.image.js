@@ -1,6 +1,6 @@
 /**
  * Controls: Image plugin
- * 
+ *
  * Depends on jWYSIWYG
  */
 (function ($) {

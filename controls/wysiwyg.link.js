@@ -1,10 +1,10 @@
 /**
-* Controls: Link plugin
-*
-* Depends on jWYSIWYG
-*
-* By: Esteban Beltran (academo) <sergies@gmail.com>
-*/
+ * Controls: Link plugin
+ *
+ * Depends on jWYSIWYG
+ *
+ * By: Esteban Beltran (academo) <sergies@gmail.com>
+ */
 (function ($) {
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.image.js depends on $.wysiwyg";
@@ -19,9 +19,11 @@
 	*/
 	$.wysiwyg.controls.link = function (Wysiwyg) {
 		var self = Wysiwyg, elements, dialog, szURL, a, selection,
-		formLinkHtml='<form class="wysiwyg"><fieldset><legend>Insert Link</legend><label>Link URL: <input type="text" name="linkhref" value=""/></label><label>Link Title: <input type="text" name="linktitle" value=""/></label><label>Link Target: <input type="text" name="linktarget" value=""/></label><input type="submit" class="button" value="Insert Link"/><input type="reset" value="Cancel"/></fieldset></form>',
-
-
+			formLinkHtml = '<form class="wysiwyg"><fieldset><legend>Insert Link</legend>' + 
+			'<label>Link URL: <input type="text" name="linkhref" value=""/></label>' +
+			'<label>Link Title: <input type="text" name="linktitle" value=""/></label>' +
+			'<label>Link Target: <input type="text" name="linktarget" value=""/></label>' + 
+			'<input type="submit" class="button" value="Insert Link"/><input type="reset" value="Cancel"/></fieldset></form>';
 
 		a = {
 			self: self.dom.getElement("a"), // link to element node
@@ -34,25 +36,7 @@
 			a.href = a.self.href ? a.self.href : "";
 			a.title = a.self.title ? a.self.title : "";
 			a.target = a.self.target ? a.self.target : "";
-		}/*else{
-		selection = self.getInternalRange();
-		if (selection.toString) {
-		selection = selection.toString();
-		} else if (selection.text) {	// IE
-		selection = selection.text;
 		}
-		if (selection && selection.length > 0) {
-
-		} else if (self.options.messages.nonSelection) {
-		window.alert(self.options.messages.nonSelection);
-		return;
-		}
-		}*/
-
-		//alert("jo");
-		//$("#log").append("inside dialog<br>");
-
-
 
 		if ($.fn.dialog) {
 			elements = $(formLinkHtml);
@@ -62,7 +46,7 @@
 
 			if ($.browser.msie) {
 				dialog = elements.appendTo(Wysiwyg.editorDoc.body);
-			}else{
+			} else {
 				dialog = elements.appendTo("body");
 			}
 
@@ -74,9 +58,9 @@
 					$("input:submit", dialog).click(function (e) {
 						e.preventDefault();
 						var link,
-						szURL = $('input[name="linkhref"]', dialog).val(),
-						title = $('input[name="linktitle"]', dialog).val(),
-						target = $('input[name="linktarget"]', dialog).val();
+							szURL = $('input[name="linkhref"]', dialog).val(),
+							title = $('input[name="linktitle"]', dialog).val(),
+							target = $('input[name="linktarget"]', dialog).val();
 
 						if (a.self) {
 							// to preserve all link attributes
@@ -91,14 +75,14 @@
 
 							//Do new link element
 							selection = self.getInternalRange();
-							
+
 
 							if (selection.toString) {
 								selection = selection.toString();
 							} else if (selection.text) {	// IE
 								selection = selection.text;
 							}
-							
+
 							if (selection && selection.length > 0) {
 								if ($.browser.msie) {
 									self.ui.focus();
@@ -125,7 +109,7 @@
 					dialog.dialog("destroy");
 				}
 			});
-		}else{
+		} else {
 			if (a.self) {
 				szURL = window.prompt("URL", a.href);
 
