@@ -29,6 +29,8 @@
 			global_i++;
 
 			$(this).wysiwyg({
+				i18n: "en",
+
 				controls: {
 					html: {visible: true},
 					colorpicker: {
@@ -63,7 +65,7 @@
 						tooltip: "Fullscreen"
 					}
 				},
-				i18n: "en",
+
 				initialContent: function() {
 					var $get = [];
 					var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split("&amp;");
@@ -99,9 +101,12 @@ textarea { width: 400px; height: 100px; }
 	<h2>Example: Test Plugins &ndash; Image, Table, Colorpicker, i18n, autoload</h2>
 
 	<label>Choose language: <select name="i18n">
-		<option value="en">English</option>
+		<option value="cs">Čeština</option>
+		<option value="en" selected="selected">English</option>
 		<option value="es">Español</option>
 		<option value="fr">Français</option>
+		<option value="it">Italiano</option>
+		<option value="pt_br">Português Brasileiro</option>
 		<option value="ru">Русский</option>
 		<option value="se">Svenska</option>
 		<option value="sl">Slovenščina</option>
