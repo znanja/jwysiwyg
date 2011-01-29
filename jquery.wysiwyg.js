@@ -375,6 +375,7 @@
 			panelHtml: '<ul role="menu" class="panel"></ul>',
 			removeHeadings: false,
 			resizeOptions: false,
+			rmMsWordMarkup: false,
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			tableFiller: "Lorem ipsum"
@@ -1154,6 +1155,21 @@
 				});
 			}
 
+			if (self.options.rmMsWordMarkup) {
+				$(self.editorDoc).bind("keyup.wysiwyg", function (event) {
+					if (event.ctrlKey || event.metaKey) {
+						// CTRL + V (paste)
+						if (86 === event.keyCode) {
+							if (self.options.rmMsWordMarkup) {
+								if ($.wysiwyg.rmFormat) {
+									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: true }});
+								}
+							}
+						}
+					}
+				});
+			}
+
 			if (self.options.autoSave) {
 				$(self.editorDoc).keydown(function () { self.autoSaveFunction(); })
 					.keyup(function () { self.autoSaveFunction(); })
@@ -1344,6 +1360,7 @@
 				}
 
 				$(this.original).val(content);
+
 				if (this.options.events && this.options.events.save) {
 					this.options.events.save.call(this);
 				}
