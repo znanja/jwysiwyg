@@ -14,7 +14,7 @@ if (undefined === $.wysiwyg.i18n) {
 	throw "lang.it.js depends on $.wysiwyg.i18n";
 }
 
-$.wysiwyg.i18n.lang.fr = {
+$.wysiwyg.i18n.lang.it = {
 "Bold": "Grassetto",
 "Copy": "Copia",
 "Create link": "Crea collegamento",
