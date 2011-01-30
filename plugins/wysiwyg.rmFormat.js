@@ -113,9 +113,9 @@
 			text = text.replace(/<title>[\s\S]*?<\/title>/g, "");
 			text = text.replace(/<style(?:\s[^>]*)?>[\s\S]*?<\/style>/gm, "");
 			text = text.replace(/<w:([^\s>]+)(?:\s[^\/]+)?\/>/g, "");
-			text = text.replace(/<w:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/w:\1>/g, "");
+			text = text.replace(/<w:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/w:\1>/gm, "");
 			text = text.replace(/<m:([^\s>]+)(?:\s[^\/]+)?\/>/g, "");
-			text = text.replace(/<m:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/m:\1>/g, "");
+			text = text.replace(/<m:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/m:\1>/gm, "");
 			text = text.replace(/^[\s\n]+/gm, "");
 
 			return text;
