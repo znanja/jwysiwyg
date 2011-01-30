@@ -17,12 +17,12 @@
 	$.wysiwyg.i18n.lang.cs = {
 		controls: {
 			"Bold": "Tučné",
-			"Colorpicker": "",
+			"Colorpicker": "Výběr barvy",
 			"Copy": "Kopírovat",
 			"Create link": "Vytvořit odkaz",
 			"Cut": "Vyjmout",
 			"Decrease font size": "Zmenšit velikost písma",
-			"Fullscreen": "",
+			"Fullscreen": "Celá obrazovka",
 			"Header 1": "Nadpis 1",
 			"Header 2": "Nadpis 2",
 			"Header 3": "Nadpis 3",
