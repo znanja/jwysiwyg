@@ -17,26 +17,51 @@
 	 */
 	$.wysiwyg.controls.image = {
 		init: function (Wysiwyg) {
-			var self = this,
-				formImageHtml = '<form class="wysiwyg"><fieldset><legend>Insert Image</legend>' +
-					'<label>Preview: <img src="" alt="preview" style="float: left; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
-					'<label>URL: <input type="text" name="src" value=""/></label>' +
-					'<label>Title: <input type="text" name="imgtitle" value=""/></label>' +
-					'<label>Description: <input type="text" name="description" value=""/></label>' +
-					'<label>Width x Height: <input type="text" name="width" value="" class="width"/> x <input type="text" name="height" value="" class="height"/></label>' +
-					'<label>Natural W x H: <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
-					'<input type="text" name="naturalHeight" value="" class="height" disabled="disabled"/></label>' +
-					'<input type="submit" class="button" value="Insert Image"/> ' +
-					'<input type="reset" value="Cancel"/></fieldset></form>',
+			var self = this, elements, dialog, szURL, formImageHtml,
+				formTextLegend, formTextPreview, formTextUrl, formTextTitle,
+				formTextDescription, formTextWidth, formTextHeight, formTextOriginal,
+				formTextSubmit, formTextReset,
 				img = {
 					alt: "",
 					self: Wysiwyg.dom.getElement("img"), // link to element node
 					src: "http://",
 					title: ""
-				},
-				elements,
-				dialog,
-				szURL;
+				};
+
+			formTextLegend  = "Insert Image";
+			formTextPreview = "Preview";
+			formTextUrl     = "URL";
+			formTextTitle   = "Title";
+			formTextDescription = "Description";
+			formTextWidth   = "Width";
+			formTextHeight  = "Height";
+			formTextOriginal = "Original W x H";
+			formTextSubmit  = "Insert Image";
+			formTextReset   = "Cancel";
+
+			if ($.wysiwyg.i18n) {
+				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
+				formTextPreview = $.wysiwyg.i18n.t(formTextPreview, "dialogs");
+				formTextUrl = $.wysiwyg.i18n.t(formTextUrl, "dialogs");
+				formTextTitle = $.wysiwyg.i18n.t(formTextTitle, "dialogs");
+				formTextDescription = $.wysiwyg.i18n.t(formTextDescription, "dialogs");
+				formTextWidth = $.wysiwyg.i18n.t(formTextWidth, "dialogs");
+				formTextHeight = $.wysiwyg.i18n.t(formTextHeight, "dialogs");
+				formTextOriginal = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
+				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
+				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
+			}
+
+			formImageHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
+				'<label>' + formTextPreview + ': <img src="" alt="' + formTextPreview + '" style="float: left; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
+				'<label>' + formTextUrl + ': <input type="text" name="src" value=""/></label>' +
+				'<label>' + formTextTitle + ': <input type="text" name="imgtitle" value=""/></label>' +
+				'<label>' + formTextDescription + ': <input type="text" name="description" value=""/></label>' +
+				'<label>' + formTextWidth + ' x ' + formTextHeight + ': <input type="text" name="width" value="" class="width"/> x <input type="text" name="height" value="" class="height"/></label>' +
+				'<label>' + formTextOriginal + ': <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
+				'<input type="text" name="naturalHeight" value="" class="height" disabled="disabled"/></label>' +
+				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
+				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>'
 
 			if (img.self) {
 				img.src = img.self.src ? img.self.src : "";

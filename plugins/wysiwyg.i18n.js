@@ -46,7 +46,7 @@ var i18n = {
 	translateControls: function(Wysiwyg) {
 		Wysiwyg.ui.panel.find("li").each(function() {
 			if (Wysiwyg.controls[$(this).attr("class")]) {
-				$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.controls[$(this).attr("class")]["tooltip"]));
+				$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.controls[$(this).attr("class")]["tooltip"], "controls"));
 			}
 		});
 	},
@@ -71,13 +71,13 @@ var i18n = {
 		});
 	},
 
-	t: function(phrase, lang) {
+	t: function(phrase, section, lang) {
 		if (!lang) {
 			lang = this.options.lang;
 		}
 
-		if ((lang !== this.defaults.wysiwygLang) && this.lang[lang] && this.lang[lang][phrase]) {
-			return this.lang[lang][phrase];
+		if ((lang !== this.defaults.wysiwygLang) && this.lang[lang] && this.lang[lang][section] && this.lang[lang][section][phrase]) {
+			return this.lang[lang][section][phrase];
 		}
 
 		return phrase;

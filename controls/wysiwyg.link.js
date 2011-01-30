@@ -19,11 +19,31 @@
 	*/
 	$.wysiwyg.controls.link = function (Wysiwyg) {
 		var self = Wysiwyg, elements, dialog, szURL, a, selection,
-			formLinkHtml = '<form class="wysiwyg"><fieldset><legend>Insert Link</legend>' + 
-			'<label>Link URL: <input type="text" name="linkhref" value=""/></label>' +
-			'<label>Link Title: <input type="text" name="linktitle" value=""/></label>' +
-			'<label>Link Target: <input type="text" name="linktarget" value=""/></label>' + 
-			'<input type="submit" class="button" value="Insert Link"/><input type="reset" value="Cancel"/></fieldset></form>';
+			formLinkHtml, formTextLegend, formTextUrl, formTextTitle, formTextTarget,
+			formTextSubmit, formTextReset;
+
+		formTextLegend  = "Insert Link";
+		formTextUrl     = "Link URL";
+		formTextTitle   = "Link Title";
+		formTextTarget  = "Link Target";
+		formTextSubmit  = "Insert Link";
+		formTextReset   = "Cancel";
+
+		if ($.wysiwyg.i18n) {
+			formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
+			formTextUrl    = $.wysiwyg.i18n.t(formTextUrl, "dialogs");
+			formTextTitle  = $.wysiwyg.i18n.t(formTextTitle, "dialogs");
+			formTextTarget = $.wysiwyg.i18n.t(formTextTarget, "dialogs");
+			formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
+			formTextReset  = $.wysiwyg.i18n.t(formTextReset, "dialogs");
+		}
+
+		formLinkHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' + 
+			'<label>' + formTextUrl + ': <input type="text" name="linkhref" value=""/></label>' +
+			'<label>' + formTextTitle + ': <input type="text" name="linktitle" value=""/></label>' +
+			'<label>' + formTextTarget + ': <input type="text" name="linktarget" value=""/></label>' + 
+			'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
+			'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
 		a = {
 			self: self.dom.getElement("a"), // link to element node
@@ -131,7 +151,7 @@
 						self.ui.focus();
 						self.editorDoc.execCommand("createLink", true, null);
 					} else {
-						szURL = window.prompt("URL", "http://");
+						szURL = window.prompt(formTextUrl, "http://");
 
 						if (szURL && szURL.length > 0) {
 							self.editorDoc.execCommand("unlink", false, null);

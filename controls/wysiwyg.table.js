@@ -43,11 +43,26 @@
 	 * Wysiwyg namespace: public properties and methods
 	 */
 	$.wysiwyg.controls.table = function (Wysiwyg) {
-		var self = Wysiwyg,
-			formTableHtml = '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label><br />Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
-			dialog,
-			colCount,
-			rowCount;
+		var self = Wysiwyg, dialog, colCount, rowCount, formTableHtml,
+			formTextLegend = "Insert table",
+			formTextCols   = "Count of columns",
+			formTextRows   = "Count of rows",
+			formTextSubmit = "Insert table",
+			formTextReset  = "Cancel";
+
+		if ($.wysiwyg.i18n) {
+			formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
+			formTextCols = $.wysiwyg.i18n.t(formTextCols, "dialogs");
+			formTextRows = $.wysiwyg.i18n.t(formTextRows, "dialogs");
+			formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
+			formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
+		}
+
+		formTableHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
+			'<label>' + formTextCols + ': <input type="text" name="colCount" value="3" /></label>' +
+			'<label>' + formTextRows + ': <input type="text" name="rowCount" value="3" /></label>' +
+			'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
+			'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
 		if (!Wysiwyg.insertTable) {
 			Wysiwyg.insertTable = insertTable;
@@ -98,8 +113,8 @@
 				}
 			});
 		} else {
-			colCount = prompt("Count of columns", "3");
-			rowCount = prompt("Count of rows", "3");
+			colCount = prompt(formTextCols, "3");
+			rowCount = prompt(formTextRows, "3");
 
 			self.insertTable(colCount, rowCount, self.defaults.tableFiller);
 		}

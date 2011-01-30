@@ -42,10 +42,25 @@
 		},
 
 		init: function (Wysiwyg) {
-			var self = this,
-				colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>Colorpicker</legend><ul class="palette"></ul><label>Color: <input type="text" name="color" value="#123456"/></label><div class="wheel"></div><input type="submit" class="button" value="Apply"/> <input type="reset" value="Cancel"/></fieldset></form>',
-				elements,
-				dialog;
+			var self = this, elements, dialog, colorpickerHtml,
+				formTextLegend = "Colorpicker",
+				formTextColor  = "Color",
+				formTextSubmit = "Apply",
+				formTextReset  = "Cancel"
+
+			if ($.wysiwyg.i18n) {
+				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
+				formTextColor = $.wysiwyg.i18n.t(formTextColor, "dialogs");
+				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
+				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
+			}
+
+			colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
+				'<ul class="palette"></ul>' +
+				'<label>' + formTextColor + ': <input type="text" name="color" value="#123456"/></label>' +
+				'<div class="wheel"></div>' +
+				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
+				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
 			if ($.modal) {
 				elements = $(colorpickerHtml);

@@ -6,7 +6,7 @@
  * By: Marcelo Wergles <mwergles@gmail.com>
  *
  */
-(function($) {
+(function ($) {
     if (undefined === $.wysiwyg) {
 	throw "lang.pt_br.js depends on $.wysiwyg";
     }
@@ -15,38 +15,72 @@
     }
 
     $.wysiwyg.i18n.lang.pt_br = {
-	"Bold": "Negrito",
-	"Copy": "Copiar",
-	"Create link": "Criar link",
-	"Cut": "Recortar",
-	"Decrease font size": "Diminuir o tamanho da fonte",
-	"Header 1": "Título 1",
-	"Header 2": "Título 2",
-	"Header 3": "Título 3",
-	"View source code": "Ver código fonte",
-	"Increase font size": "Aumentar o tamanho da fonte",
-	"Indent": "Aumentar recuo",
-	"Insert Horizontal Rule": "Inserir linha horizontal",
-	"Insert image": "Inserir imagem",
-	"Insert Ordered List": "Inserir numeração",
-	"Insert table": "Inserir tabela",
-	"Insert Unordered List": "Inserir marcadores",
-	"Italic": "Itálico",
-	"Justify Center": "Centralizar",
-	"Justify Full": "Justificar",
-	"Justify Left": "Alinhar à esquerda",
-	"Justify Right": "Alinhar à direita",
-	"Left to Right": "Esquerda à direita",
-	"Outdent": "Diminuir recuo",
-	"Paste": "Colar",
-	"Redo": "Refazer",
-	"Remove formatting": "Remover formatação",
-	"Right to Left": "Direita à esquerda",
-	"Strike-through": "Riscar",
-	"Subscript": "Subscrito",
-	"Superscript": "Sobrescrito",
-	"Underline": "Sublinhar",
-	"Undo": "Desfazer"
-    };
+    	controls: {
+			"Bold": "Negrito",
+			"Colorpicker": "",
+			"Copy": "Copiar",
+			"Create link": "Criar link",
+			"Cut": "Recortar",
+			"Decrease font size": "Diminuir o tamanho da fonte",
+			"Fullscreen": "",
+			"Header 1": "Título 1",
+			"Header 2": "Título 2",
+			"Header 3": "Título 3",
+			"View source code": "Ver código fonte",
+			"Increase font size": "Aumentar o tamanho da fonte",
+			"Indent": "Aumentar recuo",
+			"Insert Horizontal Rule": "Inserir linha horizontal",
+			"Insert image": "Inserir imagem",
+			"Insert Ordered List": "Inserir numeração",
+			"Insert table": "Inserir tabela",
+			"Insert Unordered List": "Inserir marcadores",
+			"Italic": "Itálico",
+			"Justify Center": "Centralizar",
+			"Justify Full": "Justificar",
+			"Justify Left": "Alinhar à esquerda",
+			"Justify Right": "Alinhar à direita",
+			"Left to Right": "Esquerda à direita",
+			"Outdent": "Diminuir recuo",
+			"Paste": "Colar",
+			"Redo": "Refazer",
+			"Remove formatting": "Remover formatação",
+			"Right to Left": "Direita à esquerda",
+			"Strike-through": "Riscar",
+			"Subscript": "Subscrito",
+			"Superscript": "Sobrescrito",
+			"Underline": "Sublinhar",
+			"Undo": "Desfazer"
+		},
 
+		dialogs: {
+			// colorpicker
+			"Colorpicker": "",
+			"Color": "",
+			"Apply": "",
+
+			// image
+			"Insert Image": "",
+			"Preview": "",
+			"URL": "",
+			"Title": "",
+			"Description": "",
+			"Width": "",
+			"Height": "",
+			"Original W x H": "",
+
+			// link
+			"Insert Link": "",
+			"Link URL": "",
+			"Link Title": "",
+			"Link Target": "",
+
+			// table
+			"Insert table": "",
+			"Count of columns": "",
+			"Count of rows": "",
+
+			// for all
+			"Cancel": ""
+		}
+    };
 })(jQuery);

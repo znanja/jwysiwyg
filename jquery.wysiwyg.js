@@ -523,7 +523,7 @@
 					} else {
 						tooltip = control.tooltip || control.command || controlName || "";
 						if ($.wysiwyg.i18n) {
-							tooltip = $.wysiwyg.i18n.t(tooltip);
+							tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
 						}
 						ui.appendMenu(
 							control.command || controlName,
