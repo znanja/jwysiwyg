@@ -82,8 +82,10 @@
 
 			if (this.originalBoundary.element.width) {
 				this.restore(Wysiwyg);
+				Wysiwyg.ui.panel.find(".fullscreen").removeClass("active");
 			} else {
 				this.stretch(Wysiwyg, options);
+				Wysiwyg.ui.panel.find(".fullscreen").addClass("active");
 			}
 		},
 
