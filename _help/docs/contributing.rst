@@ -16,13 +16,29 @@ Internationalization
 
 You can contribute in internationalization. Go under *i18n* directory and copy
 one of lang.\ **langName**\ .js file. Rename **langName** part to your language.
-Open this file, and change line
+Open this file, and change following lines
 
 .. parsed-literal::
 
-    $.wysiwyg.i18n.lang.\ **langName**\  = {
 
-to your language then translate tooltips.
+    if (undefined === $.wysiwyg) {
+        throw "lang.\ **langName**\ .js depends on $.wysiwyg";
+	}
+	if (undefined === $.wysiwyg.i18n) {
+        throw "lang.\ **langName**\ .js depends on $.wysiwyg.i18n";
+    }
+    
+    $.wysiwyg.i18n.lang.\ **langName**\  = {
+        controls: {
+            ...
+        },
+        
+        dialogs: {
+            ...
+        }
+    }
+
+to your language then translate control tooltips and dialog messages.
 
 Plugins
 -------
