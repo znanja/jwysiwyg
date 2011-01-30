@@ -1162,7 +1162,11 @@
 						if (86 === event.keyCode) {
 							if (self.options.rmMsWordMarkup) {
 								if ($.wysiwyg.rmFormat) {
-									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: true }});
+									if ("object" === typeof (self.options.rmMsWordMarkup)) {
+										$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.rmMsWordMarkup }});
+									} else {
+										$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
+									}
 								}
 							}
 						}

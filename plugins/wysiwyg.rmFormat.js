@@ -18,7 +18,86 @@
 			rules: {
 				heading: false,
 				table: false,
-				msWordMarkup: false
+				msWordMarkup: {
+					enabled: false,
+					tags: {
+						"a": {
+							rmWhenEmpty: true
+						},
+
+						"b": {
+							rmWhenEmpty: true
+						},
+
+						"div": {
+							rmWhenEmpty: true,
+							rmWhenNoAttr: true
+						},
+
+						"em": {
+							rmWhenEmpty: true
+						},
+
+						"font": {
+							rmAttr: {
+								"face": "",
+								"size": ""
+							},
+							rmWhenEmpty: true,
+							rmWhenNoAttr: true
+						},
+
+						"h1": {
+							rmAttr: "all",
+							rmWhenEmpty: true
+						},
+						"h2": {
+							rmAttr: "all",
+							rmWhenEmpty: true
+						},
+						"h3": {
+							rmAttr: "all",
+							rmWhenEmpty: true
+						},
+						"h4": {
+							rmAttr: "all",
+							rmWhenEmpty: true
+						},
+						"h5": {
+							rmAttr: "all",
+							rmWhenEmpty: true
+						},
+						"h6": {
+							rmAttr: "all",
+							rmWhenEmpty: true
+						},
+
+						"i": {
+							rmWhenEmpty: true
+						},
+
+						"p": {
+							rmAttr: "all",
+							rmWhenEmpty: true
+						},
+
+						"span": {
+							rmAttr: {
+								lang: ""
+							},
+							rmWhenEmpty: true,
+							rmWhenNoAttr: true
+						},
+
+						"strong": {
+							rmWhenEmpty: true
+						},
+
+						"u": {
+							rmWhenEmpty: true
+						}
+					}
+				}
 			}
 		},
 		options: {},
@@ -108,6 +187,8 @@
 		},
 
 		msWordMarkup: function (text) {
+			var tagName, attrName, rules, reg, regAttr, found, attrs;
+
 			text = text.replace(/<meta\s[^>]+>/g, "");
 			text = text.replace(/<link\s[^>]+>/g, "");
 			text = text.replace(/<title>[\s\S]*?<\/title>/g, "");
@@ -117,6 +198,71 @@
 			text = text.replace(/<m:([^\s>]+)(?:\s[^\/]+)?\/>/g, "");
 			text = text.replace(/<m:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/m:\1>/gm, "");
 			text = text.replace(/^[\s\n]+/gm, "");
+
+			if (this.options.rules.msWordMarkup.tags) {
+				for (tagName in this.options.rules.msWordMarkup.tags) {
+					rules = this.options.rules.msWordMarkup.tags[tagName];
+					
+					if ("string" === typeof (rules)) {
+						if ("" === rules) {
+							reg = new RegExp("<" + tagName + "(?:\\s[^>]+)?/?>", "gm");
+							text = text.replace(reg, "<" + tagName + ">");
+						}
+					} else if ("object" === typeof (rules)) {
+						reg = new RegExp("<" + tagName + "(\\s[^>]+)?/?>", "gm");
+						found = reg.exec(text);
+						attrs = "";
+
+						if (found && found[1]) {
+							attrs = found[1];
+						}
+
+						if (rules.rmAttr) {
+							if ("all" === rules.rmAttr) {
+								attrs = "";
+							} else if ("object" === typeof (rules.rmAttr)) {
+								for (attrName in rules.rmAttr) {
+									regAttr = new RegExp('' + attrName + '="[^"]*"', "m");
+									attrs = attrs.replace(regAttr, "");
+								}
+							}
+						}
+
+						if (attrs) {
+							attrs = attrs.replace(/[\s\n]+/gm, " ");
+							
+							if (" " === attrs) {
+								attrs = "";
+							}
+						}
+
+						text = text.replace(reg, "<" + tagName + attrs + ">");
+					}
+				}
+
+				for (tagName in this.options.rules.msWordMarkup.tags) {
+					rules = this.options.rules.msWordMarkup.tags[tagName];
+
+					if ("string" === typeof (rules)) {
+						//
+					} else if ("object" === typeof (rules)) {
+						if (rules.rmWhenEmpty) {
+							reg = new RegExp("<" + tagName + "(\\s[^>]+)?>(?:[\\s\\n]|<br/?>)*?</" + tagName + ">", "gm");
+							text = text.replace(reg, "");
+						}
+
+						if (rules.rmWhenNoAttr) {
+							reg = new RegExp("<" + tagName + ">(?!<" + tagName + ">)([\\s\\S]*?)</" + tagName + ">", "m");
+							found = reg.exec(text);
+							while (found) {
+								text = text.replace(reg, found[1]);
+
+								found = reg.exec(text);
+							}
+						}
+					}
+				}
+			}
 
 			return text;
 		},
@@ -167,7 +313,7 @@
 				if (this.debug) { console.log("DomTraversing=", traversing); }
 			}
 
-			if (this.options.rules.msWordMarkup) {
+			if (this.options.rules.msWordMarkup.enabled) {
 				Wysiwyg.setContent(this.msWordMarkup(Wysiwyg.getContent()));
 			}
 		}
