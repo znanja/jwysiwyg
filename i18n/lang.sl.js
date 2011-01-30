@@ -54,33 +54,33 @@
 
 		dialogs: {
 			// colorpicker
-			"Colorpicker": "",
-			"Color": "",
-			"Apply": "",
+			"Colorpicker": "Izbira barve",
+			"Color": "Barva",
+			"Apply": "Uporabi",
 
 			// image
-			"Insert Image": "",
-			"Preview": "",
-			"URL": "",
-			"Title": "",
-			"Description": "",
-			"Width": "",
-			"Height": "",
-			"Original W x H": "",
+			"Insert Image": "Vstavi sliko",
+			"Preview": "Predogled",
+			"URL": "URL",
+			"Title": "Naslov",
+			"Description": "Opis",
+			"Width": "Širina",
+			"Height": "Višina",
+			"Original W x H": "Original V x Š",
 
 			// link
-			"Insert Link": "",
-			"Link URL": "",
-			"Link Title": "",
-			"Link Target": "",
+			"Insert Link": "Vstavi povezavo",
+			"Link URL": "URL povezave",
+			"Link Title": "Naslov povezave",
+			"Link Target": "Cilj povezave",
 
 			// table
-			"Insert table": "",
-			"Count of columns": "",
-			"Count of rows": "",
+			"Insert table": "Vstavi tabelo",
+			"Count of columns": "Število stolpcev",
+			"Count of rows": "Število vrstic",
 
 			// for all
-			"Cancel": ""
+			"Cancel": "Prekliči"
 		}
 	};
 })(jQuery);
