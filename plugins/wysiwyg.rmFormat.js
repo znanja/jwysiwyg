@@ -18,6 +18,16 @@
 			rules: {
 				heading: false,
 				table: false,
+				/*
+				 * rmAttr       - { "all" | object with names } remove all
+				 *                attributes or attributes with following names
+				 *
+				 * rmWhenEmpty  - if element contains no text or { \s, \n, <br>, <br/> }
+				 *                then it will be removed
+				 *
+				 * rmWhenNoAttr - if element contains no attributes (i.e. <span>Some Text</span>)
+				 *                then it will be removed
+				 */
 				msWordMarkup: {
 					enabled: false,
 					tags: {
@@ -220,7 +230,7 @@
 						if (rules.rmAttr) {
 							if ("all" === rules.rmAttr) {
 								attrs = "";
-							} else if ("object" === typeof (rules.rmAttr)) {
+							} else if ("object" === typeof (rules.rmAttr) && attrs) {
 								for (attrName in rules.rmAttr) {
 									regAttr = new RegExp('' + attrName + '="[^"]*"', "m");
 									attrs = attrs.replace(regAttr, "");
