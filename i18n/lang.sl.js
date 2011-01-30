@@ -17,12 +17,12 @@
 	$.wysiwyg.i18n.lang.sl = {
 		controls: {
 			"Bold": "Krepko",
-			"Colorpicker": "",
+			"Colorpicker": "Izbirnik barv",
 			"Copy": "Kopiraj",
 			"Create link": "Dodaj povezavo",
 			"Cut": "Izreži",
 			"Decrease font size": "Zmanjšaj pisavo",
-			"Fullscreen": "",
+			"Fullscreen": "Celozaslonski način",
 			"Header 1": "Naslov 1",
 			"Header 2": "Naslov 2",
 			"Header 3": "Naslov 3",
@@ -54,7 +54,7 @@
 
 		dialogs: {
 			// colorpicker
-			"Colorpicker": "Izbira barve",
+			"Colorpicker": "Izbirnik barv",
 			"Color": "Barva",
 			"Apply": "Uporabi",
 
@@ -66,7 +66,7 @@
 			"Description": "Opis",
 			"Width": "Širina",
 			"Height": "Višina",
-			"Original W x H": "Original V x Š",
+			"Original W x H": "Prvotna Š x V",
 
 			// link
 			"Insert Link": "Vstavi povezavo",
