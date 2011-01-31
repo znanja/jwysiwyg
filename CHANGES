@@ -6,6 +6,10 @@
 * Encode entities - alecgorge
 * Link control - academo
 * Fixes for Internet Explorer - frost-nczr4
+* Brazilian Portuguese locale for jwysiwyg - Marcelo Wergles
+* Czech locale for jwysiwyg - martinh
+* Italian locale for jwysiwyg - maurofranceschini
+* Slovenian locale for jwysiwyg - peterz
 * Spanish locale for jwysiwyg - academo
 
 == Version 0.95 (Kino)
@@ -27,7 +31,7 @@
 * jslint issues - akzhan, frost-nzcr4
 * Fixed exception in s.addRange() when savedRange is undefined - frost-nzcr4
 * new rmUnusedControls option added (see #52) - frost-nzcr4
-* French locale for jwysiwyg - MappaM 
+* French locale for jwysiwyg - MappaM
 * Swedish locale for jwysiwyg - ippa
 * Russian locale for jwysiwyg - frost-nzcr4
 
@@ -60,7 +64,7 @@
 * Fix work under quirks mode of Internet Explorer - kris.schwab
 * Workaround for Mozilla/WebKit misfunctionality of RemoveFormat over headings - aiveldesign
 * Experimental support for switching between LTR/RTL modes (no icons provided and markup issues) - abduljawad.mahmoud
-* More robust selection check in createLink - systeembeheer 
+* More robust selection check in createLink - systeembeheer
 
 == Version 0.91 (maintenance release)
 
@@ -82,7 +86,7 @@
 + insertTable and insertImage buttons now support jQuery UI Dialog and SimpleModal plugin - academo
 + Event handlers supported through events - akzhan
 + Editor now supports jQuery UI resizable plugin through resizeOptions - akzhan
-* jWysiwyg now wraps Mozilla bug that disables editor creation in AJAX calls - akzhan 
+* jWysiwyg now wraps Mozilla bug that disables editor creation in AJAX calls - akzhan
 * MSG_EN abd TOOLBAR replaced with $.fn.wysiwyg.defaults/controls - akzhan
 * separators replaced with group indexes - akzhan
 * Directory structure reorganized - academo
