@@ -17,12 +17,12 @@
 	$.wysiwyg.i18n.lang.sl = {
 		controls: {
 			"Bold": "Krepko",
-			"Colorpicker": "",
+			"Colorpicker": "Izbirnik barv",
 			"Copy": "Kopiraj",
 			"Create link": "Dodaj povezavo",
 			"Cut": "Izreži",
 			"Decrease font size": "Zmanjšaj pisavo",
-			"Fullscreen": "",
+			"Fullscreen": "Celozaslonski način",
 			"Header 1": "Naslov 1",
 			"Header 2": "Naslov 2",
 			"Header 3": "Naslov 3",
@@ -54,33 +54,33 @@
 
 		dialogs: {
 			// colorpicker
-			"Colorpicker": "",
-			"Color": "",
-			"Apply": "",
+			"Colorpicker": "Izbirnik barv",
+			"Color": "Barva",
+			"Apply": "Uporabi",
 
 			// image
-			"Insert Image": "",
-			"Preview": "",
-			"URL": "",
-			"Title": "",
-			"Description": "",
-			"Width": "",
-			"Height": "",
-			"Original W x H": "",
+			"Insert Image": "Vstavi sliko",
+			"Preview": "Predogled",
+			"URL": "URL",
+			"Title": "Naslov",
+			"Description": "Opis",
+			"Width": "Širina",
+			"Height": "Višina",
+			"Original W x H": "Prvotna Š x V",
 
 			// link
-			"Insert Link": "",
-			"Link URL": "",
-			"Link Title": "",
-			"Link Target": "",
+			"Insert Link": "Vstavi povezavo",
+			"Link URL": "URL povezave",
+			"Link Title": "Naslov povezave",
+			"Link Target": "Cilj povezave",
 
 			// table
-			"Insert table": "",
-			"Count of columns": "",
-			"Count of rows": "",
+			"Insert table": "Vstavi tabelo",
+			"Count of columns": "Število stolpcev",
+			"Count of rows": "Število vrstic",
 
 			// for all
-			"Cancel": ""
+			"Cancel": "Prekliči"
 		}
 	};
 })(jQuery);
