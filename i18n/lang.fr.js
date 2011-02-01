@@ -17,12 +17,12 @@
 	$.wysiwyg.i18n.lang.fr = {
 		controls: {
 			"Bold": "Gras",
-			"Colorpicker": "",
+			"Colorpicker": "Choisir une couleur",
 			"Copy": "Copier",
 			"Create link": "Créer un lien",
 			"Cut": "Couper",
 			"Decrease font size": "Diminuer la taille du texte",
-			"Fullscreen": "",
+			"Fullscreen": "Plein écran",
 			"Header 1": "Titre 1",
 			"Header 2": "Titre 2",
 			"Header 3": "Titre 3",
@@ -54,33 +54,33 @@
 
 		dialogs: {
 			// colorpicker
-			"Colorpicker": "",
-			"Color": "",
-			"Apply": "",
+			"Colorpicker": "Choisir une couleur",
+			"Color": "Couleur",
+			"Apply": "Appliquer",
 
 			// image
-			"Insert Image": "",
-			"Preview": "",
-			"URL": "",
-			"Title": "",
-			"Description": "",
-			"Width": "",
-			"Height": "",
-			"Original W x H": "",
+			"Insert Image": "Insérer une image",
+			"Preview": "Prévisualiser",
+			"URL": "URL",
+			"Title": "Titre",
+			"Description": "Description",
+			"Width": "Largeur",
+			"Height": "Hauteur",
+			"Original W x H": "L x H originale",
 
 			// link
-			"Insert Link": "",
-			"Link URL": "",
-			"Link Title": "",
-			"Link Target": "",
+			"Insert Link": "Insérer un lien",
+			"Link URL": "URL du lien",
+			"Link Title": "Titre du lien",
+			"Link Target": "Cible du lien",
 
 			// table
-			"Insert table": "",
-			"Count of columns": "",
-			"Count of rows": "",
+			"Insert table": "Insérer un tableau",
+			"Count of columns": "Nombre de colonnes",
+			"Count of rows": "Nombre de lignes",
 
 			// for all
-			"Cancel": ""
+			"Cancel": "Annuler"
 		}
 	};
 })(jQuery);
