@@ -521,16 +521,9 @@
 							control
 						);
 					} else {
-						tooltip = control.tooltip || control.command || controlName || "";
-						if ($.wysiwyg.i18n) {
-							tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
-						}
 						ui.appendMenu(
 							control.command || controlName,
-							control["arguments"] || "",
-							control.className || control.command || controlName || "empty",
-							control.exec,
-							tooltip
+							control
 						);
 					}
 				};
@@ -582,17 +575,24 @@
 			}
 		};
 
-		this.ui.appendMenu = function (cmd, args, className, fn, tooltip) {
+		this.ui.appendMenu = function (name, control) {
 			var self = this.self;
-			args = args || [];
+			cmd = control.command || name;
+			args = control["arguments"] || [];
+			className = control.className || control.command || name || "empty";
+			tooltip = control.tooltip || control.command || name || "";
+
+			if ($.wysiwyg.i18n) {
+				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
+			}
 
 			return $('<li role="menuitem" unselectable="on">' + (className || cmd) + "</li>")
 				.addClass(className || cmd)
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if (fn) {
-						fn.apply(self);
+					if (control.exec) {
+						control.exec.apply(self);
 					} else {
 						self.ui.focus();
 						self.ui.withoutCss();
