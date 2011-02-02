@@ -1380,8 +1380,6 @@
 
 		this.triggerControlCallback = function (name) {
 			$(window).trigger("trigger-" + name + ".wysiwyg", [this]);
-			$(".custom-command-" + name, this.ui.panel).blur();
-			this.ui.returnRange();
 		};
 
 		this.ui.withoutCss = function () {
