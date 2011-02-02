@@ -19,7 +19,7 @@
 			}
 		});
 
-		$("input").click(function () {
+		$("input[name=add]").click(function () {
 			$("textarea").wysiwyg("addControl", "quote", {
 				groupIndex: 2,
 				icon: './../tests/images/quote02.gif',
@@ -44,6 +44,10 @@
 				}
 			});
 		});
+
+		$("input[name=makeBold]").click(function () {
+			$("textarea").wysiwyg("triggerControl", "bold");
+		});
 	});
 })(jQuery);
 </script>
@@ -55,7 +59,8 @@ textarea { width: 400px; height: 100px; }
 	<h1>jWYSIWYG</h1>
 	<h2>Example: Custom controls</h2>
 
-	<input type="button" value="Add new control"/>
+	<input type="button" value="Add new control" name="add"/>
+	<input type="button" value="Make selected text bold" name="makeBold"/>
 
 	<textarea name="text"></textarea>
 
