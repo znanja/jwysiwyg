@@ -570,9 +570,7 @@
 		};
 
 		this.ui.appendMenu = function (name, control) {
-			var self = this.self,
-				cmd = control.command || name,
-				args = control["arguments"] || [];
+			var self = this.self;
 			className = control.className || control.command || name || "empty";
 			tooltip = control.tooltip || control.command || name || "";
 
@@ -585,23 +583,7 @@
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if (control.exec) {
-						control.exec.apply(self);
-					} else {
-						self.ui.focus();
-						self.ui.withoutCss();
-						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
-						// in Firefox untrusted JavaScript is not allowed to access the clipboard
-						try {
-							self.editorDoc.execCommand(cmd, false, args);
-						} catch (e) {
-							console.error(e);
-						}
-					}
-
-					if (self.options.autoSave) {
-						self.autoSaveFunction();
-					}
+					self.triggerControl.apply(self, [name, control]);
 
 					this.blur();
 					self.ui.returnRange();
@@ -611,9 +593,7 @@
 		};
 
 		this.ui.appendMenuCustom = function (name, control) {
-			var self = this.self,
-				cmd = control.command || name,
-				args = control.args || [];
+			var self = this.self;
 
 			if (control.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
@@ -626,23 +606,7 @@
 				.attr("title", control.tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if (control.exec) {
-						control.exec.apply(self);
-					} else {
-						self.ui.focus();
-						self.ui.withoutCss();
-						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
-						// in Firefox untrusted JavaScript is not allowed to access the clipboard
-						try {
-							self.editorDoc.execCommand(cmd, false, args);
-						} catch (e) {
-							console.error(e);
-						}
-					}
-
-					if (self.options.autoSave) {
-						self.autoSaveFunction();
-					}
+					self.triggerControl.apply(self, [name, control]);
 
 					this.blur();
 					self.ui.returnRange();
@@ -1095,36 +1059,14 @@
 
 			if (!$.browser.msie) {
 				$(self.editorDoc).keydown(function (event) {
-					var controlName, cmd, args, fn;
+					var controlName;
 
 					/* Meta for Macs. tom@punkave.com */
 					if (event.ctrlKey || event.metaKey) {
 						for (controlName in self.controls) {
 							if (self.controls[controlName].hotkey && self.controls[controlName].hotkey.ctrl) {
 								if (event.keyCode === self.controls[controlName].hotkey.key) {
-
-									cmd		= self.controls[controlName].command || controlName;
-									args	= self.controls[controlName]["arguments"] || "";
-									fn		= self.controls[controlName].exec;
-
-									// code from this.ui.appendMenu
-									if (fn) {
-										fn.apply(self);
-									} else {
-										self.ui.focus();
-										self.ui.withoutCss();
-										// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
-										// in Firefox untrusted JavaScript is not allowed to access the clipboard
-										try {
-											self.editorDoc.execCommand(cmd, false, args);
-										} catch (e) {
-											console.error(e);
-										}
-									}
-									if (self.options.autoSave) {
-										self.autoSaveFunction();
-									}
-									// end
+									self.triggerControl.apply(self, [controlName, self.controls[controlName]]);
 
 									return false;
 								}
@@ -1370,6 +1312,29 @@
 		this.setContent = function (newContent) {
 			this.editorDoc.body.innerHTML = newContent;
 			return this;
+		};
+
+		this.triggerControl = function (name, control) {
+			var cmd = control.command || name,
+				args = control.args || [];
+
+			if (control.exec) {
+				control.exec.apply(this);
+			} else {
+				this.ui.focus();
+				this.ui.withoutCss();
+				// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
+				// in Firefox untrusted JavaScript is not allowed to access the clipboard
+				try {
+					this.editorDoc.execCommand(cmd, false, args);
+				} catch (e) {
+					console.error(e);
+				}
+			}
+
+			if (this.options.autoSave) {
+				this.autoSaveFunction();
+			}
 		};
 
 		this.triggerControlCallback = function (name) {
