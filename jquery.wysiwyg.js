@@ -580,8 +580,8 @@
 				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
 			}
 
-			return $('<li role="menuitem" unselectable="on">' + (className || cmd) + "</li>")
-				.addClass(className || cmd)
+			return $('<li role="menuitem" unselectable="on">' + (className) + "</li>")
+				.addClass(className)
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
