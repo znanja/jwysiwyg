@@ -654,7 +654,7 @@
 					self.ui.returnRange();
 					self.ui.focus();
 
-					self.triggerCallback(name);
+					self.triggerControlCallback(name);
 				})
 				.appendTo(self.ui.panel);
 		};
@@ -1378,7 +1378,7 @@
 			return this;
 		};
 
-		this.triggerCallback = function (name) {
+		this.triggerControlCallback = function (name) {
 			$(window).trigger("trigger-" + name + ".wysiwyg", [this]);
 			$(".custom-command-" + name, this.ui.panel).blur();
 			this.ui.returnRange();
