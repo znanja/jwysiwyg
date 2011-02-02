@@ -570,9 +570,9 @@
 		};
 
 		this.ui.appendMenu = function (name, control) {
-			var self = this.self;
-			cmd = control.command || name;
-			args = control["arguments"] || [];
+			var self = this.self,
+				cmd = control.command || name,
+				args = control["arguments"] || [];
 			className = control.className || control.command || name || "empty";
 			tooltip = control.tooltip || control.command || name || "";
 
@@ -611,7 +611,9 @@
 		};
 
 		this.ui.appendMenuCustom = function (name, control) {
-			var self = this.self;
+			var self = this.self,
+				cmd = control.command || name,
+				args = control.args || [];
 
 			if (control.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
@@ -632,9 +634,7 @@
 						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
 						// in Firefox untrusted JavaScript is not allowed to access the clipboard
 						try {
-							if (control.command) {
-								self.editorDoc.execCommand(control.command, false, control.args);
-							}
+							self.editorDoc.execCommand(cmd, false, args);
 						} catch (e) {
 							console.error(e);
 						}
