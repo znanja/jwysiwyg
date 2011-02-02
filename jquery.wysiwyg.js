@@ -500,7 +500,6 @@
 				i,
 				currentGroupIndex, // jslint wants all vars at top of function
 				iterateGroup = function (controlName, control) {
-					var tooltip;
 					if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
@@ -570,9 +569,9 @@
 		};
 
 		this.ui.appendMenu = function (name, control) {
-			var self = this.self;
-			className = control.className || control.command || name || "empty";
-			tooltip = control.tooltip || control.command || name || "";
+			var self = this.self,
+				className = control.className || control.command || name || "empty",
+				tooltip = control.tooltip || control.command || name || "";
 
 			if ($.wysiwyg.i18n) {
 				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
@@ -593,7 +592,12 @@
 		};
 
 		this.ui.appendMenuCustom = function (name, control) {
-			var self = this.self;
+			var self = this.self,
+				tooltip = control.tooltip || control.command || name || "";
+
+			if ($.wysiwyg.i18n) {
+				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
+			}
 
 			if (control.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
