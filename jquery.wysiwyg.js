@@ -516,9 +516,9 @@
 					}
 
 					if (control.custom) {
-						ui.appendMenuCustom(control.command || controlName, control);
+						ui.appendMenuCustom(controlName, control);
 					} else {
-						ui.appendMenu(control.command || controlName, control);
+						ui.appendMenu(controlName, control);
 					}
 				};
 
