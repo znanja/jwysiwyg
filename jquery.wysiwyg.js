@@ -1676,6 +1676,30 @@
 			});
 		},
 
+		triggerControl: function (object, controlName) {
+			if ("object" !== typeof (object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function () {
+				var oWysiwyg = $(this).data("wysiwyg");
+
+				if (!oWysiwyg) {
+					return this;
+				}
+
+				if (!oWysiwyg.controls[controlName]) {
+					console.error("Control '" + controlName + "' not exists");
+				}
+
+				oWysiwyg.triggerControl.apply(oWysiwyg, [controlName, oWysiwyg.controls[controlName]]);
+			});
+		},
+
 		utils: {
 			extraSafeEntities: [["<", ">", "'", '"', " "], [32]],
 
