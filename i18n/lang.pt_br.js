@@ -7,22 +7,22 @@
  *
  */
 (function ($) {
-    if (undefined === $.wysiwyg) {
-	throw "lang.pt_br.js depends on $.wysiwyg";
-    }
-    if (undefined === $.wysiwyg.i18n) {
-	throw "lang.pt_br.js depends on $.wysiwyg.i18n";
-    }
+	if (undefined === $.wysiwyg) {
+		throw "lang.pt_br.js depends on $.wysiwyg";
+	}
+	if (undefined === $.wysiwyg.i18n) {
+		throw "lang.pt_br.js depends on $.wysiwyg.i18n";
+	}
 
-    $.wysiwyg.i18n.lang.pt_br = {
-    	controls: {
+	$.wysiwyg.i18n.lang.pt_br = {
+		controls: {
 			"Bold": "Negrito",
-			"Colorpicker": "",
+			"Colorpicker": "Escolher uma cor",
 			"Copy": "Copiar",
 			"Create link": "Criar link",
 			"Cut": "Recortar",
 			"Decrease font size": "Diminuir o tamanho da fonte",
-			"Fullscreen": "",
+			"Fullscreen": "Tela cheia",
 			"Header 1": "Título 1",
 			"Header 2": "Título 2",
 			"Header 3": "Título 3",
@@ -54,33 +54,33 @@
 
 		dialogs: {
 			// colorpicker
-			"Colorpicker": "",
-			"Color": "",
-			"Apply": "",
+			"Colorpicker": "Escolher uma cor",
+			"Color": "Cor",
+			"Apply": "Aplicar",
 
 			// image
-			"Insert Image": "",
-			"Preview": "",
-			"URL": "",
-			"Title": "",
-			"Description": "",
-			"Width": "",
-			"Height": "",
-			"Original W x H": "",
+			"Insert Image": "Inserir Imagem",
+			"Preview": "Pré-visualizar",
+			"URL": "URL",
+			"Title": "Título",
+			"Description": "Descrição",
+			"Width": "Largura",
+			"Height": "Altura",
+			"Original W x H": "L x A original",
 
 			// link
-			"Insert Link": "",
-			"Link URL": "",
-			"Link Title": "",
-			"Link Target": "",
+			"Insert Link": "Inserir Link",
+			"Link URL": "URL do link",
+			"Link Title": "Título do link",
+			"Link Target": "Alvo do link",
 
 			// table
-			"Insert table": "",
-			"Count of columns": "",
-			"Count of rows": "",
+			"Insert table": "Inserir tabela",
+			"Count of columns": "Número de colunas",
+			"Count of rows": "Número de linhas",
 
 			// for all
-			"Cancel": ""
+			"Cancel": "Cancelar"
 		}
-    };
+	};
 })(jQuery);
