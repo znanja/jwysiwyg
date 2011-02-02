@@ -1316,7 +1316,7 @@
 
 		this.triggerControl = function (name, control) {
 			var cmd = control.command || name,
-				args = control.args || [];
+				args = control["arguments"] || [];
 
 			if (control.exec) {
 				control.exec.apply(this);
