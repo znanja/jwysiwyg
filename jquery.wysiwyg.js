@@ -510,14 +510,14 @@
 					}
 
 					if (!hasVisibleControls) {
-						ui.appendMenuSeparator();
+						ui.appendItemSeparator();
 						hasVisibleControls = true;
 					}
 
 					if (control.custom) {
-						ui.appendMenuCustom(controlName, control);
+						ui.appendItemCustom(controlName, control);
 					} else {
-						ui.appendMenu(controlName, control);
+						ui.appendItem(controlName, control);
 					}
 				};
 
@@ -568,7 +568,7 @@
 			}
 		};
 
-		this.ui.appendMenu = function (name, control) {
+		this.ui.appendItem = function (name, control) {
 			var self = this.self,
 				className = control.className || control.command || name || "empty",
 				tooltip = control.tooltip || control.command || name || "";
@@ -591,7 +591,7 @@
 				.appendTo(self.ui.panel);
 		};
 
-		this.ui.appendMenuCustom = function (name, control) {
+		this.ui.appendItemCustom = function (name, control) {
 			var self = this.self,
 				tooltip = control.tooltip || control.command || name || "";
 
@@ -621,7 +621,7 @@
 				.appendTo(self.ui.panel);
 		};
 
-		this.ui.appendMenuSeparator = function () {
+		this.ui.appendItemSeparator = function () {
 			var self = this.self;
 			return $('<li role="separator" class="separator"></li>').appendTo(self.ui.panel);
 		};
