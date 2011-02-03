@@ -500,7 +500,6 @@
 				i,
 				currentGroupIndex, // jslint wants all vars at top of function
 				iterateGroup = function (controlName, control) {
-					var tooltip;
 					if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
@@ -511,27 +510,14 @@
 					}
 
 					if (!hasVisibleControls) {
-						ui.appendMenuSeparator();
+						ui.appendItemSeparator();
 						hasVisibleControls = true;
 					}
 
 					if (control.custom) {
-						ui.appendMenuCustom(
-							control.command || controlName,
-							control
-						);
+						ui.appendItemCustom(controlName, control);
 					} else {
-						tooltip = control.tooltip || control.command || controlName || "";
-						if ($.wysiwyg.i18n) {
-							tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
-						}
-						ui.appendMenu(
-							control.command || controlName,
-							control["arguments"] || "",
-							control.className || control.command || controlName || "empty",
-							control.exec,
-							tooltip
-						);
+						ui.appendItem(controlName, control);
 					}
 				};
 
@@ -582,32 +568,21 @@
 			}
 		};
 
-		this.ui.appendMenu = function (cmd, args, className, fn, tooltip) {
-			var self = this.self;
-			args = args || [];
+		this.ui.appendItem = function (name, control) {
+			var self = this.self,
+				className = control.className || control.command || name || "empty",
+				tooltip = control.tooltip || control.command || name || "";
 
-			return $('<li role="menuitem" unselectable="on">' + (className || cmd) + "</li>")
-				.addClass(className || cmd)
+			if ($.wysiwyg.i18n) {
+				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
+			}
+
+			return $('<li role="menuitem" unselectable="on">' + (className) + "</li>")
+				.addClass(className)
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if (fn) {
-						fn.apply(self);
-					} else {
-						self.ui.focus();
-						self.ui.withoutCss();
-						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
-						// in Firefox untrusted JavaScript is not allowed to access the clipboard
-						try {
-							self.editorDoc.execCommand(cmd, false, args);
-						} catch (e) {
-							console.error(e);
-						}
-					}
-
-					if (self.options.autoSave) {
-						self.autoSaveFunction();
-					}
+					self.triggerControl.apply(self, [name, control]);
 
 					this.blur();
 					self.ui.returnRange();
@@ -616,8 +591,13 @@
 				.appendTo(self.ui.panel);
 		};
 
-		this.ui.appendMenuCustom = function (name, control) {
-			var self = this.self;
+		this.ui.appendItemCustom = function (name, control) {
+			var self = this.self,
+				tooltip = control.tooltip || control.command || name || "";
+
+			if ($.wysiwyg.i18n) {
+				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
+			}
 
 			if (control.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
@@ -630,36 +610,18 @@
 				.attr("title", control.tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if (control.exec) {
-						control.exec.apply(self);
-					} else {
-						self.ui.focus();
-						self.ui.withoutCss();
-						// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
-						// in Firefox untrusted JavaScript is not allowed to access the clipboard
-						try {
-							if (control.command) {
-								self.editorDoc.execCommand(control.command, false, control.args);
-							}
-						} catch (e) {
-							console.error(e);
-						}
-					}
-
-					if (self.options.autoSave) {
-						self.autoSaveFunction();
-					}
+					self.triggerControl.apply(self, [name, control]);
 
 					this.blur();
 					self.ui.returnRange();
 					self.ui.focus();
 
-					self.triggerCallback(name);
+					self.triggerControlCallback(name);
 				})
 				.appendTo(self.ui.panel);
 		};
 
-		this.ui.appendMenuSeparator = function () {
+		this.ui.appendItemSeparator = function () {
 			var self = this.self;
 			return $('<li role="separator" class="separator"></li>').appendTo(self.ui.panel);
 		};
@@ -1101,36 +1063,14 @@
 
 			if (!$.browser.msie) {
 				$(self.editorDoc).keydown(function (event) {
-					var controlName, cmd, args, fn;
+					var controlName;
 
 					/* Meta for Macs. tom@punkave.com */
 					if (event.ctrlKey || event.metaKey) {
 						for (controlName in self.controls) {
 							if (self.controls[controlName].hotkey && self.controls[controlName].hotkey.ctrl) {
 								if (event.keyCode === self.controls[controlName].hotkey.key) {
-
-									cmd		= self.controls[controlName].command || controlName;
-									args	= self.controls[controlName]["arguments"] || "";
-									fn		= self.controls[controlName].exec;
-
-									// code from this.ui.appendMenu
-									if (fn) {
-										fn.apply(self);
-									} else {
-										self.ui.focus();
-										self.ui.withoutCss();
-										// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
-										// in Firefox untrusted JavaScript is not allowed to access the clipboard
-										try {
-											self.editorDoc.execCommand(cmd, false, args);
-										} catch (e) {
-											console.error(e);
-										}
-									}
-									if (self.options.autoSave) {
-										self.autoSaveFunction();
-									}
-									// end
+									self.triggerControl.apply(self, [controlName, self.controls[controlName]]);
 
 									return false;
 								}
@@ -1378,10 +1318,31 @@
 			return this;
 		};
 
-		this.triggerCallback = function (name) {
+		this.triggerControl = function (name, control) {
+			var cmd = control.command || name,
+				args = control["arguments"] || [];
+
+			if (control.exec) {
+				control.exec.apply(this);
+			} else {
+				this.ui.focus();
+				this.ui.withoutCss();
+				// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
+				// in Firefox untrusted JavaScript is not allowed to access the clipboard
+				try {
+					this.editorDoc.execCommand(cmd, false, args);
+				} catch (e) {
+					console.error(e);
+				}
+			}
+
+			if (this.options.autoSave) {
+				this.autoSaveFunction();
+			}
+		};
+
+		this.triggerControlCallback = function (name) {
 			$(window).trigger("trigger-" + name + ".wysiwyg", [this]);
-			$(".custom-command-" + name, this.ui.panel).blur();
-			this.ui.returnRange();
 		};
 
 		this.ui.withoutCss = function () {
@@ -1712,6 +1673,30 @@
 
 				oWysiwyg.setContent(newContent);
 				oWysiwyg.saveContent();
+			});
+		},
+
+		triggerControl: function (object, controlName) {
+			if ("object" !== typeof (object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function () {
+				var oWysiwyg = $(this).data("wysiwyg");
+
+				if (!oWysiwyg) {
+					return this;
+				}
+
+				if (!oWysiwyg.controls[controlName]) {
+					console.error("Control '" + controlName + "' not exists");
+				}
+
+				oWysiwyg.triggerControl.apply(oWysiwyg, [controlName, oWysiwyg.controls[controlName]]);
 			});
 		},
 
