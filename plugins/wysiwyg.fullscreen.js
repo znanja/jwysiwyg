@@ -82,10 +82,10 @@
 
 			if (this.originalBoundary.element.width) {
 				this.restore(Wysiwyg);
-				Wysiwyg.ui.panel.find(".fullscreen").removeClass("active");
+				Wysiwyg.ui.toolbar.find(".fullscreen").removeClass("active");
 			} else {
 				this.stretch(Wysiwyg, options);
-				Wysiwyg.ui.panel.find(".fullscreen").addClass("active");
+				Wysiwyg.ui.toolbar.find(".fullscreen").addClass("active");
 			}
 		},
 
@@ -133,7 +133,7 @@
 				Wysiwyg.element.css(propertyName, options.css.element[propertyName]);
 			}
 
-			options.css.original.top = Wysiwyg.ui.panel.css("height");
+			options.css.original.top = Wysiwyg.ui.toolbar.css("height");
 			for (propertyName in this.defaults.css.original) {
 				$(Wysiwyg.original).css(propertyName, options.css.original[propertyName]);
 			}

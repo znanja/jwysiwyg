@@ -213,7 +213,7 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     * ``nonSelection``: Message to display when the Create Link button is
       pressed with no text selected.
 
-``panelHtml``
+``toolbarHtml``
     A string containing the source HTML code
 
 ``resizeOptions``
@@ -227,7 +227,7 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
 ``rmUnusedControls``
     A boolean. If ``true``, the editor will remove all controls which are not
     mentioned in ``controls`` option.
-    In this example only bold control will be available in control panel::
+    In this example only bold control will be available in toolbar::
     
         $("textarea").wysiwyg({
             rmUnusedControls: true,
@@ -334,7 +334,7 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     additional CSS to style the resulting toolbar button. The CSS to style a
     button looks like this::
     
-        div.wysiwyg ul.panel li a.quote {
+        div.wysiwyg ul.toolbar li a.quote {
             background: url('quote-button.gif') no-repeat 0px 0px;
         }
     

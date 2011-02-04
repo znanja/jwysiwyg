@@ -44,7 +44,7 @@ var i18n = {
 	},
 
 	translateControls: function(Wysiwyg) {
-		Wysiwyg.ui.panel.find("li").each(function() {
+		Wysiwyg.ui.toolbar.find("li").each(function() {
 			if (Wysiwyg.controls[$(this).attr("class")]) {
 				$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.controls[$(this).attr("class")]["tooltip"], "controls"));
 			}

@@ -121,7 +121,7 @@
 						this.saveContent();
 						$(this.original).css({
 							width:	this.element.outerWidth() - 6,
-							height: this.element.height() - this.ui.panel.height() - 6,
+							height: this.element.height() - this.ui.toolbar.height() - 6,
 							resize: "none"
 						}).show();
 						this.editor.hide();
@@ -372,7 +372,7 @@
 			messages: {
 				nonSelection: "Select the text you wish to link"
 			},
-			panelHtml: '<ul role="menu" class="panel"></ul>',
+			toolbarHtml: '<ul role="menu" class="toolbar"></ul>',
 			removeHeadings: false,
 			resizeOptions: false,
 			rmMsWordMarkup: false,
@@ -419,7 +419,7 @@
 
 		this.ui			= {};	// UI related properties and methods
 		this.ui.self	= this;
-		this.ui.panel	= null;
+		this.ui.toolbar	= null;
 		this.ui.initialHeight = null; // ui.grow
 
 		this.dom.getAncestor = function (element, filterTagName) {
@@ -588,7 +588,7 @@
 					self.ui.returnRange();
 					self.ui.focus();
 				})
-				.appendTo(self.ui.panel);
+				.appendTo(self.ui.toolbar);
 		};
 
 		this.ui.appendItemCustom = function (name, control) {
@@ -618,12 +618,12 @@
 
 					self.triggerControlCallback(name);
 				})
-				.appendTo(self.ui.panel);
+				.appendTo(self.ui.toolbar);
 		};
 
 		this.ui.appendItemSeparator = function () {
 			var self = this.self;
-			return $('<li role="separator" class="separator"></li>').appendTo(self.ui.panel);
+			return $('<li role="separator" class="separator"></li>').appendTo(self.ui.toolbar);
 		};
 
 		this.autoSaveFunction = function () {
@@ -645,16 +645,16 @@
 						if ("function" === typeof (cssValue)) {
 							handler = cssValue;
 							if (handler(el.css(cssProperty).toString().toLowerCase(), self)) {
-								$("." + className, self.ui.panel).addClass("active");
+								$("." + className, self.ui.toolbar).addClass("active");
 							}
 						} else {
 							if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-								$("." + className, self.ui.panel).addClass("active");
+								$("." + className, self.ui.toolbar).addClass("active");
 							}
 						}
 					};
 
-				$("." + className, self.ui.panel).removeClass("active");
+				$("." + className, self.ui.toolbar).removeClass("active");
 
 				if (control.tags || (control.options && control.options.tags)) {
 					tags = control.tags || (control.options && control.options.tags);
@@ -666,7 +666,7 @@
 						}
 
 						if ($.inArray(elm.tagName.toLowerCase(), tags) !== -1) {
-							$("." + className, self.ui.panel).addClass("active");
+							$("." + className, self.ui.toolbar).addClass("active");
 						}
 
 						elm = elm.parentNode;
@@ -918,7 +918,7 @@
 
 			this.options	= this.extendOptions(options);
 			this.original	= element;
-			this.ui.panel	= $(this.options.panelHtml);
+			this.ui.toolbar	= $(this.options.toolbarHtml);
 
 			if (this.options.autoload) {
 				if ($.wysiwyg.autoload) {
@@ -1008,7 +1008,7 @@
 				saveHandler;
 
 			self.ui.appendControls();
-			self.element.append(self.ui.panel)
+			self.element.append(self.ui.toolbar)
 				.append($("<div><!-- --></div>")
 					.css({
 						clear: "both"
@@ -1381,7 +1381,8 @@
 
 			return object.each(function () {
 				var oWysiwyg = $(this).data("wysiwyg"),
-					customControl = {};
+					customControl = {},
+					toolbar;
 
 				if (!oWysiwyg) {
 					return this;
@@ -1390,11 +1391,11 @@
 				customControl[name] = $.extend(true, {visible: true, custom: true}, settings);
 				$.extend(true, oWysiwyg.controls, customControl);
 
-				// render new panel
-				oWysiwyg.ui.panel.remove();
-				oWysiwyg.ui.panel = $(oWysiwyg.options.panelHtml);
+				// render new toolbar
+				toolbar = $(oWysiwyg.options.toolbarHtml);
+				oWysiwyg.ui.toolbar.replaceWith(toolbar);
+				oWysiwyg.ui.toolbar = toolbar;
 				oWysiwyg.ui.appendControls();
-				$(oWysiwyg.element).prepend(oWysiwyg.ui.panel);
 			});
 		},
 

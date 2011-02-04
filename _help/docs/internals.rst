@@ -37,8 +37,8 @@ original
 ui
     UI related properties and methods
 
-ui.panel
-    jQuery("<ul class="panel">") object
+ui.toolbar
+    jQuery("<ul class="toolbar">") object
 
 ui.self
     link to parent object (Wysiwyg)
