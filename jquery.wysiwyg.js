@@ -53,7 +53,7 @@
 				exec: function () {
 					var self = this;
 					if ($.wysiwyg.controls && $.wysiwyg.controls.link) {
-						$.wysiwyg.controls.link(this);
+						$.wysiwyg.controls.link.init(this);
 					} else if ($.wysiwyg.autoload) {
 						$.wysiwyg.autoload.control("wysiwyg.link.js", function () {
 							self.controls.createLink.exec.apply(self);
