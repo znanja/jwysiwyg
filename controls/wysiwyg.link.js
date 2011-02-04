@@ -78,8 +78,8 @@
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
 							e.preventDefault();
-							var link,
-								szURL = $('input[name="linkhref"]', dialog).val(),
+
+							var szURL = $('input[name="linkhref"]', dialog).val(),
 								title = $('input[name="linktitle"]', dialog).val(),
 								target = $('input[name="linktarget"]', dialog).val();
 
@@ -166,6 +166,7 @@
 					}
 				}
 			}
+
 			$(self.editorDoc).trigger("wysiwyg:refresh");
 		},
 
