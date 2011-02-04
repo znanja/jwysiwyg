@@ -54,33 +54,33 @@
 
 		dialogs: {
 			// colorpicker
-			"Colorpicker": "",
-			"Color": "",
-			"Apply": "",
+			"Colorpicker": "Scegli un colore",
+			"Color": "Colore",
+			"Apply": "Applica",
 
 			// image
-			"Insert Image": "",
-			"Preview": "",
-			"URL": "",
-			"Title": "",
-			"Description": "",
-			"Width": "",
-			"Height": "",
-			"Original W x H": "",
+			"Insert Image": "Inserisci immagine",
+			"Preview": "Anteprima",
+			"URL": "Indirizzo internet (URL)",
+			"Title": "Titolo",
+			"Description": "Descrizione",
+			"Width": "Larghezza",
+			"Height": "Altezza",
+			"Original W x H": "Dimensioni originali (L x A)",
 
 			// link
-			"Insert Link": "",
-			"Link URL": "",
-			"Link Title": "",
-			"Link Target": "",
+			"Insert Link": "Inserisci collegamento",
+			"Link URL": "Indirizzo internet (URL)",
+			"Link Title": "Titolo",
+			"Link Target": "Destinazione",
 
 			// table
-			"Insert table": "",
-			"Count of columns": "",
-			"Count of rows": "",
+			"Insert table": "Inserisci tabella",
+			"Count of columns": "Numero di colonne",
+			"Count of rows": "Numero di righe",
 
 			// for all
-			"Cancel": ""
+			"Cancel": "Annulla"
 		}
 	};
 })(jQuery);
