@@ -13,7 +13,7 @@ Dual licensed under the `MIT
 Requires
 ========
 
-jQuery 1.3.2 or higher (tested with jQuery 1.4.4).
+jQuery 1.3.2 or higher (tested with jQuery 1.5).
 
 ========
 Supports
