@@ -17,12 +17,12 @@
 	$.wysiwyg.i18n.lang.it = {
 		controls: {
 			"Bold": "Grassetto",
-			"Colorpicker": "",
+			"Colorpicker": "Scegli un colore",
 			"Copy": "Copia",
 			"Create link": "Crea collegamento",
 			"Cut": "Taglia",
 			"Decrease font size": "Diminuisci dimensione testo",
-			"Fullscreen": "",
+			"Fullscreen": "Schermo intero",
 			"Header 1": "Titolo 1",
 			"Header 2": "Titolo 2",
 			"Header 3": "Titolo 3",
