@@ -67,20 +67,16 @@
 			}
 		},
 		originalBoundary: {
-			editor: {
-				width: null	// check state by width?
-			},
-			element: {
-			},
-			original: {
-			}
+			editor: {},
+			element: {},
+			original: {}
 		},
 
 		init: function (Wysiwyg, options) {
 			options = options || {};
 			options = $.extend(true, this.defaults, options);
 
-			if (this.originalBoundary.element.width) {
+			if (Wysiwyg.ui.toolbar.find(".fullscreen").hasClass("active")) {
 				this.restore(Wysiwyg);
 				Wysiwyg.ui.toolbar.find(".fullscreen").removeClass("active");
 			} else {
