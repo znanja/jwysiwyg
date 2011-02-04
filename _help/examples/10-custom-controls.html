@@ -25,10 +25,10 @@
 				icon: './../tests/images/quote02.gif',
 				tooltip: 'Quote',
 				tags: ['blockquote'],
-				callback: function (e, Wysiwyg) {
-					var range	= Wysiwyg.getInternalRange(),
+				exec: function () {
+					var range	= this.getInternalRange(),
 						common	= range.commonAncestorContainer,
-						blockquote = Wysiwyg.dom.getElement("blockquote");
+						blockquote = this.dom.getElement("blockquote");
 
 					// if a text node is selected, we want to make the wrap the whole element, not just some text
 					if (common.nodeType === 3) {
@@ -39,8 +39,13 @@
 						$(common).unwrap();
 					}
 					else {
-						$(common).wrap("<blockquote class='quote' />");
+						if ("body" !== common.nodeName.toLowerCase()) {
+							$(common).wrap("<blockquote class='quote' />");
+						}
 					}
+				},
+				callback: function (event, Wysiwyg) {
+					alert("callback triggered!");
 				}
 			});
 		});
