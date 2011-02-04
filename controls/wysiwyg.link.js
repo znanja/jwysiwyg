@@ -47,13 +47,13 @@
 
 		a = {
 			self: self.dom.getElement("a"), // link to element node
-			src: "http://",
+			href: "http://",
 			title: "",
 			target: ""
 		};
 
 		if (a.self) {
-			a.href = a.self.href ? a.self.href : "";
+			a.href = a.self.href ? a.self.href : a.href;
 			a.title = a.self.title ? a.self.title : "";
 			a.target = a.self.target ? a.self.target : "";
 		}
@@ -151,7 +151,7 @@
 						self.ui.focus();
 						self.editorDoc.execCommand("createLink", true, null);
 					} else {
-						szURL = window.prompt(formTextUrl, "http://");
+						szURL = window.prompt(formTextUrl, a.href);
 
 						if (szURL && szURL.length > 0) {
 							self.editorDoc.execCommand("unlink", false, null);
