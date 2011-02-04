@@ -84,9 +84,13 @@
 								target = $('input[name="linktarget"]', dialog).val();
 	
 							if (a.self) {
-								// to preserve all link attributes
-								if (szURL && szURL.length > 0) {
-									$(a.self).attr("href", szURL).attr("title", title).attr("target", target);
+								if ("string" === typeof (szURL)) {
+									if (szURL.length > 0) {
+										// to preserve all link attributes
+										$(a.self).attr("href", szURL).attr("title", title).attr("target", target);
+									} else {
+										$(a.self).replaceWith(a.self.innerHTML);
+									}
 								}
 							} else {
 	
@@ -109,10 +113,14 @@
 										self.ui.focus();
 									}
 	
-									if (szURL && szURL.length > 0) {
-										self.editorDoc.execCommand("unlink", false, null);
-										self.editorDoc.execCommand("createLink", false, szURL);
+									if ("string" === typeof (szURL)) {
+										if (szURL.length > 0) {
+											self.editorDoc.execCommand("createLink", false, szURL);
+										} else {
+											self.editorDoc.execCommand("unlink", false, null);
+										}
 									}
+
 									a = self.dom.getElement("a");
 									$(a).attr("href", szURL).attr("title", title).attr("target", target);
 								} else if (self.options.messages.nonSelection) {
@@ -133,9 +141,13 @@
 			} else {
 				if (a.self) {
 					szURL = window.prompt("URL", a.href);
-	
-					if (szURL && szURL.length > 0) {
-						a.href = szURL;
+
+					if ("string" === typeof (szURL)) {
+						if (szURL.length > 0) {
+							a.href = szURL;
+						} else {
+							$(a.self).replaceWith(a.self.innerHTML);
+						}
 					}
 				} else {
 					//Do new link element
@@ -154,9 +166,12 @@
 						} else {
 							szURL = window.prompt(formTextUrl, a.href);
 	
-							if (szURL && szURL.length > 0) {
-								self.editorDoc.execCommand("unlink", false, null);
-								self.editorDoc.execCommand("createLink", false, szURL);
+							if ("string" === typeof (szURL)) {
+								if (szURL.length > 0) {
+									self.editorDoc.execCommand("createLink", false, szURL);
+								} else {
+									self.editorDoc.execCommand("unlink", false, null);
+								}
 							}
 						}
 					} else if (self.options.messages.nonSelection) {
