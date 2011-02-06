@@ -281,12 +281,12 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
             // Set which group to assign or create a new group with unique number.
             groupIndex: { number },
             
-            // Tags to use to wrap the selected text when this control is
-            // triggered.
+            // Tags are used to hilight control when current selection
+            // is wrapped by one of these tags.
             tags: ['b', 'strong'],
             
-            // CSS classes to apply to selected text when this command is
-            // triggered.
+            // CSS classes are used to hilight control when current selection
+            // has chosen css classes.
             css: {
                 textAlign: 'left',
                 fontStyle: 'italic',
