@@ -470,7 +470,13 @@
 		this.dom.w3c.getElement = function (filterTagName) {
 			var dom		= this.parent,
 				range	= dom.parent.getInternalRange(),
-				element	= range.commonAncestorContainer;
+				element;
+			
+			if (!range) {
+				return null;
+			}
+
+			element	= range.commonAncestorContainer;
 
 			if (3 === element.nodeType) {
 				element = element.parentNode;
