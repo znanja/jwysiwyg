@@ -3,6 +3,7 @@
  * 
  * Depends on jWYSIWYG, $.wysiwyg.i18n
  */
+
 (function($) {
 if (undefined === $.wysiwyg) {
 	throw "lang.ja.js depends on $.wysiwyg";
@@ -26,7 +27,7 @@ $.wysiwyg.i18n.lang.ja = {
 "Increase font size": "フォントサイズを大きく",
 "Indent": "インデント",
 "Insert Horizontal Rule": "水平線<HR>を挿入",
-"Insert image": "画像を追加",
+"Insert image": "画像を挿入",
 "Insert Ordered List": "リストの追加",
 "Insert table": "テーブルの追加",
 "Insert Unordered List": "下線を追加",
