@@ -99,7 +99,7 @@
 								}
 
 								//Do new link element
-								selection = this.range.apply(self);
+								selection = $.wysiwyg.controls.link.range.apply(self);
 
 								if (selection && selection.length > 0) {
 									if ($.browser.msie) {
