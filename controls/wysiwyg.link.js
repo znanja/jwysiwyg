@@ -47,7 +47,7 @@
 				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
 			a = {
-				self: self.dom.getElement("a"), // link to element node
+				self: Wysiwyg.dom.getElement("a"), // link to element node
 				href: "http://",
 				title: "",
 				target: ""
@@ -114,7 +114,7 @@
 										}
 									}
 
-									a = self.dom.getElement("a");
+									a = Wysiwyg.dom.getElement("a");
 									$(a).attr("href", szURL).attr("title", title).attr("target", target);
 								} else if (Wysiwyg.options.messages.nonSelection) {
 									window.alert(Wysiwyg.options.messages.nonSelection);
