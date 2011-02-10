@@ -1029,7 +1029,7 @@
 					/**
 					 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=144
 					 */
-					.replace(/INITIAL_CONTENT/, function () { return self.initialContent; })
+					.replace(/INITIAL_CONTENT/, function () { return self.wrapInitialContent(); })
 			);
 			self.editorDoc.close();
 
@@ -1366,6 +1366,19 @@
 			}
 
 			return self;
+		};
+
+		this.wrapInitialContent = function () {
+			var content = this.initialContent,
+				found = content.match(/<\/?p>/gi);
+
+			if (!found) {
+				return "<p>" + content + "</p>";
+			} else {
+				// :TODO: checking/replacing
+			}
+
+			return content;
 		};
 	}
 
