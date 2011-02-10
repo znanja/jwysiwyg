@@ -13,11 +13,6 @@
 
 /*jslint browser: true, forin: true */
 
-/*
-:TODO:
-1) documentSelection || getSelection || window.getSelection ???
- */
-
 (function ($) {
 	/* Wysiwyg namespace: private properties and methods */
 
@@ -258,7 +253,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var selection = this.documentSelection();
+					var selection = this.getRangeText();
 					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "ltr");
 					} else {
@@ -300,7 +295,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var selection = this.documentSelection();
+					var selection = this.getRangeText();
 					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "rtl");
 					} else {
@@ -741,13 +736,16 @@
 			return this;
 		};
 
-		this.documentSelection = function () {
-			if (this.editorDoc.getSelection) {
-				return this.getInternalSelection().toString();
+		this.getRangeText = function () {
+			var r = this.getInternalRange();
+
+			if (r.toString) {
+				r = r.toString();
+			} else if (r.text) {	// IE
+				r = r.text;
 			}
-			if (this.editorDoc.selection) {
-				return this.editorDoc.selection().createRange().text;
-			}
+
+			return r;
 		};
 		//not used?
 		this.execute = function (command, arg) {
@@ -1440,41 +1438,6 @@
 		},
 
 		console: console, // let our console be available for extensions
-
-		createLink: function (object, szURL) {
-			if ("object" !== typeof (object) || !object.context) {
-				object = this;
-			}
-
-			if (!object.each) {
-				console.error("Something goes wrong, check object");
-			}
-
-			return object.each(function () {
-				var oWysiwyg = $(this).data("wysiwyg"),
-					selection;
-
-				if (!oWysiwyg) {
-					return this;
-				}
-
-				if (!szURL || szURL.length === 0) {
-					return this;
-				}
-
-				selection = oWysiwyg.documentSelection();
-
-				if (selection && selection.length > 0) {
-					if ($.browser.msie) {
-						oWysiwyg.ui.focus();
-					}
-					oWysiwyg.editorDoc.execCommand("unlink", false, null);
-					oWysiwyg.editorDoc.execCommand("createLink", false, szURL);
-				} else if (oWysiwyg.options.messages.nonSelection) {
-					window.alert(oWysiwyg.options.messages.nonSelection);
-				}
-			});
-		},
 
 		destroy: function (object) {
 			if ("object" !== typeof (object) || !object.context) {

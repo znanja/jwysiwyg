@@ -47,7 +47,7 @@
 				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
 			a = {
-				self: self.dom.getElement("a"), // link to element node
+				self: Wysiwyg.dom.getElement("a"), // link to element node
 				href: "http://",
 				title: "",
 				target: ""
@@ -99,7 +99,7 @@
 								}
 
 								//Do new link element
-								selection = self.range.apply(Wysiwyg);
+								selection = Wysiwyg.getRangeText();
 
 								if (selection && selection.length > 0) {
 									if ($.browser.msie) {
@@ -114,7 +114,7 @@
 										}
 									}
 
-									a = self.dom.getElement("a");
+									a = Wysiwyg.dom.getElement("a");
 									$(a).attr("href", szURL).attr("title", title).attr("target", target);
 								} else if (Wysiwyg.options.messages.nonSelection) {
 									window.alert(Wysiwyg.options.messages.nonSelection);
@@ -144,7 +144,7 @@
 					}
 				} else {
 					//Do new link element
-					selection = self.range.apply(Wysiwyg);
+					selection = Wysiwyg.getRangeText();
 
 					if (selection && selection.length > 0) {
 						if ($.browser.msie) {
@@ -168,18 +168,41 @@
 			}
 
 			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
-		},
+		}
+	};
 
-		range: function () {
-			var r = this.getInternalRange();
+	$.wysiwyg.createLink = function (object, szURL) {
+		if ("object" !== typeof (object) || !object.context) {
+			object = this;
+		}
 
-			if (r.toString) {
-				r = r.toString();
-			} else if (r.text) {	// IE
-				r = r.text;
+		if (!object.each) {
+			console.error("Something goes wrong, check object");
+		}
+
+		return object.each(function () {
+			var oWysiwyg = $(this).data("wysiwyg"),
+				selection;
+
+			if (!oWysiwyg) {
+				return this;
 			}
 
-			return r;
-		}
-	}
+			if (!szURL || szURL.length === 0) {
+				return this;
+			}
+
+			selection = oWysiwyg.getRangeText();
+
+			if (selection && selection.length > 0) {
+				if ($.browser.msie) {
+					oWysiwyg.ui.focus();
+				}
+				oWysiwyg.editorDoc.execCommand("unlink", false, null);
+				oWysiwyg.editorDoc.execCommand("createLink", false, szURL);
+			} else if (oWysiwyg.options.messages.nonSelection) {
+				window.alert(oWysiwyg.options.messages.nonSelection);
+			}
+		});
+	};
 })(jQuery);
