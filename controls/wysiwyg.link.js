@@ -19,7 +19,7 @@
 	*/
 	$.wysiwyg.controls.link = {
 		init: function (Wysiwyg) {
-			var self = Wysiwyg, elements, dialog, szURL, a, selection,
+			var self = this, elements, dialog, szURL, a, selection,
 				formLinkHtml, formTextLegend, formTextUrl, formTextTitle, formTextTarget,
 				formTextSubmit, formTextReset;
 
@@ -73,8 +73,8 @@
 
 				dialog.dialog({
 					modal: true,
-					width: self.defaults.formWidth,
-					height: self.defaults.formHeight,
+					width: Wysiwyg.defaults.formWidth,
+					height: Wysiwyg.defaults.formHeight,
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
 							e.preventDefault();
@@ -95,29 +95,29 @@
 							} else {
 
 								if ($.browser.msie) {
-									self.ui.returnRange();
+									Wysiwyg.ui.returnRange();
 								}
 
 								//Do new link element
-								selection = $.wysiwyg.controls.link.range.apply(self);
+								selection = self.range.apply(Wysiwyg);
 
 								if (selection && selection.length > 0) {
 									if ($.browser.msie) {
-										self.ui.focus();
+										Wysiwyg.ui.focus();
 									}
 
 									if ("string" === typeof (szURL)) {
 										if (szURL.length > 0) {
-											self.editorDoc.execCommand("createLink", false, szURL);
+											Wysiwyg.editorDoc.execCommand("createLink", false, szURL);
 										} else {
-											self.editorDoc.execCommand("unlink", false, null);
+											Wysiwyg.editorDoc.execCommand("unlink", false, null);
 										}
 									}
 
 									a = self.dom.getElement("a");
 									$(a).attr("href", szURL).attr("title", title).attr("target", target);
-								} else if (self.options.messages.nonSelection) {
-									window.alert(self.options.messages.nonSelection);
+								} else if (Wysiwyg.options.messages.nonSelection) {
+									window.alert(Wysiwyg.options.messages.nonSelection);
 								}
 							}
 							$(dialog).dialog("close");
@@ -144,30 +144,30 @@
 					}
 				} else {
 					//Do new link element
-					selection = this.range.apply(self);
+					selection = self.range.apply(Wysiwyg);
 
 					if (selection && selection.length > 0) {
 						if ($.browser.msie) {
-							self.ui.focus();
-							self.editorDoc.execCommand("createLink", true, null);
+							Wysiwyg.ui.focus();
+							Wysiwyg.editorDoc.execCommand("createLink", true, null);
 						} else {
 							szURL = window.prompt(formTextUrl, a.href);
 
 							if ("string" === typeof (szURL)) {
 								if (szURL.length > 0) {
-									self.editorDoc.execCommand("createLink", false, szURL);
+									Wysiwyg.editorDoc.execCommand("createLink", false, szURL);
 								} else {
-									self.editorDoc.execCommand("unlink", false, null);
+									Wysiwyg.editorDoc.execCommand("unlink", false, null);
 								}
 							}
 						}
-					} else if (self.options.messages.nonSelection) {
-						window.alert(self.options.messages.nonSelection);
+					} else if (Wysiwyg.options.messages.nonSelection) {
+						window.alert(Wysiwyg.options.messages.nonSelection);
 					}
 				}
 			}
 
-			$(self.editorDoc).trigger("wysiwyg:refresh");
+			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
 		},
 
 		range: function () {
