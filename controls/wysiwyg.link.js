@@ -181,5 +181,40 @@
 
 			return r;
 		}
-	}
+	};
+
+	$.wysiwyg.createLink = function (object, szURL) {
+		if ("object" !== typeof (object) || !object.context) {
+			object = this;
+		}
+
+		if (!object.each) {
+			console.error("Something goes wrong, check object");
+		}
+
+		return object.each(function () {
+			var oWysiwyg = $(this).data("wysiwyg"),
+				selection;
+
+			if (!oWysiwyg) {
+				return this;
+			}
+
+			if (!szURL || szURL.length === 0) {
+				return this;
+			}
+
+			selection = oWysiwyg.documentSelection();
+
+			if (selection && selection.length > 0) {
+				if ($.browser.msie) {
+					oWysiwyg.ui.focus();
+				}
+				oWysiwyg.editorDoc.execCommand("unlink", false, null);
+				oWysiwyg.editorDoc.execCommand("createLink", false, szURL);
+			} else if (oWysiwyg.options.messages.nonSelection) {
+				window.alert(oWysiwyg.options.messages.nonSelection);
+			}
+		});
+	};
 })(jQuery);
