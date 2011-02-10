@@ -13,11 +13,6 @@
 
 /*jslint browser: true, forin: true */
 
-/*
-:TODO:
-1) documentSelection || getSelection || window.getSelection ???
- */
-
 (function ($) {
 	/* Wysiwyg namespace: private properties and methods */
 
@@ -258,7 +253,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var selection = this.documentSelection();
+					var selection = this.getRangeText();
 					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "ltr");
 					} else {
@@ -300,7 +295,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var selection = this.documentSelection();
+					var selection = this.getRangeText();
 					if ($("<div/>").append(selection).children().length > 0) {
 						selection = $(selection).attr("dir", "rtl");
 					} else {
@@ -741,13 +736,16 @@
 			return this;
 		};
 
-		this.documentSelection = function () {
-			if (this.editorDoc.getSelection) {
-				return this.getInternalSelection().toString();
+		this.getRangeText = function () {
+			var r = this.getInternalRange();
+
+			if (r.toString) {
+				r = r.toString();
+			} else if (r.text) {	// IE
+				r = r.text;
 			}
-			if (this.editorDoc.selection) {
-				return this.editorDoc.selection().createRange().text;
-			}
+
+			return r;
 		};
 		//not used?
 		this.execute = function (command, arg) {

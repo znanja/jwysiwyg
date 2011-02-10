@@ -204,7 +204,7 @@
 				return this;
 			}
 
-			selection = oWysiwyg.documentSelection();
+			selection = oWysiwyg.getRangeText();
 
 			if (selection && selection.length > 0) {
 				if ($.browser.msie) {
