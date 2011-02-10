@@ -2,6 +2,9 @@
  * Internationalization: japanese language
  * 
  * Depends on jWYSIWYG, $.wysiwyg.i18n
+ *
+ * By: https://github.com/rosiro
+ *
  */
 
 (function ($) {
@@ -30,7 +33,7 @@
 			"Insert Horizontal Rule": "水平線<HR>を挿入",
 			"Insert image": "画像を挿入",
 			"Insert Ordered List": "リストの追加",
-			"Insert table": "テーブルの追加",
+			"Insert table": "テーブルを挿入",
 			"Insert Unordered List": "下線を追加",
 			"Italic": "イタリック",
 			"Justify Center": "中央寄せ",
@@ -52,33 +55,33 @@
 
 		dialogs: {
 			// colorpicker
-			"Colorpicker": "",
-			"Color": "",
-			"Apply": "",
+			"Colorpicker": "カラーピッカー",
+			"Color": "カラー",
+			"Apply": "適用",
 
 			// image
-			"Insert Image": "",
-			"Preview": "",
-			"URL": "",
-			"Title": "",
-			"Description": "",
-			"Width": "",
-			"Height": "",
-			"Original W x H": "",
+			"Insert Image": "画像を挿入",
+			"Preview": "プレビュー",
+			"URL": "URL",
+			"Title": "タイトル",
+			"Description": "概要",
+			"Width": "横幅",
+			"Height": "高さ",
+			"Original W x H": "オリジナル 横 x 高",
 
 			// link
-			"Insert Link": "",
-			"Link URL": "",
-			"Link Title": "",
-			"Link Target": "",
+			"Insert Link": "リンクの挿入",
+			"Link URL": "リンク URL",
+			"Link Title": "リンク タイトル",
+			"Link Target": "リンク ターゲット",
 
 			// table
-			"Insert table": "",
-			"Count of columns": "",
-			"Count of rows": "",
+			"Insert table": "テーブルを挿入",
+			"Count of columns": "列数",
+			"Count of rows": "行数",
 
 			// for all
-			"Cancel": ""
+			"Cancel": "キャンセル"
 		}
 	};
 })(jQuery);
