@@ -99,7 +99,7 @@
 								}
 
 								//Do new link element
-								selection = self.range.apply(Wysiwyg);
+								selection = Wysiwyg.getRangeText();
 
 								if (selection && selection.length > 0) {
 									if ($.browser.msie) {
@@ -144,7 +144,7 @@
 					}
 				} else {
 					//Do new link element
-					selection = self.range.apply(Wysiwyg);
+					selection = Wysiwyg.getRangeText();
 
 					if (selection && selection.length > 0) {
 						if ($.browser.msie) {
@@ -168,18 +168,6 @@
 			}
 
 			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
-		},
-
-		range: function () {
-			var r = this.getInternalRange();
-
-			if (r.toString) {
-				r = r.toString();
-			} else if (r.text) {	// IE
-				r = r.text;
-			}
-
-			return r;
 		}
 	};
 
