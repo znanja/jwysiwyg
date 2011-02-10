@@ -253,13 +253,14 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var selection = this.getRangeText();
-					if ($("<div/>").append(selection).children().length > 0) {
-						selection = $(selection).attr("dir", "ltr");
-					} else {
-						selection = $("<div/>").attr("dir", "ltr").append(selection);
+					var range = this.getInternalRange(),
+					p = this.dom.getElement("p");
+
+					if (!p) {
+						return false;
 					}
-					this.editorDoc.execCommand("inserthtml", false, $("<div/>").append(selection).html());
+
+					$(p).attr("dir", "ltr");
 				},
 				tooltip : "Left to Right"
 			},
@@ -295,13 +296,14 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var selection = this.getRangeText();
-					if ($("<div/>").append(selection).children().length > 0) {
-						selection = $(selection).attr("dir", "rtl");
-					} else {
-						selection = $("<div/>").attr("dir", "rtl").append(selection);
+					var range = this.getInternalRange(),
+						p = this.dom.getElement("p");
+
+					if (!p) {
+						return false;
 					}
-					this.editorDoc.execCommand("inserthtml", false, $("<div/>").append(selection).html());
+
+					$(p).attr("dir", "rtl");
 				},
 				tooltip : "Right to Left"
 			},
