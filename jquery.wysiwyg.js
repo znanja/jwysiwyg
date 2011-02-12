@@ -1320,7 +1320,27 @@
 		};
 
 		this.setContent = function (newContent) {
-			this.editorDoc.body.innerHTML = newContent;
+			newContent = $("<div/>").addClass("temp").append(newContent);
+
+			newContent.children("div").each(function () {
+				var element = $(this), p = element.find("p"), i;
+
+				if (0 === p.length) {
+					p = $("<p></p>");
+
+					if (this.attributes.length > 0) {
+						for (i = 0; i < this.attributes.length; i += 1) {
+							p.attr(this.attributes[i].name, element.attr(this.attributes[i].name));
+						}
+					}
+
+					p.append(element.html());
+
+					element.replaceWith(p);
+				}
+			});
+
+			this.editorDoc.body.innerHTML = newContent.html();
 			return this;
 		};
 
