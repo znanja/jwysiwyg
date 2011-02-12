@@ -36,6 +36,10 @@
 			formTextWidth   = "Width";
 			formTextHeight  = "Height";
 			formTextOriginal = "Original W x H";
+			formTextFloat	= "Float";
+			formTextFloatNone = "None";
+			formTextFloatLeft = "Left";
+			formTextFloatRight = "Right";
 			formTextSubmit  = "Insert Image";
 			formTextReset   = "Cancel";
 
@@ -48,6 +52,10 @@
 				formTextWidth = $.wysiwyg.i18n.t(formTextWidth, "dialogs");
 				formTextHeight = $.wysiwyg.i18n.t(formTextHeight, "dialogs");
 				formTextOriginal = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
+				formTextFloat = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
+				formTextFloatNone = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
+				formTextFloatLeft = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
+				formTextFloatRight = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
 				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
 				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 			}
@@ -60,8 +68,12 @@
 				'<label>' + formTextWidth + ' x ' + formTextHeight + ': <input type="text" name="width" value="" class="width"/> x <input type="text" name="height" value="" class="height"/></label>' +
 				'<label>' + formTextOriginal + ': <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
 				'<input type="text" name="naturalHeight" value="" class="height" disabled="disabled"/></label>' +
+				'<label>' + formTextFloat + ': <select name="float">' + 
+					'<option value="">' + formTextFloatNone + '</option>' +
+					'<option value="left">' + formTextFloatLeft + '</option>' +
+					'<option value="right">' + formTextFloatRight + '</option></select></label>' +
 				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
-				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>'
+				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
 			if (img.self) {
 				img.src = img.self.src ? img.self.src : "";
@@ -164,6 +176,7 @@
 				description = $('input[name="description"]', form).val(),
 				width = $('input[name="width"]', form).val(),
 				height = $('input[name="height"]', form).val(),
+				float = $('select[name="float"]', form).val(),
 				style = [],
 				found;
 
@@ -171,7 +184,8 @@
 				// to preserve all img attributes
 				$(img.self).attr("src", szURL)
 					.attr("title", title)
-					.attr("alt", description);
+					.attr("alt", description)
+					.css("float", float);
 
 				if (width.toString().match(/^[0-9]+(px|%)?$/)) {
 					$(img.self).css("width", width);
@@ -201,6 +215,10 @@
 					} else {
 						style.push("height: " + height + "px;");
 					}
+				}
+
+				if (float.length > 0) {
+					style.push("float: " + float + ";");
 				}
 
 				if (style.length > 0) {

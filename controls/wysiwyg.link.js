@@ -100,8 +100,9 @@
 
 								//Do new link element
 								selection = Wysiwyg.getRangeText();
+								img = Wysiwyg.dom.getElement("img");
 
-								if (selection && selection.length > 0) {
+								if ((selection && selection.length > 0) || img) {
 									if ($.browser.msie) {
 										Wysiwyg.ui.focus();
 									}
@@ -137,7 +138,7 @@
 
 					if ("string" === typeof (szURL)) {
 						if (szURL.length > 0) {
-							a.href = szURL;
+							$(a.self).attr("href", szURL);
 						} else {
 							$(a.self).replaceWith(a.self.innerHTML);
 						}
@@ -145,8 +146,9 @@
 				} else {
 					//Do new link element
 					selection = Wysiwyg.getRangeText();
+					img = Wysiwyg.dom.getElement("img");
 
-					if (selection && selection.length > 0) {
+					if ((selection && selection.length > 0) || img) {
 						if ($.browser.msie) {
 							Wysiwyg.ui.focus();
 							Wysiwyg.editorDoc.execCommand("createLink", true, null);
