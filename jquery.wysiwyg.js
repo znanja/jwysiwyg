@@ -1156,9 +1156,7 @@
 							"rel":		"stylesheet",
 							"type":		"text/css"
 						});
-						if(self.options.debug){
-							console.log($(self.editorDoc).find("head"));
-						}
+
 						$(self.editorDoc).find("head").append(stylesheet);
 					}
 				} else {
