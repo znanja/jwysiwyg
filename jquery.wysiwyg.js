@@ -371,6 +371,7 @@
 			},
 			toolbarHtml: '<ul role="menu" class="toolbar"></ul>',
 			removeHeadings: false,
+			replaceDivWithP: false,
 			resizeOptions: false,
 			rmMsWordMarkup: false,
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
@@ -1309,6 +1310,30 @@
 					content = content.replace(/<br\/?>$/, "");
 				}
 
+				if (this.options.replaceDivWithP) {
+					newContent = $("<div/>").addClass("temp").append(content);
+
+					newContent.children("div").each(function () {
+						var element = $(this), p = element.find("p"), i;
+
+						if (0 === p.length) {
+							p = $("<p></p>");
+
+							if (this.attributes.length > 0) {
+								for (i = 0; i < this.attributes.length; i += 1) {
+									p.attr(this.attributes[i].name, element.attr(this.attributes[i].name));
+								}
+							}
+
+							p.append(element.html());
+
+							element.replaceWith(p);
+						}
+					});
+					
+					content = newContent.html();
+				}
+
 				$(this.original).val(content);
 
 				if (this.options.events && this.options.events.save) {
@@ -1320,27 +1345,7 @@
 		};
 
 		this.setContent = function (newContent) {
-			newContent = $("<div/>").addClass("temp").append(newContent);
-
-			newContent.children("div").each(function () {
-				var element = $(this), p = element.find("p"), i;
-
-				if (0 === p.length) {
-					p = $("<p></p>");
-
-					if (this.attributes.length > 0) {
-						for (i = 0; i < this.attributes.length; i += 1) {
-							p.attr(this.attributes[i].name, element.attr(this.attributes[i].name));
-						}
-					}
-
-					p.append(element.html());
-
-					element.replaceWith(p);
-				}
-			});
-
-			this.editorDoc.body.innerHTML = newContent.html();
+			this.editorDoc.body.innerHTML = newContent;
 			return this;
 		};
 
