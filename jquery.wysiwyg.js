@@ -112,6 +112,7 @@
 						this.setContent($(this.original).val());
 						$(this.original).hide();
 						this.editor.show();
+						this.ui.toolbar.find(".html").removeClass("active");
 					} else {
 						this.saveContent();
 						$(this.original).css({
@@ -120,6 +121,7 @@
 							resize: "none"
 						}).show();
 						this.editor.hide();
+						this.ui.toolbar.find(".html").addClass("active");
 					}
 
 					this.viewHTML = !(this.viewHTML);
