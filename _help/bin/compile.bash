@@ -4,7 +4,8 @@
 # Compile & minimize
 #
 
-JWYSIWYG_ROOT_DIR=`pwd`/`dirname $0`/../..
+NAME=$(basename $0)
+JWYSIWYG_ROOT_DIR=$PWD/$(dirname $0)/../..
 JWYSIWYG_BIN_DIR=$JWYSIWYG_ROOT_DIR/_help/bin
 JWYSIWYG_OUTFILE="jquery.wysiwyg.full.js"
 
@@ -12,7 +13,7 @@ jwysiwyg_help() {
 	echo
 	echo "jWYSIWYG compile"
 	echo
-	echo "Usage: compile full [outfile]"
+	echo "Usage: $NAME full [outfile] </path/to/compile.conf"
 	echo
 }
 
@@ -45,18 +46,10 @@ case $1 in
 			echo > $outfile
 		fi
 
-		jwysiwyg_title $JWYSIWYG_ROOT_DIR/jquery.wysiwyg.js $outfile
-
-		for filename in `find $JWYSIWYG_ROOT_DIR/controls/*.*`; do
-			jwysiwyg_title $filename $outfile
-		done
-
-		for filename in `find $JWYSIWYG_ROOT_DIR/plugins/*.*`; do
-			jwysiwyg_title $filename $outfile
-		done
-
-		for filename in `find $JWYSIWYG_ROOT_DIR/i18n/*.*`; do
-			jwysiwyg_title $filename $outfile
+		while read path; do
+			for filename in $(find $JWYSIWYG_ROOT_DIR/$path); do
+				jwysiwyg_title $filename $outfile
+			done
 		done
 
 		if [ ! -e "$JWYSIWYG_BIN_DIR/yuicompressor-2.4.2.jar" ]; then
