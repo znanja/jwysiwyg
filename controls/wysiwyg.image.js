@@ -176,7 +176,7 @@
 				description = $('input[name="description"]', form).val(),
 				width = $('input[name="width"]', form).val(),
 				height = $('input[name="height"]', form).val(),
-				float = $('select[name="float"]', form).val(),
+				styleFloat = $('select[name="float"]', form).val(),
 				style = [],
 				found;
 
@@ -185,7 +185,7 @@
 				$(img.self).attr("src", szURL)
 					.attr("title", title)
 					.attr("alt", description)
-					.css("float", float);
+					.css("float", styleFloat);
 
 				if (width.toString().match(/^[0-9]+(px|%)?$/)) {
 					$(img.self).css("width", width);
@@ -217,8 +217,8 @@
 					}
 				}
 
-				if (float.length > 0) {
-					style.push("float: " + float + ";");
+				if (styleFloat.length > 0) {
+					style.push("float: " + styleFloat + ";");
 				}
 
 				if (style.length > 0) {
