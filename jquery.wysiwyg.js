@@ -1036,15 +1036,6 @@
 			);
 			self.editorDoc.close();
 
-			if ($.browser.msie) {
-				/**
-				 * Remove the horrible border it has on IE.
-				 */
-				self.timers.initFrame_IeBorder = window.setTimeout(function () {
-					$(self.editorDoc.body).css("border", "none");
-				}, 0);
-			}
-
 			$(self.editorDoc).bind("click.wysiwyg", function (event) {
 				self.ui.checkTargets(event.target ? event.target : event.srcElement);
 			});
