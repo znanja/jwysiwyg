@@ -452,3 +452,20 @@ Additional Resources
 ====================
 
 Look at http://akzhan.github.com/jwysiwyg/examples/
+    .. note::
+
+        These examples for version 0.93 (since then many changes has happened)
+
+Dive into *_help* folder that contains:
+
+* bin
+    compile.sh - to compile all files into one jquery.wysiwyg.full.js
+    (jquery.wysiwyg.js, controls/`*`, i18n/`*` and plugins/`*`)
+* docs
+    documents to help contributors
+* examples
+    latest examples
+* lib
+    to run examples and tests
+* tests
+    files that demonstrate some issues
