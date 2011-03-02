@@ -273,6 +273,16 @@
 				tooltip: "Outdent"
 			},
 
+			paragraph: {
+				groupIndex: 7,
+				visible: false,
+				className: "paragraph",
+				command: "FormatBlock",
+				"arguments": ($.browser.msie || $.browser.safari) ? "<p>" : "p",
+				tags: ["p"],
+				tooltip: "Paragraph"
+			},
+
 			paste: {
 				groupIndex: 8,
 				visible: false,

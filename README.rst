@@ -360,12 +360,10 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     * ``createLink``: Create a link from the selected text, by prompting the
       user for the URL.
     * ``insertImage``: Insert an image, by prompting the user for the image path.
-    * ``h1mozilla``: Make text an h1 header, Mozilla-specific.
-    * ``h2mozilla``: Make text an h2 header, Mozilla-specific.
-    * ``h3mozilla``: Make text on h3 header, Mozilla-specific.
-    * ``h1``: Make text an h1 header, non-Mozilla-specific.
-    * ``h2``: Make text an h2 header, non-Mozilla-specific.
-    * ``h3``: Make text an h3 header, non-Mozilla-specific.
+    * ``h1``: Make text an h1 header
+    * ``h2``: Make text an h2 header
+    * ``h3``: Make text an h3 header
+    * ``paragraph``: Make paragraph from text or h1-h6 headers
     * ``cut``: Cut selected text.
     * ``copy``: Copy selected text.
     * ``paste``: Paste from clipboard.
