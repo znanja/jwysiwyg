@@ -9,7 +9,7 @@ Feel free to contribute everywhere
 Code
 ----
 
-Read document `_help/docs/code_style.rst <code_style.rst>`_
+Read document `help/docs/code_style.rst <code_style.rst>`_
 
 Internationalization
 --------------------
@@ -43,10 +43,10 @@ to your language then translate control tooltips and dialog messages.
 Plugins
 -------
 
-Read document `_help/docs/plugins.rst <plugins.rst>`_
+Read document `help/docs/plugins.rst <plugins.rst>`_
 
 UML scheme
 ----------
 
-Read document `_help/docs/get_dia.rst <get_dia.rst>`_ and take a look at picture
-`_help/docs/scheme.png <scheme.png>`_
+Read document `help/docs/get_dia.rst <get_dia.rst>`_ and take a look at picture
+`help/docs/scheme.png <scheme.png>`_
