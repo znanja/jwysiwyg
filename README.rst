@@ -236,8 +236,8 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
             }
         });
     
-    See also `_help/examples/10-custom-controls.html
-    <https://github.com/akzhan/jwysiwyg/blob/master/_help/examples/10-custom-controls.html>`_
+    See also `help/examples/10-custom-controls.html
+    <https://github.com/akzhan/jwysiwyg/blob/master/help/examples/10-custom-controls.html>`_
 
 ``rmUnwantedBr``
     A boolean. If ``true``, the editor will not add extraneous ``<br/>`` tags.
@@ -435,15 +435,15 @@ When jWYSIWYG is called on a textarea, it does the following things:
 Plugins
 =======
 
-Read document `_help/docs/plugins.rst
-<https://github.com/akzhan/jwysiwyg/blob/master/_help/docs/plugins.rst>`_
+Read document `help/docs/plugins.rst
+<https://github.com/akzhan/jwysiwyg/blob/master/help/docs/plugins.rst>`_
 
 ============
 Contributing
 ============
 
-Read document `_help/docs/contributing.rst
-<https://github.com/akzhan/jwysiwyg/blob/master/_help/docs/contributing.rst>`_
+Read document `help/docs/contributing.rst
+<https://github.com/akzhan/jwysiwyg/blob/master/help/docs/contributing.rst>`_
 
 ====================
 Additional Resources
@@ -454,7 +454,7 @@ Look at http://akzhan.github.com/jwysiwyg/examples/
 
         These examples for version 0.93 (since then many changes has happened)
 
-Dive into *_help* folder that contains:
+Dive into *help* folder that contains:
 
 * bin
     compile.sh - to compile all files into one jquery.wysiwyg.full.js

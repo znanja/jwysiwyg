@@ -63,7 +63,7 @@ Also provides method to register your own plugins::
 
     $.wysiwyg.plugin.register(YourPlugin)
 
-To learn more about plugins read `_help/docs/plugins.rst <plugins.rst>`_
+To learn more about plugins read `help/docs/plugins.rst <plugins.rst>`_
 
 $.fn.wysiwyg object
 ===================
