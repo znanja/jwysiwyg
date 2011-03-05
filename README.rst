@@ -450,9 +450,6 @@ Additional Resources
 ====================
 
 Look at http://akzhan.github.com/jwysiwyg/examples/
-    .. note::
-
-        These examples for version 0.93 (since then many changes has happened)
 
 Dive into *help* folder that contains:
 
