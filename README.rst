@@ -32,6 +32,14 @@ Tested with
 
 Tested in Safari 4, Firefox 3.5, Chrome 4.0, Internet Explorer 8.
 
+.. note::
+
+    In IE transparent GIF may have an `issue <https://github.com/akzhan/jwysiwyg/issues#issue/28>`_
+    to resolve it:
+
+    * open jquery.wysiwyg.css
+    * replace string *jquery.wysiwyg.gif* with *jquery.wysiwyg.no-alpha.gif*
+
 Some minor bugs still exist while 1.0 not reached.
 
 ========
@@ -450,9 +458,6 @@ Additional Resources
 ====================
 
 Look at http://akzhan.github.com/jwysiwyg/examples/
-    .. note::
-
-        These examples for version 0.93 (since then many changes has happened)
 
 Dive into *help* folder that contains:
 
