@@ -112,7 +112,16 @@
 						this.setContent($(this.original).val());
 						$(this.original).hide();
 						this.editor.show();
-						this.ui.toolbar.find(".html").removeClass("active");
+						
+						this.ui.toolbar.find("li").each(function () {
+							var li = $(this);
+
+							if (li.hasClass("html")) {
+								li.removeClass("active");
+							} else {
+								li.attr("disabled", "false");
+							}
+						});
 					} else {
 						this.saveContent();
 						$(this.original).css({
@@ -121,7 +130,20 @@
 							resize: "none"
 						}).show();
 						this.editor.hide();
-						this.ui.toolbar.find(".html").addClass("active");
+
+						this.ui.toolbar.find("li").each(function () {
+							var li = $(this);
+
+							if (li.hasClass("html")) {
+								li.addClass("active");
+							} else {
+console.log(li.hasClass("fullscreen"));
+								if (false === li.hasClass("fullscreen")) {
+									li.removeClass("active");
+									li.attr("disabled", "true");
+								}
+							}
+						});
 					}
 
 					this.viewHTML = !(this.viewHTML);
@@ -598,6 +620,10 @@
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
+					if ("true" === $(this).attr("disabled")) {
+						return false;
+					}
+
 					self.triggerControl.apply(self, [name, control]);
 
 					this.blur();
@@ -670,7 +696,9 @@
 						}
 					};
 
-				$("." + className, self.ui.toolbar).removeClass("active");
+				if ("fullscreen" !== className) {
+					$("." + className, self.ui.toolbar).removeClass("active");
+				}
 
 				if (control.tags || (control.options && control.options.tags)) {
 					tags = control.tags || (control.options && control.options.tags);
