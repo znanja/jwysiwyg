@@ -137,7 +137,6 @@
 							if (li.hasClass("html")) {
 								li.addClass("active");
 							} else {
-console.log(li.hasClass("fullscreen"));
 								if (false === li.hasClass("fullscreen")) {
 									li.removeClass("active");
 									li.attr("disabled", "true");
