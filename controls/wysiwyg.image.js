@@ -45,19 +45,19 @@
 			formTextReset   = "Cancel";
 
 			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
-				formTextPreview = $.wysiwyg.i18n.t(formTextPreview, "dialogs");
-				formTextUrl = $.wysiwyg.i18n.t(formTextUrl, "dialogs");
-				formTextTitle = $.wysiwyg.i18n.t(formTextTitle, "dialogs");
-				formTextDescription = $.wysiwyg.i18n.t(formTextDescription, "dialogs");
-				formTextWidth = $.wysiwyg.i18n.t(formTextWidth, "dialogs");
-				formTextHeight = $.wysiwyg.i18n.t(formTextHeight, "dialogs");
-				formTextOriginal = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
-				formTextFloat = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
-				formTextFloatNone = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
-				formTextFloatLeft = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
-				formTextFloatRight = $.wysiwyg.i18n.t(formTextOriginal, "dialogs");
-				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
+				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.image");
+				formTextPreview = $.wysiwyg.i18n.t(formTextPreview, "dialogs.image");
+				formTextUrl = $.wysiwyg.i18n.t(formTextUrl, "dialogs.image");
+				formTextTitle = $.wysiwyg.i18n.t(formTextTitle, "dialogs.image");
+				formTextDescription = $.wysiwyg.i18n.t(formTextDescription, "dialogs.image");
+				formTextWidth = $.wysiwyg.i18n.t(formTextWidth, "dialogs.image");
+				formTextHeight = $.wysiwyg.i18n.t(formTextHeight, "dialogs.image");
+				formTextOriginal = $.wysiwyg.i18n.t(formTextOriginal, "dialogs.image");
+				formTextFloat = $.wysiwyg.i18n.t(formTextFloat, "dialogs.image");
+				formTextFloatNone = $.wysiwyg.i18n.t(formTextFloatNone, "dialogs.image");
+				formTextFloatLeft = $.wysiwyg.i18n.t(formTextFloatLeft, "dialogs.image");
+				formTextFloatRight = $.wysiwyg.i18n.t(formTextFloatRight, "dialogs.image");
+				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs.image");
 				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 			}
 

@@ -49,8 +49,8 @@
 				formTextReset  = "Cancel";
 
 			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
-				formTextColor = $.wysiwyg.i18n.t(formTextColor, "dialogs");
+				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.colorpicker");
+				formTextColor = $.wysiwyg.i18n.t(formTextColor, "dialogs.colorpicker");
 				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
 				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 			}

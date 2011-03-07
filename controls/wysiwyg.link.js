@@ -31,11 +31,11 @@
 			formTextReset   = "Cancel";
 
 			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
-				formTextUrl    = $.wysiwyg.i18n.t(formTextUrl, "dialogs");
-				formTextTitle  = $.wysiwyg.i18n.t(formTextTitle, "dialogs");
-				formTextTarget = $.wysiwyg.i18n.t(formTextTarget, "dialogs");
-				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
+				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.link");
+				formTextUrl    = $.wysiwyg.i18n.t(formTextUrl, "dialogs.link");
+				formTextTitle  = $.wysiwyg.i18n.t(formTextTitle, "dialogs.link");
+				formTextTarget = $.wysiwyg.i18n.t(formTextTarget, "dialogs.link");
+				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs.link");
 				formTextReset  = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 			}
 
