@@ -1,11 +1,14 @@
 == master (not tagged yet) ==
 
+== Version 0.96 (Pretty girl)
+
 * Proper dialog focus with IE7/8 - frost-nczr4, academo
 * Closure for autoSaveFunction - mbj
 * New options - mbj, frost-nczr4
 * Encode entities - alecgorge
 * Link control - academo
 * Fixes for Internet Explorer - frost-nczr4
+* Updated structure of repository and GitHub pages - akzhan
 * Brazilian Portuguese locale for jwysiwyg - Marcelo Wergles
 * Czech locale for jwysiwyg - deepj
 * Italian locale for jwysiwyg - maurofranceschini
