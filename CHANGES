@@ -2,6 +2,7 @@
 
 == Version 0.96 (Pretty girl)
 
+* Plugin rmFormat: fix for Word & IE markup - SugaSlide
 * Proper dialog focus with IE7/8 - frost-nczr4, academo
 * Closure for autoSaveFunction - mbj
 * New options - mbj, frost-nczr4
@@ -11,10 +12,12 @@
 * Updated structure of repository and GitHub pages - akzhan
 * Brazilian Portuguese locale for jwysiwyg - Marcelo Wergles
 * Czech locale for jwysiwyg - deepj
+* German locale for jwysiwyg - mbj
 * Italian locale for jwysiwyg - maurofranceschini
 * Japanese locale for jwysiwyg - rosiro
 * Slovenian locale for jwysiwyg - peterz
 * Spanish locale for jwysiwyg - academo
+* Ability to translate dialogs - frost-nczr4
 
 == Version 0.95 (Kino)
 

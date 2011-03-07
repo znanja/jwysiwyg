@@ -53,34 +53,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "Scegli un colore",
-			"Color": "Colore",
-			"Apply": "Applica",
-
-			// image
-			"Insert Image": "Inserisci immagine",
-			"Preview": "Anteprima",
-			"URL": "Indirizzo internet (URL)",
-			"Title": "Titolo",
-			"Description": "Descrizione",
-			"Width": "Larghezza",
-			"Height": "Altezza",
-			"Original W x H": "Dimensioni originali (L x A)",
-
-			// link
-			"Insert Link": "Inserisci collegamento",
-			"Link URL": "Indirizzo internet (URL)",
-			"Link Title": "Titolo",
-			"Link Target": "Destinazione",
-
-			// table
-			"Insert table": "Inserisci tabella",
-			"Count of columns": "Numero di colonne",
-			"Count of rows": "Numero di righe",
-
 			// for all
-			"Cancel": "Annulla"
+			"Apply": "Applica",
+			"Cancel": "Annulla",
+
+			colorpicker: {
+				"Colorpicker": "Scegli un colore",
+				"Color": "Colore"
+			},
+
+			image: {
+				"Insert Image": "Inserisci immagine",
+				"Preview": "Anteprima",
+				"URL": "Indirizzo internet (URL)",
+				"Title": "Titolo",
+				"Description": "Descrizione",
+				"Width": "Larghezza",
+				"Height": "Altezza",
+				"Original W x H": "Dimensioni originali (L x A)",
+				"Float": "",
+				"None": "",
+				"Left": "",
+				"Right": ""
+			},
+
+			link: {
+				"Insert Link": "Inserisci collegamento",
+				"Link URL": "Indirizzo internet (URL)",
+				"Link Title": "Titolo",
+				"Link Target": "Destinazione"
+			},
+
+			table: {
+				"Insert table": "Inserisci tabella",
+				"Count of columns": "Numero di colonne",
+				"Count of rows": "Numero di righe"
+			}
 		}
 	};
 })(jQuery);

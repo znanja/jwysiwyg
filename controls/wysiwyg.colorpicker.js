@@ -46,11 +46,11 @@
 				formTextLegend = "Colorpicker",
 				formTextColor  = "Color",
 				formTextSubmit = "Apply",
-				formTextReset  = "Cancel"
+				formTextReset  = "Cancel";
 
 			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
-				formTextColor = $.wysiwyg.i18n.t(formTextColor, "dialogs");
+				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.colorpicker");
+				formTextColor = $.wysiwyg.i18n.t(formTextColor, "dialogs.colorpicker");
 				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
 				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 			}
@@ -186,13 +186,15 @@
 					var color = $(this).text();
 					jqObj.find("input[name=color]").val(color);
 					// farbtastic binds on keyup
-					jqObj.find("input[name=color]").trigger("keyup");
+					if ($.farbtastic) {
+						jqObj.find("input[name=color]").trigger("keyup");
+					}
 				},
 				colorExample,
 				colorSelect,
 				i;
 
-			for (i = this.color[type].palette.length; i > -1; i -= 1) {
+			for (i = this.color[type].palette.length - 1; i > -1; i -= 1) {
 				colorExample = $("<div/>").css({
 					"float": "left",
 					"width": "16px",

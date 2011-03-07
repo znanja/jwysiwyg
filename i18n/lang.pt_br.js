@@ -53,34 +53,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "Escolher uma cor",
-			"Color": "Cor",
-			"Apply": "Aplicar",
-
-			// image
-			"Insert Image": "Inserir Imagem",
-			"Preview": "Pré-visualizar",
-			"URL": "URL",
-			"Title": "Título",
-			"Description": "Descrição",
-			"Width": "Largura",
-			"Height": "Altura",
-			"Original W x H": "L x A original",
-
-			// link
-			"Insert Link": "Inserir Link",
-			"Link URL": "URL do link",
-			"Link Title": "Título do link",
-			"Link Target": "Alvo do link",
-
-			// table
-			"Insert table": "Inserir tabela",
-			"Count of columns": "Número de colunas",
-			"Count of rows": "Número de linhas",
-
 			// for all
-			"Cancel": "Cancelar"
+			"Apply": "Aplicar",
+			"Cancel": "Cancelar",
+
+			colorpicker: {
+				"Colorpicker": "Escolher uma cor",
+				"Color": "Cor"
+			},
+
+			image: {
+				"Insert Image": "Inserir Imagem",
+				"Preview": "Pré-visualizar",
+				"URL": "URL",
+				"Title": "Título",
+				"Description": "Descrição",
+				"Width": "Largura",
+				"Height": "Altura",
+				"Original W x H": "L x A original",
+				"Float": "",
+				"None": "",
+				"Left": "",
+				"Right": ""
+			},
+
+			link: {
+				"Insert Link": "Inserir Link",
+				"Link URL": "URL do link",
+				"Link Title": "Título do link",
+				"Link Target": "Alvo do link"
+			},
+
+			table: {
+				"Insert table": "Inserir tabela",
+				"Count of columns": "Número de colunas",
+				"Count of rows": "Número de linhas"
+			}
 		}
 	};
 })(jQuery);
