@@ -52,34 +52,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "Выбор цвета",
-			"Color": "Цвет",
-			"Apply": "Применить",
-
-			// image
-			"Insert Image": "Вставить изображение",
-			"Preview": "Просмотр",
-			"URL": "URL адрес",
-			"Title": "Название",
-			"Description": "Альт. текст",
-			"Width": "Ширина",
-			"Height": "Высота",
-			"Original W x H": "Оригинальные Ш x В",
-
-			// link
-			"Insert Link": "Вставить ссылку",
-			"Link URL": "URL адрес",
-			"Link Title": "Название",
-			"Link Target": "Цель",
-
-			// table
-			"Insert table": "Вставить таблицу",
-			"Count of columns": "Кол-во колонок",
-			"Count of rows": "Кол-во строк",
-
 			// for all
-			"Cancel": "Отмена"
+			"Apply": "Применить",
+			"Cancel": "Отмена",
+
+			colorpicker: {
+				"Colorpicker": "Выбор цвета",
+				"Color": "Цвет"
+			},
+
+			image: {
+				"Insert Image": "Вставить изображение",
+				"Preview": "Просмотр",
+				"URL": "URL адрес",
+				"Title": "Название",
+				"Description": "Альт. текст",
+				"Width": "Ширина",
+				"Height": "Высота",
+				"Original W x H": "Оригинальные Ш x В",
+				"Float": "Положение",
+				"None": "Не выбрано",
+				"Left": "Слева",
+				"Right": "Справа"
+			},
+
+			link: {
+				"Insert Link": "Вставить ссылку",
+				"Link URL": "URL адрес",
+				"Link Title": "Название",
+				"Link Target": "Цель"
+			},
+
+			table: {
+				"Insert table": "Вставить таблицу",
+				"Count of columns": "Кол-во колонок",
+				"Count of rows": "Кол-во строк"
+			}
 		}
 	};
 })(jQuery);

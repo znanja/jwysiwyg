@@ -54,34 +54,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "カラーピッカー",
-			"Color": "カラー",
-			"Apply": "適用",
-
-			// image
-			"Insert Image": "画像を挿入",
-			"Preview": "プレビュー",
-			"URL": "URL",
-			"Title": "タイトル",
-			"Description": "概要",
-			"Width": "横幅",
-			"Height": "高さ",
-			"Original W x H": "オリジナル 横 x 高",
-
-			// link
-			"Insert Link": "リンクの挿入",
-			"Link URL": "リンク URL",
-			"Link Title": "リンク タイトル",
-			"Link Target": "リンク ターゲット",
-
-			// table
-			"Insert table": "テーブルを挿入",
-			"Count of columns": "列数",
-			"Count of rows": "行数",
-
 			// for all
-			"Cancel": "キャンセル"
+			"Apply": "適用",
+			"Cancel": "キャンセル",
+
+			colorpicker: {
+				"Colorpicker": "カラーピッカー",
+				"Color": "カラー"
+			},
+
+			image: {
+				"Insert Image": "画像を挿入",
+				"Preview": "プレビュー",
+				"URL": "URL",
+				"Title": "タイトル",
+				"Description": "概要",
+				"Width": "横幅",
+				"Height": "高さ",
+				"Original W x H": "オリジナル 横 x 高",
+				"Float": "",
+				"None": "",
+				"Left": "",
+				"Right": ""
+			},
+
+			link: {
+				"Insert Link": "リンクの挿入",
+				"Link URL": "リンク URL",
+				"Link Title": "リンク タイトル",
+				"Link Target": "リンク ターゲット"
+			},
+
+			table: {
+				"Insert table": "テーブルを挿入",
+				"Count of columns": "列数",
+				"Count of rows": "行数"
+			}
 		}
 	};
 })(jQuery);

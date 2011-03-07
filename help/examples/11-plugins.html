@@ -48,7 +48,8 @@
 						visible: true,
 						css: {
 							"color": function (cssValue, Wysiwyg) {
-								var defaultTextareaColor = Wysiwyg.editor.css("color");
+								var document = Wysiwyg.innerDocument(),
+									defaultTextareaColor = $(document.body).css("color");
 
 								if (cssValue !== defaultTextareaColor) {
 									return true;

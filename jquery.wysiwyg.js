@@ -651,6 +651,10 @@
 				.attr("title", control.tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
+					if ("true" === $(this).attr("disabled")) {
+						return false;
+					}
+
 					self.triggerControl.apply(self, [name, control]);
 
 					this.blur();
@@ -686,17 +690,17 @@
 						if ("function" === typeof (cssValue)) {
 							handler = cssValue;
 							if (handler(el.css(cssProperty).toString().toLowerCase(), self)) {
-								$("." + className, self.ui.toolbar).addClass("active");
+								self.ui.toolbar.find("." + className).addClass("active");
 							}
 						} else {
 							if (el.css(cssProperty).toString().toLowerCase() === cssValue) {
-								$("." + className, self.ui.toolbar).addClass("active");
+								self.ui.toolbar.find("." + className).addClass("active");
 							}
 						}
 					};
 
 				if ("fullscreen" !== className) {
-					$("." + className, self.ui.toolbar).removeClass("active");
+					self.ui.toolbar.find("." + className).removeClass("active");
 				}
 
 				if (control.tags || (control.options && control.options.tags)) {
@@ -709,7 +713,7 @@
 						}
 
 						if ($.inArray(elm.tagName.toLowerCase(), tags) !== -1) {
-							$("." + className, self.ui.toolbar).addClass("active");
+							self.ui.toolbar.find("." + className).addClass("active");
 						}
 
 						elm = elm.parentNode;

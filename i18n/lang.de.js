@@ -53,34 +53,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "Farbwähler",
-			"Color": "Farbe",
-			"Apply": "Anwenden",
-
-			// image
-			"Insert Image": "Bild einfügen",
-			"Preview": "Vorschau",
-			"URL": "URL",
-			"Title": "Titel",
-			"Description": "Beschreibung",
-			"Width": "Breite",
-			"Height": "Höhe",
-			"Original W x H": "Original W x H",
-
-			// link
-			"Insert Link": "Link einfügen",
-			"Link URL": "Link URL",
-			"Link Title": "Link Titel",
-			"Link Target": "Link Ziel",
-
-			// table
-			"Insert table": "Tabelle einfügen",
-			"Count of columns": "Spaltenanzahl",
-			"Count of rows": "Zeilenanzahl",
-
 			// for all
-			"Cancel": "Abbrechen"
+			"Apply": "Anwenden",
+			"Cancel": "Abbrechen",
+
+			colorpicker: {
+				"Colorpicker": "Farbwähler",
+				"Color": "Farbe"
+			},
+
+			image: {
+				"Insert Image": "Bild einfügen",
+				"Preview": "Vorschau",
+				"URL": "URL",
+				"Title": "Titel",
+				"Description": "Beschreibung",
+				"Width": "Breite",
+				"Height": "Höhe",
+				"Original W x H": "Original W x H",
+				"Float": "",
+				"None": "",
+				"Left": "",
+				"Right": ""
+			},
+
+			link: {
+				"Insert Link": "Link einfügen",
+				"Link URL": "Link URL",
+				"Link Title": "Link Titel",
+				"Link Target": "Link Ziel"
+			},
+
+			table: {
+				"Insert table": "Tabelle einfügen",
+				"Count of columns": "Spaltenanzahl",
+				"Count of rows": "Zeilenanzahl"
+			}
 		}
 	};
 })(jQuery);

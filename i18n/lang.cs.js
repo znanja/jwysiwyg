@@ -53,34 +53,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "Výběr barvy",
-			"Color": "Barva",
-			"Apply": "Použij",
-
-			// image
-			"Insert Image": "Vložit obrázek",
-			"Preview": "Náhled",
-			"URL": "Odkaz",
-			"Title": "Název",
-			"Description": "Popis",
-			"Width": "Šířka",
-			"Height": "Výška",
-			"Original W x H": "Původní šířka a výška",
-
-			// link
-			"Insert Link": "Vložit odkaz",
-			"Link URL": "Odkaz",
-			"Link Title": "Název odkazu",
-			"Link Target": "Cíl odkazu",
-
-			// table
-			"Insert table": "Vložit tabulku",
-			"Count of columns": "Počet sloupců",
-			"Count of rows": "Počet řádků",
-
 			// for all
-			"Cancel": "Zrušit"
+			"Apply": "Použij",
+			"Cancel": "Zrušit",
+
+			colorpicker: {
+				"Colorpicker": "Výběr barvy",
+				"Color": "Barva"
+			},
+
+			image: {
+				"Insert Image": "Vložit obrázek",
+				"Preview": "Náhled",
+				"URL": "Odkaz",
+				"Title": "Název",
+				"Description": "Popis",
+				"Width": "Šířka",
+				"Height": "Výška",
+				"Original W x H": "Původní šířka a výška",
+				"Float": "",
+				"None": "",
+				"Left": "",
+				"Right": ""
+			},
+
+			link: {
+				"Insert Link": "Vložit odkaz",
+				"Link URL": "Odkaz",
+				"Link Title": "Název odkazu",
+				"Link Target": "Cíl odkazu"
+			},
+
+			table: {
+				"Insert table": "Vložit tabulku",
+				"Count of columns": "Počet sloupců",
+				"Count of rows": "Počet řádků"
+			}
 		}
 	};
 })(jQuery);

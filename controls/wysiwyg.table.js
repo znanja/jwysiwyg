@@ -51,10 +51,10 @@
 			formTextReset  = "Cancel";
 
 		if ($.wysiwyg.i18n) {
-			formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs");
-			formTextCols = $.wysiwyg.i18n.t(formTextCols, "dialogs");
-			formTextRows = $.wysiwyg.i18n.t(formTextRows, "dialogs");
-			formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
+			formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.table");
+			formTextCols = $.wysiwyg.i18n.t(formTextCols, "dialogs.table");
+			formTextRows = $.wysiwyg.i18n.t(formTextRows, "dialogs.table");
+			formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs.table");
 			formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 		}
 
