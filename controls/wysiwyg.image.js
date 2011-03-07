@@ -20,6 +20,7 @@
 			var self = this, elements, dialog, szURL, formImageHtml,
 				formTextLegend, formTextPreview, formTextUrl, formTextTitle,
 				formTextDescription, formTextWidth, formTextHeight, formTextOriginal,
+				formTextFloat, formTextFloatNone, formTextFloatLeft, formTextFloatRight,
 				formTextSubmit, formTextReset,
 				img = {
 					alt: "",
@@ -69,9 +70,9 @@
 				'<label>' + formTextOriginal + ': <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
 				'<input type="text" name="naturalHeight" value="" class="height" disabled="disabled"/></label>' +
 				'<label>' + formTextFloat + ': <select name="float">' + 
-					'<option value="">' + formTextFloatNone + '</option>' +
-					'<option value="left">' + formTextFloatLeft + '</option>' +
-					'<option value="right">' + formTextFloatRight + '</option></select></label>' +
+				'<option value="">' + formTextFloatNone + '</option>' +
+				'<option value="left">' + formTextFloatLeft + '</option>' +
+				'<option value="right">' + formTextFloatRight + '</option></select></label>' +
 				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
 				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
