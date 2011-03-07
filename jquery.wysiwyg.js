@@ -1,6 +1,6 @@
 /**
- * WYSIWYG - jQuery plugin 0.95
- * (Kino)
+ * WYSIWYG - jQuery plugin 0.96
+ * (Pretty girl)
  *
  * Copyright (c) 2008-2009 Juan M Martinez, 2010-2011 Akzhan Abdulin and all contributors
  * https://github.com/akzhan/jwysiwyg
