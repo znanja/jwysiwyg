@@ -53,34 +53,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "Izbirnik barv",
-			"Color": "Barva",
-			"Apply": "Uporabi",
-
-			// image
-			"Insert Image": "Vstavi sliko",
-			"Preview": "Predogled",
-			"URL": "URL",
-			"Title": "Naslov",
-			"Description": "Opis",
-			"Width": "Širina",
-			"Height": "Višina",
-			"Original W x H": "Prvotna Š x V",
-
-			// link
-			"Insert Link": "Vstavi povezavo",
-			"Link URL": "URL povezave",
-			"Link Title": "Naslov povezave",
-			"Link Target": "Cilj povezave",
-
-			// table
-			"Insert table": "Vstavi tabelo",
-			"Count of columns": "Število stolpcev",
-			"Count of rows": "Število vrstic",
-
 			// for all
-			"Cancel": "Prekliči"
+			"Apply": "Uporabi",
+			"Cancel": "Prekliči",
+			
+			colorpicker: {
+				"Colorpicker": "Izbirnik barv",
+				"Color": "Barva"
+			},
+
+			image: {
+				"Insert Image": "Vstavi sliko",
+				"Preview": "Predogled",
+				"URL": "URL",
+				"Title": "Naslov",
+				"Description": "Opis",
+				"Width": "Širina",
+				"Height": "Višina",
+				"Original W x H": "Prvotna Š x V",
+				"Float": "",
+				"None": "",
+				"Left": "",
+				"Right": ""
+			},
+
+			link: {
+				"Insert Link": "Vstavi povezavo",
+				"Link URL": "URL povezave",
+				"Link Title": "Naslov povezave",
+				"Link Target": "Cilj povezave"
+			},
+
+			table: {
+				"Insert table": "Vstavi tabelo",
+				"Count of columns": "Število stolpcev",
+				"Count of rows": "Število vrstic"
+			}
 		}
 	};
 })(jQuery);

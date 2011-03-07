@@ -53,34 +53,42 @@
 		},
 
 		dialogs: {
-			// colorpicker
-			"Colorpicker": "",
-			"Color": "",
-			"Apply": "",
-
-			// image
-			"Insert Image": "",
-			"Preview": "",
-			"URL": "",
-			"Title": "",
-			"Description": "",
-			"Width": "",
-			"Height": "",
-			"Original W x H": "",
-
-			// link
-			"Insert Link": "",
-			"Link URL": "",
-			"Link Title": "",
-			"Link Target": "",
-
-			// table
-			"Insert table": "",
-			"Count of columns": "",
-			"Count of rows": "",
-
 			// for all
-			"Cancel": ""
+			"Apply": "",
+			"Cancel": "",
+
+			colorpicker: {
+				"Colorpicker": "",
+				"Color": ""
+			},
+
+			image: {
+				"Insert Image": "",
+				"Preview": "",
+				"URL": "",
+				"Title": "",
+				"Description": "",
+				"Width": "",
+				"Height": "",
+				"Original W x H": "",
+				"Float": "",
+				"None": "",
+				"Left": "",
+				"Right": ""
+			},
+
+			link: {
+				"Insert Link": "",
+				"Link URL": "",
+				"Link Title": "",
+				"Link Target": ""
+			},
+
+			table: {
+				"Insert table": "",
+				"Count of columns": "",
+				"Count of rows": ""
+			}
 		}
 	};
 })(jQuery);
