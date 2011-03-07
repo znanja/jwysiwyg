@@ -72,12 +72,26 @@ var i18n = {
 	},
 
 	t: function(phrase, section, lang) {
+		var i, section_array, object;
+
 		if (!lang) {
 			lang = this.options.lang;
 		}
 
-		if ((lang !== this.defaults.wysiwygLang) && this.lang[lang] && this.lang[lang][section] && this.lang[lang][section][phrase]) {
-			return this.lang[lang][section][phrase];
+		if ((lang === this.defaults.wysiwygLang) || (!this.lang[lang])) {
+			return phrase;
+		}
+
+		object = this.lang[lang];
+		section_array = section.split(".");
+		for (i = 0; i < section_array.length; i += 1) {
+			if (object[section_array[i]]) {
+				object = object[section_array[i]];
+			}
+		}
+
+		if (object[phrase]) {
+			return object[phrase];
 		}
 
 		return phrase;
