@@ -1540,32 +1540,6 @@
 			return $(oWysiwyg.editorDoc);
 		},
 
-		focus: function (object) {
-			if ("object" !== typeof (object) || !object.context) {
-				object = this;
-			}
-
-			if (!object.each) {
-				console.error("Something goes wrong, check object");
-			}
-
-			var oWysiwyg = object.data("wysiwyg"), oBody, oRange, selection;
-
-			if (!oWysiwyg) {
-				return this;
-			}
-
-			oBody = oWysiwyg.editorDoc.body;
-			if (window.getSelection) {
-				selection = oWysiwyg.getInternalSelection();
-				selection.selectAllChildren(oBody);
-			} else {
-				oRange = oBody.createTextRange();
-				oRange.moveToElementText(oBody);
-				oRange.select();
-			}
-		},
-
 		getContent: function (object) {
 			if ("object" !== typeof (object) || !object.context) {
 				object = this;
@@ -1724,6 +1698,32 @@
 
 				oWysiwyg.saveContent();
 			});
+		},
+
+		selectAll: function (object) {
+			if ("object" !== typeof (object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			var oWysiwyg = object.data("wysiwyg"), oBody, oRange, selection;
+
+			if (!oWysiwyg) {
+				return this;
+			}
+
+			oBody = oWysiwyg.editorDoc.body;
+			if (window.getSelection) {
+				selection = oWysiwyg.getInternalSelection();
+				selection.selectAllChildren(oBody);
+			} else {
+				oRange = oBody.createTextRange();
+				oRange.moveToElementText(oBody);
+				oRange.select();
+			}
 		},
 
 		setContent: function (object, newContent) {
