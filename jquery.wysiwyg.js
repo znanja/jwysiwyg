@@ -1092,8 +1092,9 @@
 			});
 
 			$(self.editorDoc).keydown(function (event) {
-				var emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>/;
+				var emptyContentRegex;
 				if (event.keyCode === 8) { // backspace
+					emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>$/;
 					if (emptyContentRegex.test(self.getContent())) { // if content is empty
 						event.stopPropagation(); // prevent remove single empty tag
 						return false;
