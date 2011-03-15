@@ -1456,7 +1456,6 @@
 
 			if (!object.each) {
 				console.error("Something goes wrong, check object");
-                return;
 			}
 
 			return object.each(function () {
@@ -1559,7 +1558,7 @@
 			oBody = oWysiwyg.editorDoc.body;
 			if (window.getSelection) {
 				selection = oWysiwyg.getInternalSelection();
-				selection.selectAllChildren(oBody)
+				selection.selectAllChildren(oBody);
 			} else {
 				oRange = oBody.createTextRange();
 				oRange.moveToElementText(oBody);
