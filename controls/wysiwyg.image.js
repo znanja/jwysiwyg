@@ -147,23 +147,24 @@
 					elements = self.makeForm(elements, img);
 
 					$("input:submit", elements).click(function (event) {
-						event.preventDefault();
-
 						self.processInsert(elements, Wysiwyg, img);
 
 						$(elements).remove();
+						return false;
 					});
 					$("input:reset", elements).click(function (event) {
-						event.preventDefault();
-
 						if ($.browser.msie) {
 							Wysiwyg.ui.returnRange();
 						}
 
 						$(elements).remove();
+						return false;
 					});
 
 					$("body").append(elements);
+					elements.click(function(e) {
+						e.stopPropagation();
+					}
 				}
 			}
 
