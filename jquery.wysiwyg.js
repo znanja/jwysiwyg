@@ -1539,6 +1539,35 @@
 			return $(oWysiwyg.editorDoc);
 		},
 
+		focus: function (object) {
+			if ("object" !== typeof (object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			return object.each(function () {
+				var oWysiwyg = object.data("wysiwyg");
+
+				if (!oWysiwyg) {
+					return this;
+				}
+
+				var oBody = oWysiwyg.editorDoc.body
+				if (window.getSelection) {
+					var selection = oWysiwyg.getInternalSelection();
+					selection.selectAllChildren(oBody)
+				} else {
+					var oRange = oBody.createTextRange();
+					oRange.moveToElementText(oBody);
+					oRange.select();
+				}
+
+			});
+		},
+
 		getContent: function (object) {
 			if ("object" !== typeof (object) || !object.context) {
 				object = this;
