@@ -1549,24 +1549,21 @@
 				console.error("Something goes wrong, check object");
 			}
 
-			return object.each(function () {
-				var oWysiwyg = object.data("wysiwyg");
+			var oWysiwyg = object.data("wysiwyg"), oBody, oRange, selection;
 
-				if (!oWysiwyg) {
-					return this;
-				}
+			if (!oWysiwyg) {
+				return this;
+			}
 
-				var oBody = oWysiwyg.editorDoc.body
-				if (window.getSelection) {
-					var selection = oWysiwyg.getInternalSelection();
-					selection.selectAllChildren(oBody)
-				} else {
-					var oRange = oBody.createTextRange();
-					oRange.moveToElementText(oBody);
-					oRange.select();
-				}
-
-			});
+			oBody = oWysiwyg.editorDoc.body;
+			if (window.getSelection) {
+				selection = oWysiwyg.getInternalSelection();
+				selection.selectAllChildren(oBody)
+			} else {
+				oRange = oBody.createTextRange();
+				oRange.moveToElementText(oBody);
+				oRange.select();
+			}
 		},
 
 		getContent: function (object) {
