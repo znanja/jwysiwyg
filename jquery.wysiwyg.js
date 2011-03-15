@@ -1455,6 +1455,7 @@
 
 			if (!object.each) {
 				console.error("Something goes wrong, check object");
+                return;
 			}
 
 			return object.each(function () {
