@@ -71,7 +71,7 @@ Toolbar buttons are selected with the ``controls`` configuration option::
 
     $('#wysiwyg').wysiwyg({
         controls: {
-            strikeThrough: { visibile: true },
+            strikeThrough: { visible: true },
             underline: { visible: true },
             subscript: { visible: true },
             superscript: { visible: true }
