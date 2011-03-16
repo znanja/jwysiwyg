@@ -73,7 +73,6 @@
 				$.modal(elements.html(), {
 					onShow: function (dialog) {
 						$("input:submit", dialog.data).click(function (e) {
-							e.preventDefault();
 							var color = $('input[name="color"]', dialog.data).val();
 							self.color.fore.prev = color;
 							self.addColorToPalette("fore", color);
@@ -84,15 +83,18 @@
 
 							Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 							$.modal.close();
+							return false;
 						});
 						$("input:reset", dialog.data).click(function (e) {
-							e.preventDefault();
-
 							if ($.browser.msie) {
 								Wysiwyg.ui.returnRange();
 							}
 
 							$.modal.close();
+							return false;
+						});
+						$("fieldset", dialog.data).click(function (e) {
+							e.stopPropagation();
 						});
 					},
 					maxWidth: Wysiwyg.defaults.formWidth,
