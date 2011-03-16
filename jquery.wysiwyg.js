@@ -1092,8 +1092,9 @@
 			});
 
 			$(self.editorDoc).keydown(function (event) {
-				var emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>/;
+				var emptyContentRegex;
 				if (event.keyCode === 8) { // backspace
+					emptyContentRegex = /^<([\w]+)[^>]*>(<br\/?>)?<\/\1>$/;
 					if (emptyContentRegex.test(self.getContent())) { // if content is empty
 						event.stopPropagation(); // prevent remove single empty tag
 						return false;
@@ -1278,9 +1279,19 @@
 				if (img) {
 					$(img).replaceWith(szHTML);
 				}
-			} else {
-				this.editorDoc.execCommand("insertHTML", false, szHTML);
+			} else {			
+				if (!this.editorDoc.execCommand("insertHTML", false, szHTML)) {
+					this.editor.focus();
+					/* :TODO: place caret at the end
+					if (window.getSelection) {
+					} else {
+					}
+					this.editor.focus();
+					*/
+					this.editorDoc.execCommand("insertHTML", false, szHTML);
+				}
 			}
+
 			return this;
 		};
 
@@ -1455,7 +1466,6 @@
 
 			if (!object.each) {
 				console.error("Something goes wrong, check object");
-                return;
 			}
 
 			return object.each(function () {
@@ -1538,35 +1548,6 @@
 			}
 
 			return $(oWysiwyg.editorDoc);
-		},
-
-		focus: function (object) {
-			if ("object" !== typeof (object) || !object.context) {
-				object = this;
-			}
-
-			if (!object.each) {
-				console.error("Something goes wrong, check object");
-			}
-
-			return object.each(function () {
-				var oWysiwyg = object.data("wysiwyg");
-
-				if (!oWysiwyg) {
-					return this;
-				}
-
-				var oBody = oWysiwyg.editorDoc.body
-				if (window.getSelection) {
-					var selection = oWysiwyg.getInternalSelection();
-					selection.selectAllChildren(oBody)
-				} else {
-					var oRange = oBody.createTextRange();
-					oRange.moveToElementText(oBody);
-					oRange.select();
-				}
-
-			});
 		},
 
 		getContent: function (object) {
@@ -1727,6 +1708,32 @@
 
 				oWysiwyg.saveContent();
 			});
+		},
+
+		selectAll: function (object) {
+			if ("object" !== typeof (object) || !object.context) {
+				object = this;
+			}
+
+			if (!object.each) {
+				console.error("Something goes wrong, check object");
+			}
+
+			var oWysiwyg = object.data("wysiwyg"), oBody, oRange, selection;
+
+			if (!oWysiwyg) {
+				return this;
+			}
+
+			oBody = oWysiwyg.editorDoc.body;
+			if (window.getSelection) {
+				selection = oWysiwyg.getInternalSelection();
+				selection.selectAllChildren(oBody);
+			} else {
+				oRange = oBody.createTextRange();
+				oRange.moveToElementText(oBody);
+				oRange.select();
+			}
 		},
 
 		setContent: function (object, newContent) {

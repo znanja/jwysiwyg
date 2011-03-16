@@ -73,7 +73,6 @@
 				$.modal(elements.html(), {
 					onShow: function (dialog) {
 						$("input:submit", dialog.data).click(function (e) {
-							e.preventDefault();
 							var color = $('input[name="color"]', dialog.data).val();
 							self.color.fore.prev = color;
 							self.addColorToPalette("fore", color);
@@ -84,15 +83,18 @@
 
 							Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 							$.modal.close();
+							return false;
 						});
 						$("input:reset", dialog.data).click(function (e) {
-							e.preventDefault();
-
 							if ($.browser.msie) {
 								Wysiwyg.ui.returnRange();
 							}
 
 							$.modal.close();
+							return false;
+						});
+						$("fieldset", dialog.data).click(function (e) {
+							e.stopPropagation();
 						});
 					},
 					maxWidth: Wysiwyg.defaults.formWidth,
@@ -114,7 +116,6 @@
 					height: Wysiwyg.defaults.formHeight,
 					open: function (event, ui) {
 						$("input:submit", elements).click(function (e) {
-							e.preventDefault();
 							var color = $('input[name="color"]', dialog).val();
 							self.color.fore.prev = color;
 							self.addColorToPalette("fore", color);
@@ -125,16 +126,19 @@
 
 							Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 							$(dialog).dialog("close");
+							return false;
 						});
 						$("input:reset", elements).click(function (e) {
-							e.preventDefault();
-
 							if ($.browser.msie) {
 								Wysiwyg.ui.returnRange();
 							}
 
 							$(dialog).dialog("close");
+							return false;
 						});
+						$('fieldset', elements).click(function (e) {
+							e.stopPropagation();
+						})
 					},
 					close: function (event, ui) {
 						dialog.dialog("destroy");
@@ -153,7 +157,6 @@
 					elements.find("input[name=color]").val(self.color.fore.prev);
 					elements.find(".wheel").farbtastic(elements.find("input:text"));
 					$("input:submit", elements).click(function (event) {
-						event.preventDefault();
 						var color = $('input[name="color"]', elements).val();
 						self.color.fore.prev = color;
 						self.addColorToPalette("fore", color);
@@ -165,17 +168,21 @@
 						Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 
 						$(elements).remove();
+						return false;
 					});
 					$("input:reset", elements).click(function (event) {
-						event.preventDefault();
 
 						if ($.browser.msie) {
 							Wysiwyg.ui.returnRange();
 						}
 
 						$(elements).remove();
+						return false;
 					});
 					$("body").append(elements);
+					elements.click(function(e) {
+					  e.stopPropagation();
+					})
 				}
 			}
 		},
