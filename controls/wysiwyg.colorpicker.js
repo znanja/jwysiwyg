@@ -147,7 +147,7 @@
 			} else {
 				if ($.farbtastic) {
 					elements = $("<div/>")
-						.css({"position": "absolute",
+						.css({"position": "fixed",
 							"z-index": 2000,
 							"left": "50%", "top": "50%", "background": "rgb(0, 0, 0)",
 							"margin-top": -1 * Math.round(Wysiwyg.defaults.formHeight / 2),
