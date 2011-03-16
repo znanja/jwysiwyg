@@ -413,6 +413,7 @@ Built-in editor functions can be triggered manually with the
 
 * removeFormat
 * save
+* selectAll
 * setContent
 
 For example, if you want to save the content to original textarea, and then
