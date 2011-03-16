@@ -116,7 +116,6 @@
 					height: Wysiwyg.defaults.formHeight,
 					open: function (event, ui) {
 						$("input:submit", elements).click(function (e) {
-							e.preventDefault();
 							var color = $('input[name="color"]', dialog).val();
 							self.color.fore.prev = color;
 							self.addColorToPalette("fore", color);
@@ -127,16 +126,19 @@
 
 							Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 							$(dialog).dialog("close");
+							return false;
 						});
 						$("input:reset", elements).click(function (e) {
-							e.preventDefault();
-
 							if ($.browser.msie) {
 								Wysiwyg.ui.returnRange();
 							}
 
 							$(dialog).dialog("close");
+							return false;
 						});
+						$('fieldset', elements).click(function (e) {
+							e.stopPropagation();
+						})
 					},
 					close: function (event, ui) {
 						dialog.dialog("destroy");

@@ -119,16 +119,18 @@
 					height: Wysiwyg.defaults.formHeight,
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
-							e.preventDefault();
-
 							self.processInsert(dialog, Wysiwyg, img);
 
 							$(dialog).dialog("close");
+							return false;
 						});
 						$("input:reset", dialog).click(function (e) {
-							e.preventDefault();
 							$(dialog).dialog("close");
+							return false;
 						});
+						$('fieldset', dialog).click(function (e) {
+							e.stopPropagation();
+						})
 					},
 					close: function (ev, ui) {
 						dialog.dialog("destroy");
