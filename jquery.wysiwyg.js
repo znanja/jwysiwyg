@@ -1279,9 +1279,19 @@
 				if (img) {
 					$(img).replaceWith(szHTML);
 				}
-			} else {
-				this.editorDoc.execCommand("insertHTML", false, szHTML);
+			} else {			
+				if (!this.editorDoc.execCommand("insertHTML", false, szHTML)) {
+					this.editor.focus();
+					/* :TODO: place caret at the end
+					if (window.getSelection) {
+					} else {
+					}
+					this.editor.focus();
+					*/
+					this.editorDoc.execCommand("insertHTML", false, szHTML);
+				}
 			}
+
 			return this;
 		};
 
