@@ -91,15 +91,17 @@
 				$.modal(elements, {
 					onShow: function (dialog) {
 						$("input:submit", dialog.data).click(function (e) {
-							e.preventDefault();
-
 							self.processInsert(dialog, Wysiwyg, img);
 
 							$.modal.close();
+							return false;
 						});
 						$("input:reset", dialog.data).click(function (e) {
-							e.preventDefault();
 							$.modal.close();
+							return false;
+						});
+						$("fieldset", dialog.data).click(function (e) {
+							e.stopPropagation();
 						});
 					},
 					maxWidth: Wysiwyg.defaults.formWidth,
