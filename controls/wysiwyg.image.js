@@ -164,7 +164,7 @@
 					$("body").append(elements);
 					elements.click(function(e) {
 						e.stopPropagation();
-					}
+					});
 				}
 			}
 
