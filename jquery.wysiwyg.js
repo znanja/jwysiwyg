@@ -277,7 +277,7 @@
 				visible: false,
 				exec: function () {
 					var range = this.getInternalRange(),
-					p = this.dom.getElement("p");
+						p = this.dom.getElement("p");
 
 					if (!p) {
 						return false;
@@ -502,7 +502,7 @@
 			var dom		= this.parent,
 				range	= dom.parent.getInternalRange(),
 				element;
-			
+
 			if (!range) {
 				return null;
 			}
@@ -1343,7 +1343,7 @@
 
 		this.saveContent = function () {
 			if (this.original) {
-				var content;
+				var content, newContent;
 
 				if (this.viewHTML) {
 					this.setContent($(this.original).val());
@@ -1626,11 +1626,7 @@
 
 				plugin = this.parseName(name);
 
-				if (!$.wysiwyg[plugin.name]) {
-					return false;
-				}
-
-				if (!$.wysiwyg[plugin.name][plugin.method]) {
+				if (!$.wysiwyg[plugin.name] || !$.wysiwyg[plugin.name][plugin.method]) {
 					return false;
 				}
 
