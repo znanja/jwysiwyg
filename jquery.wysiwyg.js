@@ -1077,6 +1077,8 @@
 			);
 			self.editorDoc.close();
 
+			$.wysiwyg.plugin.bind(self);
+
 			$(self.editorDoc).bind("click.wysiwyg", function (event) {
 				self.ui.checkTargets(event.target ? event.target : event.srcElement);
 			});
@@ -1617,6 +1619,24 @@
 		},
 
 		plugin: {
+			listeners: {},
+
+			bind: function (Wysiwyg) {
+				var self = this;
+
+				$.each(this.listeners, function (action, handlers) {
+					var i, plugin;
+
+					for (i = 0; i < handlers.length; i += 1) {
+						plugin = self.parseName(handlers[i]);
+
+						$(Wysiwyg.editorDoc).bind("wysiwyg:" + action, function () {
+							$.wysiwyg[plugin.name][plugin.method].apply($.wysiwyg[plugin.name], [Wysiwyg]);
+						});
+					}
+				});
+			},
+
 			exists: function (name) {
 				var plugin;
 
@@ -1629,6 +1649,24 @@
 				if (!$.wysiwyg[plugin.name] || !$.wysiwyg[plugin.name][plugin.method]) {
 					return false;
 				}
+
+				return true;
+			},
+
+			listen: function (action, handler) {
+				var plugin;
+
+				plugin = this.parseName(handler);
+
+				if (!$.wysiwyg[plugin.name] || !$.wysiwyg[plugin.name][plugin.method]) {
+					return false;
+				}
+
+				if (!this.listeners[action]) {
+					this.listeners[action] = [];
+				}
+
+				this.listeners[action].push(handler);
 
 				return true;
 			},
