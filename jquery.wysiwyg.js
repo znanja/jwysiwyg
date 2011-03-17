@@ -1079,6 +1079,8 @@
 
 			$.wysiwyg.plugin.bind(self);
 
+			$(self.editorDoc).trigger("initFrame.wysiwyg");
+
 			$(self.editorDoc).bind("click.wysiwyg", function (event) {
 				self.ui.checkTargets(event.target ? event.target : event.srcElement);
 			});
@@ -1595,6 +1597,8 @@
 				obj = new Wysiwyg();
 				obj.init(this, opts);
 				$.data(this, "wysiwyg", obj);
+
+				$(obj.editorDoc).trigger("afterInit.wysiwyg");
 			});
 		},
 
@@ -1630,8 +1634,8 @@
 					for (i = 0; i < handlers.length; i += 1) {
 						plugin = self.parseName(handlers[i]);
 
-						$(Wysiwyg.editorDoc).bind("wysiwyg:" + action, function () {
-							$.wysiwyg[plugin.name][plugin.method].apply($.wysiwyg[plugin.name], [Wysiwyg]);
+						$(Wysiwyg.editorDoc).bind(action + ".wysiwyg", {plugin: plugin}, function (event) {
+							$.wysiwyg[event.data.plugin.name][event.data.plugin.method].apply($.wysiwyg[event.data.plugin.name], [Wysiwyg]);
 						});
 					}
 				});
