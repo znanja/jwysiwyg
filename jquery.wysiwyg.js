@@ -1436,6 +1436,10 @@
 	 * Wysiwyg namespace: public properties and methods
 	 */
 	$.wysiwyg = {
+		messages: {
+			noObject: "Something goes wrong, check object"
+		},
+
 		/**
 		 * Custom control support by Alec Gorge ( http://github.com/alecgorge )
 		 */
@@ -1445,7 +1449,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1474,7 +1478,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1497,7 +1501,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1517,7 +1521,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			// no chains because of return
@@ -1536,7 +1540,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			// no chains because of return
@@ -1555,7 +1559,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1584,7 +1588,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1690,7 +1694,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1710,7 +1714,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1730,7 +1734,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			var oWysiwyg = object.data("wysiwyg"), oBody, oRange, selection;
@@ -1756,7 +1760,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1777,7 +1781,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {

@@ -128,7 +128,7 @@
 		}
 
 		if (!object.each) {
-			console.error("Something goes wrong, check object");
+			console.error($.wysiwyg.messages.noObject);
 		}
 
 		return object.each(function () {
