@@ -66,6 +66,7 @@
 				}
 			}
 		},
+		options: {},
 		originalBoundary: {
 			editor: {},
 			element: {},
@@ -74,13 +75,13 @@
 
 		init: function (Wysiwyg, options) {
 			options = options || {};
-			options = $.extend(true, this.defaults, options);
+			this.options = $.extend(true, this.defaults, options);
 
 			if (Wysiwyg.ui.toolbar.find(".fullscreen").hasClass("active")) {
 				this.restore(Wysiwyg);
 				Wysiwyg.ui.toolbar.find(".fullscreen").removeClass("active");
 			} else {
-				this.stretch(Wysiwyg, options);
+				this.stretch(Wysiwyg);
 				Wysiwyg.ui.toolbar.find(".fullscreen").addClass("active");
 			}
 		},
@@ -104,7 +105,7 @@
 			}
 		},
 
-		stretch: function (Wysiwyg, options) {
+		stretch: function (Wysiwyg) {
 			var propertyName;
 
 			// save previous values
@@ -122,16 +123,16 @@
 
 			// set new values
 			for (propertyName in this.defaults.css.editor) {
-				Wysiwyg.editor.css(propertyName, options.css.editor[propertyName]);
+				Wysiwyg.editor.css(propertyName, this.options.css.editor[propertyName]);
 			}
 
 			for (propertyName in this.defaults.css.element) {
-				Wysiwyg.element.css(propertyName, options.css.element[propertyName]);
+				Wysiwyg.element.css(propertyName, this.options.css.element[propertyName]);
 			}
 
-			options.css.original.top = Wysiwyg.ui.toolbar.css("height");
+			this.options.css.original.top = Wysiwyg.ui.toolbar.css("height");
 			for (propertyName in this.defaults.css.original) {
-				$(Wysiwyg.original).css(propertyName, options.css.original[propertyName]);
+				$(Wysiwyg.original).css(propertyName, this.options.css.original[propertyName]);
 			}
 		}
 	};
