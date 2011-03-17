@@ -610,10 +610,6 @@
 				className = control.className || control.command || name || "empty",
 				tooltip = control.tooltip || control.command || name || "";
 
-			if ($.wysiwyg.i18n) {
-				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
-			}
-
 			return $('<li role="menuitem" unselectable="on">' + (className) + "</li>")
 				.addClass(className)
 				.attr("title", tooltip)
@@ -635,10 +631,6 @@
 		this.ui.appendItemCustom = function (name, control) {
 			var self = this.self,
 				tooltip = control.tooltip || control.command || name || "";
-
-			if ($.wysiwyg.i18n) {
-				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
-			}
 
 			if (control.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
@@ -1043,6 +1035,7 @@
 				growHandler,
 				saveHandler;
 
+			self.ui.appendControls();
 			self.element.append(self.ui.toolbar)
 				.append($("<div><!-- --></div>")
 					.css({
@@ -1065,8 +1058,6 @@
 			$.wysiwyg.plugin.bind(self);
 
 			$(self.editorDoc).trigger("initFrame.wysiwyg");
-
-			self.ui.appendControls();
 
 			$(self.editorDoc).bind("click.wysiwyg", function (event) {
 				self.ui.checkTargets(event.target ? event.target : event.srcElement);

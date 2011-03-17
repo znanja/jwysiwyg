@@ -27,7 +27,7 @@
 			}
 
 			if (!lang) {
-				lang = this.defaults.lang;
+				lang = Wysiwyg.options.i18n;
 			}
 
 			if ((lang !== this.defaults.wysiwygLang) && (undefined === $.wysiwyg.i18n.lang[lang])) {
