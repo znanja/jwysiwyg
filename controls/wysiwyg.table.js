@@ -119,7 +119,7 @@
 			self.insertTable(colCount, rowCount, self.defaults.tableFiller);
 		}
 
-		$(self.editorDoc).trigger("wysiwyg:refresh");
+		$(self.editorDoc).trigger("editorRefresh.wysiwyg");
 	};
 
 	$.wysiwyg.insertTable = function (object, colCount, rowCount, filler) {
@@ -143,7 +143,7 @@
 			}
 
 			self.insertTable(colCount, rowCount, filler);
-			$(self.editorDoc).trigger("wysiwyg:refresh");
+			$(self.editorDoc).trigger("editorRefresh.wysiwyg");
 
 			return this;
 		});

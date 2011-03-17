@@ -169,7 +169,7 @@
 				}
 			}
 
-			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
+			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		}
 	};
 

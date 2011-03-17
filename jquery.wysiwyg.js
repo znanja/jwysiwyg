@@ -1124,13 +1124,11 @@
 					if (event.ctrlKey || event.metaKey) {
 						// CTRL + V (paste)
 						if (86 === event.keyCode) {
-							if (self.options.rmMsWordMarkup) {
-								if ($.wysiwyg.rmFormat) {
-									if ("object" === typeof (self.options.rmMsWordMarkup)) {
-										$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.rmMsWordMarkup }});
-									} else {
-										$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
-									}
+							if ($.wysiwyg.rmFormat) {
+								if ("object" === typeof (self.options.rmMsWordMarkup)) {
+									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.rmMsWordMarkup }});
+								} else {
+									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
 								}
 							}
 						}
@@ -1154,7 +1152,7 @@
 				};
 
 				$(self.editorDoc).keyup(growHandler);
-				$(self.editorDoc).bind("wysiwyg:refresh", growHandler);
+				$(self.editorDoc).bind("editorRefresh.wysiwyg", growHandler);
 
 				// fix when content height > textarea height
 				self.ui.grow();

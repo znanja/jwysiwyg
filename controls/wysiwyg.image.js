@@ -172,7 +172,7 @@
 				}
 			}
 
-			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
+			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		},
 
 		processInsert: function (form, Wysiwyg, img) {
@@ -302,7 +302,7 @@
 				self.editorDoc.execCommand("insertImage", false, szURL);
 			}
 
-			$(self.editorDoc).trigger("wysiwyg:refresh");
+			$(self.editorDoc).trigger("editorRefresh.wysiwyg");
 
 			return this;
 		});
