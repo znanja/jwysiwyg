@@ -22,6 +22,10 @@
 		options: {},
 
 		init: function (Wysiwyg, lang) {
+			if (!Wysiwyg.options.i18n) {
+				return true;
+			}
+
 			if (!lang) {
 				lang = this.defaults.lang;
 			}
@@ -97,4 +101,5 @@
 	};
 
 	$.wysiwyg.plugin.register(i18n);
+	$.wysiwyg.plugin.listen("initFrame", "i18n.init");
 })(jQuery);

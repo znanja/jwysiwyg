@@ -970,20 +970,6 @@
 			this.original	= element;
 			this.ui.toolbar	= $(this.options.toolbarHtml);
 
-			if (this.options.autoload) {
-				if ($.wysiwyg.autoload) {
-					if (this.options.autoload.css) {
-						for (i = 0; i < this.options.autoload.css.length; i += 1) {
-							$.wysiwyg.autoload.css(this.options.autoload.css[i]);
-						}
-					}
-				}
-			}
-
-			if (this.options.i18n && $.wysiwyg.i18n) {
-				$.wysiwyg.i18n.init(this, this.options.i18n);
-			}
-
 			if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
 				this.options.autoGrow = false;
 			}
@@ -1057,7 +1043,6 @@
 				growHandler,
 				saveHandler;
 
-			self.ui.appendControls();
 			self.element.append(self.ui.toolbar)
 				.append($("<div><!-- --></div>")
 					.css({
@@ -1080,6 +1065,8 @@
 			$.wysiwyg.plugin.bind(self);
 
 			$(self.editorDoc).trigger("initFrame.wysiwyg");
+
+			self.ui.appendControls();
 
 			$(self.editorDoc).bind("click.wysiwyg", function (event) {
 				self.ui.checkTargets(event.target ? event.target : event.srcElement);

@@ -33,11 +33,25 @@
 			$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.controlPath, "successCallback": successCallback});
 		},
 
+		init: function (Wysiwyg) {
+			if (!Wysiwyg.options.autoload) {
+				return true;
+			}
+
+			var i;
+
+			if (Wysiwyg.options.autoload.css) {
+				for (i = 0; i < Wysiwyg.options.autoload.css.length; i += 1) {
+					this.css(Wysiwyg.options.autoload.css[i]);
+				}
+			}
+		},
+
 		lang: function (names, successCallback) {
 			$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.i18nPath, "successCallback": successCallback});
 		}
 	};
 
 	$.wysiwyg.plugin.register(autoload);
-
+	$.wysiwyg.plugin.listen("initFrame", "autoload.init");
 })(jQuery);
