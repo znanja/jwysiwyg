@@ -209,14 +209,14 @@
 			text = text.replace(/<m:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/m:\1>/gm, "");
 
 			// after running the above.. it still needed these
-			text=text.replace(/<xml>[\s\S]*?<\/xml>/g,"");
-			text=text.replace(/<object(?:\s[^>]*)?>[\s\S]*?<\/object>/g,"");
-			text=text.replace(/<o:([^\s>]+)(?:\s[^\/]+)?\/>/g,"");
-			text=text.replace(/<o:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/o:\1>/gm,"");
-			text=text.replace(/<st1:([^\s>]+)(?:\s[^\/]+)?\/>/g,"");
-			text=text.replace(/<st1:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/st1:\1>/gm,"");
+			text = text.replace(/<xml>[\s\S]*?<\/xml>/g, "");
+			text = text.replace(/<object(?:\s[^>]*)?>[\s\S]*?<\/object>/g, "");
+			text = text.replace(/<o:([^\s>]+)(?:\s[^\/]+)?\/>/g, "");
+			text = text.replace(/<o:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/o:\1>/gm, "");
+			text = text.replace(/<st1:([^\s>]+)(?:\s[^\/]+)?\/>/g, "");
+			text = text.replace(/<st1:([^\s>]+)(?:\s[^>]+)?>[\s\S]*?<\/st1:\1>/gm, "");
 			// ----
-			text=text.replace(/<!--[^>]+>\s*<[^>]+>/gm,""); // firefox needed this 1
+			text = text.replace(/<!--[^>]+>\s*<[^>]+>/gm, ""); // firefox needed this 1
 
 						
 			text = text.replace(/^[\s\n]+/gm, "");
@@ -244,7 +244,7 @@
 								attrs = "";
 							} else if ("object" === typeof (rules.rmAttr) && attrs) {
 								for (attrName in rules.rmAttr) {
-									regAttr = new RegExp('' + attrName + '="[^"]*"', "mi");
+									regAttr = new RegExp(attrName + '="[^"]*"', "mi");
 									attrs = attrs.replace(regAttr, "");
 								}
 							}

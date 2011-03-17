@@ -142,7 +142,7 @@
 					Wysiwyg.editorDoc.execCommand("insertImage", true, null);
 				} else {
 					elements = $("<div/>")
-						.css({"position": "absolute",
+						.css({"position": "fixed",
 							"z-index": 2000,
 							"left": "50%", "top": "50%", "background": "rgb(0, 0, 0)",
 							"margin-top": -1 * Math.round(Wysiwyg.defaults.formHeight / 2),
@@ -172,7 +172,7 @@
 				}
 			}
 
-			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
+			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		},
 
 		processInsert: function (form, Wysiwyg, img) {
@@ -265,7 +265,7 @@
 		}
 
 		if (!object.each) {
-			console.error("Something goes wrong, check object");
+			console.error($.wysiwyg.messages.noObject);
 		}
 
 		return object.each(function () {
@@ -302,7 +302,7 @@
 				self.editorDoc.execCommand("insertImage", false, szURL);
 			}
 
-			$(self.editorDoc).trigger("wysiwyg:refresh");
+			$(self.editorDoc).trigger("editorRefresh.wysiwyg");
 
 			return this;
 		});

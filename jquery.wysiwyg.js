@@ -277,7 +277,7 @@
 				visible: false,
 				exec: function () {
 					var range = this.getInternalRange(),
-					p = this.dom.getElement("p");
+						p = this.dom.getElement("p");
 
 					if (!p) {
 						return false;
@@ -502,7 +502,7 @@
 			var dom		= this.parent,
 				range	= dom.parent.getInternalRange(),
 				element;
-			
+
 			if (!range) {
 				return null;
 			}
@@ -610,10 +610,6 @@
 				className = control.className || control.command || name || "empty",
 				tooltip = control.tooltip || control.command || name || "";
 
-			if ($.wysiwyg.i18n) {
-				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
-			}
-
 			return $('<li role="menuitem" unselectable="on">' + (className) + "</li>")
 				.addClass(className)
 				.attr("title", tooltip)
@@ -635,10 +631,6 @@
 		this.ui.appendItemCustom = function (name, control) {
 			var self = this.self,
 				tooltip = control.tooltip || control.command || name || "";
-
-			if ($.wysiwyg.i18n) {
-				tooltip = $.wysiwyg.i18n.t(tooltip, "controls");
-			}
 
 			if (control.callback) {
 				$(window).bind("trigger-" + name + ".wysiwyg", control.callback);
@@ -970,20 +962,6 @@
 			this.original	= element;
 			this.ui.toolbar	= $(this.options.toolbarHtml);
 
-			if (this.options.autoload) {
-				if ($.wysiwyg.autoload) {
-					if (this.options.autoload.css) {
-						for (i = 0; i < this.options.autoload.css.length; i += 1) {
-							$.wysiwyg.autoload.css(this.options.autoload.css[i]);
-						}
-					}
-				}
-			}
-
-			if (this.options.i18n && $.wysiwyg.i18n) {
-				$.wysiwyg.i18n.init(this, this.options.i18n);
-			}
-
 			if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
 				this.options.autoGrow = false;
 			}
@@ -1077,6 +1055,10 @@
 			);
 			self.editorDoc.close();
 
+			$.wysiwyg.plugin.bind(self);
+
+			$(self.editorDoc).trigger("initFrame.wysiwyg");
+
 			$(self.editorDoc).bind("click.wysiwyg", function (event) {
 				self.ui.checkTargets(event.target ? event.target : event.srcElement);
 			});
@@ -1142,13 +1124,11 @@
 					if (event.ctrlKey || event.metaKey) {
 						// CTRL + V (paste)
 						if (86 === event.keyCode) {
-							if (self.options.rmMsWordMarkup) {
-								if ($.wysiwyg.rmFormat) {
-									if ("object" === typeof (self.options.rmMsWordMarkup)) {
-										$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.rmMsWordMarkup }});
-									} else {
-										$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
-									}
+							if ($.wysiwyg.rmFormat) {
+								if ("object" === typeof (self.options.rmMsWordMarkup)) {
+									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.rmMsWordMarkup }});
+								} else {
+									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
 								}
 							}
 						}
@@ -1172,7 +1152,7 @@
 				};
 
 				$(self.editorDoc).keyup(growHandler);
-				$(self.editorDoc).bind("wysiwyg:refresh", growHandler);
+				$(self.editorDoc).bind("editorRefresh.wysiwyg", growHandler);
 
 				// fix when content height > textarea height
 				self.ui.grow();
@@ -1343,7 +1323,7 @@
 
 		this.saveContent = function () {
 			if (this.original) {
-				var content;
+				var content, newContent;
 
 				if (this.viewHTML) {
 					this.setContent($(this.original).val());
@@ -1456,6 +1436,10 @@
 	 * Wysiwyg namespace: public properties and methods
 	 */
 	$.wysiwyg = {
+		messages: {
+			noObject: "Something goes wrong, check object"
+		},
+
 		/**
 		 * Custom control support by Alec Gorge ( http://github.com/alecgorge )
 		 */
@@ -1465,7 +1449,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1494,7 +1478,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1517,7 +1501,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1537,7 +1521,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			// no chains because of return
@@ -1556,7 +1540,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			// no chains because of return
@@ -1575,7 +1559,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1593,6 +1577,8 @@
 				obj = new Wysiwyg();
 				obj.init(this, opts);
 				$.data(this, "wysiwyg", obj);
+
+				$(obj.editorDoc).trigger("afterInit.wysiwyg");
 			});
 		},
 
@@ -1602,7 +1588,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1617,6 +1603,24 @@
 		},
 
 		plugin: {
+			listeners: {},
+
+			bind: function (Wysiwyg) {
+				var self = this;
+
+				$.each(this.listeners, function (action, handlers) {
+					var i, plugin;
+
+					for (i = 0; i < handlers.length; i += 1) {
+						plugin = self.parseName(handlers[i]);
+
+						$(Wysiwyg.editorDoc).bind(action + ".wysiwyg", {plugin: plugin}, function (event) {
+							$.wysiwyg[event.data.plugin.name][event.data.plugin.method].apply($.wysiwyg[event.data.plugin.name], [Wysiwyg]);
+						});
+					}
+				});
+			},
+
 			exists: function (name) {
 				var plugin;
 
@@ -1626,13 +1630,27 @@
 
 				plugin = this.parseName(name);
 
-				if (!$.wysiwyg[plugin.name]) {
+				if (!$.wysiwyg[plugin.name] || !$.wysiwyg[plugin.name][plugin.method]) {
 					return false;
 				}
 
-				if (!$.wysiwyg[plugin.name][plugin.method]) {
+				return true;
+			},
+
+			listen: function (action, handler) {
+				var plugin;
+
+				plugin = this.parseName(handler);
+
+				if (!$.wysiwyg[plugin.name] || !$.wysiwyg[plugin.name][plugin.method]) {
 					return false;
 				}
+
+				if (!this.listeners[action]) {
+					this.listeners[action] = [];
+				}
+
+				this.listeners[action].push(handler);
 
 				return true;
 			},
@@ -1676,7 +1694,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1696,7 +1714,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1716,7 +1734,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			var oWysiwyg = object.data("wysiwyg"), oBody, oRange, selection;
@@ -1742,7 +1760,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {
@@ -1763,7 +1781,7 @@
 			}
 
 			if (!object.each) {
-				console.error("Something goes wrong, check object");
+				console.error($.wysiwyg.messages.noObject);
 			}
 
 			return object.each(function () {

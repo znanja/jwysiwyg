@@ -169,7 +169,7 @@
 				}
 			}
 
-			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
+			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		}
 	};
 
@@ -179,7 +179,7 @@
 		}
 
 		if (!object.each) {
-			console.error("Something goes wrong, check object");
+			console.error($.wysiwyg.messages.noObject);
 		}
 
 		return object.each(function () {
