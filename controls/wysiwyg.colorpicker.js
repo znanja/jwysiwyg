@@ -16,6 +16,7 @@
 	 * Wysiwyg namespace: public properties and methods
 	 */
 	$.wysiwyg.controls.colorpicker = {
+		modalOpen: false,
 		color: {
 			back: {
 				prev: "#ffffff",
@@ -42,6 +43,11 @@
 		},
 
 		init: function (Wysiwyg) {
+			if ($.wysiwyg.controls.colorpicker.modalOpen === true) {
+				return false;
+			} else {
+				$.wysiwyg.controls.colorpicker.modalOpen = true;
+			}
 			var self = this, elements, dialog, colorpickerHtml,
 				formTextLegend = "Colorpicker",
 				formTextColor  = "Color",
@@ -86,6 +92,7 @@
 							return false;
 						});
 						$("input:reset", dialog.data).click(function (e) {
+							console.log('hello');
 							if ($.browser.msie) {
 								Wysiwyg.ui.returnRange();
 							}
@@ -96,6 +103,10 @@
 						$("fieldset", dialog.data).click(function (e) {
 							e.stopPropagation();
 						});
+					},
+					onClose: function (dialog) {
+						$.wysiwyg.controls.colorpicker.modalOpen = false;
+						$.modal.close();
 					},
 					maxWidth: Wysiwyg.defaults.formWidth,
 					maxHeight: Wysiwyg.defaults.formHeight,
@@ -141,7 +152,9 @@
 						})
 					},
 					close: function (event, ui) {
+						$.wysiwyg.controls.colorpicker.modalOpen = false;
 						dialog.dialog("destroy");
+						dialog.remove();
 					}
 				});
 			} else {
@@ -168,6 +181,7 @@
 						Wysiwyg.editorDoc.execCommand('ForeColor', false, color);
 
 						$(elements).remove();
+						$.wysiwyg.controls.colorpicker.modalOpen = false;
 						return false;
 					});
 					$("input:reset", elements).click(function (event) {
@@ -177,6 +191,7 @@
 						}
 
 						$(elements).remove();
+						$.wysiwyg.controls.colorpicker.modalOpen = false;
 						return false;
 					});
 					$("body").append(elements);
