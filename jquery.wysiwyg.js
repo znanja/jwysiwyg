@@ -71,7 +71,10 @@
 				groupIndex: 9,
 				visible: false && !($.browser.msie),
 				tags: ["small"],
-				tooltip: "Decrease font size"
+				tooltip: "Decrease font size",
+				exec: function () {
+					this.decreaseFontSize();
+				}
 			},
 
 			h1: {
@@ -154,7 +157,10 @@
 				groupIndex: 9,
 				visible: false && !($.browser.msie),
 				tags: ["big"],
-				tooltip: "Increase font size"
+				tooltip: "Increase font size",
+				exec: function () {
+					this.increaseFontSize();
+				}
 			},
 
 			indent: {
@@ -853,6 +859,24 @@
 				self.savedRange = null;
 			}
 		};
+
+		this.increaseFontSize = function() {
+			if ($.browser.mozilla) {
+				this.editorDoc.execCommand('increaseFontSize', false, null);
+			} else if ($.browser.safari) {
+				var newNode = this.editorDoc.createElement('big');
+				this.getInternalRange().surroundContents(newNode);
+			}
+		},
+
+		this.decreaseFontSize = function() {
+			if ($.browser.mozilla) {
+				this.editorDoc.execCommand('decreaseFontSize', false, null);
+			} else if ($.browser.safari) {
+				var newNode = this.editorDoc.createElement('small');
+				this.getInternalRange().surroundContents(newNode);
+			}
+		}
 
 		this.getContent = function () {
 			return this.editorDoc.body.innerHTML;
