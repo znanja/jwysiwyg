@@ -415,7 +415,8 @@
 			rmMsWordMarkup: false,
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
-			tableFiller: "Lorem ipsum"
+			tableFiller: "Lorem ipsum",
+			initialMinHeight: null
 		};
 
 		this.availableControlProperties = [
@@ -1168,7 +1169,11 @@
 			}
 
 			if (self.options.autoGrow) {
-				self.ui.initialHeight = $(self.editorDoc).height();
+				if (self.options.initialMinHeight !== null) {
+					self.ui.initialHeight = self.options.initialMinHeight;
+				} else {
+					self.ui.initialHeight = $(self.editorDoc).height();
+				}
 				$(self.editorDoc.body).css("border", "1px solid white"); // cancel margin collapsing
 
 				growHandler = function () {
