@@ -130,7 +130,7 @@
 						});
 						$('fieldset', dialog).click(function (e) {
 							e.stopPropagation();
-						})
+						});
 					},
 					close: function (ev, ui) {
 						dialog.dialog("destroy");

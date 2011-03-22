@@ -862,22 +862,26 @@
 		};
 
 		this.increaseFontSize = function() {
-			if ($.browser.mozilla) {
+			if ($.browser.mozilla || $.browser.opera) {
 				this.editorDoc.execCommand('increaseFontSize', false, null);
 			} else if ($.browser.safari) {
 				var newNode = this.editorDoc.createElement('big');
 				this.getInternalRange().surroundContents(newNode);
+			} else {
+				console.error("Internet Explorer?");
 			}
 		},
 
 		this.decreaseFontSize = function() {
-			if ($.browser.mozilla) {
+			if ($.browser.mozilla || $.browser.opera) {
 				this.editorDoc.execCommand('decreaseFontSize', false, null);
 			} else if ($.browser.safari) {
 				var newNode = this.editorDoc.createElement('small');
 				this.getInternalRange().surroundContents(newNode);
+			} else {
+				console.error("Internet Explorer?");
 			}
-		}
+		},
 
 		this.getContent = function () {
 			return this.editorDoc.body.innerHTML;

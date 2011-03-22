@@ -92,7 +92,6 @@
 							return false;
 						});
 						$("input:reset", dialog.data).click(function (e) {
-							console.log('hello');
 							if ($.browser.msie) {
 								Wysiwyg.ui.returnRange();
 							}
@@ -149,7 +148,7 @@
 						});
 						$('fieldset', elements).click(function (e) {
 							e.stopPropagation();
-						})
+						});
 					},
 					close: function (event, ui) {
 						$.wysiwyg.controls.colorpicker.modalOpen = false;
@@ -197,7 +196,7 @@
 					$("body").append(elements);
 					elements.click(function(e) {
 					  e.stopPropagation();
-					})
+					});
 				}
 			}
 		},
