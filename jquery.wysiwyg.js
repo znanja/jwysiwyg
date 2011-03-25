@@ -830,6 +830,14 @@
 				});
 			}
 
+			// And now sort them as the user requested
+			//
+			var sortedControls = {};
+			$.each (controls, function (name, config) {
+				sortedControls[name] = config;
+			});
+			options.controls = sortedControls;
+
 			return options;
 		};
 
