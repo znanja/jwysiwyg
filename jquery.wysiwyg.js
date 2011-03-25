@@ -816,7 +816,7 @@
 			}
 
 			options = $.extend(true, {}, this.defaults, options);
-			options.controls = $.extend(true, this.controls, controls);
+			options.controls = $.extend(true, {}, controls, this.controls, controls);
 
 			if (options.rmUnusedControls) {
 				$.each(options.controls, function (controlName) {
