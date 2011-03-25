@@ -804,7 +804,7 @@
 		};
 
 		this.extendOptions = function (options) {
-			var controls = {}, namesToRemove = [];
+			var controls = {};
 
 			/**
 			 * If the user set custom controls, we catch it, and merge with the
@@ -821,12 +821,8 @@
 			if (options.rmUnusedControls) {
 				$.each(options.controls, function (controlName) {
 					if (!controls[controlName]) {
-						namesToRemove.push(controlName);
+						delete options.controls[controlName];
 					}
-				});
-
-				$.each(namesToRemove, function (name) {
-					delete options.controls[namesToRemove[name]];
 				});
 			}
 
@@ -864,7 +860,7 @@
 			}
 		};
 
-		this.increaseFontSize = function() {
+		this.increaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
 				this.editorDoc.execCommand('increaseFontSize', false, null);
 			} else if ($.browser.safari) {
@@ -873,9 +869,9 @@
 			} else {
 				console.error("Internet Explorer?");
 			}
-		},
+		};
 
-		this.decreaseFontSize = function() {
+		this.decreaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
 				this.editorDoc.execCommand('decreaseFontSize', false, null);
 			} else if ($.browser.safari) {
@@ -884,7 +880,7 @@
 			} else {
 				console.error("Internet Explorer?");
 			}
-		},
+		};
 
 		this.getContent = function () {
 			return this.editorDoc.body.innerHTML;
