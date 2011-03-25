@@ -816,7 +816,7 @@
 			}
 
 			options = $.extend(true, {}, this.defaults, options);
-			options.controls = $.extend(true, this.controls, controls);
+			options.controls = $.extend(true, controls, this.controls, controls);
 
 			if (options.rmUnusedControls) {
 				$.each(options.controls, function (controlName) {
@@ -829,14 +829,6 @@
 					delete options.controls[namesToRemove[name]];
 				});
 			}
-
-			// And now sort them as the user requested
-			//
-			var sortedControls = {};
-			$.each (controls, function (name, config) {
-				sortedControls[name] = config;
-			});
-			options.controls = sortedControls;
 
 			return options;
 		};
