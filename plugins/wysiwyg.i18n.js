@@ -47,8 +47,8 @@
 
 		translateControls: function (Wysiwyg, lang) {
 			Wysiwyg.ui.toolbar.find("li").each(function () {
-				if (Wysiwyg.controls[$(this).attr("class")]) {
-					$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.controls[$(this).attr("class")].tooltip, "controls", lang));
+				if (Wysiwyg.options.controls[$(this).attr("class")] && Wysiwyg.options.controls[$(this).attr("class")].visible) {
+					$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.options.controls[$(this).attr("class")].tooltip, "controls", lang));
 				}
 			});
 		},

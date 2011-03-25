@@ -1496,7 +1496,7 @@
 				}
 
 				customControl[name] = $.extend(true, {visible: true, custom: true}, settings);
-				$.extend(true, oWysiwyg.controls, customControl);
+				$.extend(true, oWysiwyg.options.controls, customControl);
 
 				// render new toolbar
 				toolbar = $(oWysiwyg.options.toolbarHtml);
