@@ -396,7 +396,6 @@
 			css: {},
 			events: {},
 			autoGrow: false,
-			autoload: {"css": ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"]},
 			autoSave: true,
 			brIE: true,					// http://code.google.com/p/jwysiwyg/issues/detail?id=15
 			formHeight: 270,
@@ -416,7 +415,11 @@
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			tableFiller: "Lorem ipsum",
-			initialMinHeight: null
+			initialMinHeight: null,
+
+			plugins: { // placeholder for plugins settings
+				autoload: { "css": ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"] }
+			}
 		};
 
 		this.availableControlProperties = [

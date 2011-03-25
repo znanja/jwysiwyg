@@ -24,31 +24,34 @@
 			controlPath:	"controls/",
 			i18nPath:		"i18n/"
 		},
+		options: {},
 
 		css: function (names) {
-			$.autoload.css(names, this.defaults);
+			$.autoload.css(names, this.options);
 		},
 
 		control: function (names, successCallback) {
-			$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.controlPath, "successCallback": successCallback});
+			$.autoload.js(names, {"baseFile": this.options.baseFile, "jsPath": this.options.controlPath, "successCallback": successCallback});
 		},
 
 		init: function (Wysiwyg) {
-			if (!Wysiwyg.options.autoload) {
+			if (!Wysiwyg.options.plugins[this.name]) {
 				return true;
 			}
 
 			var i;
 
-			if (Wysiwyg.options.autoload.css) {
-				for (i = 0; i < Wysiwyg.options.autoload.css.length; i += 1) {
-					this.css(Wysiwyg.options.autoload.css[i]);
+			this.options = $.extend(true, this.defaults, Wysiwyg.options.plugins[this.name]);
+
+			if (this.options.css) {
+				for (i = 0; i < this.options.css.length; i += 1) {
+					this.css(this.options.css[i]);
 				}
 			}
 		},
 
 		lang: function (names, successCallback) {
-			$.autoload.js(names, {"baseFile": this.defaults.baseFile, "jsPath": this.defaults.i18nPath, "successCallback": successCallback});
+			$.autoload.js(names, {"baseFile": this.options.baseFile, "jsPath": this.options.i18nPath, "successCallback": successCallback});
 		}
 	};
 
