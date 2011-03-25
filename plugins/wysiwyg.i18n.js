@@ -22,15 +22,17 @@
 		options: {},
 
 		init: function (Wysiwyg, lang) {
-			if (!Wysiwyg.options.i18n) {
+			if (!Wysiwyg.options.plugins[this.name]) {
 				return true;
 			}
 
+			this.options = $.extend(true, this.defaults, Wysiwyg.options.plugins[this.name]);
+
 			if (!lang) {
-				lang = Wysiwyg.options.i18n;
+				lang = this.options.lang;
 			}
 
-			if ((lang !== this.defaults.wysiwygLang) && (undefined === $.wysiwyg.i18n.lang[lang])) {
+			if ((lang !== this.options.wysiwygLang) && (undefined === $.wysiwyg.i18n.lang[lang])) {
 				if ($.wysiwyg.autoload) {
 					$.wysiwyg.autoload.lang("lang." + lang + ".js", function () {
 						$.wysiwyg.i18n.init(Wysiwyg, lang);
@@ -40,15 +42,13 @@
 				}
 			}
 
-			this.options.lang = lang;
-
-			this.translateControls(Wysiwyg);
+			this.translateControls(Wysiwyg, lang);
 		},
 
-		translateControls: function (Wysiwyg) {
+		translateControls: function (Wysiwyg, lang) {
 			Wysiwyg.ui.toolbar.find("li").each(function () {
 				if (Wysiwyg.controls[$(this).attr("class")]) {
-					$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.controls[$(this).attr("class")].tooltip, "controls"));
+					$(this).attr("title", $.wysiwyg.i18n.t(Wysiwyg.controls[$(this).attr("class")].tooltip, "controls", lang));
 				}
 			});
 		},
@@ -80,7 +80,7 @@
 				lang = this.options.lang;
 			}
 
-			if ((lang === this.defaults.wysiwygLang) || (!this.lang[lang])) {
+			if ((lang === this.options.wysiwygLang) || (!this.lang[lang])) {
 				return phrase;
 			}
 

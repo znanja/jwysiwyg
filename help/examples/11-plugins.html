@@ -42,8 +42,15 @@
 			global_i++;
 
 			$(this).wysiwyg({
-				i18n: "en",
-				rmMsWordMarkup: true,
+				plugins: {
+					autoload: true,
+					i18n: {
+						lang: "en"
+					},
+					rmFormat: {
+						rmMsWordMarkup: true
+					}
+				},
 
 				controls: {
 					html: {visible: true},

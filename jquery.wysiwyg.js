@@ -400,7 +400,6 @@
 			brIE: true,					// http://code.google.com/p/jwysiwyg/issues/detail?id=15
 			formHeight: 270,
 			formWidth: 440,
-			i18n: false,
 			iFrameClass: null,
 			initialContent: "<p>Initial content</p>",
 			maxHeight: 10000,			// see autoGrow
@@ -411,14 +410,17 @@
 			removeHeadings: false,
 			replaceDivWithP: false,
 			resizeOptions: false,
-			rmMsWordMarkup: false,
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			tableFiller: "Lorem ipsum",
 			initialMinHeight: null,
 
 			plugins: { // placeholder for plugins settings
-				autoload: { "css": ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"] }
+				autoload: false,
+				i18n: false,
+				rmFormat: {
+					rmMsWordMarkup: false
+				}
 			}
 		};
 
@@ -1147,14 +1149,14 @@
 				});
 			}
 
-			if (self.options.rmMsWordMarkup) {
+			if (self.options.plugins.rmFormat.rmMsWordMarkup) {
 				$(self.editorDoc).bind("keyup.wysiwyg", function (event) {
 					if (event.ctrlKey || event.metaKey) {
 						// CTRL + V (paste)
 						if (86 === event.keyCode) {
 							if ($.wysiwyg.rmFormat) {
-								if ("object" === typeof (self.options.rmMsWordMarkup)) {
-									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.rmMsWordMarkup }});
+								if ("object" === typeof (self.options.plugins.rmFormat.rmMsWordMarkup)) {
+									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.plugins.rmFormat.rmMsWordMarkup }});
 								} else {
 									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
 								}
