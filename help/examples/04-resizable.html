@@ -21,7 +21,11 @@
 (function ($) {
 	$(document).ready(function () {
 		$('#wysiwyg').wysiwyg({
-			resizeOptions: {}
+			resizeOptions: {},
+
+			controls: {
+				html: { visible: true }
+			}
 		});
 	});
 })(jQuery);

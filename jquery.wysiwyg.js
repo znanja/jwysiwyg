@@ -111,10 +111,27 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
+					var elementHeight;
+
+					if (this.options.resizeOptions && $.fn.resizable) {
+						elementHeight = this.element.height();
+					}
+
 					if (this.viewHTML) {
 						this.setContent($(this.original).val());
 						$(this.original).hide();
 						this.editor.show();
+
+						if (this.options.resizeOptions && $.fn.resizable) {
+							// if element.height still the same after frame was shown
+							if (elementHeight === this.element.height()) {
+								this.element.height(elementHeight + this.editor.height());
+							}
+
+							this.element.resizable($.extend(true, {
+								alsoResize: this.editor
+							}, this.options.resizeOptions));
+						}
 						
 						this.ui.toolbar.find("li").each(function () {
 							var li = $(this);
@@ -133,6 +150,15 @@
 							resize: "none"
 						}).show();
 						this.editor.hide();
+						
+						if (this.options.resizeOptions && $.fn.resizable) {
+							// if element.height still the same after frame was hidden
+							if (elementHeight === this.element.height()) {
+								this.element.height(this.ui.toolbar.height());
+							}
+
+							this.element.resizable("destroy");
+						}
 
 						this.ui.toolbar.find("li").each(function () {
 							var li = $(this);
