@@ -15,6 +15,7 @@ div.wysiwyg ul.toolbar li.bold { background-position: 0 -16px; }
 div.wysiwyg ul.toolbar li.italic { background-position: -16px -16px; }
 div.wysiwyg ul.toolbar li.strikeThrough { background-position: -32px -16px; }
 div.wysiwyg ul.toolbar li.underline { background-position: -48px -16px; }
+div.wysiwyg ul.toolbar li.highlight { background-position: -48px -96px; }
 
 div.wysiwyg ul.toolbar li.justifyLeft { background-position: 0 0; }
 div.wysiwyg ul.toolbar li.justifyCenter { background-position: -16px 0; }

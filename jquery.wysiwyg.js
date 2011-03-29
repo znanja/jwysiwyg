@@ -107,6 +107,47 @@
 				tooltip: "Header 3"
 			},
 
+			highlight: {
+				tooltip:     'Highlight',
+				className:   'highlight',
+				groupIndex:  1,
+				visible:     false,
+				css: {
+					backgroundColor: 'rgb(255, 255, 102)'
+				},
+				exec: function () {
+					var command;
+					if ($.browser.msie || $.browser.safari)
+						command = 'backcolor'
+					else
+						command = 'hilitecolor';
+
+					var node;
+					if ($.browser.msie) {
+						node = this.getInternalRange ().parentElement ();
+
+					} else {
+						var selection = this.getInternalSelection ();
+						node = selection.extentNode || selection.focusNode;
+
+						while (node.style == undefined) {
+							node = node.parentNode;
+							if (node.tagName && node.tagName.toLowerCase () == 'body')
+								return;
+						}
+					}
+
+					var args;
+					if (node.style.backgroundColor == 'rgb(255, 255, 102)' ||
+							node.style.backgroundColor == '#ffff66')
+						args = '#ffffff';
+					else
+						args = '#ffff66'
+
+					this.editorDoc.execCommand (command, false, args);
+				}
+			},
+
 			html: {
 				groupIndex: 10,
 				visible: false,
