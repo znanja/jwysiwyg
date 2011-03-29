@@ -71,7 +71,10 @@
 				groupIndex: 9,
 				visible: false && !($.browser.msie),
 				tags: ["small"],
-				tooltip: "Decrease font size"
+				tooltip: "Decrease font size",
+				exec: function () {
+					this.decreaseFontSize();
+				}
 			},
 
 			h1: {
@@ -104,14 +107,72 @@
 				tooltip: "Header 3"
 			},
 
+			highlight: {
+				tooltip:     'Highlight',
+				className:   'highlight',
+				groupIndex:  1,
+				visible:     false,
+				css: {
+					backgroundColor: 'rgb(255, 255, 102)'
+				},
+				exec: function () {
+					var command;
+					if ($.browser.msie || $.browser.safari)
+						command = 'backcolor'
+					else
+						command = 'hilitecolor';
+
+					var node;
+					if ($.browser.msie) {
+						node = this.getInternalRange ().parentElement ();
+
+					} else {
+						var selection = this.getInternalSelection ();
+						node = selection.extentNode || selection.focusNode;
+
+						while (node.style == undefined) {
+							node = node.parentNode;
+							if (node.tagName && node.tagName.toLowerCase () == 'body')
+								return;
+						}
+					}
+
+					var args;
+					if (node.style.backgroundColor == 'rgb(255, 255, 102)' ||
+							node.style.backgroundColor == '#ffff66')
+						args = '#ffffff';
+					else
+						args = '#ffff66'
+
+					this.editorDoc.execCommand (command, false, args);
+				}
+			},
+
 			html: {
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
+					var elementHeight;
+
+					if (this.options.resizeOptions && $.fn.resizable) {
+						elementHeight = this.element.height();
+					}
+
 					if (this.viewHTML) {
 						this.setContent($(this.original).val());
 						$(this.original).hide();
 						this.editor.show();
+
+						if (this.options.resizeOptions && $.fn.resizable) {
+							// if element.height still the same after frame was shown
+							if (elementHeight === this.element.height()) {
+								this.element.height(elementHeight + this.editor.height());
+							}
+
+							this.element.resizable($.extend(true, {
+								alsoResize: this.editor
+							}, this.options.resizeOptions));
+						}
 						
 						this.ui.toolbar.find("li").each(function () {
 							var li = $(this);
@@ -130,6 +191,15 @@
 							resize: "none"
 						}).show();
 						this.editor.hide();
+						
+						if (this.options.resizeOptions && $.fn.resizable) {
+							// if element.height still the same after frame was hidden
+							if (elementHeight === this.element.height()) {
+								this.element.height(this.ui.toolbar.height());
+							}
+
+							this.element.resizable("destroy");
+						}
 
 						this.ui.toolbar.find("li").each(function () {
 							var li = $(this);
@@ -154,7 +224,10 @@
 				groupIndex: 9,
 				visible: false && !($.browser.msie),
 				tags: ["big"],
-				tooltip: "Increase font size"
+				tooltip: "Increase font size",
+				exec: function () {
+					this.increaseFontSize();
+				}
 			},
 
 			indent: {
@@ -390,12 +463,10 @@
 			css: {},
 			events: {},
 			autoGrow: false,
-			autoload: {"css": ["jquery.wysiwyg.css", "jquery.wysiwyg.modal.css"]},
 			autoSave: true,
 			brIE: true,					// http://code.google.com/p/jwysiwyg/issues/detail?id=15
 			formHeight: 270,
 			formWidth: 440,
-			i18n: false,
 			iFrameClass: null,
 			initialContent: "<p>Initial content</p>",
 			maxHeight: 10000,			// see autoGrow
@@ -406,10 +477,18 @@
 			removeHeadings: false,
 			replaceDivWithP: false,
 			resizeOptions: false,
-			rmMsWordMarkup: false,
 			rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 			rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
-			tableFiller: "Lorem ipsum"
+			tableFiller: "Lorem ipsum",
+			initialMinHeight: null,
+
+			plugins: { // placeholder for plugins settings
+				autoload: false,
+				i18n: false,
+				rmFormat: {
+					rmMsWordMarkup: false
+				}
+			}
 		};
 
 		this.availableControlProperties = [
@@ -794,7 +873,7 @@
 		};
 
 		this.extendOptions = function (options) {
-			var controls = {}, namesToRemove = [];
+			var controls = {};
 
 			/**
 			 * If the user set custom controls, we catch it, and merge with the
@@ -806,17 +885,13 @@
 			}
 
 			options = $.extend(true, {}, this.defaults, options);
-			options.controls = $.extend(true, this.controls, controls);
+			options.controls = $.extend(true, {}, controls, this.controls, controls);
 
 			if (options.rmUnusedControls) {
 				$.each(options.controls, function (controlName) {
 					if (!controls[controlName]) {
-						namesToRemove.push(controlName);
+						delete options.controls[controlName];
 					}
-				});
-
-				$.each(namesToRemove, function (name) {
-					delete options.controls[namesToRemove[name]];
 				});
 			}
 
@@ -851,6 +926,28 @@
 				}
 
 				self.savedRange = null;
+			}
+		};
+
+		this.increaseFontSize = function () {
+			if ($.browser.mozilla || $.browser.opera) {
+				this.editorDoc.execCommand('increaseFontSize', false, null);
+			} else if ($.browser.safari) {
+				var newNode = this.editorDoc.createElement('big');
+				this.getInternalRange().surroundContents(newNode);
+			} else {
+				console.error("Internet Explorer?");
+			}
+		};
+
+		this.decreaseFontSize = function () {
+			if ($.browser.mozilla || $.browser.opera) {
+				this.editorDoc.execCommand('decreaseFontSize', false, null);
+			} else if ($.browser.safari) {
+				var newNode = this.editorDoc.createElement('small');
+				this.getInternalRange().surroundContents(newNode);
+			} else {
+				console.error("Internet Explorer?");
 			}
 		};
 
@@ -1119,14 +1216,14 @@
 				});
 			}
 
-			if (self.options.rmMsWordMarkup) {
+			if (self.options.plugins.rmFormat.rmMsWordMarkup) {
 				$(self.editorDoc).bind("keyup.wysiwyg", function (event) {
 					if (event.ctrlKey || event.metaKey) {
 						// CTRL + V (paste)
 						if (86 === event.keyCode) {
 							if ($.wysiwyg.rmFormat) {
-								if ("object" === typeof (self.options.rmMsWordMarkup)) {
-									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.rmMsWordMarkup }});
+								if ("object" === typeof (self.options.plugins.rmFormat.rmMsWordMarkup)) {
+									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.plugins.rmFormat.rmMsWordMarkup }});
 								} else {
 									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
 								}
@@ -1144,7 +1241,11 @@
 			}
 
 			if (self.options.autoGrow) {
-				self.ui.initialHeight = $(self.editorDoc).height();
+				if (self.options.initialMinHeight !== null) {
+					self.ui.initialHeight = self.options.initialMinHeight;
+				} else {
+					self.ui.initialHeight = $(self.editorDoc).height();
+				}
 				$(self.editorDoc.body).css("border", "1px solid white"); // cancel margin collapsing
 
 				growHandler = function () {
@@ -1462,7 +1563,7 @@
 				}
 
 				customControl[name] = $.extend(true, {visible: true, custom: true}, settings);
-				$.extend(true, oWysiwyg.controls, customControl);
+				$.extend(true, oWysiwyg.options.controls, customControl);
 
 				// render new toolbar
 				toolbar = $(oWysiwyg.options.toolbarHtml);

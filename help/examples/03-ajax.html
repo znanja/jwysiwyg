@@ -22,8 +22,8 @@
 <script type="text/javascript" src="../../controls/wysiwyg.link.js"></script>
 <script type="text/javascript" src="../../controls/wysiwyg.table.js"></script>
 <script type="text/javascript">
-(function($) {
-	$('#ajaxtest').load("jw_ajax.html");
+(function ($) {
+	$('#ajaxtest').load("jw_ajax.html", function () { $('#jw').wysiwyg(); });
 })(jQuery);
 </script>
 

@@ -9,6 +9,9 @@
 <script type="text/javascript" src="../lib/jquery.js"></script>
 <script type="text/javascript" src="../lib/plugins/autoload/jquery.autoload.js"></script>
 <script type="text/javascript" src="../lib/plugins/farbtastic/farbtastic.js"></script>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script> -->
+<!-- <link rel="stylesheet" href="../lib/jquery.simplemodal.css" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery.simplemodal.js"></script> -->
 <link rel="stylesheet" href="../lib/plugins/farbtastic/css/farbtastic.css" type="text/css"/>
 <script type="text/javascript" src="../../jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="../../plugins/wysiwyg.autoload.js"></script>
@@ -20,6 +23,7 @@
 <script type="text/javascript" src="../../i18n/lang.fr.js"></script>
 <script type="text/javascript" src="../../i18n/lang.it.js"></script>
 <script type="text/javascript" src="../../i18n/lang.ja.js"></script>
+<script type="text/javascript" src="../../i18n/lang.pl.js"></script>
 <script type="text/javascript" src="../../i18n/lang.pt_br.js"></script>
 <script type="text/javascript" src="../../i18n/lang.ru.js"></script>
 <script type="text/javascript" src="../../i18n/lang.se.js"></script>
@@ -38,8 +42,11 @@
 			global_i++;
 
 			$(this).wysiwyg({
-				i18n: "en",
-				rmMsWordMarkup: true,
+				plugins: {
+					autoload: true,
+					i18n: { lang: "en" },
+					rmFormat: { rmMsWordMarkup: true }
+				},
 
 				controls: {
 					html: {visible: true},
@@ -115,6 +122,7 @@
 		<option value="fr">Français</option>
 		<option value="it">Italiano</option>
 		<option value="ja">日本語</option>
+		<option value="pl">Polish</option>
 		<option value="pt_br">Português Brasileiro</option>
 		<option value="ru">Русский</option>
 		<option value="se">Svenska</option>
