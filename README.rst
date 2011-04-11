@@ -210,6 +210,9 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
 ``maxHeight``
     An integer. autoGrow max height
 
+``maxLength``
+    An integer. The maxlength attribute specifies the maximum length (in characters) that the editor will accept.  This number won't include any HTML markup.
+
 ``messages``
     A javascript object with key, value pairs setting custom messages for
     certain conditions. Available keys are:
