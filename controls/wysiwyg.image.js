@@ -91,7 +91,7 @@
 				$.modal(elements, {
 					onShow: function (dialog) {
 						$("input:submit", dialog.data).click(function (e) {
-							self.processInsert(dialog, Wysiwyg, img);
+							self.processInsert(dialog.container, Wysiwyg, img);
 
 							$.modal.close();
 							return false;
@@ -119,7 +119,7 @@
 					height: Wysiwyg.defaults.formHeight,
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
-							self.processInsert(dialog, Wysiwyg, img);
+							self.processInsert(dialog.container, Wysiwyg, img);
 
 							$(dialog).dialog("close");
 							return false;
@@ -175,14 +175,14 @@
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		},
 
-		processInsert: function (form, Wysiwyg, img) {
+		processInsert: function (context, Wysiwyg, img) {
 			var image,
-				szURL = $('input[name="src"]', form).val(),
-				title = $('input[name="imgtitle"]', form).val(),
-				description = $('input[name="description"]', form).val(),
-				width = $('input[name="width"]', form).val(),
-				height = $('input[name="height"]', form).val(),
-				styleFloat = $('select[name="float"]', form).val(),
+				szURL = $('input[name="src"]', context).val(),
+				title = $('input[name="imgtitle"]', context).val(),
+				description = $('input[name="description"]', context).val(),
+				width = $('input[name="width"]', context).val(),
+				height = $('input[name="height"]', context).val(),
+				styleFloat = $('select[name="float"]', context).val(),
 				style = [],
 				found;
 
