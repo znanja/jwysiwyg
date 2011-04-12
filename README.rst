@@ -201,10 +201,6 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
 ``formWidth``
     An integer. Width of dialog form.
 
-``i18n``
-    A bool or string. If ``false`` then no internationalization, otherwise set
-    to language (ex. ``ru``)
-
 ``iFrameClass``
     A string, that specify ``class`` attribute of iframe element
 
@@ -214,12 +210,28 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
 ``maxHeight``
     An integer. autoGrow max height
 
+``maxLength``
+    An integer. The maxlength attribute specifies the maximum length (in characters) that the editor will accept.  This number won't include any HTML markup.
+
 ``messages``
     A javascript object with key, value pairs setting custom messages for
     certain conditions. Available keys are:
     
     * ``nonSelection``: Message to display when the Create Link button is
       pressed with no text selected.
+
+``plugins``
+    ``autoload``
+        A bool or object. If ``false`` then no autoload, if ``true`` then defaults
+        is used, otherwise you can override provided defaults
+    
+    ``i18n``
+        A bool or object. If ``false`` then no internationalization, otherwise you
+        can set default language ``{ lang: "ru" }``
+    
+    ``rmFormat``
+        ``rmMsWordMarkup``
+            A bool. If true then remove MS Word markup is used
 
 ``toolbarHtml``
     A string containing the source HTML code
