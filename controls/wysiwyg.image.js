@@ -170,15 +170,14 @@
 			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
 		},
 
-		processInsert: function (form, Wysiwyg, img) {
-			//form = form.container;
+		processInsert: function (context, Wysiwyg, img) {
 			var image,
-				szURL = $('input[name="src"]', form).val(),
-				title = $('input[name="imgtitle"]', form).val(),
-				description = $('input[name="description"]', form).val(),
-				width = $('input[name="width"]', form).val(),
-				height = $('input[name="height"]', form).val(),
-				styleFloat = $('select[name="float"]', form).val(),
+				szURL = $('input[name="src"]', context).val(),
+				title = $('input[name="imgtitle"]', context).val(),
+				description = $('input[name="description"]', context).val(),
+				width = $('input[name="width"]', context).val(),
+				height = $('input[name="height"]', context).val(),
+				styleFloat = $('select[name="float"]', context).val(),
 				style = [],
 				found;
 			if (img.self) {
