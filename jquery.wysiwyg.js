@@ -471,6 +471,7 @@
 			iFrameClass: null,
 			initialContent: "<p>Initial content</p>",
 			maxHeight: 10000,			// see autoGrow
+			maxLength: 0,
 			messages: {
 				nonSelection: "Select the text you wish to link"
 			},
@@ -508,13 +509,14 @@
 			"visible"
 		];
 
-		this.editor		= null;
-		this.editorDoc	= null;
-		this.element	= null;
-		this.options	= {};
-		this.original	= null;
-		this.savedRange	= null;
-		this.timers		= [];
+		this.editor			= null;
+		this.editorDoc		= null;
+		this.element		= null;
+		this.options		= {};
+		this.original		= null;
+		this.savedRange		= null;
+		this.timers			= [];
+		this.validKeyCodes	= [8, 9, 13, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46];
 
 		this.dom		= { // DOM related properties and methods
 			ie:		{
@@ -1290,6 +1292,14 @@
 				} else {
 					self.setContent(self.options.initialContent);
 				}
+			}
+
+			if (self.options.maxLength > 0) {
+				$(self.editorDoc).keydown(function (event) {
+					if ($(self.editorDoc).text().length >= self.options.maxLength && $.inArray(event.which, self.validKeyCodes) == -1) {
+						event.preventDefault();
+					}
+				})
 			}
 
 			$.each(self.options.events, function (key, handler) {
