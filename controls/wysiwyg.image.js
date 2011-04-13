@@ -91,15 +91,17 @@
 				$.modal(elements, {
 					onShow: function (dialog) {
 						$("input:submit", dialog.data).click(function (e) {
-							e.preventDefault();
-
 							self.processInsert(dialog.container, Wysiwyg, img);
 
 							$.modal.close();
+							return false;
 						});
 						$("input:reset", dialog.data).click(function (e) {
-							e.preventDefault();
 							$.modal.close();
+							return false;
+						});
+						$("fieldset", dialog.data).click(function (e) {
+							e.stopPropagation();
 						});
 					},
 					maxWidth: Wysiwyg.defaults.formWidth,
@@ -117,15 +119,17 @@
 					height: Wysiwyg.defaults.formHeight,
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
-							e.preventDefault();
-
 							self.processInsert(dialog.container, Wysiwyg, img);
 
 							$(dialog).dialog("close");
+							return false;
 						});
 						$("input:reset", dialog).click(function (e) {
-							e.preventDefault();
 							$(dialog).dialog("close");
+							return false;
+						});
+						$('fieldset', dialog).click(function (e) {
+							e.stopPropagation();
 						});
 					},
 					close: function (ev, ui) {
@@ -138,7 +142,7 @@
 					Wysiwyg.editorDoc.execCommand("insertImage", true, null);
 				} else {
 					elements = $("<div/>")
-						.css({"position": "absolute",
+						.css({"position": "fixed",
 							"z-index": 2000,
 							"left": "50%", "top": "50%", "background": "rgb(0, 0, 0)",
 							"margin-top": -1 * Math.round(Wysiwyg.defaults.formHeight / 2),
@@ -147,27 +151,28 @@
 					elements = self.makeForm(elements, img);
 
 					$("input:submit", elements).click(function (event) {
-						event.preventDefault();
-
 						self.processInsert(elements, Wysiwyg, img);
 
 						$(elements).remove();
+						return false;
 					});
 					$("input:reset", elements).click(function (event) {
-						event.preventDefault();
-
 						if ($.browser.msie) {
 							Wysiwyg.ui.returnRange();
 						}
 
 						$(elements).remove();
+						return false;
 					});
 
 					$("body").append(elements);
+					elements.click(function(e) {
+						e.stopPropagation();
+					});
 				}
 			}
 
-			$(Wysiwyg.editorDoc).trigger("wysiwyg:refresh");
+			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		},
 
 		processInsert: function (context, Wysiwyg, img) {
@@ -180,6 +185,7 @@
 				styleFloat = $('select[name="float"]', context).val(),
 				style = [],
 				found;
+
 			if (img.self) {
 				// to preserve all img attributes
 				$(img.self).attr("src", szURL)
@@ -259,7 +265,7 @@
 		}
 
 		if (!object.each) {
-			console.error("Something goes wrong, check object");
+			console.error($.wysiwyg.messages.noObject);
 		}
 
 		return object.each(function () {
@@ -296,7 +302,7 @@
 				self.editorDoc.execCommand("insertImage", false, szURL);
 			}
 
-			$(self.editorDoc).trigger("wysiwyg:refresh");
+			$(self.editorDoc).trigger("editorRefresh.wysiwyg");
 
 			return this;
 		});
