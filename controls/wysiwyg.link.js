@@ -121,8 +121,14 @@
 										}
 									}
 
-									a = Wysiwyg.dom.getElement("a");
-									$(a).attr("href", url).attr("title", title).attr("target", target);
+									a.self = Wysiwyg.dom.getElement("a");
+
+									$(a.self).attr("href", url).attr("title", title);
+
+									/**
+									 * @url https://github.com/akzhan/jwysiwyg/issues/16
+									 */
+									$(a.self).attr("target", target);
 								} else if (Wysiwyg.options.messages.nonSelection) {
 									window.alert(Wysiwyg.options.messages.nonSelection);
 								}
