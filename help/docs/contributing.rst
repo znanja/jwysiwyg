@@ -15,7 +15,7 @@ Internationalization
 --------------------
 
 You can contribute in internationalization. Go under *i18n* directory and copy
-one of lang.\ **langName**\ .js file. Rename **langName** part to your language.
+lang.\ **en**\ .js file. Rename **langName** part to your language.
 Open this file, and change following lines
 
 .. parsed-literal::
