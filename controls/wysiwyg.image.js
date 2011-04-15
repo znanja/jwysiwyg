@@ -17,7 +17,7 @@
 	 */
 	$.wysiwyg.controls.image = {
 		init: function (Wysiwyg) {
-			var self = this, elements, dialog, szURL, formImageHtml,
+			var self = this, elements, dialog, formImageHtml,
 				formTextLegend, formTextPreview, formTextUrl, formTextTitle,
 				formTextDescription, formTextWidth, formTextHeight, formTextOriginal,
 				formTextFloat, formTextFloatNone, formTextFloatLeft, formTextFloatRight,
@@ -177,18 +177,26 @@
 
 		processInsert: function (context, Wysiwyg, img) {
 			var image,
-				szURL = $('input[name="src"]', context).val(),
+				url = $('input[name="src"]', context).val(),
 				title = $('input[name="imgtitle"]', context).val(),
 				description = $('input[name="description"]', context).val(),
 				width = $('input[name="width"]', context).val(),
 				height = $('input[name="height"]', context).val(),
 				styleFloat = $('select[name="float"]', context).val(),
 				style = [],
-				found;
+				found,
+				baseUrl;
+
+			if (Wysiwyg.options.controlImage.forceRelativeUrls) {
+				baseUrl = window.location.protocol + "//" + window.location.hostname;
+				if (0 === url.indexOf(baseUrl)) {
+					url = url.substr(baseUrl.length);
+				}
+			}
 
 			if (img.self) {
 				// to preserve all img attributes
-				$(img.self).attr("src", szURL)
+				$(img.self).attr("src", url)
 					.attr("title", title)
 					.attr("alt", description)
 					.css("float", styleFloat);
@@ -231,7 +239,7 @@
 					style = ' style="' + style.join(" ") + '"';
 				}
 
-				image = "<img src='" + szURL + "' title='" + title + "' alt='" + description + "'" + style + "/>";
+				image = "<img src='" + url + "' title='" + title + "' alt='" + description + "'" + style + "/>";
 				Wysiwyg.insertHtml(image);
 			}
 		},
@@ -259,7 +267,7 @@
 		}
 	};
 
-	$.wysiwyg.insertImage = function (object, szURL, attributes) {
+	$.wysiwyg.insertImage = function (object, url, attributes) {
 		if ("object" !== typeof (object) || !object.context) {
 			object = this;
 		}
@@ -277,7 +285,7 @@
 				return this;
 			}
 
-			if (!szURL || szURL.length === 0) {
+			if (!url || url.length === 0) {
 				return this;
 			}
 
@@ -290,7 +298,7 @@
 				image = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
 
 				if (image) {
-					image.src = szURL;
+					image.src = url;
 
 					for (attribute in attributes) {
 						if (attributes.hasOwnProperty(attribute)) {
@@ -299,7 +307,7 @@
 					}
 				}
 			} else {
-				self.editorDoc.execCommand("insertImage", false, szURL);
+				self.editorDoc.execCommand("insertImage", false, url);
 			}
 
 			$(self.editorDoc).trigger("editorRefresh.wysiwyg");

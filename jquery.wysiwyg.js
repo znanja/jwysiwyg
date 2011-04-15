@@ -484,6 +484,14 @@
 			tableFiller: "Lorem ipsum",
 			initialMinHeight: null,
 
+			controlImage: {
+				forceRelativeUrls: false
+			},
+
+			controlLink: {
+				forceRelativeUrls: false
+			},
+
 			plugins: { // placeholder for plugins settings
 				autoload: false,
 				i18n: false,
@@ -1358,7 +1366,7 @@
 		};
 
 		this.insertHtml = function (szHTML) {
-			var img;
+			var img, range;
 
 			if (!szHTML || szHTML.length === 0) {
 				return this;
@@ -1371,16 +1379,23 @@
 				if (img) {
 					$(img).replaceWith(szHTML);
 				}
-			} else {			
-				if (!this.editorDoc.execCommand("insertHTML", false, szHTML)) {
-					this.editor.focus();
-					/* :TODO: place caret at the end
-					if (window.getSelection) {
-					} else {
+			} else {	
+				if ($.browser.mozilla) {
+					range = this.getInternalRange();
+
+					range.deleteContents();
+					range.insertNode($(szHTML).get(0));
+				} else {
+					if (!this.editorDoc.execCommand("insertHTML", false, szHTML)) {
+						this.editor.focus();
+						/* :TODO: place caret at the end
+						if (window.getSelection) {
+						} else {
+						}
+						this.editor.focus();
+						*/
+						this.editorDoc.execCommand("insertHTML", false, szHTML);
 					}
-					this.editor.focus();
-					*/
-					this.editorDoc.execCommand("insertHTML", false, szHTML);
 				}
 			}
 
