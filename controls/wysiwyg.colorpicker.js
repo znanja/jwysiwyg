@@ -122,8 +122,6 @@
 				dialog = elements.appendTo("body");
 				dialog.dialog({
 					modal: true,
-					width: Wysiwyg.defaults.formWidth,
-					height: Wysiwyg.defaults.formHeight,
 					open: function (event, ui) {
 						$("input:submit", elements).click(function (e) {
 							var color = $('input[name="color"]', dialog).val();

@@ -115,8 +115,6 @@
 				dialog = elements.appendTo("body");
 				dialog.dialog({
 					modal: true,
-					width: Wysiwyg.defaults.formWidth,
-					height: Wysiwyg.defaults.formHeight,
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
 							self.processInsert(dialog.container, Wysiwyg, img);

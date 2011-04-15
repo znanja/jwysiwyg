@@ -74,8 +74,6 @@
 
 				dialog.dialog({
 					modal: true,
-					width: Wysiwyg.defaults.formWidth,
-					height: Wysiwyg.defaults.formHeight,
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
 							e.preventDefault();
