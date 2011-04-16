@@ -12,26 +12,14 @@
 <script type="text/javascript">
 (function ($) {
 	$(document).ready(function () {
-/*		$("textarea").wysiwyg({
+		$("textarea").wysiwyg({
 			controls: {
 				html: { visible: true }
 			}
 		});
-*/
+
 		$("#run").click(function (event) {
 			$("textarea").wysiwyg("insertHtml", "<p style='color: red;'>asd asdkjhkjhasdlkj asdkj</p>");
-		});
-
-		$("#clear").click(function (event) {
-			$("textarea[name=a]").wysiwyg({controls: {
-				html: { visible: true }
-			}});
-			$.wysiwyg.init($("textarea[name=b]"), {controls: {
-				html: { visible: true }
-			}});
-			$("textarea[name=c]").wysiwyg("init", {controls: {
-				html: { visible: true }
-			}});
 		});
 	});
 })(jQuery);
@@ -43,13 +31,11 @@
 <h2><a href="http://github.com/akzhan/jwysiwyg/issues/130">Issue 130</a>: Testcase</h2>
 
 <input type="button" value="Run test" id="run"/>
-<input type="button" value="Run clear" id="clear"/>
 
 <table>
 <tr>
 <td><textarea name="a">&lt;p>aaaa&lt;/p>&lt;p style="color: green">aaaa&lt;/p>&lt;p>a&lt;b>aa&lt;/b>a&lt;/p></textarea></td>
 <td><textarea name="b">&lt;p>bbbb&lt;/p>&lt;p style="color: green">bbbb&lt;/p>&lt;p>b&lt;b>bb&lt;/b>b&lt;/p></textarea></td>
-<td><textarea name="c">&lt;p>cccc&lt;/p>&lt;p style="color: green">cccc&lt;/p>&lt;p>c&lt;b>cc&lt;/b>c&lt;/p></textarea></td>
 </tr>
 </table>
 
