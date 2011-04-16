@@ -266,14 +266,6 @@
 	};
 
 	$.wysiwyg.insertImage = function (object, url, attributes) {
-		if ("object" !== typeof (object) || !object.context) {
-			object = this;
-		}
-
-		if (!object.each) {
-			console.error($.wysiwyg.messages.noObject);
-		}
-
 		return object.each(function () {
 			var self = $(this).data("wysiwyg"),
 				image,

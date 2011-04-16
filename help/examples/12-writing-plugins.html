@@ -16,21 +16,14 @@
 			// required
 			name:	"hello",
 
-			world:	function() {
+			world:	function (object) {
 				alert("Hello world!");
 			},
 
-			methodForRealLife: function(object, text) {
-				// standard operations
-				if ("object" !== typeof(object) || !object.context) {
-					object = this;
-				}
-
-				if (!object.each) {
-					console.error($.wysiwyg.messages.noObject);
-				}
-
-				return object.each(function() {
+			methodForRealLife: function (object, text) {
+				// jQuery chain
+				return object.each(function () {
+					// standard operations
 					var Wysiwyg = $(this).data("wysiwyg");
 
 					if (!Wysiwyg) {

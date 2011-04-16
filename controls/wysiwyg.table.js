@@ -121,14 +121,6 @@
 	};
 
 	$.wysiwyg.insertTable = function (object, colCount, rowCount, filler) {
-		if ("object" !== typeof (object) || !object.context) {
-			object = this;
-		}
-
-		if (!object.each) {
-			console.error($.wysiwyg.messages.noObject);
-		}
-
 		return object.each(function () {
 			var Wysiwyg = $(this).data("wysiwyg");
 

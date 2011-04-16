@@ -200,14 +200,6 @@
 	};
 
 	$.wysiwyg.createLink = function (object, url) {
-		if ("object" !== typeof (object) || !object.context) {
-			object = this;
-		}
-
-		if (!object.each) {
-			console.error($.wysiwyg.messages.noObject);
-		}
-
 		return object.each(function () {
 			var oWysiwyg = $(this).data("wysiwyg"),
 				selection;

@@ -29,16 +29,9 @@ Sample
             },
 
             methodThatWorksWithJqueryObjects: function(object, arg1, arg2) {
-                // standard operations
-                if ("object" !== typeof(object) || !object.context) {
-                    object = this;
-                }
-
-                if (!object.each) {
-                    console.error($.wysiwyg.messages.noObject);
-                }
-
+				// jQuery chain
                 return object.each(function() {
+                	// standard operations
                     var Wysiwyg = $(this).data("wysiwyg");
 
                     if (!Wysiwyg) {
