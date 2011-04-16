@@ -526,6 +526,8 @@
 		this.timers			= [];
 		this.validKeyCodes	= [8, 9, 13, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46];
 
+		this.isDestroyed	= false;
+
 		this.dom		= { // DOM related properties and methods
 			ie:		{
 				parent: null // link to dom
@@ -850,6 +852,8 @@
 		};
 
 		this.destroy = function () {
+			this.isDestroyed = true;
+
 			var i, $form = this.element.closest("form");
 
 			for (i = 0; i < this.timers.length; i += 1) {
@@ -1152,6 +1156,11 @@
 				.append(self.editor);
 
 			self.editorDoc = self.innerDocument();
+
+			if (self.isDestroyed) {
+				return null;
+			}
+
 			self.ui.designMode();
 			self.editorDoc.open();
 			self.editorDoc.write(
@@ -1354,7 +1363,12 @@
 					return element.contentWindow.document;
 				}
 
+				if (this.isDestroyed) {
+					return null;
+				}
+
 				console.error("Unexpected error in innerDocument");
+
 				/*
 				 return ( $.browser.msie )
 				 ? document.frames[element.id].document
