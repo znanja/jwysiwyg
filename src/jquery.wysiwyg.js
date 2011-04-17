@@ -53,16 +53,13 @@
 		
 		// Plugin references
 		plugins: {},
-		
-		// Callbacks
-		onBeforeInit: function(){},
-		onInit: function(){},
-		onFrameInit: function(){},
-		beforeCreate: function(){},
-		afterCreate: function(){},
-		beforeDestroy: function(){},
-		afterDestroy: function(){}		
-		
+		callbackMethods: [
+			"onBeforeInit", "onInit",
+			"onFrameInit",
+			"beforeCreate", "afterCreate",
+			"beforeDestroy", "afterDestroy",
+			"beforeSave", "afterSave"
+		]		
 	};
 	
 	// Other globals
@@ -141,33 +138,37 @@
 		var self 		  = this,
 			editor		  = null,
 			editorDoc	  = null,
-			element		  = $(original), // To be compatable with original code?
+			element		  = null, // To be compatable with original code?
 			form 		  = null,
+			handler,			
 			isDestroyed   = true,
 			options		  = $.extend({}, $.wysiwyg.config, conf),
 			original	  = $(el),
 			savedRange	  = null,
-			timers		  = [],	
+			timers		  = [],				
 			ui			  =	{},	
 			validKeyCodes = [8, 9, 13, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46],
 			viewHTML;
 			
+		// Allows the ability to trigger events easily.
+		// ie: handler.trigger('onInit', [opts])
+		handler       = el.add(self);
 		
 		// Private functions
-		this.initEditor = function(){
-			var newX = (element.width || element.clientWidth || 0),
-				newY = (element.height || element.clientHeight || 0),
+		function initEditor(){
+			var newX = (original.width || original.clientWidth || 0),
+				newY = (original.height || original.clientHeight || 0),
 				i;
 
-			form = $(element).closest("form");
+			form = original.closest("form");
 			if ($.browser.msie && parseInt($.browser.version, 10) < 8) options.autoGrow = false;
 
-			if (newX === 0 && element.cols) newX = (element.cols * 8) + 21;
+			if (newX === 0 && original.cols) newX = (original.cols * 8) + 21;
 
 			// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 ) 
 			//element.cols = 1;
 			
-			if (newY === 0 && element.rows) newY = (element.rows * 16) + 16;
+			if (newY === 0 && original.rows) newY = (original.rows * 16) + 16;
 
 			// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 )
 			//element.rows = 1;
@@ -186,7 +187,7 @@
 			/**
 			 * http://code.google.com/p/jwysiwyg/issues/detail?id=96
 			 */
-			editor.attr("tabindex", element.attr("tabindex"));
+			editor.attr("tabindex", original.attr("tabindex"));
 			element = $("<div/>").addClass("wysiwyg");
 
 			if (!options.iFrameClass) {
@@ -208,12 +209,12 @@
 			if (options.autoSave) form.bind("submit.wysiwyg", function() { self.save(); });
 
 			form.bind("reset.wysiwyg", function() { self.clear(); });
-			self.initFrame();
+			initFrame();
 			return self;
 			
 		};
 		
-		this.initFrame = function(){
+		function initFrame(){
 			var stylesheet,
 				growHandler,
 				saveHandler;
@@ -228,7 +229,7 @@
 							clear: "both"
 						}))
 					.append(editor);
-				editorDoc = self.innerDocument();
+				editorDoc = innerDocument();
 			}
 			
 			// TODO: Set design mode here?
@@ -305,7 +306,7 @@
 			});
 		};
 		
-		this.innerDocument = function() {
+		function innerDocument() {
 			var doc = $(editor).get(0);
 			if (doc.nodeName.toLowerCase() === "iframe") {
 				if(doc.contentDocument) return doc.contentDocument; // Gecko
@@ -351,9 +352,9 @@
 				// Only init once.
 				if(!isDestroyed) return self;
 				//onBeforeInit callback
-				options.onBeforeInit.apply(element, [self]);
-				self.initEditor();
-				options.onInit.apply(element, [self]);
+				handler.trigger('onBeforeInit', [element, self]);
+				initEditor();
+				handler.trigger('onInit', [element, self]);
 				return self;
 			},
 			
@@ -374,6 +375,20 @@
 		
 		// Load and activate any plugins requested.
 		$.each(options.plugins, function(name, conf){
+			
+		});		
+		
+		// Callback methods. Configures callbacks on a per-instance basis as well as 
+		// a global basis.	
+		$.each(options.callbackMethods, function(i, name) {
+				
+			// Callback per instance
+			if($.isFunction(options[name])) $(self).bind(name, options[name]); 
+			// API / Internal callbacks
+			self[name] = function(fn) {
+				if (fn){ $(self).bind(name, fn); }
+				return self;
+			};
 			
 		});
 		

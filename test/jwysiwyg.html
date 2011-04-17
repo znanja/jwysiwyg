@@ -14,7 +14,9 @@
 	<script type="text/javascript" charset="utf-8">
 	//<![CDATA[
 		$(document).ready(function(){
-			$('#editor').wysiwyg();
+			$('#editor').wysiwyg({
+				onInit: function(){ console.log('init!'); }
+			});
 		});
 	//]]>
 	</script>
