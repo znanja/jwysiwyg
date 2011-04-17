@@ -1321,10 +1321,10 @@
 			
 			// Support event callbacks
 			$.each(self.options.events, function (key, handler) {
-				$(self.editorDoc).bind(key + ".wysiwyg", function(event){
+				$(self.editorDoc).bind(key + ".wysiwyg", function (event) {
 					// Trigger event handler, providing the event and api to 
 					// support additional functionality.
-					handler.apply(self.editorDoc, [event, $(self.original).data('wysiwyg')]);
+					handler.apply(self.editorDoc, [event, self]);
 				});
 			});
 
