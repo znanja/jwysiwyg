@@ -102,6 +102,16 @@
 			});
 
 			return aRet.join('');
+		},
+		// Replaces wrapInitialContent to make sure that plain text (usually initial content)
+		// at least has a paragraph tag.
+		wrapTextContent: function(str){
+			var found = str.match(/<\/?p>/gi);
+			if(!found) return "<p>" + str + "</p>";
+			else{
+				// :TODO: checking/replacing
+			}
+			return str;
 		}
 	};
 	
@@ -198,7 +208,7 @@
 			if (options.autoSave) form.bind("submit.wysiwyg", function() { self.save(); });
 
 			form.bind("reset.wysiwyg", function() { self.clear(); });
-			initFrame();
+			self.initFrame();
 			return self;
 			
 		};
@@ -218,7 +228,7 @@
 							clear: "both"
 						}))
 					.append(editor);
-				editorDoc = innerDocument();
+				editorDoc = self.innerDocument();
 			}
 			
 			// TODO: Set design mode here?
@@ -228,8 +238,8 @@
 					/**
 					 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=144
 					 */
-					.replace(/INITIAL_CONTENT/, function() { return self.wrapInitialContent(); })
-			).close();
+					.replace(/INITIAL_CONTENT/, $.wysiwyg.utils.wrapTextContent(options.initialContent)));
+			editorDoc.close();
 			
 			// TODO: Check this against plugin / namespace changes.
 			//$.wysiwyg.plugin.bind(self);
@@ -293,6 +303,16 @@
 				if ($(this).filter(":visible")) return;
 				ui.focus();
 			});
+		};
+		
+		this.innerDocument = function() {
+			var doc = $(editor).get(0);
+			if (doc.nodeName.toLowerCase() === "iframe") {
+				if(doc.contentDocument) return doc.contentDocument; // Gecko
+				else if(doc.contentWindow) return doc.contentWindow.document; // IE
+				console.error("Unexpected error in innerDocument");
+			}
+			return doc;
 		};
 		
 		// UI
