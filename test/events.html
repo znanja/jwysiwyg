@@ -9,18 +9,18 @@
 	<![endif]-->
 	<!--[if IE 8]> 
 	<![endif]-->
-	<script src="../lib/jquery1.5.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../src/jquery.wysiwyg.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 	//<![CDATA[
 		$(document).ready(function(){
-			$('#editor').wysiwyg({});
+			$('#editor').wysiwyg({
+				onInit: function(){ console.log('init!'); }, // Test init callback
+				beforeSave:function(e){ return false; } // Test ability to prevent event firing.
+			});
 		});
 	//]]>
 	</script>
-	<style type="text/css" media="screen">
-		iframe{ border:1px solid #333; }
-	</style>
 </head>
 <body>
 	<textarea id="editor"></textarea>

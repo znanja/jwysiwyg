@@ -52,19 +52,18 @@
 		initialMinHeight: null, 
 		
 		// Plugin references
-		plugins: {},
-		callbackMethods: [
-			"onBeforeInit", "onInit",
-			"onFrameInit",
-			"beforeCreate", "afterCreate",
-			"beforeDestroy", "afterDestroy",
-			"beforeSave", "afterSave"
-		]		
+		plugins: {}				
 	};
 	
-	// Other globals
-	
+	// References the active editor instance, useful for having a global toolbar.
 	$.wysiwyg.activeEditor = null;
+	// Default control list, allows easily adding basic / custom controls to 
+	// all editor instances.
+	$.wysiwyg.controls = {
+		register: function(){
+			
+		}		
+	};
 	
 	// Utility Functions
 	
@@ -131,6 +130,20 @@
 		}
 	};
 	
+	// TODO: Dialog API
+	// Unifies dialog methods to allow custom implementations
+	$.wysiwyg.dialog = {
+		// Opens a dialog with the specified content
+		open:  function(content){},
+		// Closes the dialog window
+		close: function(){},
+		// Callbacks
+		beforeOpen: function(){},
+		afterOpen:  function(){},
+		beforeClose: function(){},
+		afterClose:  function(){}
+	};
+	
 	// Wysiwyg
 	
 	function Wysiwyg(el, conf) {
@@ -139,6 +152,7 @@
 			editor		  = null,
 			editorDoc	  = null,
 			element		  = null, // To be compatable with original code?
+			events		  = {},
 			form 		  = null,
 			handler,			
 			isDestroyed   = true,
@@ -148,13 +162,87 @@
 			timers		  = [],				
 			ui			  =	{},	
 			validKeyCodes = [8, 9, 13, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46],
-			viewHTML;
+			viewHTML,
+			// creating an array to make it easier to expand later.
+			callbackMethods = [
+				"onBeforeInit", "onInit",
+				"onFrameInit",
+				"beforeCreate", "afterCreate",
+				"beforeDestroy", "afterDestroy",
+				"beforeSave", "afterSave"
+			];
 			
 		// Allows the ability to trigger events easily.
 		// ie: handler.trigger('onInit', [opts])
 		handler       = el.add(self);
 		
+		//////////////////////////////////////////////////////////////////////////////
 		// Private functions
+		//////////////////////////////////////////////////////////////////////////////
+		
+		// Enable deignMode
+		function designMode(){
+			var attempts = 3,
+				runner = function(attempts) {
+					if("on" === editorDoc.designMode) {
+						if (timers.designMode) window.clearTimeout(timers.designMode);
+						// IE needs to reget the document element (this.editorDoc) after designMode was set
+						if (innerDocument() !== editorDoc) initFrame();
+						return;
+					}
+
+					try {
+						editorDoc.designMode = "on";
+					}catch(e){}
+
+					attempts -= 1;
+					if(attempts > 0) timers.designMode = window.setTimeout(function() { runner(attempts); }, 100);
+				};
+
+			runner(attempts);
+		}
+		
+		// Get the selection range, functions for editor instance, and within the editor.
+		function getInternalRange() {
+			var selection = getInteralSelection();
+			if (!selection) return null;
+
+			if (selection.rangeCount && selection.rangeCount > 0) return selection.getRangeAt(0); // w3c
+			else if (selection.createRange) return selection.createRange(); // IE
+			return null;
+		};
+		
+		function getRange() {
+			var selection = getSelection();
+			if (!selection) return null;
+			if (selection.rangeCount && selection.rangeCount > 0) selection.getRangeAt(0); // w3c
+			else if (selection.createRange) return selection.createRange(); // IE
+			return null;
+		};
+		
+		function getRangeText() {
+			var rng = getInternalRange();
+			if(rng.toString) rng   = rng.toString();
+			else if (rng.text) rng = rng.text; // IE
+			return rng;
+		};
+
+		function getInternalSelection() {
+			// Firefox: document.getSelection is deprecated
+			if (editor.get(0).contentWindow) {
+				if (editor.get(0).contentWindow.getSelection) 	return editor.get(0).contentWindow.getSelection();
+				if (editor.get(0).contentWindow.selection) 		return editor.get(0).contentWindow.selection;
+			}
+			if (editorDoc.getSelection) 	return editorDoc.getSelection();
+			if (editorDoc.selection) 		return editorDoc.selection;
+
+			return null;
+		};
+		
+		function getSelection() {
+			return (window.getSelection) ? window.getSelection() : window.document.selection;
+		};
+		
 		function initEditor(){
 			var newX = (original.width || original.clientWidth || 0),
 				newY = (original.height || original.clientHeight || 0),
@@ -232,7 +320,7 @@
 				editorDoc = innerDocument();
 			}
 			
-			// TODO: Set design mode here?
+			designMode();
 			editorDoc.open();
 			editorDoc.write(
 				options.html
@@ -244,11 +332,12 @@
 			
 			// TODO: Check this against plugin / namespace changes.
 			//$.wysiwyg.plugin.bind(self);
-
+			
+			// Setup any necessary events on the editor's document
 			$(editorDoc)
 				.trigger("initFrame.wysiwyg")
 				.bind("click.wysiwyg", function(event) {
-					self.ui.checkTargets(event.target ? event.target : event.srcElement);
+					ui.checkTargets(event.target ? event.target : event.srcElement);
 				})
 				.keydown(function(event) {
 					var emptyContentRegex;
@@ -291,19 +380,91 @@
 					}else return true;
 
 				});
+			
+			// Ensure editor content doesn't get longer than the maxLength 
+			// setting if it was provided and greater than 0	
+			if(options.maxLength > 0 ){	
+				$(editorDoc).keydown(function(event){
+					if($(editorDoc).text().length >= options.maxLength && $.inArray(event.which, validKeyCodes) == -1) event.preventDefault();
+				});
+			}
 				
+			// Setup a list of events that should autoSave.
 			if(options.autoSave){
 				$(editorDoc).bind('keydown keyup mousedown', function(event){ self.save(); })
 					.bind(($.support.noCloneEvent ? "input.wysiwyg" : "paste.wysiwyg"), function(event){ self.save(); });
 			}
 
-			/**
-			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
-			 */
+			// @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			original.focus(function () {
 				if ($(this).filter(":visible")) return;
 				ui.focus();
 			});
+			
+			// Setup editor css
+			if(options.css) {				
+				// A url to a CSS file was passed.
+				if($.type(options.css) == "string"){ 
+					if ($.browser.msie) stylesheet = $(editorDoc.createStyleSheet(options.css)).attr({'media':'all'});
+					else{
+						stylesheet = $("<link/>").attr({
+							"href" : options.css,
+							"media": "all",
+							"rel"  : "stylesheet",
+							"type" : "text/css"
+						}).appendTo($(editorDoc).find("head"));
+					}
+					
+				// An object of CSS options was passed.
+				}else editor.ready(function(){ $(editorDoc.body).css(options.css); });
+			}
+			
+			// Expose document events on the editor document so
+			// users can hook into them as necessary.
+			$.each(options.events, function (key, func){
+				$(editorDoc).bind(key + ".wysiwyg", function(event){
+					// Trigger event handler, providing the event and api.
+					func.apply(editorDoc, [event, self]);
+				});
+			});
+
+			// Saves the selection on blur/deactivate so it can be restored on focus.
+			if($.browser.msie) {
+				// Event chain: beforedeactivate => focusout => blur.
+				// Focusout & blur fired too late to handle internalRange() in dialogs.
+				// When clicked on input boxes both got range = null
+				$(editorDoc)
+					.bind("beforedeactivate.wysiwyg", function(event) {
+						savedRange = getInternalRange();						
+					});
+			}else {				
+				$(editorDoc)
+					.bind("blur.wysiwyg", function(event){
+						savedRange = getInternalRange();						
+					});
+			}
+			
+			$(editorDoc).bind('focusin.wysiwyg', function(event){
+				$.wysiwyg.activeEditor = self;
+			});
+			
+			$(editorDoc.body).addClass("wysiwyg");
+			
+			// Setup save callbacks
+			if(options.events.save && $.isFunction(options.events.save)) {
+				saveHandler = options.events.save;
+				$(editorDoc)
+					.bind("keyup.wysiwyg", saveHandler)
+					.bind("change.wysiwyg", saveHandler);
+
+				if($.support.noCloneEvent) $(editorDoc).bind("input.wysiwyg", saveHandler);
+				else {
+					$(editorDoc)
+						.bind("paste.wysiwyg", saveHandler)
+						.bind("cut.wysiwyg", saveHandler);
+				}
+			}
+			
 		};
 		
 		function innerDocument() {
@@ -316,12 +477,24 @@
 			return doc;
 		};
 		
-		// UI
-		ui.focus = function(){
+		//////////////////////////////////////////////////////////////////////////////
+		// UI / Interface
+		//////////////////////////////////////////////////////////////////////////////
+		
+		ui.checkTargets = function(target){
 			
 		};
+		
+		// Focus the editor window
+		ui.focus = function () {
+			editor.get(0).contentWindow.focus();
+			return self;
+		};
 			
-		// API functionality
+		//////////////////////////////////////////////////////////////////////////////
+		// API Functionality
+		//////////////////////////////////////////////////////////////////////////////
+		
 		$.extend(self, {
 			
 			// Adds a control to the toolbar
@@ -329,32 +502,32 @@
 			// Clear all editor content and save
 			clear: function(){},
 			// Access the console for development
-			console: function(){},
-			
+			console: function(){},			
 			// Destroy the editor instance
 			destroy: function(){
 				isDestroyed = true;
 				return self;
-			},
-			
+			},			
 			// Get the current content of the editor
-			getContent: function(){},
+			getContent: function(){
+				return editorDoc.body.innerHTML;
+			},
 			// Allow access to the configuration options of this editor instance
 			getConfig: function(){
 				return options;
 			},
 			// Get a reference to the textarea
 			getTextarea: function(){
-				return self.element;
+				return original;
 			},			
 			// Initialize an editor instance on the target object
 			init: function(){				
 				// Only init once.
 				if(!isDestroyed) return self;
 				//onBeforeInit callback
-				handler.trigger('onBeforeInit', [element, self]);
+				handler.trigger('onBeforeInit', [self]);
 				initEditor();
-				handler.trigger('onInit', [element, self]);
+				handler.trigger('onInit', [self]);
 				return self;
 			},
 			
@@ -362,14 +535,35 @@
 			insertHTML: function(){},
 			// Remove formatting for the current selection
 			removeFormat: function(){},
+			// Allow for forced refreshing of content (to re-size etc)
+			refresh: function(){
+				
+			},
 			// Save the content to the textarea
-			save: function(){},
+			save: function(){
+				var event, result;
+				// Before save callback. Plugins can capture this to process content pre-save
+				// they can also stop propagation if necessary.
+				event  = $.Event("beforeSave"); 
+				result = handler.trigger(event, [self]);
+				if(event.isDefaultPrevented() || !result) return self;
+				original.val(self.getContent());
+				// Trigger after save callback
+				handler.trigger('afterSave', [self]);
+				return self;
+			},
 			// Select all content in the document
-			selectAll: function(){},
+			selectAll: function(){
+				
+			},
 			// Set new content
-			setContent: function(){},
+			setContent: function(){
+				
+			},
 			// Trigger a control callback
-			triggerControl: function(){}			
+			triggerControl: function(){},
+			// Access to controlbar
+			ui: ui			
 			
 		});
 		
@@ -380,7 +574,7 @@
 		
 		// Callback methods. Configures callbacks on a per-instance basis as well as 
 		// a global basis.	
-		$.each(options.callbackMethods, function(i, name) {
+		$.each(callbackMethods, function(i, name) {
 				
 			// Callback per instance
 			if($.isFunction(options[name])) $(self).bind(name, options[name]); 
