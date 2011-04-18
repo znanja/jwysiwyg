@@ -42,7 +42,7 @@
 		maxHeight: 10000,			// see autoGrow
 		maxLength: 0,
 		toolbar: false,		// Allow setting a toolbar element directly.
-		toolbarHtml: '<ul role="menu" class="toolbar"></ul>',
+		toolbarHtml: '<ul unselectable="on" role="menu" class="toolbar"></ul>',
 		removeHeadings: false,
 		replaceDivWithP: false,
 		resizeOptions: false,
@@ -50,7 +50,6 @@
 		rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 		tableFiller: "Lorem ipsum",
 		initialMinHeight: null, 
-		
 		// Plugin references
 		plugins: {}				
 	};
@@ -151,7 +150,7 @@
 		var self 		  = this,
 			editor		  = null,
 			editorDoc	  = null,
-			element		  = null, // To be compatable with original code?
+			element		  = null,
 			events		  = {},
 			form 		  = null,
 			handler,			
@@ -172,7 +171,8 @@
 				"beforeSave", "afterSave"
 			];
 			
-		// Allows the ability to trigger events easily.
+		// Allows the ability to trigger events easily. Also triggers both api versions and
+		// element versions at the same time.
 		// ie: handler.trigger('onInit', [opts])
 		handler = el.add(self);
 		
@@ -267,6 +267,7 @@
 			//element.rows = 1;
 			
 			editor = $(window.location.protocol === "https:" ? '<iframe src="javascript:false;"></iframe>' : "<iframe></iframe>").attr("frameborder", "0");
+			element = $("<div/>").addClass("wysiwyg");
 			
 			if (options.iFrameClass) editor.addClass(options.iFrameClass);
 			else {
@@ -280,8 +281,7 @@
 			/**
 			 * http://code.google.com/p/jwysiwyg/issues/detail?id=96
 			 */
-			editor.attr("tabindex", original.attr("tabindex"));
-			element = $("<div/>").addClass("wysiwyg");
+			editor.attr("tabindex", original.attr("tabindex"));			
 
 			if (!options.iFrameClass) {
 				element.css({
@@ -311,35 +311,50 @@
 			var stylesheet,
 				growHandler,
 				saveHandler,
-				controlList = options.controls.split(',');
+				controlList;
 			
 			if(options.toolbar) {
-				ui.toolbar = $(options.toolbar);
+				ui.toolbar = $(options.toolbar)
+					.addClass('toolbar');					
 			}else{
-				ui.toolbar = $(options.toolbarHtml);
-				element.append(ui.toolbar)
-					   .append($("<div><!-- --></div>")
-					   .css({clear: "both"}))
-					   .append(editor);
-				editorDoc = innerDocument();
+				ui.toolbar = $(options.toolbarHtml)
+					.appendTo(element);
+				
 			}
 			
-			$.each(controlList, function(i, controlName){
-				if(controlName == "|"){
-					ui.addSeparator();
-					return true;
-				}
-				if(!$.wysiwyg.controls[controlName]){
-					console.error("Control: '"+controlName+"' was not found.");
-					return true;
-				}
-				ui.addControl(controlName, $.wysiwyg.controls[controlName]);
-				return true;
-			});
+			ui.toolbar
+				.attr('user-select', 'none')
+				.attr('unselectable', 'on')
+				.attr('role', 'menu');
 			
-			// Build a new controls object out of the array of names.
-			options.controls = {};
-			$.each(controlList, function(i, controlName){ options.controls[controlName] = $.wysiwyg.controls[controlName]; });
+			element.append($("<div><!-- --></div>")
+				   .css({clear: "both"}))
+				   .append(editor);
+			editorDoc = innerDocument();
+			
+			// Support for tinyMCE style control declarations:
+			// controls:"bold,italic,underline,|undo,redo"
+			if($.type(options.controls) == "string"){
+				controlList = [];
+				$.each(options.controls.split(','), function(i, controlName){
+					if(controlName == "|"){
+						ui.addSeparator();
+						return true;
+					}else controlList.push(controlName);
+					if(!$.wysiwyg.controls[controlName]){
+						console.error("Control: '"+controlName+"' was not found.");
+						return true;
+					}
+					ui.addControl(controlName, $.wysiwyg.controls[controlName]);
+					return true;
+				});
+				// Build a new controls object out of the array of names.
+				options.controls = {};
+				$.each(controlList, 
+					function(i, controlName){ 
+						options.controls[controlName] = $.wysiwyg.controls[controlName]; 
+					});
+			}
 			
 			designMode();
 			editorDoc.open();
@@ -389,7 +404,7 @@
 								}
 							}
 						}
-						return false;
+						return true;
 						
 					}else if(options.brIE && event.keyCode === 13){
 						rng = getRange();
@@ -466,7 +481,7 @@
 			}
 			
 			$(editorDoc).bind('focusin.wysiwyg', function(event){
-				$.wysiwyg.activeEditor = self;
+				$.wysiwyg.activeEditor = $(original).data('wysiwyg');
 			});
 			
 			$(editorDoc.body).addClass("wysiwyg");
@@ -485,6 +500,8 @@
 						.bind("cut.wysiwyg", saveHandler);
 				}
 			}
+			
+			isDestroyed = false;
 			
 		};
 		
@@ -509,8 +526,8 @@
 					try{ sel.addRange(savedRange); }
 					catch(e) { console.error(e); }
 					
-				}else if (window.document.createRange) window.getSelection().addRange(self.savedRange); // non IE and no selection					
-				 else if (window.document.selection) self.savedRange.select(); //IE
+				}else if (window.document.createRange) window.getSelection().addRange(savedRange); // non IE and no selection					
+				 else if (window.document.selection) savedRange.select(); //IE
 				savedRange = null;
 			}
 		}
@@ -520,8 +537,7 @@
 		function triggerControl(name, control){
 			var cmd  = control.command || name,
 				args = control["arguments"] || control.args || [];
-
-			if(control.exec) control.exec.apply(self);
+			if(control.exec) control.exec.apply((ui.mode == "external" ? $.wysiwyg.activeEditor : self));
 			else {
 				focusEditor();
 				// withoutCSS moved into triggerControl
@@ -553,7 +569,14 @@
 			addControl: function(name, options){
 				var className = options.className || options.command || name || "empty",
 					tooltip   = options.tooltip || options.command || name || "",
-					newitem;
+					newitem,
+					existing;
+				
+				// Avoid duplicate controls in external toolbar mode.
+				existing = $(ui.toolbar).data('controlNames') || [];
+				if($.inArray(name, existing) != -1) return true;				
+				existing.push(name);
+				$(ui.toolbar).data('controlNames', existing);
 				
 				$.wysiwyg.controls[name] = options;
 				
@@ -587,6 +610,13 @@
 			},
 			addSeparator: function(){
 				return $('<li role="separator" class="separator"></li>').appendTo(ui.toolbar);
+			},			
+			// Stores the current toolbar mode: default or external
+			mode:(options.toolbar) ? "external" : "default",
+			// TODO: Original ui.focus moved to focusEditor. This can be used to disable/enable the controlbar
+			// when the editor doesn't have focus.
+			focus: function(){
+				
 			},
 			// Replaces checkTargets so the API method makes more sense as to its function.
 			// Allows to globally call "ui.refresh" to update the class/status of controls.
@@ -627,12 +657,7 @@
 						}
 					}
 				});
-			},
-			// TODO: Original ui.focus moved to focusEditor. This can be used to disable/enable the controlbar
-			// when the editor doesn't have focus.
-			focus: function(){
-				
-			}
+			}			
 		});
 			
 		//////////////////////////////////////////////////////////////////////////////
@@ -657,6 +682,10 @@
 			getConfig: function(){
 				return options;
 			},
+			// Allow access to the selected text.
+			getSelection: function(){
+				return getRangeText();
+			},
 			// Get a reference to the textarea
 			getTextarea: function(){
 				return original;
@@ -676,9 +705,8 @@
 			insertHTML: function(){},
 			// Remove formatting for the current selection
 			removeFormat: function(){},
-			// Allow for forced refreshing of content (to re-size etc)
+			// Refresh content and resizing (to re-size etc)
 			refresh: function(){
-				
 			},
 			// Save the content to the textarea
 			save: function(){
@@ -742,14 +770,14 @@
 	
 	$.fn.wysiwyg = function(opts) {
 		// If editor exists, return API access.
-		var api = this.data("wysiwyg");
+		var api = this.data("wysiwyg"), instance;
 		if(api) return api;
 
 		config = $.extend({}, $.wysiwyg.config, opts);
 		
 		this.each(function() {			
-			editor = new Wysiwyg($(this), config);
-			$(this).data("wysiwyg", editor);	
+			instance = new Wysiwyg($(this), config);
+			$(this).data("wysiwyg", instance);
 		});
 		
 		return this; 
