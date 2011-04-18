@@ -106,6 +106,9 @@
 			tags: ["u"],
 			css: { textDecoration: "underline" },
 			tooltip: "Underline"
+		},
+		undo: {
+			tooltip: "Undo"
 		}		
 	};
 	

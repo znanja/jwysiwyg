@@ -28,7 +28,7 @@
 	$.wysiwyg.config = {
 		html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
 		debug: false,
-		controls: {},
+		controls: 'bold,italic,undo,redo',
 		init: true,
 		css: {},
 		events: {},
@@ -174,7 +174,7 @@
 			
 		// Allows the ability to trigger events easily.
 		// ie: handler.trigger('onInit', [opts])
-		handler       = el.add(self);
+		handler = el.add(self);
 		
 		//////////////////////////////////////////////////////////////////////////////
 		// Private functions
@@ -200,6 +200,11 @@
 				};
 
 			runner(attempts);
+		}
+		
+		function focusEditor(){
+			editor.get(0).contentWindow.focus();
+			return self;
 		}
 		
 		// Get the selection range, functions for editor instance, and within the editor.
@@ -307,18 +312,25 @@
 				growHandler,
 				saveHandler;
 			
-			if (options.toolbar) {
+			if(options.toolbar) {
 				ui.toolbar = $(options.toolbar);
 			}else{
-				ui.toolbar = $(options.toolbarHTML);
+				ui.toolbar = $(options.toolbarHtml);
 				element.append(ui.toolbar)
-					.append($("<div><!-- --></div>")
-						.css({
-							clear: "both"
-						}))
-					.append(editor);
+					   .append($("<div><!-- --></div>")
+					   .css({clear: "both"}))
+					   .append(editor);
 				editorDoc = innerDocument();
 			}
+			
+			$.each(options.controls.split(","), function(i, controlName){
+				if(!$.wysiwyg.controls[controlName]){
+					console.error("Control: '"+controlName+"' was not found.");
+					return true;
+				}
+				ui.addControl(controlName, $.wysiwyg.controls[controlName]);
+				return true;
+			});
 			
 			designMode();
 			editorDoc.open();
@@ -398,7 +410,7 @@
 			// @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			original.focus(function () {
 				if ($(this).filter(":visible")) return;
-				ui.focus();
+				focusEditor();
 			});
 			
 			// Setup editor css
@@ -477,28 +489,107 @@
 			return doc;
 		};
 		
+		function returnRange(){
+			var sel;
+			
+			if(savedRange !== null) {
+				if(window.getSelection) { //non IE and there is already a selection
+					sel = window.getSelection();
+					if(sel.rangeCount > 0) sel.removeAllRanges();
+					
+					try{ sel.addRange(savedRange); }
+					catch(e) { console.error(e); }
+					
+				}else if (window.document.createRange) window.getSelection().addRange(self.savedRange); // non IE and no selection					
+				 else if (window.document.selection) self.savedRange.select(); //IE
+				savedRange = null;
+			}
+		}
+		
+		// Trigger a control method
+		// Trying to combine all control functionality into a single method
+		function triggerControl(name, control){
+			var cmd  = control.command || name,
+				args = control["arguments"] || control.args || [];
+
+			if(control.exec) return control.exec.apply(self);
+			else {
+				focusEditor();
+				// withoutCSS moved into triggerControl
+				if($.browser.mozilla){
+					try{ editorDoc.execCommand("styleWithCSS", false, false); }
+					catch(e){ 
+						try{ editorDoc.execCommand("useCSS", false, true); }
+						catch(e2){}
+					}
+				}
+				// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
+				// in Firefox untrusted JavaScript is not allowed to access the clipboard
+				try{
+					editorDoc.execCommand(cmd, false, args);
+				}catch(e){ console.error(e); }
+			}
+
+			if(options.autoSave) self.save();
+			return true;
+		}
+		
+		
 		//////////////////////////////////////////////////////////////////////////////
 		// UI / Interface
 		//////////////////////////////////////////////////////////////////////////////
-		
-		ui.checkTargets = function(target){
-			
-		};
-		
-		// Focus the editor window
-		ui.focus = function () {
-			editor.get(0).contentWindow.focus();
-			return self;
-		};
+
+		$.extend(ui, {
+			// Add a control to the toolbar
+			addControl: function(name, options){
+				var className = options.className || options.command || name || "empty",
+					tooltip   = options.tooltip || options.command || name || "",
+					newitem;
+				
+				$.wysiwyg.controls[name] = options;
+				
+				// Add a new list item to the toolbar.
+				newitem = $('<li role="menuitem" unselectable="on">' + (className) + "</li>");
+				// Allow setting an icon image directly on the control
+				if(options.icon) newitem.css('background-image', options.icon);
+				// TODO: Maybe we should also allow for a "url" property on controls that 
+				// specifies the path to a javascript file. This could make autoload even more effective.
+				// if(options.url) Autoload js file.
+				
+				newitem.addClass(className)
+					   .attr('title', tooltip)
+					   .hover(
+							function(event){ $(this).addClass('wysiwyg-button-hover'); },
+							function(event){ $(this).removeClass('wysiwyg-button-hover'); }
+						)
+					   .click(function(event){
+							var control = $(this);
+							// Allow prevention of control methods
+							if(event.isDefaultPrevented() || control.attr('disabled') == "true") return false;
+							triggerControl(name, options);
+							control.blur();
+							returnRange();
+							focusEditor();
+							return true;							
+						}).appendTo(ui.toolbar);
+				
+				return newitem;
+				
+			},
+			// TODO: This should maybe be removed?
+			checkTargets: function(){},
+			// TODO: This should probably replace checkTargets since we are referring to 
+			// the UI / Tools
+			focus: function(){
+				
+			}
+		});
 			
 		//////////////////////////////////////////////////////////////////////////////
 		// API Functionality
 		//////////////////////////////////////////////////////////////////////////////
 		
 		$.extend(self, {
-			
-			// Adds a control to the toolbar
-			addControl: function(){},
 			// Clear all editor content and save
 			clear: function(){},
 			// Access the console for development
@@ -560,8 +651,14 @@
 			setContent: function(){
 				
 			},
-			// Trigger a control callback
-			triggerControl: function(){},
+			// Trigger a control callback via API
+			triggerControl: function(name){
+				if(!$.wysiwyg.controls[name]){
+					console.error("Control: '"+name+"' was not found.");
+					return false;
+				}
+				return triggerControl(name, $.wysiwyg.controls[name]);
+			},
 			// Access to controlbar
 			ui: ui			
 			
