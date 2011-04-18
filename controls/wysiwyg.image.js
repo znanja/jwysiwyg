@@ -17,11 +17,7 @@
 	 */
 	$.wysiwyg.controls.image = {
 		init: function (Wysiwyg) {
-			var self = this, elements, dialog, formImageHtml,
-				formTextLegend, formTextPreview, formTextUrl, formTextTitle,
-				formTextDescription, formTextWidth, formTextHeight, formTextOriginal,
-				formTextFloat, formTextFloatNone, formTextFloatLeft, formTextFloatRight,
-				formTextSubmit, formTextReset,
+			var self = this, elements, dialog, formImageHtml, dialogReplacements, key, translation,
 				img = {
 					alt: "",
 					self: Wysiwyg.dom.getElement("img"), // link to element node
@@ -29,52 +25,51 @@
 					title: ""
 				};
 
-			formTextLegend  = "Insert Image";
-			formTextPreview = "Preview";
-			formTextUrl     = "URL";
-			formTextTitle   = "Title";
-			formTextDescription = "Description";
-			formTextWidth   = "Width";
-			formTextHeight  = "Height";
-			formTextOriginal = "Original W x H";
-			formTextFloat	= "Float";
-			formTextFloatNone = "None";
-			formTextFloatLeft = "Left";
-			formTextFloatRight = "Right";
-			formTextSubmit  = "Insert Image";
-			formTextReset   = "Cancel";
+			dialogReplacements = {
+				legend	: "Insert Image",
+				preview : "Preview",
+				url     : "URL",
+				title   : "Title",
+				description : "Description",
+				width   : "Width",
+				height  : "Height",
+				original : "Original W x H",
+				float	: "Float",
+				floatNone : "None",
+				floatLeft : "Left",
+				floatRight : "Right",
+				submit  : "Insert Image",
+				reset   : "Cancel"
+			};
 
-			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.image");
-				formTextPreview = $.wysiwyg.i18n.t(formTextPreview, "dialogs.image");
-				formTextUrl = $.wysiwyg.i18n.t(formTextUrl, "dialogs.image");
-				formTextTitle = $.wysiwyg.i18n.t(formTextTitle, "dialogs.image");
-				formTextDescription = $.wysiwyg.i18n.t(formTextDescription, "dialogs.image");
-				formTextWidth = $.wysiwyg.i18n.t(formTextWidth, "dialogs.image");
-				formTextHeight = $.wysiwyg.i18n.t(formTextHeight, "dialogs.image");
-				formTextOriginal = $.wysiwyg.i18n.t(formTextOriginal, "dialogs.image");
-				formTextFloat = $.wysiwyg.i18n.t(formTextFloat, "dialogs.image");
-				formTextFloatNone = $.wysiwyg.i18n.t(formTextFloatNone, "dialogs.image");
-				formTextFloatLeft = $.wysiwyg.i18n.t(formTextFloatLeft, "dialogs.image");
-				formTextFloatRight = $.wysiwyg.i18n.t(formTextFloatRight, "dialogs.image");
-				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs.image");
-				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
-			}
-
-			formImageHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
-				'<label>' + formTextPreview + ': <img src="" alt="' + formTextPreview + '" style="float: left; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
-				'<label>' + formTextUrl + ': <input type="text" name="src" value=""/></label>' +
-				'<label>' + formTextTitle + ': <input type="text" name="imgtitle" value=""/></label>' +
-				'<label>' + formTextDescription + ': <input type="text" name="description" value=""/></label>' +
-				'<label>' + formTextWidth + ' x ' + formTextHeight + ': <input type="text" name="width" value="" class="width"/> x <input type="text" name="height" value="" class="height"/></label>' +
-				'<label>' + formTextOriginal + ': <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
+			formImageHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
+				'<label>{preview}: <img src="" alt="{preview}" style="float: left; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
+				'<label>{url}: <input type="text" name="src" value=""/></label>' +
+				'<label>{title}: <input type="text" name="imgtitle" value=""/></label>' +
+				'<label>{description}: <input type="text" name="description" value=""/></label>' +
+				'<label>{width} x {height}: <input type="text" name="width" value="" class="width"/> x <input type="text" name="height" value="" class="height"/></label>' +
+				'<label>{original}: <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
 				'<input type="text" name="naturalHeight" value="" class="height" disabled="disabled"/></label>' +
-				'<label>' + formTextFloat + ': <select name="float">' + 
-				'<option value="">' + formTextFloatNone + '</option>' +
-				'<option value="left">' + formTextFloatLeft + '</option>' +
-				'<option value="right">' + formTextFloatRight + '</option></select></label>' +
-				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
-				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
+				'<label>{float}: <select name="float">' + 
+				'<option value="">{floatNone}</option>' +
+				'<option value="left">{floatLeft}</option>' +
+				'<option value="right">{floatRight}</option></select></label>' +
+				'<input type="submit" class="button" value="{submit}"/> ' +
+				'<input type="reset" value="{reset}"/></fieldset></form>';
+
+			for (key in dialogReplacements) {
+				if ($.wysiwyg.i18n) {
+					translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs.image");
+
+					if (translation === dialogReplacements[key]) { // if not translated search in dialogs 
+						translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs");
+					}
+
+					dialogReplacements[key] = translation;
+				}
+
+				formImageHtml = formImageHtml.replace("{" + key + "}", dialogReplacements[key]);
+			}
 
 			if (img.self) {
 				img.src = img.self.src ? img.self.src : "";
