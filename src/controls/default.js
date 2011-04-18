@@ -1,12 +1,12 @@
 (function($) {
 
 	$.wysiwyg.controls = {
-		bold:{
+		bold: {
 			tags: ["b", "strong"],
-			css: { 
-				fontWeight: "bold" 
+			css: {
+				fontWeight: "bold"
 			},
-			tooltip:"Bold",
+			tooltip: "Bold",
 			hotkey: { "ctrl": 1, "key": 66 }
 		},
 		highlight: {

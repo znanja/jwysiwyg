@@ -15,15 +15,18 @@
 	<script type="text/javascript" charset="utf-8">
 	//<![CDATA[
 		$(document).ready(function(){
-			$('#editor').wysiwyg({});
+			$('#editor').wysiwyg({controls:"bold,italic,|,undo,redo"});
 		});
 	//]]>
 	</script>
+	<link rel="stylesheet" href="../jquery.wysiwyg.css" type="text/css" media="screen" charset="utf-8" />
 	<style type="text/css" media="screen">
-		iframe{ border:1px solid #333; }
+		#container{ width:600px; }
 	</style>
 </head>
 <body>
-	<textarea id="editor"></textarea>
+	<div id="container">
+		<textarea id="editor"></textarea>
+	</div>
 </body>
 </html>

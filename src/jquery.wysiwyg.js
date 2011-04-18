@@ -310,7 +310,8 @@
 		function initFrame(){
 			var stylesheet,
 				growHandler,
-				saveHandler;
+				saveHandler,
+				controlList = options.controls.split(',');
 			
 			if(options.toolbar) {
 				ui.toolbar = $(options.toolbar);
@@ -323,7 +324,11 @@
 				editorDoc = innerDocument();
 			}
 			
-			$.each(options.controls.split(","), function(i, controlName){
+			$.each(controlList, function(i, controlName){
+				if(controlName == "|"){
+					ui.addSeparator();
+					return true;
+				}
 				if(!$.wysiwyg.controls[controlName]){
 					console.error("Control: '"+controlName+"' was not found.");
 					return true;
@@ -331,6 +336,10 @@
 				ui.addControl(controlName, $.wysiwyg.controls[controlName]);
 				return true;
 			});
+			
+			// Build a new controls object out of the array of names.
+			options.controls = {};
+			$.each(controlList, function(i, controlName){ options.controls[controlName] = $.wysiwyg.controls[controlName]; });
 			
 			designMode();
 			editorDoc.open();
@@ -349,7 +358,7 @@
 			$(editorDoc)
 				.trigger("initFrame.wysiwyg")
 				.bind("click.wysiwyg", function(event) {
-					ui.checkTargets(event.target ? event.target : event.srcElement);
+					ui.refresh(event.target ? event.target : event.srcElement);
 				})
 				.keydown(function(event) {
 					var emptyContentRegex;
@@ -374,7 +383,7 @@
 							for(controlName in options.controls){
 								if(options.controls[controlName].hotkey && options.controls[controlName].hotkey.ctrl){
 									if(event.keyCode === options.controls[controlName].hotkey.key){
-										self.triggerControl.apply(self, [controlName, options.controls[controlName]]);
+										triggerControl(controlName, options.controls[controlName]);
 										return false;
 									}
 								}
@@ -512,7 +521,7 @@
 			var cmd  = control.command || name,
 				args = control["arguments"] || control.args || [];
 
-			if(control.exec) return control.exec.apply(self);
+			if(control.exec) control.exec.apply(self);
 			else {
 				focusEditor();
 				// withoutCSS moved into triggerControl
@@ -576,10 +585,51 @@
 				return newitem;
 				
 			},
-			// TODO: This should maybe be removed?
-			checkTargets: function(){},
-			// TODO: This should probably replace checkTargets since we are referring to 
-			// the UI / Tools
+			addSeparator: function(){
+				return $('<li role="separator" class="separator"></li>').appendTo(ui.toolbar);
+			},
+			// Replaces checkTargets so the API method makes more sense as to its function.
+			// Allows to globally call "ui.refresh" to update the class/status of controls.
+			refresh: function(element){
+				$.each(options.controls, function(name, control){
+					var className = control.className || control.command || name || "empty",
+						tags, elm, css, el,
+						checkActiveStatus = function(cssProperty, cssValue) {
+							var handler;
+							if ($.isFunction(cssValue)){
+								handler = cssValue;
+								if(handler(el.css(cssProperty).toString().toLowerCase(), self)) ui.toolbar.find("." + className).addClass("active");
+							}else{
+								if(el.css(cssProperty).toString().toLowerCase() === cssValue) ui.toolbar.find("." + className).addClass("active");
+							}
+						};
+
+					if("fullscreen" !== className) ui.toolbar.find("." + className).removeClass("active");
+
+					if(control.tags || (control.options && control.options.tags)) {
+						tags = control.tags || (control.options && control.options.tags);
+						elm  = element;
+						while (elm){
+							if(elm.nodeType !== 1) break;
+							if($.inArray(elm.tagName.toLowerCase(), tags) !== -1) ui.toolbar.find("." + className).addClass("active");
+							elm = elm.parentNode;
+						}
+					}
+
+					if(control.css || (control.options && control.options.css)) {
+						css = control.css || (control.options && control.options.css);
+						el  = $(element);
+
+						while(el) {
+							if(el[0].nodeType !== 1) break;
+							$.each(css, checkActiveStatus);
+							el = el.parent();
+						}
+					}
+				});
+			},
+			// TODO: Original ui.focus moved to focusEditor. This can be used to disable/enable the controlbar
+			// when the editor doesn't have focus.
 			focus: function(){
 				
 			}
