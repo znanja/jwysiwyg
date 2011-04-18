@@ -1080,15 +1080,9 @@
 
 			if (newX === 0 && element.cols) {
 				newX = (element.cols * 8) + 21;
-
-				// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 )
-//				element.cols = 1;
 			}
 			if (newY === 0 && element.rows) {
 				newY = (element.rows * 16) + 16;
-
-				// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 )
-//				element.rows = 1;
 			}
 
 			this.editor = $(window.location.protocol === "https:" ? '<iframe src="javascript:false;"></iframe>' : "<iframe></iframe>").attr("frameborder", "0");
