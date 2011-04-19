@@ -8,6 +8,7 @@ NAME=$(basename $0)
 JWYSIWYG_ROOT_DIR=$PWD/$(dirname $0)/../..
 JWYSIWYG_BIN_DIR=$JWYSIWYG_ROOT_DIR/help/bin
 JWYSIWYG_OUTFILE="jquery.wysiwyg.full.js"
+UGLIFYJS_API_URL="http://marijnhaverbeke.nl/uglifyjs"
 
 jwysiwyg_help() {
 	echo
@@ -17,7 +18,7 @@ jwysiwyg_help() {
 	echo
 	echo "Compile all js files into new one"
 	echo "    (default: jquery.wysiwyg.full.js)"
-	echo "and try to compress it with yuicompressor"
+	echo "and try to compress it with UglifyJS through HTTP API using curl"
 	echo "    (default: jquery.wysiwyg.full.min.js)"
 	echo
 }
@@ -25,8 +26,7 @@ jwysiwyg_help() {
 jwysiwyg_help_compressor() {
 	echo
 	echo "To minimize file:"
-	echo "1. Download YUI Compressor [http://yuilibrary.com/downloads/#yuicompressor]"
-	echo "2. Extract and copy file from ./build/yuicompressor-2.4.2.jar to jwysiwyg/help/bin/yuicompressor-2.4.2.jar"
+	echo "1. Install curl"
 	echo
 }
 
@@ -67,22 +67,17 @@ case $1 in
 			done
 		done
 
-		if [ ! -e "$JWYSIWYG_BIN_DIR/yuicompressor-2.4.2.jar" ]; then
-			echo -e "\nyuicompressor-2.4.2.jar not found"
-			jwysiwyg_help_compressor
+		minified=${outfile%"js"}min.js
+
+		if [ ! -e "$minified" ]; then
+			echo "File $minified not exists. Create..."
+			touch $minified
 		else
-			minified=${outfile%"js"}min.js
-
-			if [ ! -e "$minified" ]; then
-				echo "File $minified not exists. Create..."
-				touch $minified
-			else
-				echo "File $minified exists. Clear..."
-				echo > $minified
-			fi
-
-			java -jar $JWYSIWYG_BIN_DIR/yuicompressor-2.4.2.jar $outfile -o $minified --charset utf-8 --line-break 500 --type js
+			echo "File $minified exists. Clear..."
+			echo > $minified
 		fi
+
+		curl -f -X POST --data-urlencode js_code@$outfile -o $minified $UGLIFYJS_API_URL
 
 		echo "Done"
 	;;
