@@ -967,7 +967,64 @@
 		};
 
 		this.getContent = function () {
-			return this.editorDoc.body.innerHTML;
+			return this.events.filter('', this.editorDoc.body.innerHTML);
+		};
+		
+		/**
+		 * A jWysiwyg specific event system.
+		 *
+		 * Example:
+		 * 
+		 * $("#editor").getWysiwyg().events.bind("getContents", function (orig) {
+		 *     return "<div id='content'>"+orgi+"</div>";
+		 * });
+		 * 
+		 * This makes it so that when ever getContents is called, it is wrapped in a div#content.
+		 */
+		this.events = {
+			_events : {},
+			
+			/**
+			 * Similar to jQuery's bind, but for jWysiwyg only.
+			 */
+			bind : function (eventName, callback) {
+				if(typeof(this._events.eventName) != "object") {
+					this._events[eventName] = [];
+				}
+				this._events[eventName].push(callback);
+			},
+			
+			/**
+			 * Similar to jQuery's trigger, but for jWysiwyg only.
+			 */
+			trigger : function(eventName, args) {
+				if(typeof(this._events.eventName) == "object") {
+					var editor = this.editor;
+					$.each(this._events, function (k,v) {
+						if(typeof(v) == "function") {
+							v.apply(editor, args);
+						}
+					});
+				}
+			},
+			
+			/**
+			 * This "filters" `originalText` by passing it as the first argument to every callback
+			 * with the name `eventName` and taking the return value and passing it to the next function.
+			 *
+			 * This function returns the result after all the callbacks have been applied to `originalText`.
+			 */
+			filter : function (eventName, originalText) {
+				if(typeof(this._events.eventName) == "object") {
+					var editor = this.editor;
+					$.each(this._events, function (k,v) {
+						if(typeof(v) == "function") {
+							originalText = v.apply(editor, [originalText]);
+						}
+					});
+				}
+				return originalText;
+			}
 		};
 
 		this.getElementByAttributeValue = function (tagName, attributeName, attributeValue) {
@@ -1886,5 +1943,9 @@
 		} else {
 			console.error("Method '" +  method + "' does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");
 		}
+	};
+	
+	$.fn.getWysiwyg = function () {
+		return $.data(this, "wysiwyg");
 	};
 })(jQuery);
