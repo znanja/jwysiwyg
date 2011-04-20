@@ -1017,9 +1017,10 @@
 			filter : function (eventName, originalText) {
 				if(typeof(this._events.eventName) == "object") {
 					var editor = this.editor;
+					var args = Array.prototype.slice.call(arguments, 1);
 					$.each(this._events, function (k,v) {
 						if(typeof(v) == "function") {
-							originalText = v.apply(editor, [originalText]);
+							originalText = v.apply(editor, args);
 						}
 					});
 				}
