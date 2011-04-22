@@ -19,12 +19,18 @@ while ( my $row = $csv->getline_hr( $fh ) ) {
 	$db->{$row->{name}} = int $dec;
 }
 
+## These four elements are also valid in XML
+delete $db->{$_} for qw/ amp lt gt quot /;
+
+## &apos btw is only valid in XML, and is not an HTML entity
+## So it works for XHTML documents, but not for HTML/SGML documents
+
 ## We'll create our own pseudo element for non-matches
 $db->{__replacement} = int 65533;
 
 my $json = JSON::XS->new->utf8->encode($db);
 $json =~ tr/"//d;
-print lc $json;
+print $json;
 
 
 # Paste in jwysiwyg and you're done.
