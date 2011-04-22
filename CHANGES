@@ -1,7 +1,7 @@
 == master (not tagged yet) ==
 
-* Fixed bugs in event system - Evan Carroll
-* XHTML5 and Unicode Entity Handling - Evan Carroll
+* Fixed bugs in event system - EvanCarroll
+* XHTML5 and Unicode Entity Handling - EvanCarroll, alecgorge
 * Dutch locale for jwysiwyg - Erik van Dongen
 * Polish locale for jwysiwyg - aherok
 
