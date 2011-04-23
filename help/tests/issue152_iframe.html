@@ -11,40 +11,37 @@
 
 <H1> OWED TO 1992 </H1>
 
-<DIV ID=FOO>
-	<P>
-		<TT>'&nbsp;', '&nbsp;', '&NBSP;' &NBSP;'</TT>  - THOSE ARE NBSPs
-		<BR>
-		THESE ARE ALSO NBSPs CHARACTERS: ' ', ' ', ' '
-		<BR>
-	</P>
-	
+<P>
+	<TT>'&nbsp;', '&nbsp;', '&NBSP;' '&NBSP;'</TT>  - THOSE ARE NBSPs
+	<BR>
+	THESE ARE ALSO NBSPs CHARACTERS: ' ', ' ', ' '
+	<BR>
+</P>
 
-	<P>
-	These elements are totally nonsense
-	&invalid; &fruitcake;
-	</P>
+<P>
+These elements are totally nonsense
+'&invalid;' '&fruitcake;'
+</P>
 
-	<P>
-	These two entities should look different &delta; &Delta;
-	</P>
+<P>
+These two entities should look different '&delta;' '&Delta;'
+</P>
 
-	<P>
-		<!-- *This might be transparently copied as unicode * -->
-		Other elements should also be transparently encoded into hex-refs or unicode
-		&hearts; &copy; &uarr; &rarr; &kappa;
-	</P>
+<P>
+	<!-- *This might be transparently copied as unicode * -->
+	Other elements should also be transparently encoded into hex-refs or unicode
+	'&hearts;' '&copy;' '&uarr;' '&rarr;' '&kappa;'
+</P>
 
-	<P>
-	These elements should remain named because they're valid in both XML and HTML.
-	&lt; &gt; &quot; &amp;
-	</P>
+<P>
+These elements should remain named because they're valid in both XML and HTML.
+'&lt;' '&gt;' '&quot;' '&amp;'
+</P>
 
-	<P>
-	This element is only valid in XML
-	&apos;
-	</P>
-</DIV>
+<P>
+This element is only valid in XML
+&apos;
+</P>
 
 <BUTTON ONCLICK="javascript:alert(document.getElementById('FOO').innerHTML)"> BOOM </BUTTON>
 
