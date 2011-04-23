@@ -9,6 +9,7 @@
 
 <BODY>
 
+<DIV id="foo">
 <H1> OWED TO 1992 </H1>
 
 <P>
@@ -42,8 +43,9 @@ These elements should remain named because they're valid in both XML and HTML.
 This element is only valid in XML
 &apos;
 </P>
+</DIV>
 
-<BUTTON ONCLICK="javascript:alert(document.getElementById('FOO').innerHTML)"> BOOM </BUTTON>
+<BUTTON ONCLICK="javascript:alert(document.getElementById('foo').innerHTML)"> BOOM </BUTTON>
 
 </BODY>
 </HTML>
