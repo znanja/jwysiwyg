@@ -48,25 +48,35 @@
 			} else {
 				$.wysiwyg.controls.colorpicker.modalOpen = true;
 			}
-			var self = this, elements, dialog, colorpickerHtml,
-				formTextLegend = "Colorpicker",
-				formTextColor  = "Color",
-				formTextSubmit = "Apply",
-				formTextReset  = "Cancel";
+			var self = this, elements, dialog, colorpickerHtml, dialogReplacements, key, translation;
 
-			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.colorpicker");
-				formTextColor = $.wysiwyg.i18n.t(formTextColor, "dialogs.colorpicker");
-				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs");
-				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
-			}
+			dialogReplacements = {
+				legend: "Colorpicker",
+				color: "Color",
+				submit: "Apply",
+				reset: "Cancel"
+			};
 
-			colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
+			colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
 				'<ul class="palette"></ul>' +
-				'<label>' + formTextColor + ': <input type="text" name="color" value="#123456"/></label>' +
+				'<label>{color}: <input type="text" name="color" value="#123456"/></label>' +
 				'<div class="wheel"></div>' +
-				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
-				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
+				'<input type="submit" class="button" value="{submit}"/> ' +
+				'<input type="reset" value="{reset}"/></fieldset></form>';
+
+			for (key in dialogReplacements) {
+				if ($.wysiwyg.i18n) {
+					translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs.colorpicker");
+
+					if (translation === dialogReplacements[key]) { // if not translated search in dialogs 
+						translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs");
+					}
+
+					dialogReplacements[key] = translation;
+				}
+
+				colorpickerHtml = colorpickerHtml.replace("{" + key + "}", dialogReplacements[key]);
+			}
 
 			if ($.modal) {
 				elements = $(colorpickerHtml);
@@ -77,6 +87,10 @@
 				}
 
 				$.modal(elements.html(), {
+					maxWidth: Wysiwyg.defaults.formWidth,
+					maxHeight: Wysiwyg.defaults.formHeight,
+					overlayClose: true,
+
 					onShow: function (dialog) {
 						$("input:submit", dialog.data).click(function (e) {
 							var color = $('input[name="color"]', dialog.data).val();
@@ -103,13 +117,11 @@
 							e.stopPropagation();
 						});
 					},
+
 					onClose: function (dialog) {
 						$.wysiwyg.controls.colorpicker.modalOpen = false;
 						$.modal.close();
-					},
-					maxWidth: Wysiwyg.defaults.formWidth,
-					maxHeight: Wysiwyg.defaults.formHeight,
-					overlayClose: true
+					}
 				});
 			} else if ($.fn.dialog) {
 				elements = $(colorpickerHtml);
@@ -122,6 +134,7 @@
 				dialog = elements.appendTo("body");
 				dialog.dialog({
 					modal: true,
+
 					open: function (event, ui) {
 						$("input:submit", elements).click(function (e) {
 							var color = $('input[name="color"]', dialog).val();
@@ -148,6 +161,7 @@
 							e.stopPropagation();
 						});
 					},
+
 					close: function (event, ui) {
 						$.wysiwyg.controls.colorpicker.modalOpen = false;
 						dialog.dialog("destroy");

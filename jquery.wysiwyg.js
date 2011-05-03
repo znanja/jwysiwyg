@@ -23,6 +23,22 @@
 		}
 	};
 
+	function dec2hex(i, leading_zeros) {
+		var result = "0";
+		if (leading_zeros) {
+			result = "0000";
+		}
+
+		if (i < 0) { console.log("dec2hex: Below zero"); }
+		else if (i < 16)    { result = ((leading_zeros) ? "000" : "") + i.toString(16); }
+		else if (i < 256)   { result = ((leading_zeros) ? "00" : "")  + i.toString(16); }
+		else if (i < 4096)  { result = ((leading_zeros) ? "0" : "")   + i.toString(16); }
+		else if (i < 65536) { result =                                  i.toString(16); }
+		else { console.log("dec2hex: Oops"); }
+
+		return result;
+	}
+	
 	function Wysiwyg() {
 		this.controls = {
 			bold: {
@@ -967,7 +983,65 @@
 		};
 
 		this.getContent = function () {
-			return this.editorDoc.body.innerHTML;
+			return this.events.filter('getContent', this.editorDoc.body.innerHTML);
+		};
+		
+		/**
+		 * A jWysiwyg specific event system.
+		 *
+		 * Example:
+		 * 
+		 * $("#editor").getWysiwyg().events.bind("getContent", function (orig) {
+		 *     return "<div id='content'>"+orgi+"</div>";
+		 * });
+		 * 
+		 * This makes it so that when ever getContent is called, it is wrapped in a div#content.
+		 */
+		this.events = {
+			_events : {},
+			
+			/**
+			 * Similar to jQuery's bind, but for jWysiwyg only.
+			 */
+			bind : function (eventName, callback) {
+				if(typeof(this._events.eventName) != "object") {
+					this._events[eventName] = [];
+				}
+				this._events[eventName].push(callback);
+			},
+			
+			/**
+			 * Similar to jQuery's trigger, but for jWysiwyg only.
+			 */
+			trigger : function(eventName, args) {
+				if(typeof(this._events.eventName) == "object") {
+					var editor = this.editor;
+					$.each(this._events[eventName], function (k,v) {
+						if(typeof(v) == "function") {
+							v.apply(editor, args);
+						}
+					});
+				}
+			},
+			
+			/**
+			 * This "filters" `originalText` by passing it as the first argument to every callback
+			 * with the name `eventName` and taking the return value and passing it to the next function.
+			 *
+			 * This function returns the result after all the callbacks have been applied to `originalText`.
+			 */
+			filter : function (eventName, originalText) {
+				if(typeof(this._events[eventName]) == "object") {
+					var editor = this.editor;
+					var args = Array.prototype.slice.call(arguments, 1);
+					$.each(this._events[eventName], function (k,v) {
+						if(typeof(v) == "function") {
+							originalText = v.apply(editor, args);
+						}
+					});
+				}
+				return originalText;
+			}
 		};
 
 		this.getElementByAttributeValue = function (tagName, attributeName, attributeValue) {
@@ -1080,15 +1154,9 @@
 
 			if (newX === 0 && element.cols) {
 				newX = (element.cols * 8) + 21;
-
-				// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 )
-//				element.cols = 1;
 			}
 			if (newY === 0 && element.rows) {
 				newY = (element.rows * 16) + 16;
-
-				// fix for issue 30 ( http://github.com/akzhan/jwysiwyg/issues/issue/30 )
-//				element.rows = 1;
 			}
 
 			this.editor = $(window.location.protocol === "https:" ? '<iframe src="javascript:false;"></iframe>' : "<iframe></iframe>").attr("frameborder", "0");
@@ -1321,10 +1389,10 @@
 			
 			// Support event callbacks
 			$.each(self.options.events, function (key, handler) {
-				$(self.editorDoc).bind(key + ".wysiwyg", function(event){
+				$(self.editorDoc).bind(key + ".wysiwyg", function (event) {
 					// Trigger event handler, providing the event and api to 
 					// support additional functionality.
-					handler.apply(self.editorDoc, [event, $(self.original).data('wysiwyg')]);
+					handler.apply(self.editorDoc, [event, self]);
 				});
 			});
 
@@ -1355,6 +1423,33 @@
 					$(self.editorDoc).bind("paste.wysiwyg", saveHandler);
 					$(self.editorDoc).bind("cut.wysiwyg", saveHandler);
 				}
+			}
+			
+			/**
+			 * XHTML5 {@link https://github.com/akzhan/jwysiwyg/issues/152}
+			 */
+			if (self.options.xhtml5) {
+				var replacements = {ne:8800,le:8804,para:182,xi:958,darr:8595,nu:957,oacute:243,Uacute:218,omega:969,prime:8242,pound:163,igrave:236,thorn:254,forall:8704,emsp:8195,lowast:8727,brvbar:166,alefsym:8501,nbsp:160,delta:948,clubs:9827,lArr:8656,Omega:937,Auml:196,cedil:184,and:8743,plusmn:177,ge:8805,raquo:187,uml:168,equiv:8801,laquo:171,rdquo:8221,Epsilon:917,divide:247,fnof:402,chi:967,Dagger:8225,iacute:237,rceil:8969,sigma:963,Oslash:216,acute:180,frac34:190,lrm:8206,upsih:978,Scaron:352,part:8706,exist:8707,nabla:8711,image:8465,prop:8733,zwj:8205,omicron:959,aacute:225,Yuml:376,Yacute:221,weierp:8472,rsquo:8217,otimes:8855,kappa:954,thetasym:977,harr:8596,Ouml:214,Iota:921,ograve:242,sdot:8901,copy:169,oplus:8853,acirc:226,sup:8835,zeta:950,Iacute:205,Oacute:211,crarr:8629,Nu:925,bdquo:8222,lsquo:8216,apos:39,Beta:914,eacute:233,egrave:232,lceil:8968,Kappa:922,piv:982,Ccedil:199,ldquo:8220,Xi:926,cent:162,uarr:8593,hellip:8230,Aacute:193,ensp:8194,sect:167,Ugrave:217,aelig:230,ordf:170,curren:164,sbquo:8218,macr:175,Phi:934,Eta:919,rho:961,Omicron:927,sup2:178,euro:8364,aring:229,Theta:920,mdash:8212,uuml:252,otilde:245,eta:951,uacute:250,rArr:8658,nsub:8836,agrave:224,notin:8713,ndash:8211,Psi:936,Ocirc:212,sube:8838,szlig:223,micro:181,not:172,sup1:185,middot:183,iota:953,ecirc:234,lsaquo:8249,thinsp:8201,sum:8721,ntilde:241,scaron:353,cap:8745,atilde:227,lang:10216,__replacement:65533,isin:8712,gamma:947,Euml:203,ang:8736,upsilon:965,Ntilde:209,hearts:9829,Alpha:913,Tau:932,spades:9824,dagger:8224,THORN:222,int:8747,lambda:955,Eacute:201,Uuml:220,infin:8734,rlm:8207,Aring:197,ugrave:249,Egrave:200,Acirc:194,rsaquo:8250,ETH:208,oslash:248,alpha:945,Ograve:210,Prime:8243,mu:956,ni:8715,real:8476,bull:8226,beta:946,icirc:238,eth:240,prod:8719,larr:8592,ordm:186,perp:8869,Gamma:915,reg:174,ucirc:251,Pi:928,psi:968,tilde:732,asymp:8776,zwnj:8204,Agrave:192,deg:176,AElig:198,times:215,Delta:916,sim:8764,Otilde:213,Mu:924,uArr:8657,circ:710,theta:952,Rho:929,sup3:179,diams:9830,tau:964,Chi:935,frac14:188,oelig:339,shy:173,or:8744,dArr:8659,phi:966,iuml:239,Lambda:923,rfloor:8971,iexcl:161,cong:8773,ccedil:231,Icirc:206,frac12:189,loz:9674,rarr:8594,cup:8746,radic:8730,frasl:8260,euml:235,OElig:338,hArr:8660,Atilde:195,Upsilon:933,there4:8756,ouml:246,oline:8254,Ecirc:202,yacute:253,auml:228,permil:8240,sigmaf:962,iquest:191,empty:8709,pi:960,Ucirc:219,supe:8839,Igrave:204,yen:165,rang:10217,trade:8482,lfloor:8970,minus:8722,Zeta:918,sub:8834,epsilon:949,yuml:255,Sigma:931,Iuml:207,ocirc:244};
+				self.events.bind("getContent", function (text) {
+					return text.replace(/&(?:amp;)?(?!amp|lt|gt|quot)([a-z][a-z0-9]*);/gi, function (str, p1) {
+//console.log("1: str", str, "p1", p1);
+						if (!replacements[p1]) {
+							p1 = p1.toLowerCase();
+							if (!replacements[p1]) {
+								p1 = "__replacement";
+							}
+						}
+						
+						var num = replacements[p1],
+							leading_zeros = self.options.unicode;
+						/* Numeric return if ever wanted: return replacements[p1] ? "&#"+num+";" : ""; */
+//console.log("2: str", str, "p1", p1, "&#" + dec2hex(num, leading_zeros) + ";");
+						return self.options.unicode
+							? eval('"\\u' + dec2hex(num, leading_zeros) + '"')
+							: "&#" + dec2hex(num, leading_zeros) + ";"
+						;
+					});
+				});
 			}
 		};
 
@@ -1418,6 +1513,8 @@
 				}
 			}
 
+			this.saveContent();
+			
 			return this;
 		};
 
@@ -1892,5 +1989,9 @@
 		} else {
 			console.error("Method '" +  method + "' does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");
 		}
+	};
+	
+	$.fn.getWysiwyg = function () {
+		return $.data(this, "wysiwyg");
 	};
 })(jQuery);
