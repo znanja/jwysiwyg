@@ -470,6 +470,23 @@
 				groupIndex: 4,
 				visible: true,
 				tooltip: "Undo"
+			},
+		   code: { // Code tag implemtation
+				visible : true,
+				groupIndex: 6,
+				tooltip: "Code snippet",
+				exec: function () {
+					var range	= this.getInternalRange(),
+						common	= $(range.commonAncestorContainer),
+						$nodeName = range.commonAncestorContainer.nodeName.toLowerCase();
+					if (common.parent('code').length) {
+						common.unwrap();
+					} else {
+						if ($nodeName !== 'body') {
+							common.wrap('<code/>');
+						}
+					}
+				}
 			}
 		};
 
