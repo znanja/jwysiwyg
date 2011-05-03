@@ -205,6 +205,8 @@
 				} else {
 					$(img.self).css("height", "");
 				}
+				
+				Wysiwyg.saveContent();
 			} else {
 				found = width.toString().match(/^[0-9]+(px|%)?$/);
 				if (found) {

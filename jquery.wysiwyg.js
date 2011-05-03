@@ -1513,6 +1513,8 @@
 				}
 			}
 
+			this.saveContent();
+			
 			return this;
 		};
 

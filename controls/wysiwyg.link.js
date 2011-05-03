@@ -133,6 +133,9 @@
 									window.alert(Wysiwyg.options.messages.nonSelection);
 								}
 							}
+
+							Wysiwyg.saveContent();
+
 							$(dialog).dialog("close");
 						});
 						$("input:reset", dialog).click(function (e) {
@@ -193,6 +196,8 @@
 						window.alert(Wysiwyg.options.messages.nonSelection);
 					}
 				}
+
+				Wysiwyg.saveContent();
 			}
 
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
