@@ -374,6 +374,7 @@
 					}
 
 					$(p).attr("dir", "ltr");
+          return true;
 				},
 				tooltip : "Left to Right"
 			},
@@ -427,6 +428,7 @@
 					}
 
 					$(p).attr("dir", "rtl");
+          return true;
 				},
 				tooltip : "Right to Left"
 			},
@@ -732,6 +734,7 @@
 					this.blur();
 					self.ui.returnRange();
 					self.ui.focus();
+          return true;
 				})
 				.appendTo(self.ui.toolbar);
 		};
@@ -762,6 +765,7 @@
 					self.ui.focus();
 
 					self.triggerControlCallback(name);
+          return true;
 				})
 				.appendTo(self.ui.toolbar);
 		};
