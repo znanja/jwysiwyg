@@ -471,7 +471,7 @@
 				visible: true,
 				tooltip: "Undo"
 			},
-		   code: { // Code tag implemtation
+		   code: { // Code tag implementation
 				visible : true,
 				groupIndex: 6,
 				tooltip: "Code snippet",
