@@ -374,7 +374,7 @@
 					}
 
 					$(p).attr("dir", "ltr");
-          return true;
+					return true;
 				},
 				tooltip : "Left to Right"
 			},
@@ -428,7 +428,7 @@
 					}
 
 					$(p).attr("dir", "rtl");
-          return true;
+					return true;
 				},
 				tooltip : "Right to Left"
 			},
@@ -751,7 +751,7 @@
 					this.blur();
 					self.ui.returnRange();
 					self.ui.focus();
-          return true;
+					return true;
 				})
 				.appendTo(self.ui.toolbar);
 		};
@@ -782,7 +782,7 @@
 					self.ui.focus();
 
 					self.triggerControlCallback(name);
-          return true;
+					return true;
 				})
 				.appendTo(self.ui.toolbar);
 		};
@@ -1025,7 +1025,7 @@
 			 * Similar to jQuery's bind, but for jWysiwyg only.
 			 */
 			bind : function (eventName, callback) {
-				if(typeof(this._events.eventName) != "object") {
+				if (typeof (this._events.eventName) !== "object") {
 					this._events[eventName] = [];
 				}
 				this._events[eventName].push(callback);
@@ -1034,11 +1034,11 @@
 			/**
 			 * Similar to jQuery's trigger, but for jWysiwyg only.
 			 */
-			trigger : function(eventName, args) {
-				if(typeof(this._events.eventName) == "object") {
+			trigger : function (eventName, args) {
+				if (typeof (this._events.eventName) === "object") {
 					var editor = this.editor;
-					$.each(this._events[eventName], function (k,v) {
-						if(typeof(v) == "function") {
+					$.each(this._events[eventName], function (k, v) {
+						if (typeof (v) === "function") {
 							v.apply(editor, args);
 						}
 					});
@@ -1052,11 +1052,12 @@
 			 * This function returns the result after all the callbacks have been applied to `originalText`.
 			 */
 			filter : function (eventName, originalText) {
-				if(typeof(this._events[eventName]) == "object") {
-					var editor = this.editor;
-					var args = Array.prototype.slice.call(arguments, 1);
-					$.each(this._events[eventName], function (k,v) {
-						if(typeof(v) == "function") {
+				if (typeof (this._events[eventName]) === "object") {
+					var editor = this.editor,
+						args = Array.prototype.slice.call(arguments, 1);
+
+					$.each(this._events[eventName], function (k, v) {
+						if (typeof (v) === "function") {
 							originalText = v.apply(editor, args);
 						}
 					});
@@ -1402,7 +1403,7 @@
 
 			if (self.options.maxLength > 0) {
 				$(self.editorDoc).keydown(function (event) {
-					if ($(self.editorDoc).text().length >= self.options.maxLength && $.inArray(event.which, self.validKeyCodes) == -1) {
+					if ($(self.editorDoc).text().length >= self.options.maxLength && $.inArray(event.which, self.validKeyCodes) === -1) {
 						event.preventDefault();
 					}
 				});
