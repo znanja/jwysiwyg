@@ -1517,10 +1517,14 @@
 				}
 			} else {	
 				if ($.browser.mozilla) {
-					range = this.getInternalRange();
+					if (0 === $(szHTML).length) {
+						this.editorDoc.execCommand("insertHTML", false, szHTML);
+					} else {
+						range = this.getInternalRange();
 
-					range.deleteContents();
-					range.insertNode($(szHTML).get(0));
+						range.deleteContents();
+						range.insertNode($(szHTML).get(0));
+					}
 				} else {
 					if (!this.editorDoc.execCommand("insertHTML", false, szHTML)) {
 						this.editor.focus();
