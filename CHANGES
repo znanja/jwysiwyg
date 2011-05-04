@@ -1,6 +1,13 @@
 == master (not tagged yet) ==
 
+* Fix dialog in image control - simsalabim
+* CSS fixes - Jason Orrill, afilina
+* Switch to Uglify compressor - akzhan
+* Add Jasmine test suite - frost-nzcr4
+* Dev tools to generate unicode entities - EvanCarroll, akzhan
+* Enhance event handler - brentkirby
 * Fixed bugs in event system - EvanCarroll
+* Editor specific event system - alecgorge
 * XHTML5 and Unicode Entity Handling - EvanCarroll, alecgorge
 * Dutch locale for jwysiwyg - Erik van Dongen
 * Polish locale for jwysiwyg - aherok

@@ -1494,7 +1494,7 @@
 					$(img).replaceWith(szHTML);
 				}
 			} else {	
-				if ($.browser.mozilla) {
+				if ($.browser.mozilla) { // @link https://github.com/akzhan/jwysiwyg/issues/50
 					if (0 === $(szHTML).length) {
 						this.editorDoc.execCommand("insertHTML", false, szHTML);
 					} else {
