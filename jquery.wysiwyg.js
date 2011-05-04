@@ -350,8 +350,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var range = this.getInternalRange(),
-						p = this.dom.getElement("p");
+					var p = this.dom.getElement("p");
 
 					if (!p) {
 						return false;
@@ -404,8 +403,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var range = this.getInternalRange(),
-						p = this.dom.getElement("p");
+					var p = this.dom.getElement("p");
 
 					if (!p) {
 						return false;
