@@ -861,6 +861,7 @@
 		this.ui.designMode = function () {
 			var attempts = 3,
 				self = this.self,
+				runner;
 				runner = function (attempts) {
 					if ("on" === self.editorDoc.designMode) {
 						if (self.timers.designMode) {
