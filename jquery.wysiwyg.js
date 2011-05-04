@@ -1,6 +1,6 @@
 /**
- * WYSIWYG - jQuery plugin 0.96
- * (Pretty girl)
+ * WYSIWYG - jQuery plugin 0.97
+ * (Next step)
  *
  * Copyright (c) 2008-2009 Juan M Martinez, 2010-2011 Akzhan Abdulin and all contributors
  * https://github.com/akzhan/jwysiwyg
