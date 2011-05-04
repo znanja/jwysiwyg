@@ -1,13 +1,15 @@
-== master (not tagged yet) ==
+# Changes
 
-== Version 0.97 (Next step) ==
+## master (not tagged yet)
 
-* Bugfixes & core enhancements - frost-nzcr4
+## Version 0.97 (Next step)
+
+* Bugfixes and core enhancements - frost-nzcr4
 * jslint - frost-nzcr4, akzhan
 * Documentation - vjt, ctide, afilina, elektronaut
 * Controls: increase/decrease font size, highlight, code - vjt, ctide, Tudmotu
 * Sorting controls by user - vjt
-* New options: initialMinHeight & maxLength - ctide
+* New options: initialMinHeight and maxLength - ctide
 * Enhance modal dialogs - ctide
 * New API method selectAll - ctide
 * Fix dialog in image control - simsalabim
@@ -22,9 +24,9 @@
 * Dutch locale for jwysiwyg - Erik van Dongen
 * Polish locale for jwysiwyg - aherok
 
-== Version 0.96 (Pretty girl) ==
+## Version 0.96 (Pretty girl)
 
-* Plugin rmFormat: fix for Word & IE markup - SugaSlide
+* Plugin rmFormat: fix for Word and IE markup - SugaSlide
 * Proper dialog focus with IE7/8 - frost-nczr4, academo
 * Closure for autoSaveFunction - mbj
 * New options - mbj, frost-nczr4
@@ -41,7 +43,7 @@
 * Spanish locale for jwysiwyg - academo
 * Ability to translate dialogs - frost-nczr4
 
-== Version 0.95 (Kino) ==
+## Version 0.95 (Kino)
 
 * Directory structure of repository has been reorganized to be more friendly for Drupal users - frost-nzcr4, sun
 * Plugins API implemented - frost-nzcr4
@@ -64,7 +66,7 @@
 * Swedish locale for jwysiwyg - ippa
 * Russian locale for jwysiwyg - frost-nzcr4
 
-== Version 0.94 (phase 2) ==
+## Version 0.94 (phase 2)
 
 * focus is properly returned after clicking on buttons - alecgorge
 * fix for getContent operation by class selector - alecgorge
@@ -78,7 +80,7 @@
 * Use Cmd key on Macs - boutell
 * JSlint fixes - akzhan, filiptepper
 
-== Version 0.93 (koken) ==
+## Version 0.93 (koken)
 
 * Hide wysiwyg while html shown - akzhan
 * jwysiwyg destroy fixed - jalada
@@ -88,27 +90,27 @@
 * Iframe now can use class name to be styled - chris.haumesser
 * Version string in source file must ended with version number for Drupal integration folks - xeto
 
-== Version 0.92 (arigatou gozaimasu) ==
+## Version 0.92 (arigatou gozaimasu)
 
 * Fix work under quirks mode of Internet Explorer - kris.schwab
 * Workaround for Mozilla/WebKit misfunctionality of RemoveFormat over headings - aiveldesign
 * Experimental support for switching between LTR/RTL modes (no icons provided and markup issues) - abduljawad.mahmoud
 * More robust selection check in createLink - systeembeheer
 
-== Version 0.91 (maintenance release) ==
+## Version 0.91 (maintenance release)
 
 * Editor now throw errors on unknown actions - akzhan
 * Getter methods were broken. Fixed - wordituk
 * headings formatting has been fixed in IE, Firefox and Chrome - kolpak
 
-== Version 0.9 (maintenance release) ==
+## Version 0.9 (maintenance release)
 
 * Buttons are unselectable now and have no anchors (CSS reviewed) - mrapczynski
 * Way to return focus to editor has been corrected - mappam0
 * $.fn.documentSelection has been removed to minimize pollution of $.fn namespace - akzhan
 * Source mode fixed for all browsers (was inspired by 0.8)  - silvermuru
 
-== Version 0.8 (revival) ==
+## Version 0.8 (revival)
 
 + enabled, destroy, removeFormat, save actions added to $('#elt').wysiwyg(action) - fomojola
 + insertTable action/button added - academo
@@ -116,19 +118,19 @@
 + Event handlers supported through events - akzhan
 + Editor now supports jQuery UI resizable plugin through resizeOptions - akzhan
 * jWysiwyg now wraps Mozilla bug that disables editor creation in AJAX calls - akzhan
-* MSG_EN abd TOOLBAR replaced with $.fn.wysiwyg.defaults/controls - akzhan
+* *MSG_EN* and *TOOLBAR* replaced with $.fn.wysiwyg.defaults/controls - akzhan
 * separators replaced with group indexes - akzhan
 * Directory structure reorganized - academo
 * $.fn.document has been removed to minimize pollution of $.fn namespace - akzhan
 
-== Version 0.7 ==
+## Version 0.7
 
 * Ctrl+B, Ctrl+I and Ctrl+U keystrokes in non-IE browsers now works like IE ones - akzhan
 * insertHtml in non-focused editor works now - akzhan
 * Appearance of toolbar buttons fixed under IE7/8 - ibnteo, mail2lx
 ! Code reviewed.
 
-== Version 0.6 ==
+## Version 0.6
 
 * New $().wysiwyg('insertHtml', string) method - akzhan
 * New example (nearby full editor) added - deansofer
