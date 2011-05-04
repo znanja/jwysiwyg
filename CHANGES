@@ -1,5 +1,7 @@
 == master (not tagged yet) ==
 
+* Bugfixes & core enhancements - frost-nzcr4
+* jslint - frost-nzcr4, akzhan
 * Documentation - vjt, ctide, afilina, elektronaut
 * Controls: increase/decrease font size, highlight, code - vjt, ctide, Tudmotu
 * Sorting controls by user - vjt
