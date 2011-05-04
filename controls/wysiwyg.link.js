@@ -7,7 +7,7 @@
  */
 (function ($) {
 	if (undefined === $.wysiwyg) {
-		throw "wysiwyg.image.js depends on $.wysiwyg";
+		throw "wysiwyg.link.js depends on $.wysiwyg";
 	}
 
 	if (!$.wysiwyg.controls) {

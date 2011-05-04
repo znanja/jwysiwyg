@@ -473,6 +473,15 @@
 						}
 					}
 				}
+			},
+			
+			cssWrap: {
+				visible : false,
+				groupIndex: 6,
+				tooltip: "CSS Wrapper",
+				exec: function () { 
+					$.wysiwyg.controls.cssWrap.init(this);
+				}
 			}
 		};
 
