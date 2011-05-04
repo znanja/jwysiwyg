@@ -85,7 +85,7 @@
 
 			decreaseFontSize: {
 				groupIndex: 9,
-				visible: false && !($.browser.msie),
+				visible: false,
 				tags: ["small"],
 				tooltip: "Decrease font size",
 				exec: function () {
@@ -239,7 +239,7 @@
 
 			increaseFontSize: {
 				groupIndex: 9,
-				visible: false && !($.browser.msie),
+				visible: false,
 				tags: ["big"],
 				tooltip: "Increase font size",
 				exec: function () {
@@ -374,7 +374,7 @@
 					}
 
 					$(p).attr("dir", "ltr");
-          return true;
+					return true;
 				},
 				tooltip : "Left to Right"
 			},
@@ -428,7 +428,7 @@
 					}
 
 					$(p).attr("dir", "rtl");
-          return true;
+					return true;
 				},
 				tooltip : "Right to Left"
 			},
@@ -472,6 +472,24 @@
 				groupIndex: 4,
 				visible: true,
 				tooltip: "Undo"
+			},
+
+			code: {
+				visible : true,
+				groupIndex: 6,
+				tooltip: "Code snippet",
+				exec: function () {
+					var range	= this.getInternalRange(),
+						common	= $(range.commonAncestorContainer),
+						$nodeName = range.commonAncestorContainer.nodeName.toLowerCase();
+					if (common.parent("code").length) {
+						common.unwrap();
+					} else {
+						if ($nodeName !== "body") {
+							common.wrap("<code/>");
+						}
+					}
+				}
 			}
 		};
 
@@ -690,8 +708,8 @@
 				if ("number" === typeof (a) && typeof (a) === typeof (b)) {
 					return (a - b);
 				} else {
-					a = "" + a;
-					b = "" + b;
+					a = a.toString();
+					b = b.toString();
 
 					if (a > b) {
 						return 1;
@@ -734,7 +752,7 @@
 					this.blur();
 					self.ui.returnRange();
 					self.ui.focus();
-          return true;
+					return true;
 				})
 				.appendTo(self.ui.toolbar);
 		};
@@ -765,7 +783,7 @@
 					self.ui.focus();
 
 					self.triggerControlCallback(name);
-          return true;
+					return true;
 				})
 				.appendTo(self.ui.toolbar);
 		};
@@ -843,6 +861,7 @@
 		this.ui.designMode = function () {
 			var attempts = 3,
 				self = this.self,
+				runner;
 				runner = function (attempts) {
 					if ("on" === self.editorDoc.designMode) {
 						if (self.timers.designMode) {
@@ -1008,7 +1027,7 @@
 			 * Similar to jQuery's bind, but for jWysiwyg only.
 			 */
 			bind : function (eventName, callback) {
-				if(typeof(this._events.eventName) != "object") {
+				if (typeof (this._events.eventName) !== "object") {
 					this._events[eventName] = [];
 				}
 				this._events[eventName].push(callback);
@@ -1017,11 +1036,11 @@
 			/**
 			 * Similar to jQuery's trigger, but for jWysiwyg only.
 			 */
-			trigger : function(eventName, args) {
-				if(typeof(this._events.eventName) == "object") {
+			trigger : function (eventName, args) {
+				if (typeof (this._events.eventName) === "object") {
 					var editor = this.editor;
-					$.each(this._events[eventName], function (k,v) {
-						if(typeof(v) == "function") {
+					$.each(this._events[eventName], function (k, v) {
+						if (typeof (v) === "function") {
 							v.apply(editor, args);
 						}
 					});
@@ -1035,11 +1054,12 @@
 			 * This function returns the result after all the callbacks have been applied to `originalText`.
 			 */
 			filter : function (eventName, originalText) {
-				if(typeof(this._events[eventName]) == "object") {
-					var editor = this.editor;
-					var args = Array.prototype.slice.call(arguments, 1);
-					$.each(this._events[eventName], function (k,v) {
-						if(typeof(v) == "function") {
+				if (typeof (this._events[eventName]) === "object") {
+					var editor = this.editor,
+						args = Array.prototype.slice.call(arguments, 1);
+
+					$.each(this._events[eventName], function (k, v) {
+						if (typeof (v) === "function") {
 							originalText = v.apply(editor, args);
 						}
 					});
@@ -1385,7 +1405,7 @@
 
 			if (self.options.maxLength > 0) {
 				$(self.editorDoc).keydown(function (event) {
-					if ($(self.editorDoc).text().length >= self.options.maxLength && $.inArray(event.which, self.validKeyCodes) == -1) {
+					if ($(self.editorDoc).text().length >= self.options.maxLength && $.inArray(event.which, self.validKeyCodes) === -1) {
 						event.preventDefault();
 					}
 				});
@@ -1446,8 +1466,7 @@
 						var num = replacements[p1],
 							leading_zeros = self.options.unicode;
 						/* Numeric return if ever wanted: return replacements[p1] ? "&#"+num+";" : ""; */
-						return eval('"\\u' + dec2hex(num, leading_zeros) + '"');
-						;
+						return String.fromCharCode(num);
 					});
 				});
 			}
@@ -1495,10 +1514,14 @@
 				}
 			} else {	
 				if ($.browser.mozilla) {
-					range = this.getInternalRange();
+					if (0 === $(szHTML).length) {
+						this.editorDoc.execCommand("insertHTML", false, szHTML);
+					} else {
+						range = this.getInternalRange();
 
-					range.deleteContents();
-					range.insertNode($(szHTML).get(0));
+						range.deleteContents();
+						range.insertNode($(szHTML).get(0));
+					}
 				} else {
 					if (!this.editorDoc.execCommand("insertHTML", false, szHTML)) {
 						this.editor.focus();
