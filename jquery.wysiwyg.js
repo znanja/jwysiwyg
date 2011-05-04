@@ -1147,8 +1147,8 @@
 			var self = this,
 				$form = $(element).closest("form"),
 				newX = element.width || element.clientWidth || 0,
-				newY = element.height || element.clientHeight || 0,
-				i;
+				newY = element.height || element.clientHeight || 0
+				;
 
 			this.options	= this.extendOptions(options);
 			this.original	= element;
@@ -1445,8 +1445,7 @@
 							}
 						}
 						
-						var num = replacements[p1],
-							leading_zeros = self.options.unicode;
+						var num = replacements[p1];
 						/* Numeric return if ever wanted: return replacements[p1] ? "&#"+num+";" : ""; */
 						return String.fromCharCode(num);
 					});
