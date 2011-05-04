@@ -14,6 +14,7 @@
 /*jslint browser: true, forin: true */
 
 (function ($) {
+	"use strict";
 	/* Wysiwyg namespace: private properties and methods */
 
 	var console = window.console ? window.console : {
