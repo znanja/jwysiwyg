@@ -1,8 +1,9 @@
 =========================
-jWYSIWYG 0.96 User Manual
+jWYSIWYG 0.97 User Manual
 =========================
 
-Copyright (c) 2009-2010 Juan M Martínez
+Copyright (c) 2009-2010 Juan M Martínez, 2011 Akzhan Abdulin and all contributors
+
 Dual licensed under the `MIT
 <http://github.com/akzhan/jwysiwyg/raw/master/MIT-LICENSE.txt>`_ and `GPL
 <http://github.com/akzhan/jwysiwyg/raw/master/GPL-LICENSE.txt>`_ licenses.
@@ -13,7 +14,7 @@ Dual licensed under the `MIT
 Requires
 ========
 
-jQuery 1.3.2 or higher (tested with jQuery 1.5.1).
+jQuery 1.3.2 or higher (tested with jQuery 1.5.2).
 
 ========
 Supports
