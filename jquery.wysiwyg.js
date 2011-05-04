@@ -1961,12 +1961,12 @@
 
 				if (this.extraSafeEntities[1].length === 0) {
 					$.each(this.extraSafeEntities[0], function (i, ch) {
-						self.extraSafeEntities[1].push(ch.charCodeAt());
+						self.extraSafeEntities[1].push(ch.charCodeAt(0));
 					});
 				}
 				aStr = str.split("");
 				$.each(aStr, function (i) {
-					var iC = aStr[i].charCodeAt();
+					var iC = aStr[i].charCodeAt(0);
 					if ($.inArray(iC, self.extraSafeEntities[1]) && (iC < 65 || iC > 127 || (iC > 90 && iC < 97))) {
 						aRet.push('&#' + iC + ';');
 					} else {
