@@ -23,22 +23,6 @@
 		}
 	};
 
-	function dec2hex(i, leading_zeros) {
-		var result = "0";
-		if (leading_zeros) {
-			result = "0000";
-		}
-
-		if (i < 0) { console.log("dec2hex: Below zero"); }
-		else if (i < 16)    { result = ((leading_zeros) ? "000" : "") + i.toString(16); }
-		else if (i < 256)   { result = ((leading_zeros) ? "00" : "")  + i.toString(16); }
-		else if (i < 4096)  { result = ((leading_zeros) ? "0" : "")   + i.toString(16); }
-		else if (i < 65536) { result =                                  i.toString(16); }
-		else { console.log("dec2hex: Oops"); }
-
-		return result;
-	}
-	
 	function Wysiwyg() {
 		this.controls = {
 			bold: {
