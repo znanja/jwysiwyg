@@ -85,7 +85,7 @@
 
 			decreaseFontSize: {
 				groupIndex: 9,
-				visible: false && !($.browser.msie),
+				visible: false,
 				tags: ["small"],
 				tooltip: "Decrease font size",
 				exec: function () {
@@ -239,7 +239,7 @@
 
 			increaseFontSize: {
 				groupIndex: 9,
-				visible: false && !($.browser.msie),
+				visible: false,
 				tags: ["big"],
 				tooltip: "Increase font size",
 				exec: function () {
