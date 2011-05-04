@@ -473,7 +473,8 @@
 				visible: true,
 				tooltip: "Undo"
 			},
-		   code: { // Code tag implementation
+
+			code: {
 				visible : true,
 				groupIndex: 6,
 				tooltip: "Code snippet",
@@ -481,11 +482,11 @@
 					var range	= this.getInternalRange(),
 						common	= $(range.commonAncestorContainer),
 						$nodeName = range.commonAncestorContainer.nodeName.toLowerCase();
-					if (common.parent('code').length) {
+					if (common.parent("code").length) {
 						common.unwrap();
 					} else {
-						if ($nodeName !== 'body') {
-							common.wrap('<code/>');
+						if ($nodeName !== "body") {
+							common.wrap("<code/>");
 						}
 					}
 				}
