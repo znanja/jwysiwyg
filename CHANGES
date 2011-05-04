@@ -1,5 +1,11 @@
 == master (not tagged yet) ==
 
+* Documentation - vjt, ctide, afilina, elektronaut
+* Controls: increase/decrease font size, highlight, code - vjt, ctide, Tudmotu
+* Sorting controls by user - vjt
+* New options: initialMinHeight & maxLength - ctide
+* Enhance modal dialogs - ctide
+* New API method selectAll - ctide
 * Fix dialog in image control - simsalabim
 * CSS fixes - Jason Orrill, afilina
 * Switch to Uglify compressor - akzhan
