@@ -751,7 +751,7 @@
 				.addClass("custom-command-" + name)
 				.addClass("wysiwyg-custom-command")
 				.addClass(name)
-				.attr("title", control.tooltip)
+				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
 					if ("true" === $(this).attr("disabled")) {
