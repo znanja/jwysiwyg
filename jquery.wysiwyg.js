@@ -708,8 +708,8 @@
 				if ("number" === typeof (a) && typeof (a) === typeof (b)) {
 					return (a - b);
 				} else {
-					a = "" + a;
-					b = "" + b;
+					a = a.toString();
+					b = b.toString();
 
 					if (a > b) {
 						return 1;
