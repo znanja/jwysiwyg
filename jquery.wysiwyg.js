@@ -1466,7 +1466,7 @@
 						var num = replacements[p1],
 							leading_zeros = self.options.unicode;
 						/* Numeric return if ever wanted: return replacements[p1] ? "&#"+num+";" : ""; */
-						return eval('"\\u' + dec2hex(num, leading_zeros) + '"');
+						return String.fromCharCode(num);
 					});
 				});
 			}
