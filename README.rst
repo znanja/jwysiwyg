@@ -2,8 +2,7 @@
 jWYSIWYG 0.97 User Manual
 =========================
 
-Copyright (c) 2009-2010 Juan M Martínez
-Copyright (c) 2011 Akzhan Abdulin and all contributors
+Copyright (c) 2009-2010 Juan M Martínez, 2011 Akzhan Abdulin and all contributors
 
 Dual licensed under the `MIT
 <http://github.com/akzhan/jwysiwyg/raw/master/MIT-LICENSE.txt>`_ and `GPL
