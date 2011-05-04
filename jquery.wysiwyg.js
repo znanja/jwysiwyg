@@ -350,8 +350,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var range = this.getInternalRange(),
-						p = this.dom.getElement("p");
+					var p = this.dom.getElement("p");
 
 					if (!p) {
 						return false;
@@ -404,8 +403,7 @@
 				groupIndex: 10,
 				visible: false,
 				exec: function () {
-					var range = this.getInternalRange(),
-						p = this.dom.getElement("p");
+					var p = this.dom.getElement("p");
 
 					if (!p) {
 						return false;
@@ -753,7 +751,7 @@
 				.addClass("custom-command-" + name)
 				.addClass("wysiwyg-custom-command")
 				.addClass(name)
-				.attr("title", control.tooltip)
+				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
 					if ("true" === $(this).attr("disabled")) {
@@ -1149,8 +1147,8 @@
 			var self = this,
 				$form = $(element).closest("form"),
 				newX = element.width || element.clientWidth || 0,
-				newY = element.height || element.clientHeight || 0,
-				i;
+				newY = element.height || element.clientHeight || 0
+				;
 
 			this.options	= this.extendOptions(options);
 			this.original	= element;
@@ -1447,8 +1445,7 @@
 							}
 						}
 						
-						var num = replacements[p1],
-							leading_zeros = self.options.unicode;
+						var num = replacements[p1];
 						/* Numeric return if ever wanted: return replacements[p1] ? "&#"+num+";" : ""; */
 						return String.fromCharCode(num);
 					});
@@ -1961,12 +1958,12 @@
 
 				if (this.extraSafeEntities[1].length === 0) {
 					$.each(this.extraSafeEntities[0], function (i, ch) {
-						self.extraSafeEntities[1].push(ch.charCodeAt());
+						self.extraSafeEntities[1].push(ch.charCodeAt(0));
 					});
 				}
 				aStr = str.split("");
 				$.each(aStr, function (i) {
-					var iC = aStr[i].charCodeAt();
+					var iC = aStr[i].charCodeAt(0);
 					if ($.inArray(iC, self.extraSafeEntities[1]) && (iC < 65 || iC > 127 || (iC > 90 && iC < 97))) {
 						aRet.push('&#' + iC + ';');
 					} else {
