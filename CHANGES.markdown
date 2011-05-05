@@ -2,6 +2,14 @@
 
 ## master (not tagged yet)
 
+## Version 0.97.1 (Follow me)
+
+Take a note that version number in jquery.wysiwyg.js is not changed to make Drupal users happy.
+Also I want to note that 0.97.1 supports ECMAScript strict mode.
+
+* jslint (fixes for common asset compressors) - filiptepper
+* Fix paste issues for Microsoft Word formatter - frost-nzcr4
+
 ## Version 0.97 (Next step)
 
 * Bugfixes and core enhancements - frost-nzcr4
@@ -23,6 +31,7 @@
 * XHTML5 and Unicode Entity Handling - EvanCarroll, alecgorge
 * Dutch locale for jwysiwyg - Erik van Dongen
 * Polish locale for jwysiwyg - aherok
+
 
 ## Version 0.96 (Pretty girl)
 

@@ -1,6 +1,6 @@
 /**
  * WYSIWYG - jQuery plugin 0.97
- * (Next step)
+ * (0.97.1 - Follow me)
  *
  * Copyright (c) 2008-2009 Juan M Martinez, 2010-2011 Akzhan Abdulin and all contributors
  * https://github.com/akzhan/jwysiwyg
