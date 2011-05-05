@@ -30,6 +30,8 @@ $db->{__replacement} = int 65533;
 
 my $json = JSON::XS->new->utf8->encode($db);
 $json =~ tr/"//d;
+$json =~ s/\bint\:/"int":/;
+
 print $json;
 
 

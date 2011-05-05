@@ -13,8 +13,10 @@ end
 require 'yajl'
 require 'fastercsv'
 
-VALID_ESCAPES = %w[ amp lt gt quot ].freeze
-UNICODE_DB    = File.expand_path('./db.csv', File.dirname(__FILE__)).freeze
+VALID_ESCAPES  = %w[ amp lt gt quot ].freeze
+UNICODE_DB     = File.expand_path('./db.csv', File.dirname(__FILE__)).freeze
+RESERVED_WORDS = %w[ int ].freeze
+
 
 csv = FasterCSV.open(
   UNICODE_DB,
@@ -36,6 +38,8 @@ end
 
 json = Yajl::Encoder.encode(db)
 json.gsub!('"', '')
+
+RESERVED_WORDS.each { |word| json.sub!(/\b#{Regexp.escape(word)}\:/, "\"#{word}\":") }
 
 puts json
 
