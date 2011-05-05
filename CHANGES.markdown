@@ -32,7 +32,6 @@ Also I want to note that 0.97.1 supports ECMAScript strict mode.
 * Dutch locale for jwysiwyg - Erik van Dongen
 * Polish locale for jwysiwyg - aherok
 
-
 ## Version 0.96 (Pretty girl)
 
 * Plugin rmFormat: fix for Word and IE markup - SugaSlide
