@@ -1494,15 +1494,14 @@
 				if (img) {
 					$(img).replaceWith(szHTML);
 				}
-			} else {	
+			} else {
 				if ($.browser.mozilla) { // @link https://github.com/akzhan/jwysiwyg/issues/50
-					if (0 === $(szHTML).length) {
-						this.editorDoc.execCommand("insertHTML", false, szHTML);
-					} else {
+					if (1 === $(szHTML).length) {
 						range = this.getInternalRange();
-
 						range.deleteContents();
 						range.insertNode($(szHTML).get(0));
+					} else {
+						this.editorDoc.execCommand("insertHTML", false, szHTML);
 					}
 				} else {
 					if (!this.editorDoc.execCommand("insertHTML", false, szHTML)) {
