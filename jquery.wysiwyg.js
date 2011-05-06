@@ -1553,7 +1553,11 @@
 			this.editorDoc.execCommand("unlink", false, null);
 
 			if ($.wysiwyg.rmFormat && $.wysiwyg.rmFormat.enabled) {
-				$.wysiwyg.rmFormat.run(this);
+				if ("object" === typeof (this.options.plugins.rmFormat.rmMsWordMarkup)) {
+					$.wysiwyg.rmFormat.run(this, {rules: { msWordMarkup: this.options.plugins.rmFormat.rmMsWordMarkup }});
+				} else {
+					$.wysiwyg.rmFormat.run(this, {rules: { msWordMarkup: { enabled: true }}});
+				}
 			}
 
 			return this;
@@ -1618,6 +1622,8 @@
 
 		this.setContent = function (newContent) {
 			this.editorDoc.body.innerHTML = newContent;
+			this.saveContent();
+
 			return this;
 		};
 
