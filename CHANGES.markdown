@@ -2,6 +2,8 @@
 
 ## master (not tagged yet)
 
+* Useless disabled attribute on LI tags has been removed, disabled class added instead of - akzhan
+
 ## Version 0.97.1 (Follow me)
 
 Take a note that version number in jquery.wysiwyg.js is not changed to make Drupal users happy.
