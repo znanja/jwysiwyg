@@ -182,9 +182,7 @@
 							if (li.hasClass("html")) {
 								li.removeClass("active");
 							} else {
-								// TODO: Will need to support jQuery 1.6 changes
-								// I suppose to make $.fn.wysiwyg.prop method that maps to attr, removeAttr or prop methods of jQuery depending of its version.
-								li.removeAttr("disabled");
+								li.removeClass('disabled');
 							}
 						});
 					} else {
@@ -212,8 +210,7 @@
 								li.addClass("active");
 							} else {
 								if (false === li.hasClass("fullscreen")) {
-									li.removeClass("active");
-									li.attr("disabled", "disabled");
+									li.removeClass("active").addClass('disabled');
 								}
 							}
 						});
@@ -728,7 +725,7 @@
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if ($(this).attr("disabled")) {
+					if ($(this).hasClass("disabled")) {
 						return false;
 					}
 
@@ -757,7 +754,7 @@
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if ($(this).attr("disabled")) {
+					if ($(this).hasClass("disabled")) {
 						return false;
 					}
 
