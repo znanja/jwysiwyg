@@ -23,14 +23,6 @@
 
 		// removeFormat + uncomment line with remove headings
 		$.wysiwyg.removeFormat2 = function(object) {
-			if ("object" !== typeof(object) || !object.context) {
-				object = this;
-			}
-
-			if (!object.each) {
-				console.error($.wysiwyg.messages.noObject);
-			}
-
 			return object.each(function() {
 				var oWysiwyg = $(this).data("wysiwyg");
 
