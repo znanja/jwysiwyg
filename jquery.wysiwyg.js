@@ -23,6 +23,7 @@
 			$.error(msg);
 		}
 	};
+	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));  // !(/^[01]\.[0-5](?:\.|$)/.test($.fn.jquery));
 
 	function Wysiwyg() {
 		this.controls = {
@@ -1948,6 +1949,10 @@
 
 				oWysiwyg.triggerControl.apply(oWysiwyg, [controlName, oWysiwyg.controls[controlName]]);
 			});
+		},
+
+		support: {
+			prop: supportsProp
 		},
 
 		utils: {
