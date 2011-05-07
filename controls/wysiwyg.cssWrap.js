@@ -9,7 +9,7 @@
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.cssWrap.js depends on $.wysiwyg";
 	}
-	/* For core enhancements #147
+	/* For core enhancements #143
 	$.wysiwyg.ui.addControl("cssWrap", {
 		visible : false,
 		groupIndex: 6,
@@ -34,16 +34,18 @@
 				wrapperType : "Wrapper Type",
 				ID : "ID",
 				class : "Class",
-				submit  : "Wrap",
-				reset   : "Cancel"
+				wrap  : "Wrap",
+				unwrap: "Unwrap",
+				cancel   : "Cancel"
 			};
 
 			formWrapHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
-				'<div class="wysiwyg-dialogRow"><label>{wrapperType}: &nbsp;<select name="type"><option value="div">Div</option><option value="span">Span</option></select></label></div>' +
+				'<div class="wysiwyg-dialogRow"><label>{wrapperType}: &nbsp;<select name="type"><option value="span">Span</option><option value="div">Div</option></select></label></div>' +
 				'<div class="wysiwyg-dialogRow"><label>{ID}: &nbsp;<input name="id" type="text" /></label></div>' + 
 				'<div class="wysiwyg-dialogRow"><label>{class}: &nbsp;<input name="class" type="text" /></label></div>' +
-				'<input type="submit" id="submitDialog" class="button" value="{submit}"/></label>' +
-				'<input type="reset" id="cancelDialog" value="{reset}"/></fieldset></form>';
+				'<div class="wysiwyg-dialogRow"><input type="button" class="button cssWrap-unwrap" style="display:none;" value="{unwrap}"/></label>' +
+				'<input type="submit"  class="button cssWrap-submit" value="{wrap}"/></label>' +
+				'<input type="reset" class="button cssWrap-cancel" value="{cancel}"/></div></fieldset></form>';
 
 			for (key in dialogReplacements) {
 				if ($.wysiwyg.i18n) {
@@ -76,35 +78,50 @@
 						var $nodeName = range.commonAncestorContainer.nodeName.toLowerCase();
 						// If the selection is already a .wysiwygCssWrapper, then we want to change it and not double-wrap it.
 						if (common.parent(".wysiwygCssWrapper").length) {
+							alert(common.parent(".wysiwygCssWrapper").get(0).nodeName.toLowerCase());
+							$this.find("select[name=type]").val(common.parent(".wysiwygCssWrapper").get(0).nodeName.toLowerCase());
+							$this.find("select[name=type]").attr("disabled", "disabled");
 							$this.find("input[name=id]").val(common.parent(".wysiwygCssWrapper").attr("id"));
-							$this.find("input[name=class]").val(common.parent(".wysiwygCssWrapper").attr("class").replace('wysiwygCssWrapper ', ''));							
+							$this.find("input[name=class]").val(common.parent(".wysiwygCssWrapper").attr("class").replace('wysiwygCssWrapper ', ''));
+							// Add the "unwrap" button:
+							$("form.wysiwyg").find(".cssWrap-unwrap").show();
+							$("form.wysiwyg").find(".cssWrap-unwrap").click(function(e) {
+								e.preventDefault();
+								if ($nodeName !== "body") {
+									common.unwrap();
+								}
+								$this.dialog("close");
+								return 1;
+							});
 						}
 						// Submit button.
-						$("form.wysiwyg").find("#submitDialog").click(function(e) {
+						$("form.wysiwyg").find(".cssWrap-submit").click(function(e) {
 							e.preventDefault();
-							var $wrapper = $(".wysiwyg-dialog-wrapper").find("select[name=type]").val();
-							var $id = $(".wysiwyg-dialog-wrapper").find("input[name=id]").val();
-							var $class = $(".wysiwyg-dialog-wrapper").find("input[name=class]").val();
+							var $wrapper = $("form.wysiwyg").find("select[name=type]").val();
+							var $id = $("form.wysiwyg").find("input[name=id]").val();
+							var $class = $("form.wysiwyg").find("input[name=class]").val();
 							if ($nodeName !== "body") {
 								// If the selection is already a .wysiwygCssWrapper, then we want to change it and not double-wrap it.
 								if (common.parent(".wysiwygCssWrapper").length) {
-									//alert(common.parent(".wysiwygCssWrapper").attr("id"));
 									common.parent(".wysiwygCssWrapper").attr("id", $class);
 									common.parent(".wysiwygCssWrapper").attr("class", $class);
 								} else {
 									common.wrap('<'+$wrapper+' id="'+$id+'" class="'+"wysiwygCssWrapper "+$class+'"/>');
 								}
+							} else {
+								// Currently no implemntation for if $nodeName == 'body'.
 							}
 							$this.dialog("close");
 						});
 						// Cancel button.
-						$("form.wysiwyg").find("#cancelDialog").click(function(e) {
+						$("form.wysiwyg").find(".cssWrap-cancel").click(function(e) {
 							e.preventDefault();
 							$this.dialog("close");
 							return 1;
 						});
 					},
 					close: function () {
+						$(this).dialog("destroy");
 						$(this).remove();
 					}
 				});

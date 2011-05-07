@@ -483,6 +483,7 @@
 					$.wysiwyg.controls.cssWrap.init(this);
 				}
 			}
+			
 		};
 
 		this.defaults = {
