@@ -27,7 +27,7 @@
 
 	// Big picture
 	var Wysiwyg = {
-		controls : {}, // shared controls
+		controls : {},             // shared controls
 		defaults : {},
 		dialogs  : {},
 		dom      : {},
@@ -36,10 +36,17 @@
 		ui       : {},
 		utils    : {},
 
-		instance : function () {} // create new object
+		instance : function () {}, // create new object
+		
+		activeEditor: null,        // References the active editor instance, useful for having a global toolbar.
+		console: console           // Let our console be available for extensions
 	};
 
 	// Detailed overview
+	Wysiwyg.instance = function (object) {
+		console.log(object);
+	};
+
 	Wysiwyg.controls = {
 		
 	};
@@ -153,8 +160,9 @@
 	/*
 	 * jQuery layer
 	 */
-	$.wysiwyg = {
-		console: console, // let our console be available for extensions
+	$.wysiwyg = Wysiwyg;
+
+	$.wysiwygOld = {
 		messages: {},
 
 		addControl: function (object, name, settings) {
@@ -293,7 +301,7 @@
 			return $.wysiwyg[method].apply($.wysiwyg, Array.prototype.slice.call(args, 1));
 		} else if ("object" === typeof method || !method) {
 			Array.prototype.unshift.call(args, this);
-			return $.wysiwyg.init.apply($.wysiwyg, args);
+			return $.wysiwyg.instance.apply($.wysiwyg, args);
 		} else if ($.wysiwyg.plugin.exists(method)) {
 			plugin = $.wysiwyg.plugin.parseName(method);
 			args = Array.prototype.concat.call([args[0]], [this], Array.prototype.slice.call(args, 1));
