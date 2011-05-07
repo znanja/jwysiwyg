@@ -1,6 +1,6 @@
 /**
- * WYSIWYG - jQuery plugin 0.97
- * (0.97.1 - Follow me)
+ * WYSIWYG - jQuery plugin 0.98 dev
+ * (???)
  *
  * Copyright (c) 2008-2009 Juan M Martinez, 2010-2011 Akzhan Abdulin and all contributors
  * https://github.com/akzhan/jwysiwyg
@@ -15,7 +15,6 @@
 
 (function ($) {
 	"use strict";
-	/* Wysiwyg namespace: private properties and methods */
 
 	var console = window.console ? window.console : {
 		log: $.noop,
@@ -23,12 +22,57 @@
 			$.error(msg);
 		}
 	};
+
 	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));  // !(/^[01]\.[0-5](?:\.|$)/.test($.fn.jquery));
 
-	function Wysiwyg() {
-		this.controls = {};
-		this.defaults = {};
+	// Big picture
+	var Wysiwyg = {
+		controls : {}, // shared controls
+		defaults : {},
+		dialogs  : {},
+		dom      : {},
+		editor   : {},
+		plugins  : {},
+		ui       : {},
+		utils    : {},
 
+		instance : function () {} // create new object
+	};
+
+	// Detailed overview
+	Wysiwyg.controls = {
+		
+	};
+
+	Wysiwyg.defaults = {
+			
+	};
+
+	Wysiwyg.dialogs = {
+			
+	};
+
+	Wysiwyg.dom = {
+			
+	};
+
+	Wysiwyg.editor = {
+			
+	};
+
+	Wysiwyg.plugins = {
+			
+	};
+
+	Wysiwyg.ui = {
+			
+	};
+
+	Wysiwyg.utils = {
+			
+	};
+
+	var WysiwygOld = function () {
 		this.editor			= null;
 		this.editorDoc		= null;
 		this.element		= null;
@@ -104,7 +148,7 @@
 		this.triggerControlCallback = function (name) {};
 		this.ui.withoutCss = function () {};
 		this.wrapInitialContent = function () {};
-	}
+	};
 
 	/*
 	 * jQuery layer
@@ -258,7 +302,7 @@
 			console.error("Method '" +  method + "' does not exist on jQuery.wysiwyg.\nTry to include some extra controls or plugins");
 		}
 	};
-	
+
 	$.fn.getWysiwyg = function () {
 		return $.data(this, "wysiwyg");
 	};
