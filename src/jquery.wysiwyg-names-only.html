@@ -9,9 +9,13 @@
 <script type="text/javascript">
 (function ($) {
 	$(document).ready(function () {
-		$.wysiwyg.instance($("#test1"));
+		$.wysiwyg.init($("#test1"));
 		
 		$("#test2").wysiwyg();
+		
+		$("#run1").click(function () {
+			console.log($.wysiwyg.instances.length);
+		});
 	});
 })(jQuery);
 </script>
@@ -19,5 +23,7 @@
 <body>
 <textarea id="test1">Some &lt;b>bold&lt;/b> text with &lt;a href="/link/">link&lt;/a></textarea>
 <textarea id="test2">Some &lt;b>bold&lt;/b> text with &lt;a href="/link/">link&lt;/a></textarea>
+
+<input type="button" value="Run" id="run1"/>
 </body>
 </html>

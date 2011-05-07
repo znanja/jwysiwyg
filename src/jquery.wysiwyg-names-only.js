@@ -36,15 +36,26 @@
 		ui       : {},
 		utils    : {},
 
-		instance : function () {}, // create new object
-		
+		init     : function (object, options) {}, // call instance
+		instance : function (options) {}, // create new object
+
 		activeEditor: null,        // References the active editor instance, useful for having a global toolbar.
-		console: console           // Let our console be available for extensions
+		console: console,          // Let our console be available for extensions
+		instances: []              // Collection
 	};
 
 	// Detailed overview
-	Wysiwyg.instance = function (object) {
-		console.log(object);
+	Wysiwyg.init = function (object, options) {
+		var instance = new this.instance(options);
+
+		object.data("wysiwyg", instance);
+		this.instances.push(instance);
+		
+		return instance;
+	};
+
+	Wysiwyg.instance = function (options) {
+		console.log(options);
 	};
 
 	Wysiwyg.controls = {
@@ -301,7 +312,7 @@
 			return $.wysiwyg[method].apply($.wysiwyg, Array.prototype.slice.call(args, 1));
 		} else if ("object" === typeof method || !method) {
 			Array.prototype.unshift.call(args, this);
-			return $.wysiwyg.instance.apply($.wysiwyg, args);
+			return $.wysiwyg.init.apply($.wysiwyg, args);
 		} else if ($.wysiwyg.plugin.exists(method)) {
 			plugin = $.wysiwyg.plugin.parseName(method);
 			args = Array.prototype.concat.call([args[0]], [this], Array.prototype.slice.call(args, 1));
