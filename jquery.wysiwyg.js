@@ -23,6 +23,7 @@
 			$.error(msg);
 		}
 	};
+	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));  // !(/^[01]\.[0-5](?:\.|$)/.test($.fn.jquery));
 
 	function Wysiwyg() {
 		this.controls = {
@@ -161,7 +162,8 @@
 					}
 
 					if (this.viewHTML) {
-						this.setContent($(this.original).val());
+						this.setContent(this.original.value);
+
 						$(this.original).hide();
 						this.editor.show();
 
@@ -182,13 +184,12 @@
 							if (li.hasClass("html")) {
 								li.removeClass("active");
 							} else {
-								// TODO: Will need to support jQuery 1.6 changes
-								// I suppose to make $.fn.wysiwyg.prop method that maps to attr, removeAttr or prop methods of jQuery depending of its version.
-								li.removeAttr("disabled");
+								li.removeClass('disabled');
 							}
 						});
 					} else {
 						this.saveContent();
+
 						$(this.original).css({
 							width:	this.element.outerWidth() - 6,
 							height: this.element.height() - this.ui.toolbar.height() - 6,
@@ -212,8 +213,7 @@
 								li.addClass("active");
 							} else {
 								if (false === li.hasClass("fullscreen")) {
-									li.removeClass("active");
-									li.attr("disabled", "disabled");
+									li.removeClass("active").addClass('disabled');
 								}
 							}
 						});
@@ -728,7 +728,7 @@
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if ($(this).attr("disabled")) {
+					if ($(this).hasClass("disabled")) {
 						return false;
 					}
 
@@ -757,7 +757,7 @@
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
 				.click(function () {
-					if ($(this).attr("disabled")) {
+					if ($(this).hasClass("disabled")) {
 						return false;
 					}
 
@@ -1571,16 +1571,11 @@
 
 		this.resetFunction = function () {
 			this.setContent(this.initialContent);
-			this.saveContent();
 		};
 
 		this.saveContent = function () {
 			if (this.original) {
 				var content, newContent;
-
-				if (this.viewHTML) {
-					this.setContent($(this.original).val());
-				}
 
 				content = this.getContent();
 
@@ -1728,7 +1723,6 @@
 				}
 
 				oWysiwyg.setContent("");
-				oWysiwyg.saveContent();
 			});
 		},
 
@@ -1938,7 +1932,6 @@
 				}
 
 				oWysiwyg.setContent(newContent);
-				oWysiwyg.saveContent();
 			});
 		},
 
@@ -1956,6 +1949,10 @@
 
 				oWysiwyg.triggerControl.apply(oWysiwyg, [controlName, oWysiwyg.controls[controlName]]);
 			});
+		},
+
+		support: {
+			prop: supportsProp
 		},
 
 		utils: {

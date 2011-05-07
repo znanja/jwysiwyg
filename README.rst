@@ -233,6 +233,10 @@ the wysiwyg() function when it is first called on a textarea. Available keys are
     ``rmFormat``
         ``rmMsWordMarkup``
             A bool. If true then remove MS Word markup is used
+        
+        .. note::
+            To run rmFormat by clicking on remove format control or using triggerControl
+            you also should set $.wysiwyg.rmFormat.enabled = true before they being used
 
 ``toolbarHtml``
     A string containing the source HTML code
@@ -425,14 +429,14 @@ Built-in editor functions can be triggered manually with the
         Include file wysiwyg.table.js to provide this function
 
 * removeFormat
-* save
+* save - save changes from editor to related textarea
 * selectAll
 * setContent
 
-For example, if you want to save the content to original textarea, and then
+For example, if you want to set new content to original textarea, and then
 remove the jWYSIWYG editor to bring original textarea back::
 
-    $("#original").wysiwyg("save").wysiwyg("destroy")
+    $("#original").wysiwyg("setContent", "<p>My new content</p>").wysiwyg("destroy")
 
 ====================================
 Customizing the Editor Look and Feel
