@@ -5,11 +5,20 @@
  * 
  * By Yotam Bar-On (https://github.com/tudmotu)
  */
-(function ($) {
+(function ($) {		
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.cssWrap.js depends on $.wysiwyg";
 	}
-
+	/* For core enhancements #147
+	$.wysiwyg.ui.addControl("cssWrap", {
+		visible : false,
+		groupIndex: 6,
+		tooltip: "CSS Wrapper",
+		exec: function () { 
+				$.wysiwyg.controls.cssWrap.init(this);
+			}
+	}
+	*/	
 	if (!$.wysiwyg.controls) {
 		$.wysiwyg.controls = {};
 	}
@@ -30,9 +39,9 @@
 			};
 
 			formWrapHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
-				'<div class="dialogRow"><label>{wrapperType}: &nbsp;<select name="type"><option value="div">Div</option><option value="span">Span</option></select></label></div>' +
-				'<div class="dialogRow"><label>{ID}: &nbsp;<input name="id" type="text" /></label></div>' + 
-				'<div class="dialogRow"><label>{class}: &nbsp;<input name="class" type="text" /></label></div>' +
+				'<div class="wysiwyg-dialogRow"><label>{wrapperType}: &nbsp;<select name="type"><option value="div">Div</option><option value="span">Span</option></select></label></div>' +
+				'<div class="wysiwyg-dialogRow"><label>{ID}: &nbsp;<input name="id" type="text" /></label></div>' + 
+				'<div class="wysiwyg-dialogRow"><label>{class}: &nbsp;<input name="class" type="text" /></label></div>' +
 				'<input type="submit" id="submitDialog" class="button" value="{submit}"/></label>' +
 				'<input type="reset" id="cancelDialog" value="{reset}"/></fieldset></form>';
 
@@ -47,8 +56,8 @@
 				formWrapHtml = formWrapHtml.replace("{" + key + "}", dialogReplacements[key]);
 			}
 			if (!$(".wysiwyg-dialog-wrapper").length) {
-				$('<div class="wysiwyg-dialog-wrapper">'+formWrapHtml+'</div>').appendTo("body");
-				$(".wysiwyg-dialog-wrapper").dialog({
+				$(formWrapHtml).appendTo("body");
+				$("form.wysiwyg").dialog({
 					modal: true,
 					open: function (ev, ui) {
 						$this = $(this);
