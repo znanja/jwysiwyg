@@ -2,6 +2,8 @@
  * Controls: Element CSS Wrapper plugin
  *
  * Depends on jWYSIWYG
+ * 
+ * By Yotam Bar-On (https://github.com/tudmotu)
  */
 (function ($) {
 	if (undefined === $.wysiwyg) {
@@ -44,51 +46,53 @@
 				}
 				formWrapHtml = formWrapHtml.replace("{" + key + "}", dialogReplacements[key]);
 			}
-			if (!$("#cssWrapWrapper").length) {
-				$('<div id="cssWrapWrapper">'+formWrapHtml+'</div>').appendTo("body");
-				$("#cssWrapWrapper").dialog({
+			if (!$(".wysiwyg-dialog-wrapper").length) {
+				$('<div class="wysiwyg-dialog-wrapper">'+formWrapHtml+'</div>').appendTo("body");
+				$(".wysiwyg-dialog-wrapper").dialog({
 					modal: true,
 					open: function (ev, ui) {
 						$this = $(this);
 						var range	= Wysiwyg.getInternalRange(), common;
 						// We make sure that there is some selection:
 						if (range) {
+							if ($.browser.msie) {
+								Wysiwyg.ui.focus();
+							}
 							common	= $(range.commonAncestorContainer);
 						} else {
 							alert("You must select some elements before you can wrap them.");
 							$this.dialog("close");
+							return 0;
 						}
 						var $nodeName = range.commonAncestorContainer.nodeName.toLowerCase();
-						// If the selection is already a .wysiwygCssWrapper, then we want to change it and not wrap it again.
+						// If the selection is already a .wysiwygCssWrapper, then we want to change it and not double-wrap it.
 						if (common.parent(".wysiwygCssWrapper").length) {
 							$this.find("input[name=id]").val(common.parent(".wysiwygCssWrapper").attr("id"));
 							$this.find("input[name=class]").val(common.parent(".wysiwygCssWrapper").attr("class").replace('wysiwygCssWrapper ', ''));							
 						}
 						// Submit button.
-						$("form.wysiwyg").find("#submitDialog").live("click", function(e) {
+						$("form.wysiwyg").find("#submitDialog").click(function(e) {
 							e.preventDefault();
-							var args = $("#cssWrapWrapper").find("form").serializeArray();
-							// If the selection is already a .wysiwygCssWrapper, then we want to change it and not wrap it again.
-							if (common.parent(".wysiwygCssWrapper").length) {
-								alert('hey');
-								common.parent(".wysiwygCssWrapper").attr("id", args[1].value);
-								common.parent(".wysiwygCssWrapper").attr("class", "wysiwygCssWrapper "+args[2].value);
-								$this.dialog("close");
-							} else {
-								if ($nodeName !== "body") {
-									common.wrap('<'+args[0].value+' id="'+args[1].value+'" class="'+"wysiwygCssWrapper "+args[2].value+'"/>');
-									$this.dialog("close");
+							var $wrapper = $(".wysiwyg-dialog-wrapper").find("select[name=type]").val();
+							var $id = $(".wysiwyg-dialog-wrapper").find("input[name=id]").val();
+							var $class = $(".wysiwyg-dialog-wrapper").find("input[name=class]").val();
+							if ($nodeName !== "body") {
+								// If the selection is already a .wysiwygCssWrapper, then we want to change it and not double-wrap it.
+								if (common.parent(".wysiwygCssWrapper").length) {
+									//alert(common.parent(".wysiwygCssWrapper").attr("id"));
+									common.parent(".wysiwygCssWrapper").attr("id", $class);
+									common.parent(".wysiwygCssWrapper").attr("class", $class);
 								} else {
-									common.prepend('<'+args[0].value+' id="'+args[1].value+'" class="'+"wysiwygCssWrapper "+args[2].value+'">');
-									common.append('</'+args[0].value+'>');
-									$this.dialog("close");
+									common.wrap('<'+$wrapper+' id="'+$id+'" class="'+"wysiwygCssWrapper "+$class+'"/>');
 								}
-							}							
+							}
+							$this.dialog("close");
 						});
 						// Cancel button.
-						$("form.wysiwyg").find("#cancelDialog").live('click', function(e) {
+						$("form.wysiwyg").find("#cancelDialog").click(function(e) {
 							e.preventDefault();
 							$this.dialog("close");
+							return 1;
 						});
 					},
 					close: function () {
