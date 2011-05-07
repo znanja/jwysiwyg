@@ -2,6 +2,12 @@
 
 ## master (not tagged yet)
 
+## Version 0.97.2 (From infinity)
+
+* Preparing to jQuery 1.6 - akzhan
+* Fixed infinite loops - frost-nzcr4
+* rmFormat a bit improved - frost-nzcr4
+* Fixed issue in Firefox when insertHtml is used - frost-nzcr4
 * Useless disabled attribute on LI tags has been removed, disabled class added instead of - akzhan
 
 ## Version 0.97.1 (Follow me)
