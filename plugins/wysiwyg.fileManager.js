@@ -18,12 +18,19 @@
 		ajaxHandler: "",
 		setAjaxHandler: function(_handler) {
 			this.ajaxHandler = _handler;
+			return this;
 		},
 		isAjaxSet: function () {
-			return false;
+			if (this.ajaxHandler) {
+				return true;
+			} else {
+				return false;
+			}
 		},
 		init: function() {
-			if (!this.isAjaxSet) {
+			if (this.ajaxHandler) {
+				return loadFileManagerUI();
+			} else {
 				return false;
 			}
 		}
@@ -33,11 +40,29 @@
 	$.wysiwyg.plugin.register(fileManager);
 	
 	// Private methods:
-	function loadFileManagerUI (_handler) {
-		
+	function loadFileManagerUI () {
+		var fileList = getDir('/');
+		var content = '<div>'+fileList+'</div>';
+		if ($.wysiwyg.dialog) {
+			$.wysiwyg.dialog(content);
+		} else if ($.dialog) {
+			$(content).dialog();
+		} else {
+			// If neither of the above works..
+		}
+		return $.wysiwyg.fileManager.ajaxHandler;
 	}
-	function getDir (_handler) {
-		
+	function getDir (dir) {
+		var treeHtml = '<ul>';
+		// Retreives list of files inside a certain directory:
+		$.getJSON($.wysiwyg.fileManager.ajaxHandler, { "dir": dir },function (json) {
+			$.each(json.data, function(name, type) {
+				var ext = (type === "file") ? name.replace(/^.*?\./, '') : "dir";
+				treeHtml += '<li class="wysiwyg-'+ext+'">'+name+'</li>';
+			});
+		});
+		treeHtml += '</ul>';
+		return treeHtml; // And returns HTML
 	}
 
 })(jQuery);
