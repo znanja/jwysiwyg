@@ -28,10 +28,10 @@
 				return false;
 			}
 		},
-		init: function (selector) {
+		init: function () {
 			if (this.ajaxHandler) {
 				manager = new fileManagerObj(this.ajaxHandler);
-				manager.load(selector);
+				manager.load();
 			} else {
 				return false;
 			}
@@ -47,7 +47,7 @@
 		this.loaded = false;
 		this.curDir = "/";
 		// Methods
-		this.load = function (selector) {
+		this.load = function () {
 			var self = this;
 			self.loaded = true;
 			// Wrap the file list:

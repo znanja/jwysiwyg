@@ -1,0 +1,7 @@
+/*
+ * Style Sheet for the File Manager plugin for jWYSIWYG
+ * 
+ * Yotam Bar-On, 2011
+ */
+ 
+div.wysiwyg ul.toolbar li.fileManager { background: url('icon.png'); }
