@@ -41,94 +41,89 @@
 	// Register:
 	$.wysiwyg.plugin.register(fileManager);
 	
+	
+	
 	// Private object:
 	function fileManagerObj (_handler) {
 		this.handler = _handler;
 		this.loaded = false;
 		this.curDir = "/";
+		this.curListHtml = "";
 		// Methods
 		this.load = function () {
 			var self = this;
 			self.loaded = true;
 			// Wrap the file list:
-			var fileList = self.loadDir();
-			var uiHtml = '<div class="wysiwyg-files-wrapper"><span class="wysiwyg-files-title">You are in: &nbsp;'+self.curDir+'</span><br/><div id="wysiwyg-files-list-wrapper">'+fileList+'</div><input type="text" name="url" /></div>';
-			if ($.wysiwyg.dialog) {
-				$.wysiwyg.dialog(uiHtml);
-			} else if ($.fn.dialog()) {
-				$(uiHtml).dialog({
-					modal: true,
-					open: function () {
-						dialog = $(this);
-						dialog.find("li").mouseenter(function () {
-							if ($(this).hasClass("wysiwyg-files-dir")) {
-								$(this).addClass("wysiwyg-files-dir-expanded");
-							}
-							$(this).addClass("wysiwyg-files-hover");
-						}).mouseleave(function () {
-							$(this).removeClass("wysiwyg-files-dir-expanded");
-							$(this).removeClass("wysiwyg-files-hover");
-						});
-						dialog.find("li").click(function () {
-							$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF")
-							if ($(this).hasClass("wysiwyg-files-dir")) {
-								self.curDir = $(this).attr("rel");
-								$(".wysiwyg-files-wrapper").find("input[name=url]").val('');
-								$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
-								$('#wysiwyg-files-list-wrapper').clear();
-								$('#wysiwyg-files-list-wrapper').load(self.loadDir(), function () {
-									$('#wysiwyg-files-list-wrapper').removeClass("wysiwyg-files-ajax");
-								});
-							} else {
-								$(this).css("backgroundColor", "#BDF")
-								$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
-							}
-						});
-					},
-					close: function () {
-						$(this).dialog("destroy");
-						$(this).remove();
-					}
-				});
-			} else {
-				throw "$.wysiwyg.fileManager: Can't find a working '.dialog()' lib.";
-				// If neither of the above works..
-			}
+			self.loadDir("/", function (fileList) {
+				var uiHtml = '<div class="wysiwyg-files-wrapper" title="File Manager"><div id="wysiwyg-files-list-wrapper">'+fileList+'</div><input type="text" name="url" /></div>';
+				if ($.wysiwyg.dialog) {
+					// Future support for native $.wysiwyg.dialog()
+					$.wysiwyg.dialog(uiHtml);
+				} else if ($.fn.dialog()) {
+					$(uiHtml).dialog({
+						modal: true,
+						draggable: true,
+						resizable: true,
+						open: function () {
+							dialog = $(this);
+							dialog.find("li").live("mouseenter", function () {
+								if ($(this).hasClass("wysiwyg-files-dir")) {
+									$(this).addClass("wysiwyg-files-dir-expanded");
+								}
+								$(this).addClass("wysiwyg-files-hover");
+							}).live("mouseleave", function () {
+								$(this).removeClass("wysiwyg-files-dir-expanded");
+								$(this).removeClass("wysiwyg-files-hover");
+							});
+							dialog.find("li").live("click", function () {
+								$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF")
+								if ($(this).hasClass("wysiwyg-files-dir")) {
+									$(".wysiwyg-files-wrapper").find("input[name=url]").val('');
+									$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
+									$('#wysiwyg-files-list-wrapper').html('');
+									self.loadDir($(this).attr("rel"), function (newFileList) {
+										$('#wysiwyg-files-list-wrapper').html(newFileList);
+										$('#wysiwyg-files-list-wrapper').removeClass("wysiwyg-files-ajax");
+									});
+								} else {
+									$(this).css("backgroundColor", "#BDF")
+									$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
+								}
+							});
+						},
+						close: function () {
+							$(this).dialog("destroy");
+							$(this).remove();
+						}
+					});
+				} else {
+					throw "$.wysiwyg.fileManager: Can't find a working '.dialog()' lib.";
+					// If neither of the above works..
+				}
+			});
 		}
 		
-		this.loadDir = function () {
+		this.loadDir = function (dir, callback) {
 			var self = this;
+			self.curDir = dir;
 			// Retreives list of files inside a certain directory:
-			//$.getJSON(self.handler, { "dir": self.curDir }, function (json) {
-				var json = {
-					"data": {
-						"directories": [
-							"directory 1",
-							"directory 2",
-							"directory 3"
-						],
-						"files": {
-							"image.jpg": "http://localhost/image.jpg",
-							"movie.avi": "http://localhost/movie.avi",
-							"document.pdf": "http://localhost/document.pdf",
-							"music.ogg": "http://localhost/music.ogg"
-							
-						}
-					}
-				}
-				return this.renderList(json);
-			//});
+			$.getJSON(self.handler, { "dir": self.curDir, "action": "browse" }, function (json) {
+				callback(self.renderList(json));
+			});
 		}
 		
 		this.renderList = function (json) {
 			var self = this;
 			var treeHtml = '<ul class="wysiwyg-files-list">';
-			$.each(json.data.directories, function(idx, name) {
-				var dirPath = self.curDir.replace(/\/?$/, '') + '/' + name;
+			if (self.curDir !== "/") {
+				var prevDir = self.curDir.replace(/[^\/]+\/?$/, '');
+				treeHtml += '<li class="wysiwyg-files-dir wysiwyg-files-dir-prev" rel="'+prevDir+'" title="Go to previous directory">'+prevDir+'</li>';
+			}
+			$.each(json.data.directories, function(name, dirPath) {
 				treeHtml += '<li class="wysiwyg-files-dir" rel="'+dirPath+'">'+name+'</li>';
 			});			
 			$.each(json.data.files, function(name, url) {
-				var ext = name.replace(/^.*?\./, '');
+				var ext = name.replace(/^.*?\./, '').toLowerCase();
 				treeHtml += '<li class="wysiwyg-files-file wysiwyg-files-'+ext+'" rel="'+url+'">'+name+'</li>';
 			});			
 			treeHtml += '</ul>';
@@ -138,6 +133,14 @@
 	}
 	
 	this.deleteFile = function () {
+		
+	}
+	
+	this.moveFile = function () {
+		
+	}
+	
+	this.renameFile = function () {
 		
 	}
 	

@@ -9,8 +9,10 @@
  
 div.wysiwyg ul.toolbar li.fileManager { background: url('icon.png'); }
 
-#wysiwyg-files-list-wrapper { max-height:600px; overflow:auto; }
+#wysiwyg-files-list-wrapper { min-height:50px; max-height:400px; overflow:auto; }
+* html #wysiwyg-files-list-wrapper { height: 600px; }
 
+.wysiwyg-files-ajax { background: url(../../ajax-loader.gif) left top no-repeat; }
 .wysiwyg-files-wrapper input[type=text] { width:250px; }
 .wysiwyg-files-wrapper ul { padding:0px; margin:0px; }
 .wysiwyg-files-wrapper li { list-style:none; padding:0px; padding-left:20px; margin: 2px; }
@@ -19,6 +21,7 @@ div.wysiwyg ul.toolbar li.fileManager { background: url('icon.png'); }
 .wysiwyg-files-wrapper li.wysiwyg-files-dir { background: url(images/directory.png) left top no-repeat; }
 .wysiwyg-files-wrapper li.wysiwyg-files-dir-expanded { background: url(images/folder_open.png) left top no-repeat; }
 .wysiwyg-files-wrapper li.wysiwyg-files-file { background: url(images/file.png) left top no-repeat; }
+.wysiwyg-files-wrapper li.wysiwyg-files-dir-prev { background: url(images/prev-directory.png) left top no-repeat !important; }
 
 
 /*
