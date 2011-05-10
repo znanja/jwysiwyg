@@ -80,7 +80,7 @@
 								if ($(this).hasClass("wysiwyg-files-dir")) {
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val('');
 									$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
-									$('#wysiwyg-files-list-wrapper').html('');
+									$('#wysiwyg-files-list-wrapper').html("");
 									self.loadDir($(this).attr("rel"), function (newFileList) {
 										$('#wysiwyg-files-list-wrapper').html(newFileList);
 										$('#wysiwyg-files-list-wrapper').removeClass("wysiwyg-files-ajax");
@@ -89,6 +89,11 @@
 									$(this).css("backgroundColor", "#BDF")
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
 								}
+								/* Need to add functionality for a "select" button that will trigger a callback function:
+								 * $.wysiwyg.fileManager.setAjaxHandler('...').init(function (selected_file) {
+								 *     ....
+								 * });
+								 */
 							});
 						},
 						close: function () {
@@ -117,7 +122,7 @@
 			var treeHtml = '<ul class="wysiwyg-files-list">';
 			if (self.curDir !== "/") {
 				var prevDir = self.curDir.replace(/[^\/]+\/?$/, '');
-				treeHtml += '<li class="wysiwyg-files-dir wysiwyg-files-dir-prev" rel="'+prevDir+'" title="Go to previous directory">'+prevDir+'</li>';
+				treeHtml += '<li class="wysiwyg-files-dir wysiwyg-files-dir-prev" rel="'+prevDir+'" title="Go to previous directory">'+self.curDir+'</li>';
 			}
 			$.each(json.data.directories, function(name, dirPath) {
 				treeHtml += '<li class="wysiwyg-files-dir" rel="'+dirPath+'">'+name+'</li>';

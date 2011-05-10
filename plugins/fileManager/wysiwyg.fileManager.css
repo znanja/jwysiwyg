@@ -27,6 +27,8 @@ div.wysiwyg ul.toolbar li.fileManager { background: url('icon.png'); }
 /*
  * Below is the list of file-types classes.
  */
+ 
+ /* This REALLY needs to become a sprite */
 .wysiwyg-files-wrapper li.wysiwyg-files-3gp { background: url(images/film.png) left top no-repeat; }
 .wysiwyg-files-wrapper li.wysiwyg-files-afp { background: url(images/code.png) left top no-repeat; }
 .wysiwyg-files-wrapper li.wysiwyg-files-afpa { background: url(images/code.png) left top no-repeat; }
