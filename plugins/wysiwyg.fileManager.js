@@ -60,20 +60,29 @@
 					modal: true,
 					open: function () {
 						dialog = $(this);
-						$(".wysiwyg-files-wrapper").find("li").click(function () {
+						dialog.find("li").mouseenter(function () {
+							if ($(this).hasClass("wysiwyg-files-dir")) {
+								$(this).addClass("wysiwyg-files-dir-expanded");
+							}
+							$(this).addClass("wysiwyg-files-hover");
+						}).mouseleave(function () {
+							$(this).removeClass("wysiwyg-files-dir-expanded");
+							$(this).removeClass("wysiwyg-files-hover");
+						});
+						dialog.find("li").click(function () {
 							$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF")
-							$(this).css("backgroundColor", "#BDF")
 							if ($(this).hasClass("wysiwyg-files-dir")) {
 								self.curDir = $(this).attr("rel");
 								$(".wysiwyg-files-wrapper").find("input[name=url]").val('');
-								$('#wysiwyg-files-list-wrapper').load(self.loadDir());
+								$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
+								$('#wysiwyg-files-list-wrapper').clear();
+								$('#wysiwyg-files-list-wrapper').load(self.loadDir(), function () {
+									$('#wysiwyg-files-list-wrapper').removeClass("wysiwyg-files-ajax");
+								});
 							} else {
+								$(this).css("backgroundColor", "#BDF")
 								$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
 							}
-						});
-						$(".wysiwyg-files-wrapper").find("input[type=submit]").click(function () {
-							$(".wysiwyg-files-wrapper").find.text(self.selected);
-							dialog.dialog("close");
 						});
 					},
 					close: function () {
@@ -120,7 +129,7 @@
 			});			
 			$.each(json.data.files, function(name, url) {
 				var ext = name.replace(/^.*?\./, '');
-				treeHtml += '<li class="wysiwyg-files-'+ext+'" rel="'+url+'">'+name+'</li>';
+				treeHtml += '<li class="wysiwyg-files-file wysiwyg-files-'+ext+'" rel="'+url+'">'+name+'</li>';
 			});			
 			treeHtml += '</ul>';
 			return treeHtml;
