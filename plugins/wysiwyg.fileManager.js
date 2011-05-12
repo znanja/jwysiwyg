@@ -76,7 +76,7 @@
 								$(this).removeClass("wysiwyg-files-hover");
 							});
 							dialog.find("li").live("click", function () {
-								$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF")
+								$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
 								if ($(this).hasClass("wysiwyg-files-dir")) {
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val('');
 									$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
@@ -87,7 +87,7 @@
 									});
 									dialog.find("input[name=submit]").hide();
 								} else {
-									$(this).css("backgroundColor", "#BDF")
+									$(this).css("backgroundColor", "#BDF");
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
 									dialog.find("input[name=submit]").show();
 								}
@@ -131,7 +131,7 @@
 			var self = this;
 			self.curDir = dir;
 			// Retreives list of files inside a certain directory:
-			$.getJSON(self.handler, { "dir": self.curDir, "action": "browse" }, function (json) {
+			$.getJSON(self.handler, { "dir": self.curDir, "action": "list" }, function (json) {
 				callback(self.renderList(json));
 			});
 		}
