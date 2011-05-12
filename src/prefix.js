@@ -12,8 +12,8 @@
 
 /*jslint browser: true, forin: true */
 
-(function($) {
-	
+(function($, window) {
+	"use strict";
 	if (typeof $ === "undefined" || $ !== window.jQuery){
 		$.error("jQuery not found. Please include jQuery prior to including jwysiwyg.");
 		return false;
