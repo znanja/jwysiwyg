@@ -56,5 +56,3 @@ var Wysiwyg = function(){
 	
 	
 };
-
-$.wysiwyg = Wysiwyg;
