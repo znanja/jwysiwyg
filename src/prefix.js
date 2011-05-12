@@ -12,14 +12,19 @@
 
 /*jslint browser: true, forin: true */
 
-(function($, window) {
+(function( window, undefined ) {
 	"use strict";
-	if (typeof $ === "undefined" || $ !== window.jQuery){
+
+	// Use the correct document accordingly with window argument (sandbox)
+	var document = window.document,
+		$ = window.jQuery;
+
+
+	if ($ === undefined) {
 		$.error("jQuery not found. Please include jQuery prior to including jwysiwyg.");
 		return false;
 	}
-		
-	if (typeof $.wysiwyg !== "undefined" && $.wysiwyg.version) {
+
+	if ($.wysiwyg !== undefined && $.wysiwyg.version) {
 		return true;
 	}
-	
