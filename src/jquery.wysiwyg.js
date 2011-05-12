@@ -232,7 +232,7 @@
 		}
 	});
 	
-	
+	// end Dialog
 	
 	// Wysiwyg
 	

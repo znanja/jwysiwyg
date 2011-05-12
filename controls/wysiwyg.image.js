@@ -68,20 +68,20 @@
 				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 			}
 
-			formImageHtml = '<form class="wysiwyg"><fieldset>' +
-				'<label>' + formTextPreview + ': <img src="" alt="' + formTextPreview + '" style="float: right; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
-				'<label>' + formTextUrl + ': <input type="text" name="src" value=""/></label>' +
-				'<label>' + formTextTitle + ': <input type="text" name="imgtitle" value=""/></label>' +
-				'<label>' + formTextDescription + ': <input type="text" name="description" value=""/></label>' +
-				'<label>' + formTextWidth + ' x ' + formTextHeight + ': <input type="text" name="width" value="" class="width"/> x <input type="text" name="height" value="" class="height"/></label>' +
-				'<label>' + formTextOriginal + ': <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
-				'<input type="text" name="naturalHeight" value="" class="height" disabled="disabled"/></label>' +
-				'<label>' + formTextFloat + ': <select name="float">' + 
+			formImageHtml = '<form class="wysiwyg" id="wysiwyg-addImage"><fieldset>' +
+				'<div class="form-row"><span class="form-row-key">' + formTextPreview + ':</span><div class="form-row-value"><img src="" alt="' + formTextPreview + '" style="margin: 2px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></div></div>'+
+				'<div class="form-row"><label for="name">' + formTextUrl + ':</label><div class="form-row-value"><input type="text" name="src" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">' + formTextTitle + ':</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">' + formTextDescription + ':</label><div class="form-row-value"><input type="text" name="description" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">' + formTextWidth + ' x ' + formTextHeight + ':</label><div class="form-row-value"><input type="text" name="width" value="" class="width-small"/> x <input type="text" name="height" value="" class="width-small"/></div></div>' +
+				'<div class="form-row"><label for="name">' + formTextOriginal + ':</label><div class="form-row-value"><input type="text" name="naturalWidth" value="" class="width-small" disabled="disabled"/> x ' +
+				'<input type="text" name="naturalHeight" value="" class="width-small" disabled="disabled"/></div></div>' +
+				'<div class="form-row"><label for="name">' + formTextFloat + ':</label><div class="form-row-value"><select name="float">' + 
 				'<option value="">' + formTextFloatNone + '</option>' +
 				'<option value="left">' + formTextFloatLeft + '</option>' +
-				'<option value="right">' + formTextFloatRight + '</option></select></label>' +
-				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
-				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
+				'<option value="right">' + formTextFloatRight + '</option></select></div></div>' +
+				'<div class="form-row form-row-last"><label for="name"></label><div class="form-row-value"><input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
+				'<input type="reset" value="' + formTextReset + '"/></div></div></fieldset></form>';
 
 			if (img.self) {
 				img.src = img.self.src ? img.self.src : "";
@@ -97,7 +97,8 @@
 			});
 			
 			$(adialog).bind("afterOpen", function (e, dialog) {
-				$("input:submit", dialog).click(function (e) {
+				$("form#wysiwyg-addImage", dialog).submit(function (e) {
+					e.preventDefault();
 					self.processInsert(dialog.container, Wysiwyg, img);
 					
 					adialog.close();
@@ -112,7 +113,7 @@
 					e.stopPropagation();
 				});
 				
-				self.makeForm($(formImageHtml), img);
+				self.makeForm(dialog, img);
 			});
 			
 			adialog.open();
@@ -132,7 +133,7 @@
 				found,
 				baseUrl;
 
-			if (Wysiwyg.options.controlImage.forceRelativeUrls) {
+			if (Wysiwyg.options.controlImage && Wysiwyg.options.controlImage.forceRelativeUrls) {
 				baseUrl = window.location.protocol + "//" + window.location.hostname;
 				if (0 === url.indexOf(baseUrl)) {
 					url = url.substr(baseUrl.length);
@@ -190,6 +191,7 @@
 		},
 
 		makeForm: function (form, img) {
+			console.log(form.find("input[name=src]"));
 			form.find("input[name=src]").val(img.src);
 			form.find("input[name=imgtitle]").val(img.title);
 			form.find("input[name=description]").val(img.alt);

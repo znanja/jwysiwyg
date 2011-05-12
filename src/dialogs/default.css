@@ -47,6 +47,51 @@
 .wysiwyg-dialog form.wysiwyg fieldset {
 	border:1px #ccc solid;
 }
+
 .wysiwyg-dialog form.wysiwyg legend {
 	padding:7px;
 }
+
+.wysiwyg-dialog form.wysiwyg .form-row {
+	clear:both;
+	padding:4px 0;
+}
+
+.wysiwyg-dialog form.wysiwyg .form-row label, .wysiwyg-dialog form.wysiwyg .form-row .form-row-key {
+	display:block;
+	float:left;
+	width:35%;
+	text-align:right;
+	padding:4px 5px;
+}
+
+.wysiwyg-dialog form.wysiwyg .form-row .form-row-value {
+	display:block;
+	float:left;
+	width:55%;
+}
+
+.wysiwyg-dialog form.wysiwyg .form-row input.width-auto {
+	width:auto;
+}
+
+.wysiwyg-dialog form.wysiwyg input.width-small {
+	width:50px;
+	min-width:50px;
+	max-width:50px;
+}
+
+.wysiwyg-dialog form.wysiwyg input, .wysiwyg-dialog form.wysiwyg select {
+	padding:2px;
+	width:100%;
+	margin:2px;
+}
+
+.wysiwyg-dialog form.wysiwyg input[type=submit], .wysiwyg-dialog form.wysiwyg input[type=reset] {
+	padding:2px 7px;
+	width:auto;
+}
+
+
+
+
