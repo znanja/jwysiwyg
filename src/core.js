@@ -2,7 +2,7 @@
 var Wysiwyg = function(){
 	
 	this.version  =  "@VERSION";		// Overwritten at compile time
-	this.fn       = {}; 				// Plugins are accessed via fn caller, this is compatabile with jQuery's format and is familiar.
+	this.fn       = {}; 				// Plugins are accessed via fn caller, this is compatible with jQuery's format and is familiar.
 	this.dialog   = {};
 	this.utils    = {};
 	this.ui       = {};
