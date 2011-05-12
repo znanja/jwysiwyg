@@ -28,16 +28,16 @@
 				return false;
 			}
 		},
-		init: function () {
+		init: function (callback) {
 			if (this.ajaxHandler) {
 				manager = new fileManagerObj(this.ajaxHandler);
-				manager.load();
+				manager.load(callback);
 			} else {
 				return false;
 			}
 		}
 		
-	 }
+	 };
 	// Register:
 	$.wysiwyg.plugin.register(fileManager);
 	
@@ -50,12 +50,12 @@
 		this.curDir = "/";
 		this.curListHtml = "";
 		// Methods
-		this.load = function () {
+		this.load = function (callback) {
 			var self = this;
 			self.loaded = true;
 			// Wrap the file list:
 			self.loadDir("/", function (fileList) {
-				var uiHtml = '<div class="wysiwyg-files-wrapper" title="File Manager"><div id="wysiwyg-files-list-wrapper">'+fileList+'</div><input type="text" name="url" /></div>';
+				var uiHtml = '<div class="wysiwyg-files-wrapper" title="File Manager"><div id="wysiwyg-files-list-wrapper">'+fileList+'</div><input type="text" name="url" /><input style="display:none;" type="button" name="submit" value="Select" /></div>';
 				if ($.wysiwyg.dialog) {
 					// Future support for native $.wysiwyg.dialog()
 					$.wysiwyg.dialog(uiHtml);
@@ -76,7 +76,7 @@
 								$(this).removeClass("wysiwyg-files-hover");
 							});
 							dialog.find("li").live("click", function () {
-								$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF")
+								$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
 								if ($(this).hasClass("wysiwyg-files-dir")) {
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val('');
 									$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
@@ -85,15 +85,22 @@
 										$('#wysiwyg-files-list-wrapper').html(newFileList);
 										$('#wysiwyg-files-list-wrapper').removeClass("wysiwyg-files-ajax");
 									});
+									dialog.find("input[name=submit]").hide();
 								} else {
-									$(this).css("backgroundColor", "#BDF")
+									$(this).css("backgroundColor", "#BDF");
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
+									dialog.find("input[name=submit]").show();
 								}
-								/* Need to add functionality for a "select" button that will trigger a callback function:
-								 * $.wysiwyg.fileManager.setAjaxHandler('...').init(function (selected_file) {
-								 *     ....
-								 * });
-								 */
+							});
+							dialog.find("input[name=submit]").live("click", function () {
+								var file = dialog.find("input[name=url]").val();
+								dialog.dialog("close");
+								self.loaded = false;
+								callback(file);
+							});
+							dialog.find("li.wysiwyg-files-file").live("dblclick", function () {
+								$(this).trigger("click");
+								dialog.find("input[name=submit]").trigger("click");
 							});
 						},
 						close: function () {
@@ -106,7 +113,7 @@
 					// If neither of the above works..
 				}
 			});
-		}
+		};
 		
 		this.loadDir = function (dir, callback) {
 			var self = this;
@@ -115,7 +122,7 @@
 			$.getJSON(self.handler, { "dir": self.curDir, "action": "browse" }, function (json) {
 				callback(self.renderList(json));
 			});
-		}
+		};
 		
 		this.renderList = function (json) {
 			var self = this;
@@ -133,20 +140,20 @@
 			});			
 			treeHtml += '</ul>';
 			return treeHtml;
-		}
+		};
 
-	}
+	};
 	
 	this.deleteFile = function () {
 		
-	}
+	};
 	
 	this.moveFile = function () {
 		
-	}
+	};
 	
 	this.renameFile = function () {
 		
-	}
+	};
 	
 })(jQuery);
