@@ -49,7 +49,6 @@
 		rmUnusedControls: false,	// https://github.com/akzhan/jwysiwyg/issues/52
 		rmUnwantedBr: true,			// http://code.google.com/p/jwysiwyg/issues/detail?id=11
 		tableFiller: "Lorem ipsum",
-		initialMinHeight: null, 
 		// Plugin references
 		plugins: {}				
 	};
@@ -181,7 +180,7 @@
 		//////////////////////////////////////////////////////////////////////////////
 		
 		// Enable deignMode
-		function designMode(){
+		function designMode(){ //private
 			var attempts = 3,
 				runner = function(attempts) {
 					if("on" === editorDoc.designMode) {
@@ -202,13 +201,13 @@
 			runner(attempts);
 		}
 		
-		function focusEditor(){
+		function focusEditor(){ //private
 			editor.get(0).contentWindow.focus();
 			return self;
 		}
 		
 		// Get the selection range, functions for editor instance, and within the editor.
-		function getInternalRange() {
+		function getInternalRange() { //private
 			var selection = getInteralSelection();
 			if (!selection) return null;
 
@@ -217,7 +216,7 @@
 			return null;
 		};
 		
-		function getRange() {
+		function getRange() { //private
 			var selection = getSelection();
 			if (!selection) return null;
 			if (selection.rangeCount && selection.rangeCount > 0) selection.getRangeAt(0); // w3c
@@ -225,14 +224,14 @@
 			return null;
 		};
 		
-		function getRangeText() {
+		function getRangeText() { //private
 			var rng = getInternalRange();
 			if(rng.toString) rng   = rng.toString();
 			else if (rng.text) rng = rng.text; // IE
 			return rng;
 		};
 
-		function getInternalSelection() {
+		function getInternalSelection() { //private
 			// Firefox: document.getSelection is deprecated
 			if (editor.get(0).contentWindow) {
 				if (editor.get(0).contentWindow.getSelection) 	return editor.get(0).contentWindow.getSelection();
@@ -244,11 +243,11 @@
 			return null;
 		};
 		
-		function getSelection() {
+		function getSelection() { //private
 			return (window.getSelection) ? window.getSelection() : window.document.selection;
 		};
 		
-		function initEditor(){
+		function initEditor(){ //private
 			var newX = (original.width || original.clientWidth || 0),
 				newY = (original.height || original.clientHeight || 0),
 				i;
@@ -307,7 +306,7 @@
 			
 		};
 		
-		function initFrame(){
+		function initFrame(){ //private
 			var stylesheet,
 				growHandler,
 				saveHandler,
@@ -505,7 +504,7 @@
 			
 		};
 		
-		function innerDocument() {
+		function innerDocument() { //private
 			var doc = $(editor).get(0);
 			if (doc.nodeName.toLowerCase() === "iframe") {
 				if(doc.contentDocument) return doc.contentDocument; // Gecko
@@ -515,7 +514,7 @@
 			return doc;
 		};
 		
-		function returnRange(){
+		function returnRange(){ //private
 			var sel;
 			
 			if(savedRange !== null) {
@@ -534,7 +533,7 @@
 		
 		// Trigger a control method
 		// Trying to combine all control functionality into a single method
-		function triggerControl(name, control){
+		function triggerControl(name, control){ //private
 			var cmd  = control.command || name,
 				args = control["arguments"] || control.args || [];
 			if(control.exec) control.exec.apply((ui.mode == "external" ? $.wysiwyg.activeEditor : self));
