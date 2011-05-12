@@ -37,7 +37,7 @@
 			}
 		}
 		
-	 };
+	 }
 	// Register:
 	$.wysiwyg.plugin.register(fileManager);
 	
@@ -76,7 +76,7 @@
 								$(this).removeClass("wysiwyg-files-hover");
 							});
 							dialog.find("li").live("click", function () {
-								$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
+								$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF")
 								if ($(this).hasClass("wysiwyg-files-dir")) {
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val('');
 									$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
@@ -87,7 +87,7 @@
 									});
 									dialog.find("input[name=submit]").hide();
 								} else {
-									$(this).css("backgroundColor", "#BDF");
+									$(this).css("backgroundColor", "#BDF")
 									$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
 									dialog.find("input[name=submit]").show();
 								}
@@ -102,6 +102,18 @@
 								$(this).trigger("click");
 								dialog.find("input[name=submit]").trigger("click");
 							});
+							dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
+								var $this = $(this);
+								$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": $this.attr("rel"), "alt": $this.text() }).appendTo("body");
+								$("img.wysiwyg-files-file-preview").load(function () {
+									$(this).removeClass("wysiwyg-files-ajax");
+								});
+							}).live("mousemove", function (e) {
+								$("img.wysiwyg-files-file-preview").css("left", e.pageX + 15);
+								$("img.wysiwyg-files-file-preview").css("top", e.pageY - 15);
+							}).live("mouseout", function () {
+								$("img.wysiwyg-files-file-preview").remove();
+							});
 						},
 						close: function () {
 							$(this).dialog("destroy");
@@ -113,7 +125,7 @@
 					// If neither of the above works..
 				}
 			});
-		};
+		}
 		
 		this.loadDir = function (dir, callback) {
 			var self = this;
@@ -122,7 +134,7 @@
 			$.getJSON(self.handler, { "dir": self.curDir, "action": "browse" }, function (json) {
 				callback(self.renderList(json));
 			});
-		};
+		}
 		
 		this.renderList = function (json) {
 			var self = this;
@@ -140,20 +152,20 @@
 			});			
 			treeHtml += '</ul>';
 			return treeHtml;
-		};
+		}
 
-	};
+	}
 	
 	this.deleteFile = function () {
 		
-	};
+	}
 	
 	this.moveFile = function () {
 		
-	};
+	}
 	
 	this.renameFile = function () {
 		
-	};
+	}
 	
 })(jQuery);
