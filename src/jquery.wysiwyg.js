@@ -51,7 +51,10 @@
 		tableFiller: "Lorem ipsum",
 		initialMinHeight: null, 
 		// Plugin references
-		plugins: {}				
+		plugins: {},
+
+		// Dialog provider setting. Default is the one built into jWysiwyg.
+		dialog: "default"
 	};
 	
 	// References the active editor instance, useful for having a global toolbar.
@@ -129,19 +132,107 @@
 		}
 	};
 	
-	// TODO: Dialog API
-	// Unifies dialog methods to allow custom implementations
-	$.wysiwyg.dialog = {
+	/**
+	 * Unifies dialog methods to allow custom implementations
+	 * 
+	 * Events:
+	 *     * afterOpen
+	 *     * beforeShow
+	 *     * afterShow
+	 *     * beforeHide
+	 *     * afterHide
+	 *     * beforeClose
+	 *     * afterClose
+	 * 
+	 * Example:
+	 * var dialog = new ($.wysiwyg.dialog)($('#idToTextArea').data('wysiwyg'), {"title": "Test", "content": "form data, etc."});
+	 * 
+	 * dialog.bind("afterOpen", function () { alert('you should see a dialog behind this one!'); });
+	 * 
+	 * dialog.open();
+	 * 
+	 * 
+	 */
+	$.wysiwyg.dialog = function (jWysiwyg, opts) {
+		var theme	= jWysiwyg.options.dialog,
+			obj		= $.wysiwyg.dialog.createDialog(jWysiwyg.options.dialog),
+			that	= this,
+			$that	= $(that);
+			
+		this.options = {
+			"title": "Title",
+			"content": "Content"
+		}
+			
+		this.isOpen = false;
+		
+		$.extend(this.options, opts);
+	
 		// Opens a dialog with the specified content
-		open:  function(content){},
+		this.open = function () {
+			this.isOpen = true;
+			
+			obj.init.apply(that, []);
+			var $dialog = obj.show.apply(that, []);
+			
+			$that.trigger("afterOpen", [$dialog]);
+		};
+		
+		this.show = function () {
+			this.isOpen = true;
+			
+			$that.trigger("beforeShow");
+			
+			var $dialog = obj.show.apply(that, []);
+			
+			$that.trigger("afterShow");
+		};
+		
+		this.hide = function () {
+			this.isOpen = false;
+			
+			$that.trigger("beforeHide");
+			
+			var $dialog = obj.hide.apply(that, []);
+			
+			$that.trigger("afterHide", [$dialog]);
+		}
+		
 		// Closes the dialog window
-		close: function(){},
-		// Callbacks
-		beforeOpen: function(){},
-		afterOpen:  function(){},
-		beforeClose: function(){},
-		afterClose:  function(){}
+		this.close = function () {
+			this.isOpen = false;
+						
+			var $dialog = obj.hide.apply(that, []);
+			
+			$that.trigger("beforeClose", [$dialog]);
+			
+			obj.destroy.apply(that, []);
+			
+			$that.trigger("afterClose", [$dialog]);
+		};
+		
+		return this;
 	};
+	
+	// "Static" Dialog methods
+	$.extend(true, $.wysiwyg.dialog, {
+		_themes : {}, // sample {"Theme Name": object}
+		_theme : "", // the current theme
+		
+		register : function(name, obj) {
+			$.wysiwyg.dialog._themes[name] = obj;
+		},
+		
+		deregister : function (name) {
+			delete $.wysiwyg.dialog._themes[name];
+		},
+		
+		createDialog : function (name) {
+			return new ($.wysiwyg.dialog._themes[name]);
+		}
+	});
+	
+	
 	
 	// Wysiwyg
 	
@@ -175,6 +266,8 @@
 		// element versions at the same time.
 		// ie: handler.trigger('onInit', [opts])
 		handler = el.add(self);
+		
+		this.options = options;
 		
 		//////////////////////////////////////////////////////////////////////////////
 		// Private functions

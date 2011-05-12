@@ -16,6 +16,13 @@
 	 * Wysiwyg namespace: public properties and methods
 	 */
 	$.wysiwyg.controls.image = {
+		groupIndex: 6,
+		visible: true,
+		exec: function () {
+			$.wysiwyg.controls.image.init(this);
+		},
+		tags: ["img"],
+		tooltip: "Insert image",	
 		init: function (Wysiwyg) {
 			var self = this, elements, dialog, formImageHtml,
 				formTextLegend, formTextPreview, formTextUrl, formTextTitle,
@@ -24,7 +31,7 @@
 				formTextSubmit, formTextReset,
 				img = {
 					alt: "",
-					self: Wysiwyg.dom.getElement("img"), // link to element node
+					self: Wysiwyg.dom ? Wysiwyg.dom.getElement("img") : null, // link to element node
 					src: "http://",
 					title: ""
 				};
@@ -61,8 +68,8 @@
 				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 			}
 
-			formImageHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
-				'<label>' + formTextPreview + ': <img src="" alt="' + formTextPreview + '" style="float: left; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
+			formImageHtml = '<form class="wysiwyg"><fieldset>' +
+				'<label>' + formTextPreview + ': <img src="" alt="' + formTextPreview + '" style="float: right; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
 				'<label>' + formTextUrl + ': <input type="text" name="src" value=""/></label>' +
 				'<label>' + formTextTitle + ': <input type="text" name="imgtitle" value=""/></label>' +
 				'<label>' + formTextDescription + ': <input type="text" name="description" value=""/></label>' +
@@ -83,93 +90,33 @@
 				img.width = img.self.width ? img.self.width : "";
 				img.height = img.self.height ? img.self.height : "";
 			}
-
-			if ($.modal) {
-				elements = $(formImageHtml);
-				elements = self.makeForm(elements, img);
-
-				$.modal(elements, {
-					onShow: function (dialog) {
-						$("input:submit", dialog.data).click(function (e) {
-							self.processInsert(dialog.container, Wysiwyg, img);
-
-							$.modal.close();
-							return false;
-						});
-						$("input:reset", dialog.data).click(function (e) {
-							$.modal.close();
-							return false;
-						});
-						$("fieldset", dialog.data).click(function (e) {
-							e.stopPropagation();
-						});
-					},
-					maxWidth: Wysiwyg.defaults.formWidth,
-					maxHeight: Wysiwyg.defaults.formHeight,
-					overlayClose: true
+			
+			var adialog = new $.wysiwyg.dialog(Wysiwyg, {
+				"title": formTextLegend,
+				"content": formImageHtml
+			});
+			
+			$(adialog).bind("afterOpen", function (e, dialog) {
+				$("input:submit", dialog).click(function (e) {
+					self.processInsert(dialog.container, Wysiwyg, img);
+					
+					adialog.close();
+					return false;
 				});
-			} else if ($.fn.dialog) {
-				elements = $(formImageHtml);
-				elements = self.makeForm(elements, img);
-
-				dialog = elements.appendTo("body");
-				dialog.dialog({
-					modal: true,
-					open: function (ev, ui) {
-						$("input:submit", dialog).click(function (e) {
-							self.processInsert(dialog.container, Wysiwyg, img);
-
-							$(dialog).dialog("close");
-							return false;
-						});
-						$("input:reset", dialog).click(function (e) {
-							$(dialog).dialog("close");
-							return false;
-						});
-						$('fieldset', dialog).click(function (e) {
-							e.stopPropagation();
-						});
-					},
-					close: function (ev, ui) {
-						dialog.dialog("destroy");
-					}
+				$("input:reset", dialog).click(function (e) {
+					adialog.close();
+					
+					return false;
 				});
-			} else {
-				if ($.browser.msie) {
-					Wysiwyg.ui.focus();
-					Wysiwyg.editorDoc.execCommand("insertImage", true, null);
-				} else {
-					elements = $("<div/>")
-						.css({"position": "fixed",
-							"z-index": 2000,
-							"left": "50%", "top": "50%", "background": "rgb(0, 0, 0)",
-							"margin-top": -1 * Math.round(Wysiwyg.defaults.formHeight / 2),
-							"margin-left": -1 * Math.round(Wysiwyg.defaults.formWidth / 2)})
-						.html(formImageHtml);
-					elements = self.makeForm(elements, img);
-
-					$("input:submit", elements).click(function (event) {
-						self.processInsert(elements, Wysiwyg, img);
-
-						$(elements).remove();
-						return false;
-					});
-					$("input:reset", elements).click(function (event) {
-						if ($.browser.msie) {
-							Wysiwyg.ui.returnRange();
-						}
-
-						$(elements).remove();
-						return false;
-					});
-
-					$("body").append(elements);
-					elements.click(function(e) {
-						e.stopPropagation();
-					});
-				}
-			}
-
+				$("fieldset", dialog).click(function (e) {
+					e.stopPropagation();
+				});
+				
+				self.makeForm($(formImageHtml), img);
+			});
+			
+			adialog.open();
+			
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		},
 
