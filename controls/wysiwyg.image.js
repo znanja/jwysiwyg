@@ -35,7 +35,7 @@
 					src: "http://",
 					title: ""
 				};
-
+				
 			formTextLegend  = "Insert Image";
 			formTextPreview = "Preview";
 			formTextUrl     = "URL";
@@ -69,7 +69,7 @@
 			}
 
 			formImageHtml = '<form class="wysiwyg" id="wysiwyg-addImage"><fieldset>' +
-				'<div class="form-row"><span class="form-row-key">' + formTextPreview + ':</span><div class="form-row-value"><img src="" alt="' + formTextPreview + '" style="margin: 2px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></div></div>'+
+				'<div class="form-row"><span class="form-row-key">' + formTextPreview + ':</span><div class="form-row-value"><img src="" alt="' + formTextPreview + '" style="margin: 2px; padding:5px; max-width: 100%; overflow:hidden; max-height: 100px; border: 1px solid rgb(192, 192, 192);"/></div></div>'+
 				'<div class="form-row"><label for="name">' + formTextUrl + ':</label><div class="form-row-value"><input type="text" name="src" value=""/></div></div>' +
 				'<div class="form-row"><label for="name">' + formTextTitle + ':</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
 				'<div class="form-row"><label for="name">' + formTextDescription + ':</label><div class="form-row-value"><input type="text" name="description" value=""/></div></div>' +
@@ -191,7 +191,6 @@
 		},
 
 		makeForm: function (form, img) {
-			console.log(form.find("input[name=src]"));
 			form.find("input[name=src]").val(img.src);
 			form.find("input[name=imgtitle]").val(img.title);
 			form.find("input[name=description]").val(img.alt);
