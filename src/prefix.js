@@ -1,5 +1,5 @@
 /**
- * WYSIWYG - jQuery plugin 0.98 dev
+ * WYSIWYG - jQuery plugin @VERSION
  *
  * Copyright (c) 2008-2009 Juan M Martinez, 2010-2011 Akzhan Abdulin and all contributors
  * https://github.com/akzhan/jwysiwyg
@@ -19,7 +19,7 @@
 		return false;
 	}
 		
-	if ( typeof $.wysiwyg != "undefined" || !$.wysiwyg.version ) {
-		return;
+	if (typeof $.wysiwyg !== "undefined" && $.wysiwyg.version) {
+		return true;
 	}
 	
