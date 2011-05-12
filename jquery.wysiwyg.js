@@ -550,7 +550,7 @@
 		this.dom.getAncestor = function (element, filterTagName) {
 			filterTagName = filterTagName.toLowerCase();
 
-			while (element && "body" !== element.tagName.toLowerCase()) {
+			while (element && typeof element.tagName.toLowerCase == "function" && "body" !== element.tagName.toLowerCase()) {
 				if (filterTagName === element.tagName.toLowerCase()) {
 					return element;
 				}
