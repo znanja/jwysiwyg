@@ -549,7 +549,7 @@
 
 		this.dom.getAncestor = function (element, filterTagName) {
 			filterTagName = filterTagName.toLowerCase();
-
+			
 			while (element && typeof element.tagName != "undefined" && "body" !== element.tagName.toLowerCase()) {
 				if (filterTagName === element.tagName.toLowerCase()) {
 					return element;
@@ -557,12 +557,26 @@
 
 				element = element.parentNode;
 			}
+			if(!element.tagName && (element.previousSibling || element.nextSibling)) {
+				if(element.previousSibling) {
+					if(element.previousSibling.tagName.toLowerCase() == filterTagName) {
+						return element.previousSibling;
+					}
+				}	
+				if(element.nextSibling) {
+					if(element.nextSibling.tagName.toLowerCase() == filterTagName) {
+						return element.nextSibling;
+					}
+				}	
+			}
 
 			return null;
 		};
 
 		this.dom.getElement = function (filterTagName) {
 			var dom = this;
+			
+			filterTagName = filterTagName.toLowerCase();			
 
 			if (window.getSelection) {
 				return dom.w3c.getElement(filterTagName);
@@ -596,7 +610,7 @@
 			var dom		= this.parent,
 				range	= dom.parent.getInternalRange(),
 				element;
-
+				
 			if (!range) {
 				return null;
 			}
@@ -612,6 +626,19 @@
 			// startContainer and the boundary point of the Range
 			if (element === range.startContainer) {
 				element = element.childNodes[range.startOffset];
+			}
+			
+			if(!element.tagName && (element.previousSibiling || element.nextSibling)) {
+				if(element.previousSibiling) {
+					if(element.previousSibiling.tagName.toLowerCase() == filterTagName) {
+						return element.previousSibiling;
+					}
+				}	
+				if(element.nextSibling) {
+					if(element.nextSibling.tagName.toLowerCase() == filterTagName) {
+						return element.nextSibling;
+					}
+				}	
 			}
 
 			return dom.getAncestor(element, filterTagName);
@@ -1968,7 +1995,6 @@
 		},
 		
 		createDialog : function (name) {
-			console.log($.wysiwyg.dialog._themes, name);
 			return new ($.wysiwyg.dialog._themes[name]);
 		}
 	});
