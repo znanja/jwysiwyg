@@ -25,7 +25,6 @@ Wysiwyg = function(){
 	// This also provides a standardized interface for plugins.
 	
 	var pluginApi = {
-		getActiveEditor: function(w) { return Wysiwyg.activeEditor; },
 		init:            function(w) {},
 		isPlugin:        true
 	};
