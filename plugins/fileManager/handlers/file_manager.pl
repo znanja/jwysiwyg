@@ -53,6 +53,7 @@ if ($action eq "auth") {
 								}
 							};
 	}
+# List Directory Method:
 } elsif ($action eq "list") {
 	my $dir = param('dir');
 	unless ($dir) { die "No directory specified."; }
@@ -65,21 +66,48 @@ if ($action eq "auth") {
 	unless ($dir =~ m{/$}) { $dir = "$dir/"; }
 	unless (-e "$root$dir") { warn "$dir: Directory does not exist."; exit; }
 	opendir(DIR, "$root$dir") || die "Can't open $dir: $!";
-	my $json = {	"data" => {	"directories" => {},
-								"files" => {}
-								}
-					};
+	my $json = {	"directories" => {},
+					"files" => {}
+				};
 	foreach (readdir(DIR)) {
 		next if (($_ eq '.') || ($_ eq '..'));
 		utf8::decode($_);
 		if (-d "$root$dir$_") {
-			$json->{"data"}->{"directories"}->{"$_"} = "$dir$_";
+			$json->{"directories"}->{"$_"} = "$dir$_";
 		} else {
-			$json->{"data"}->{"files"}->{"$_"} = "$base_url$dir$_";
+			$json->{"files"}->{"$_"} = "$base_url$dir$_";
 		}
 	}
 	closedir(DIR);
-	print encode_json { "success" => JSON::XS::true, "data" => $json->{'data'} };
+	print encode_json { "success" => JSON::XS::true, "data" => $json };
+	
+	
+# Rename File Method:
+} elsif ($action eq "rename") {
+	print encode_json { "success" => JSON::XS::false, "error" => "rename: Not yet implemented" };
+
+
+# Remove File Method:	
+} elsif ($action eq "remove") {
+	print encode_json { "success" => JSON::XS::false, "error" => "remove: Not yet implemented" };
+
+	
+# Move File Method:
+} elsif ($action eq "move") {
+	print encode_json { "success" => JSON::XS::false, "error" => "move: Not yet implemented" };
+
+	
+# Make Directory Method:
+} elsif ($action eq "mkdir") {
+	print encode_json { "success" => JSON::XS::false, "error" => "mkdir: Not yet implemented" };
+
+	
+# Upload File Method:
+} elsif ($action eq "upload") {
+	print encode_json { "success" => JSON::XS::false, "error" => "upload: Not yet implemented" };
+
+	
+# Anything else:
 } else {
 	print encode_json { "success" => JSON::XS::false, "error" => "Unknown action." };
 }
