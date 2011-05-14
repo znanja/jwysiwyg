@@ -3,22 +3,17 @@ var Wysiwyg; // forward declaration
 
 Wysiwyg = function( els, config ) {
 	
-	// Class methods are accessed directly as members of Wysiwyg
-	// Plugins are accessed directly as members of Wysiwyg
-	this.version  =  "@VERSION"; // Overwritten at compile time
-
-	this.activeEditor = null;        // References the active editor instance, useful for having a global toolbar.
-	this.instances    = {};          // Collection
-
-	function uuid(){
-		
-	}
-
 	$.each( $(els), function( i, el ){
 		
+		// Create a new editor instance
 		var instance  = new Wysiwyg.editor( el, config );
+		// Generate a unique ID for the instance so it can be 
+		// referenced easily.
 		instance.uuid = new Date().getTime();
+		// Store the instance globally
+		Wysiwyg.instances[instance.uuid] = instance;
 		
+		// Store the instance on the dom element.
 		$(el).data( 'wysiwyg', instance );
 		
 	});
@@ -26,21 +21,30 @@ Wysiwyg = function( els, config ) {
 	return els;	
 };
 
-Wysiwyg.dialog   = {};
-Wysiwyg.utils    = {};
-Wysiwyg.ui       = {};
-Wysiwyg.controls = {};
-Wysiwyg.plugins  = {};
+// References the active editor instance, useful for having a global toolbar.
+Wysiwyg.activeEditor = null;
+
+// Collection
+Wysiwyg.instances = {};
+
+// Overwritten at compile time	
+Wysiwyg.version   =  "@VERSION";
+Wysiwyg.instances = {};
+Wysiwyg.dialog    = {};
+Wysiwyg.utils     = {};
+Wysiwyg.ui        = {};
+Wysiwyg.controls  = {};
+Wysiwyg.plugins   = {};
 
 
 //
 // Editor refers to an instance of a Wysiwyg editor.
 // To create a new instance, use:
-//  new Wysiwyg.editor( domElement(s), options = {} );
+//  new Wysiwyg( domElement(s), options = {} );
 //
 // Specific editor functionality defined in editor.js
 //
-Wysiwyg.editor = function( els, config ) {
+Wysiwyg.editor = function( el, config ) {
 
 	this.constructor = Wysiwyg;
 	
@@ -70,10 +74,6 @@ Wysiwyg.editor = function( els, config ) {
 	
 	// Extend default options with user defined options.
 	$.extend( {}, this.options, config );
-	
-	$.each( config.plugins, function( i, plugin ){
-		$.proxy( plugin );
-	});
 
 	return this;
 	
