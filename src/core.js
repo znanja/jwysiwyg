@@ -12,16 +12,8 @@ Wysiwyg = function() {
 	this.ui       = {};
 	this.controls = {};
 	
-	this.activeEditor = null;
-	this.init         = function (obj, options) {}; // call instance
-	this.instance     = function (options) {}; // create new object
+	this.init = function (obj, options) {}; // call instance
 
 	this.activeEditor = null;        // References the active editor instance, useful for having a global toolbar.
-	this.instances    = [];             // Collection
+	this.instances    = [];          // Collection
 };	
-	
-// active editor instance extend itself using Wysiwyg.fn (prototyping)
-EditorInstance = function()
-{
-};
-
