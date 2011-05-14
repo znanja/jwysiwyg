@@ -17,7 +17,8 @@ output:
 
 # Source files (in order of import)
 input:
-  - prefix.js  
+  - prefix.js
+  - console.js
   - core.js
   - utils.js
   - editor.js
