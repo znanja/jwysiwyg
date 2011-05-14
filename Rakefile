@@ -1,4 +1,5 @@
 require 'yaml'
+require 'fileutils'
 
 desc 'Package the library and create both compressed and uncompressed versions. Process the result with jslint'
 task :build => [:prepare, :package, :minify, :lint] do
@@ -63,15 +64,14 @@ task :prepare do
   ENV['COMPILER']        = "#{ENV['JS_ENGINE']} #{build_dir}/uglify.js --unsafe"
   ENV['POST_COMPILER']   = "#{ENV['JS_ENGINE']} #{build_dir}/post-compile.js"
   dist_path = File.expand_path('.', options['paths']['dist'])
-  `mkdir -p #{dist_path}/#{options['version']}`
+  FileUtils.mkdir_p(File.join(dist_path, options['version']))
   puts "Creating distribution path... #{dist_path}/#{options['version']}"
 end
 
 task :default => :build
 
 def gsub_file(content)
-  replaced = content.gsub("@DATE", Date.today.year.to_s).gsub("@VERSION", fetch_options['version'])
-  replaced
+  content.gsub("@DATE", Date.today.year.to_s).gsub("@VERSION", fetch_options['version']).gsub('@DEBUG', fetch_options['debug'])
 end
 
 def fetch_options
