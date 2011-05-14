@@ -35,7 +35,7 @@ Wysiwyg.utils     = {};
 Wysiwyg.ui        = {};
 Wysiwyg.controls  = {};
 Wysiwyg.plugins   = {};
-
+Wysiwyg.console   = console; // defined in console.js
 
 //
 // Editor refers to an instance of a Wysiwyg editor.
