@@ -1,5 +1,3 @@
-Wysiwyg.plugins = {};
-
 // Add a list of defaults plugins should adhere to.
 // init: Called on plugin install
 //
