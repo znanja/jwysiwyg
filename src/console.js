@@ -1,4 +1,4 @@
-var console = ('console' in window) ? window.console : {
+var console = (('console' in window) && @DEBUG) ? window.console : {
 	log: $.noop,
 	error: $.noop,
 	warn: $.noop,

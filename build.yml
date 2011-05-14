@@ -2,6 +2,7 @@
 name: 'jquery.wysiwyg.js'
 description: 'jquery wysiwyg plugin'
 version: '0.0.98.dev'
+debug: 'true'
 
 # Paths for all files
 paths:
