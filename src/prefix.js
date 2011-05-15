@@ -15,8 +15,12 @@
 (function( window, undefined ) {
 	"use strict";
 
-	// Use the correct document accordingly with window argument (sandbox)
-	var document = window.document,
+	var
+		// Previous plugin instance
+		previousWysiwyg = null,
+		// Use the correct document accordingly with window argument (sandbox)
+		document = window.document,
+		// jQuery shortcut
 		$ = window.jQuery;
 
 
@@ -25,6 +29,5 @@
 		return false;
 	}
 
-	if ($.wysiwyg !== undefined && $.wysiwyg.version) {
-		return true;
-	}
+	previousWysiwyg = $.wysiwyg;
+
