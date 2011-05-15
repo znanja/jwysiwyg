@@ -2,42 +2,49 @@
 var Wysiwyg;
 
 Wysiwyg = (function() {
-	
+
 	// Instance version.
 	var Wysiwyg = function( els, config ){
-		
+
+		var selection = $(els), instance;
+
 		// When single elements are passed, return wysiwyg
 		// instance if exists. This provides an easy API for instances.
 		//
-		if ( jQuery(els).length === 1 ){
-			if ( jQuery(els).data('wysiwyg') ){
-				return jQuery(els).data('wysiwyg');
+		if ( selection.length === 1 ) {
+			instance = selection.data('wysiwyg');
+			if ( instance !== undefined ) {
+				return instance;
 			}
 		}
 		
 		// Create a new wysiwyg instance for each DOM element unless
 		// it already exists.
 		//
-		jQuery.each( jQuery(els), function( i, el ){
+		selection.each(function( i, el ) {
 			var instance;
-							
-			if ( !jQuery(el).data('wysiwyg') ){
+
+			// Create a new instance unless it exists.
+			if ( $.data(el, 'wysiwyg') === undefined ) {
+				
 				instance 	  = new Wysiwyg.fn.init( el, config );
 				instance.uuid = new Date().getTime();
-				jQuery(el).data('wysiwyg', instance);
+				$.data(el, 'wysiwyg', instance);
+				
 			}
 			
 		});
-		
+
 		return els;
 	};
-	
+
 	Wysiwyg.fn = Wysiwyg.prototype = {
 		constructor: Wysiwyg,
 		init: function( el, config ){
+			
 			// Unique UID for this instance... used in dialogs/ui
 			this.uuid = null;
-			
+
 			// Key codes that instances capture 
 			// TODO: Move to events.js as a private/local variable
 			//this.validKeyCodes	= [8, 9, 13, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46];	
@@ -47,16 +54,16 @@ Wysiwyg = (function() {
 
 			// Instance configuration options
 			this.options = {};
-			
+
 			// Original replaced element (ie textarea)
 			this.element = $(el)[0];
-			
+
 			// Stores a selection range on blur
 			this.savedRange = null;
-			
+
 			// Delay timers (is this even necessary?)
 			this.timers = [];
-			
+
 			// Check enabled/destroyed state of this editor
 			this.isDestroyed = true;
 			
@@ -64,7 +71,7 @@ Wysiwyg = (function() {
 			this.form = $(el).closest('form')[0];
 			
 			// Extend default options with user defined options.
-			jQuery.extend( {}, this.options, config );
+			$.extend( {}, this.options, config );
 			
 			initEditor.apply(this, [ $(el) ]);
 			
@@ -72,15 +79,15 @@ Wysiwyg = (function() {
 	};
 
 	Wysiwyg.fn.init.prototype = Wysiwyg.fn;
-	
-	Wysiwyg.extend = function( namespace, data ){
-		if ( jQuery.isPlainObject(namespace) ){
-			jQuery.extend(this, namespace);
+
+	Wysiwyg.extend = function( namespace, data ) {
+		if ( $.isPlainObject(namespace) ){
+			$.extend(this, namespace);
 		} else {
-			jQuery.extend(this[namespace], data);
+			$.extend(this[namespace], data);
 		}
 	};
-	
+
 	Wysiwyg.extend({
 		version: '@VERSION',
 		dialog:   {},
@@ -94,23 +101,23 @@ Wysiwyg = (function() {
 		var iframe, wrapper, doc;
 
 		if ( window.location.protocol === "https:" ){
-			iframe = jQuery('<iframe src="javascript:false;"></iframe>');
+			iframe = $('<iframe src="javascript:false;"></iframe>');
 		} else {
-			iframe = jQuery("<iframe></iframe>");
+			iframe = $("<iframe></iframe>");
 		}
 		
-		wrapper = jQuery("<div></div>");
+		wrapper = $("<div></div>");
 		iframe.addClass('wysiwyg')
 			  .attr('frameborder', '0')
 			  .attr("tabindex", element.attr("tabindex"));
 		element.hide().before(wrapper);
-		wrapper.append(jQuery("<div><!-- --></div>")
+		wrapper.append( $("<div><!-- --></div>")
 			   .css({clear: "both"}))
 			   .append(iframe);
 			
 		this.editor = iframe[0];
 		
-		doc = jQuery(this.editor).get(0);
+		doc = $(this.editor).get(0);
 		
 		if ( doc.nodeName.toLowerCase() === "iframe" ) {
 			if( doc.contentDocument ){
@@ -129,7 +136,6 @@ Wysiwyg = (function() {
 	
 })();
 
-jQuery.fn.wysiwyg = function( els, config ){
-	Wysiwyg(els, config);
-	return els;
+$.fn.wysiwyg = function( els, config ) {
+	return Wysiwyg(els, config);
 };
