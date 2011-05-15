@@ -12,8 +12,7 @@
 <script src="../src/lang/en.js" type="text/javascript" charset="utf-8"></script>
 <script src="../src/toolbar.js" type="text/javascript" charset="utf-8"></script>
 <script src="../src/controls.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/plugin.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/plugins/create-link.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/plugins.js" type="text/javascript" charset="utf-8"></script>
 <style type="text/css" media="screen">
 	iframe{ border:1px solid black; }
 	div.editor{ float:left; width:300px; margin-right:20px; }
@@ -24,7 +23,7 @@
 	
 	$(function(){
 		editor  = Wysiwyg('#editor');
-		editor2 = Wysiwyg('#editor2');
+		editor2 = $('#editor2').wysiwyg();
 		editor  = $('#editor').data('wysiwyg');
 		editor2 = $('#editor2').data('wysiwyg');
 	});

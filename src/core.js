@@ -38,8 +38,18 @@ Wysiwyg = (function() {
 		return els;
 	},
 	
-	controls  = {},
-	instances = {};
+	controls  = {},	 // Globally registered controls
+	instances = {},	 // All initialized instances of editor
+	plugins   = {},  // Globally registered plugins
+	
+	// Add a list of defaults plugins should adhere to.
+	// init: Called on plugin install
+	// exec: execution callback
+	//
+	pluginApi = {
+		init: $.noop,
+		exec: $.noop
+	};
 
 	Wysiwyg.fn = Wysiwyg.prototype = {
 		constructor: Wysiwyg,
@@ -59,7 +69,13 @@ Wysiwyg = (function() {
 			this.controls = {};
 			
 			// The plugin names belonging to this instance
-			this.plugins  = [];
+			this.plugins = [];
+			
+			// Plugin methods are added to an instance-level .fn object to
+			// ensure there are no name collisions with core methods.
+			// Overriding core methods should be done with Wysiwyg.fn
+			//
+			this.fn = {};
 			
 			// References the iframe HTML document
 			this.document = null;
@@ -86,9 +102,24 @@ Wysiwyg = (function() {
 				this.form = $(el).closest('form');
 			}
 			
+			// Support passing plugins as a string.. similar to TinyMCE. 
+			// Final plugins variable should be an array of strings that resolve to 
+			// plugins found in the global plugins object.
+			//
+			if ( $.type( config.plugins ) === 'string' ){
+				this.plugins = config.plugins.split(',');
+			} else if ( config.plugins !== undefined ){
+				this.plugins = config.plugins;
+			}
+			
+			// Add plugin methods to instance
+			$.each( this.plugins, function(ind, name){
+				self.fn[name] = plugins[name];
+			});
+						
+			
 			// Support passing controls as a string.. similar to TinyMCE. 
-			// Final controls variable should be an array of strings that resolve to 
-			// properties on Wysiwyg.controls
+			// Final controls variable is an object where names point to global wysiwyg controls items.
 			//
 			if ( $.type( config.controls ) === 'string' ){
 				controlList = config.controls.split(',');
@@ -96,19 +127,30 @@ Wysiwyg = (function() {
 				controlList = config.controls;
 			}
 			
+			// Add controls to instance
 			$.each( controlList, function(ind, name){
+				var dname;
+				
 				self.controls[name] = controls[name];
+				
+				// Make sure plugins are installed any time a control
+				// is used that delegates exec to it.
+				if ( 'delegate' in controls[name] ){
+					
+					dname = controls[name].delegate;
+					
+					if ( $.inArray(dname, self.plugins) === -1 ){
+																		
+						if ( plugins[dname] === undefined ){
+							$.error('Could not find plugin "' + dname + '"');
+						} else {
+							self.plugins.push(dname);
+							self.fn[dname] = plugins[dname];
+						}
+						
+					}
+				}
 			});
-			
-			// Support passing controls as a string.. similar to TinyMCE. 
-			// Final controls variable should be an array of strings that resolve to 
-			// properties on Wysiwyg.controls
-			//
-			if ( $.type( config.plugins ) === 'string' ){
-				this.plugins = config.plugins.split(',');
-			} else if ( config.controls !== undefined ){
-				this.plugins = config.plugins;
-			}
 			
 			// We don't need duplication.
 			delete config.controls; 
@@ -164,12 +206,22 @@ Wysiwyg = (function() {
 			controls[name] = control;
 		}
 	};
+	
+	// Register a plugin. See plugins.js for more info
+	//
+	Wysiwyg.registerPlugin = function( name, object ){
+		// Ensure api compatability
+		plugin = $.extend( {}, pluginApi, object );
+
+		// Add plugin to core
+		plugins[name] = plugin;
+		plugin.init.apply( Wysiwyg ); // Initialize plugin, passing core Wysiwyg object
+	};
 
 	Wysiwyg.extend({
 		version: '@VERSION',
 		dialog: {},
 		utils:  {},
-		plugin: {},
 		ui:     {}
 	});
 	
@@ -233,6 +285,30 @@ Wysiwyg = (function() {
 	
 })();
 
-$.fn.wysiwyg = function( els, config ) {
-	return Wysiwyg(els, config);
+$.fn.wysiwyg = function( method, options ) {
+	
+	var instance;
+	
+	// Support calling method names jquery-ui style:
+	// $(obj).wysiwyg('save');
+	
+	if ( $.type(method) === 'string' ){
+		
+		instance = $(this).data('wysiwyg');
+		
+		if ( instance === undefined ){
+			$.error('Wysiwyg instance not yet created.');
+			return false;
+		}
+		
+		if ( $.isFunction(instance[method]) ){
+			return instance[method].apply(instance, options);
+						
+		} else if ( $.isFunction(instance.fn[method]) ){
+			return instance.fn[method].apply(instance, options);
+		}
+				
+	}
+	
+	return Wysiwyg(this, options);
 };

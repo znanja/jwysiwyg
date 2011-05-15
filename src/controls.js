@@ -12,6 +12,7 @@
 //
 // css:      If specified, the specified css objected will be applied to the editor selection using jQuery.css
 //
+//
 // Adding controls
 // Add controls to core using:
 // Wysiwyg.addControl(name, object);
