@@ -13,9 +13,13 @@ Wysiwyg = (function() {
 		}
 		
 		jQuery.each( jQuery(els), function( i, el ){
+			var instance;
+			
 			// Create a new instance unless it exists.
 			if ( !jQuery(el).data('wysiwyg') ){
-				jQuery(el).data('wysiwyg', new Wysiwyg.fn.init( el, config ));
+				instance 	  = new Wysiwyg.fn.init( el, config );
+				instance.uuid = new Date().getTime();
+				jQuery(el).data('wysiwyg', instance);
 			}
 		});
 		
@@ -26,7 +30,10 @@ Wysiwyg = (function() {
 		constructor: Wysiwyg,
 		isInitialized: false,
 		init: function( el, config ){
-			// Defaults
+			// Unique UID for this instance... used in dialogs/ui
+			this.uuid = null;
+			
+			// Key codes that instances capture
 			this.validKeyCodes	= [8, 9, 13, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46];	
 
 			// References the iframe HTML document
