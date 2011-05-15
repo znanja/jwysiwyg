@@ -23,7 +23,7 @@
 			$.error(msg);
 		}
 	};
-	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));  // !(/^[01]\.[0-5](?:\.|$)/.test($.fn.jquery));
+	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));
 
 	function Wysiwyg() {
 		this.controls = {
@@ -1001,7 +1001,7 @@
 		};
 
 		this.getContent = function () {
-			return this.events.filter('getContent', this.editorDoc.body.innerHTML);
+			return this.events.filter('getContent', this.viewHTML ? this.original.value : this.editorDoc.body.innerHTML);
 		};
 		
 		/**
