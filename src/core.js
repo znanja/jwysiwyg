@@ -75,3 +75,8 @@ Wysiwyg = (function() {
 	return Wysiwyg;	
 	
 })();
+
+jQuery.fn.wysiwyg = function( els, config ){
+	Wysiwyg(els, config);
+	return els;
+};
