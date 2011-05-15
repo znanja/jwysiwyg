@@ -1001,7 +1001,10 @@
 		};
 
 		this.getContent = function () {
-			return this.events.filter('getContent', this.viewHTML ? this.original.value : this.editorDoc.body.innerHTML);
+			if (this.viewHTML) {
+				this.setContent(this.original.value);
+			}
+			return this.events.filter('getContent', this.editorDoc.body.innerHTML);
 		};
 		
 		/**
@@ -1584,6 +1587,10 @@
 		};
 
 		this.saveContent = function () {
+			if (this.viewHTML)
+			{
+				return; // no need
+			}
 			if (this.original) {
 				var content, newContent;
 
