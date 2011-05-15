@@ -1,6 +1,8 @@
 Wysiwyg.noConflict = function()
 {
 	$.wysiwyg = previousWysiwyg;
-	previousWysiwyg = null;
+	$.fn.wysiwyg = previousFnWysiwyg;
+	previousWysiwyg = previousFnWysiwyg = null;
 	return Wysiwyg;
 };
+
