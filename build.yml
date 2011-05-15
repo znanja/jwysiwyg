@@ -25,7 +25,7 @@ input:
   - editor.js
   - dom.js
   - selection.js  
-  - ui.js
+  - toolbar.js
   - dialog.js
   - plugins.js
   - suffix.js

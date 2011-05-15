@@ -36,3 +36,12 @@ describe('Wysiwyg', function(){
 	
 	
 });
+
+describe('extend', function(){
+	
+	it ('creates a namespaced propety if passed a string and objcet', function(){
+		Wysiwyg.extend('test', {});
+		expect(Wysiwyg.test).toEqual({});
+	});
+	
+});

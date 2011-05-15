@@ -16,13 +16,16 @@ Wysiwyg.fn.create = function(){
 // to the original dom element
 //
 Wysiwyg.fn.destroy = function(){
-	
+	this.remove();
+	this.editor.remove();
+	this.element.removeData('wysiwyg');
+	return this.element;
 };
 
 // Execute a method on editor docuement
 //
 Wysiwyg.fn.exec = function( method, selection ){
-
+	console.log(this);
 	// Support function calls directly
 	if ( $.isFunction( method ) ) {
 		method.apply(this.document, selection);
@@ -36,7 +39,9 @@ Wysiwyg.fn.exec = function( method, selection ){
 // Wysiwyg.destroy
 //
 Wysiwyg.fn.remove = function(){
-	
+	this.save();
+	this.editor.hide();
+	this.element.show();
 };
 
 // Reset editor content to content of original dom element
@@ -48,7 +53,7 @@ Wysiwyg.fn.reset = function(){
 // Save editor content back to the dom element
 //
 Wysiwyg.fn.save = function(){
-
+	this.element.html(this.document.html());
 };
 
 })( Wysiwyg );

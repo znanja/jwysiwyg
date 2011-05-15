@@ -11,18 +11,28 @@
 	<!-- include source files here... -->
 	<script src="lib/jquery.1.5.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" src="../src/core.js"></script>
+	<script src="../src/editor.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../src/i18n.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../src/lang/en.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../src/toolbar.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../src/controls.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../src/plugin.js" type="text/javascript" charset="utf-8"></script>
 
 	<!-- include spec files here... -->
 	<script type="text/javascript" src="spec/core.js"></script>
 	<style type="text/css" media="screen">
-		textarea, iframe{ visibility:hidden; height:1px; }
+		div.editor{ visibility:hidden; height:1px; }
 	</style>
 </head>
 <body>
-	<textarea id="text1"></textarea>
-	<form>
-		<textarea id="text2"></textarea>
-	</form>
+	<div class="editor">
+		<textarea id="text1"></textarea>
+	</div>
+	<div class="editor">
+		<form>
+			<textarea id="text2"></textarea>
+		</form>
+	</div>
 	<script type="text/javascript">
 	  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
 	  jasmine.getEnv().execute();
