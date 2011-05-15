@@ -43,7 +43,7 @@ if ($action eq "remove") {
 			print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$file' does not exist." });
 		}
 	} else {
-		print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$root$dir/$file' does not exist." });
+		print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$file' does not exist." });
 	}
 }
 
