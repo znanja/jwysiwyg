@@ -17,6 +17,22 @@ describe('Wysiwyg', function(){
 	it ('creates separate instances for each element', function(){
 		editor1.isDestroyed = false;
 		expect(editor2.isDestroyed).toNotEqual(editor1.isDestroyed);
-	})
+	});
+	
+	it ('assigns a document', function(){
+		expect(editor1.document).toBeDefined();
+		expect(editor2.document).toBeDefined();
+	});
+	
+	it ('assigns a form if textarea is within one', function(){
+		expect(editor1.form).not.toBeDefined();
+		expect(editor2.form).toBeDefined();
+	});
+	
+	it ('assigns a editor instance', function(){
+		expect(editor1.editor).toBeDefined();
+		expect(editor1.editor).toBeDefined();
+	});
+	
 	
 });

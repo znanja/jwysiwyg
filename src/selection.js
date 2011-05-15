@@ -1,3 +1,4 @@
+(function( Wysiwyg ) {
 //
 // Functions for handling user selection data
 //
@@ -12,3 +13,5 @@ Wysiwyg.fn.getRange = function(){
 Wysiwyg.fn.getSelection = function(){
 	
 };
+
+})( Wysiwyg );

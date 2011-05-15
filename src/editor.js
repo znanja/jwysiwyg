@@ -1,3 +1,5 @@
+(function( Wysiwyg ) {
+	
 // Empty all content from editor instance
 //
 Wysiwyg.fn.clear = function(){
@@ -46,5 +48,7 @@ Wysiwyg.fn.reset = function(){
 // Save editor content back to the dom element
 //
 Wysiwyg.fn.save = function(){
-	
+
 };
+
+})( Wysiwyg );

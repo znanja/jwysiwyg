@@ -14,11 +14,15 @@
 
 	<!-- include spec files here... -->
 	<script type="text/javascript" src="spec/core.js"></script>
-
+	<style type="text/css" media="screen">
+		textarea, iframe{ visibility:hidden; height:1px; }
+	</style>
 </head>
 <body>
 	<textarea id="text1"></textarea>
-	<textarea id="text2"></textarea>
+	<form>
+		<textarea id="text2"></textarea>
+	</form>
 	<script type="text/javascript">
 	  jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
 	  jasmine.getEnv().execute();

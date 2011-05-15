@@ -7,8 +7,30 @@
 </head>
 <script src="lib/jquery.1.5.js" type="text/javascript" charset="utf-8"></script>
 <script src="../src/core.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/editor.js" type="text/javascript" charset="utf-8"></script>
+<style type="text/css" media="screen">
+	iframe{ border:1px solid black; }
+	div.editor{ float:left; width:300px; margin-right:20px; }
+</style>
+<script type="text/javascript" charset="utf-8">
+//<![CDATA[
+	var editor, editor2;
+	
+	$(function(){
+		editor  = Wysiwyg('#editor');
+		editor2 = Wysiwyg('#editor2');
+		editor  = $('#editor').data('wysiwyg');
+		editor2 = $('#editor2').data('wysiwyg');
+	});
+	
+//]]>
+</script>
 <body>
-	<textarea id="editor"></textarea>
-	<textarea id="editor2"></textarea>
+	<div class="editor">
+		<textarea id="editor"></textarea>
+	</div>
+	<div class="editor">
+		<textarea id="editor2"></textarea>
+	</div>
 </body>
 </html>
