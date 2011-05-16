@@ -1,13 +1,12 @@
 (function( Wysiwyg ) {
 
-Wysiwyg.extend({ lang: 'en' });
 Wysiwyg.extend('i18n', {
 
 	// Stub translations	
 	translations: {},
 	translate: function( key ){
 		// Get current language
-		var lang = Wysiwyg.lang;
+		var lang = Wysiwyg.config.lang;
 		if( Wysiwyg.i18n.translations[lang][key] === undefined){
 			return 'Translation missing: ' + lang + ": " + key;
 		}

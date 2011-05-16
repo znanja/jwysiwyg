@@ -55,7 +55,7 @@ Wysiwyg = (function() {
 		constructor: Wysiwyg,
 		init: function( el, config ){
 			
-			var controlList = [ 'bold', 'italic', 'link' ],
+			var controlList = [ 'bold', 'italic', 'link', 'image' ],
 				self = this;
 			
 			// Unique UID for this instance... used in dialogs/ui
@@ -131,6 +131,10 @@ Wysiwyg = (function() {
 			$.each( controlList, function(ind, name){
 				var dname;
 				
+				if ( controls[name] === undefined ){
+					return true;
+				}
+				
 				self.controls[name] = controls[name];
 				
 				// Make sure plugins are installed any time a control
@@ -188,6 +192,14 @@ Wysiwyg = (function() {
 		}
 	};
 	
+	Wysiwyg.extend({
+		version: '@VERSION',
+		dialog: {},
+		utils:  {},
+		ui:     {},
+		config: {} 	// Global configuration
+	});
+	
 	// See controls.js for more info
 	//
 	Wysiwyg.addControl = function( name, control ){
@@ -197,12 +209,17 @@ Wysiwyg = (function() {
 		if( $.isPlainObject( control) ){
 			
 			if ( 'delegate' in control ){
-				delegator = Wysiwyg.fn[control.delegate];
+				
+				delegator = plugins[control.delegate];
 				
 				if ( delegator !== undefined ){
-					control.exec = delegator.exec;
+					$.extend(control, { exec:delegator.exec });
 				}				
+				
+			} else if ( 'command' in control ){
+				control.exec = function(){ this.exec(control.command); };
 			}
+						
 			controls[name] = control;
 		}
 	};
@@ -217,13 +234,13 @@ Wysiwyg = (function() {
 		plugins[name] = plugin;
 		plugin.init.apply( Wysiwyg ); // Initialize plugin, passing core Wysiwyg object
 	};
-
-	Wysiwyg.extend({
-		version: '@VERSION',
-		dialog: {},
-		utils:  {},
-		ui:     {}
-	});
+	
+	// Configure the global Wysiwyg object. This is used for things like 
+	// locale, xhtml/html format etc. It does not provide any instance configuration.
+	//
+	Wysiwyg.configure = function( conf ){
+		Wysiwyg.config = $.extend( {}, Wysiwyg.config, conf );
+	};
 	
 	function initEditor( element ){
 		var iframe, wrapper, doc, self = this, toolBar;
@@ -238,13 +255,16 @@ Wysiwyg = (function() {
 		iframe.addClass('wysiwyg')
 			  .attr('id', 'wysiwyg_' + this.uuid)
 			  .attr('frameborder', '0')
-			  .attr("tabindex", element.attr("tabindex"));
+			  .attr("tabindex", element.attr("tabindex"))
+			  .attr('unselectable', 'on');
 		element.hide().before(wrapper);
 		wrapper.css({clear: "both"})
 			   .addClass('wysiwyg_container')
 			   .attr('id', 'wysiwyg_container_' + this.uuid)
+			   .attr('unselectable', 'on')
+			   .append($("<div><!-- --></div>"))
 			   .append(iframe);
-			
+						
 		this.editor = iframe;
 		
 		doc = $(this.editor).get(0);
@@ -259,6 +279,14 @@ Wysiwyg = (function() {
 			}
 		}
 		
+		this.document.attr('unselectable', 'on');
+		
+		// Delay design mode to make IE happy
+		setTimeout( function(){
+			$(this.document).attr('contentEditable', 'on');
+			$(this.document).attr('designMode', 'on');
+		}, 1000 );
+				
 		// Support a jQuery selector as a toolbar to have a global toolbar for all 
 		// editor instances.
 		//
@@ -276,10 +304,31 @@ Wysiwyg = (function() {
 			wrapper.prepend(this.toolbar);
 		}
 		
+		if ( this.options.stylesheet !== undefined ){
+			this.document.find('head')
+				.append(
+					$("<link rel='stylesheet' href='" + this.options.stylesheet + "' type='text/css' media='screen' charset='utf-8' />")
+				);
+		}
+		
 		this.createToolbar();
 		
 		
 	}
+	
+	// Setup default config
+	//
+	Wysiwyg.configure({
+		lang: 'en',
+		xhtml: true
+	});
+	
+	Wysiwyg.noConflict = function(){
+		$.wysiwyg 	 	= previousWysiwyg;
+		$.fn.wysiwyg 	= previousFnWysiwyg;
+		previousWysiwyg = previousFnWysiwyg = null;
+		return Wysiwyg;
+	};
 
 	return Wysiwyg;	
 	

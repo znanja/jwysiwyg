@@ -24,13 +24,17 @@ Wysiwyg.fn.destroy = function(){
 
 // Execute a method on editor docuement
 //
-Wysiwyg.fn.exec = function( method, selection ){
-	console.log(this);
+Wysiwyg.fn.exec = function( method, args ){
 	// Support function calls directly
 	if ( $.isFunction( method ) ) {
+		var selection = this.getSelection();
 		method.apply(this.document, selection);
 	} else {
+		if ( typeof(args) === "undefined" ){
+			args = null;
+		}
 		
+		this.document.get(0).execCommand(method, false, args);
 	}
 };
 

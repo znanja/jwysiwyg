@@ -1,0 +1,30 @@
+ul.wysiwyg_toolbar{ 
+	list-style-type:none; 
+	padding:0; 
+	margin:0; 
+}
+ul.wysiwyg_toolbar li{ 
+	cursor:pointer;
+	cursor:hand;
+	display:inline-block; 
+	width:24px; 
+	height:24px; 
+	border:1px solid #ccc; 
+	margin-right:2px; 
+	background-image:url(wysiwyg_icons.png);
+}
+ul.wysiwyg_toolbar li.bold{ background-position:0px 0px; }
+ul.wysiwyg_toolbar li.italic{ background-position:0px -24px; }
+ul.wysiwyg_toolbar li.underline{ background-position:0px -48px; }
+ul.wysiwyg_toolbar li.link{ background-position:0px -72px; }
+ul.wysiwyg_toolbar li.image{ background-position:0px -96px; }
+ul.wysiwyg_toolbar li.ul{ background-position:0px -120px; }
+ul.wysiwyg_toolbar li.ol{ background-position:0px -144px; }
+ul.wysiwyg_toolbar li.source{ background-position:0px -168px; }
+ul.wysiwyg_toolbar li.cut{ background-position:0px -192px; }
+ul.wysiwyg_toolbar li.copy{ background-position:0px -216px; }
+ul.wysiwyg_toolbar li.paste{ background-position:0px -240px; }
+ul.wysiwyg_toolbar li.redo{ background-position:0px -264px; }
+ul.wysiwyg_toolbar li.undo{ background-position:0px -288px; }
+ul.wysiwyg_toolbar li.hr{ background-position:0px -312px; }
+ul.wysiwyg_toolbar li.highlight{ background-position:0px -336px; }

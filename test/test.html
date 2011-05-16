@@ -6,27 +6,46 @@
 	<title>jwysiwyg</title>
 </head>
 <script src="lib/jquery.1.5.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/core.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/editor.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/i18n.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/lang/en.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/toolbar.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/controls.js" type="text/javascript" charset="utf-8"></script>
-<script src="../src/plugins.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+//<![CDATA[
+
+	(function() {
+	    var script, s, ele,
+		scripts = ['core','editor','i18n', 'lang/en', 'toolbar','controls', 'plugins', 'selection'];
+		
+		for( var i in scripts ){
+			ele 	  = document.createElement('script'); 
+			ele.type  = 'text/javascript'; 
+			ele.src   = "../src/" + scripts[i] + ".js";			
+			s = document.getElementsByTagName("head")[0];
+			s.appendChild(ele);
+		}
+	})();
+	
+
+//]]>
+</script>
 <style type="text/css" media="screen">
 	iframe{ border:1px solid black; }
 	div.editor{ float:left; width:300px; margin-right:20px; }
 </style>
+<link rel="stylesheet" href="../support/wysiwyg.css" type="text/css" media="screen" charset="utf-8" />
 <script type="text/javascript" charset="utf-8">
 //<![CDATA[
 	var editor, editor2;
 	
-	$(function(){
+	$(function(){		
+		if( typeof(Wysiwyg) === 'undefined'){
+			setTimeout(loadEditor, 500);
+		}
+	});
+	
+	function loadEditor(){
 		editor  = Wysiwyg('#editor');
 		editor2 = $('#editor2').wysiwyg();
 		editor  = $('#editor').data('wysiwyg');
 		editor2 = $('#editor2').data('wysiwyg');
-	});
+	}
 	
 //]]>
 </script>

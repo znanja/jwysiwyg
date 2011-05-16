@@ -2,7 +2,7 @@
 
 Wysiwyg.fn.createToolbar = function( ){
 
-	var control, i, lnk, li, self = this, target = this.toolbar;
+	var control, i, item, self = this, target = this.toolbar;
 	
 	target.empty();
 	
@@ -13,20 +13,21 @@ Wysiwyg.fn.createToolbar = function( ){
 		if ( $.type( control) === 'string' && control == "|" ){ // Handle separators
 			createSeparator();
 			continue;
-		}
+		}	
+			
+		item = $('<li></li>');
 		
-		lnk = $('<a href="#"></a>');
-		li  = $('<li></li>');
+		item.addClass(i)
+		   .attr('role', 'menuitem')
+		   .attr('unselectable', 'on')
+		   .attr('title', Wysiwyg.t(i))
+		   .data('wysiwyg', control)
+		   .bind('click.wysiwyg', function ( event ){
+				var c = $(this).data('wysiwyg');
+				c.exec.apply(self);
+			});		   
 		
-		lnk.addClass(i)
-		   .bind('wysiwyg.click', function ( event ){
-				control.exec.apply(self);
-			})
-		   .attr('title', Wysiwyg.t(i));
-		li.addClass(i)
-		  .append(lnk);
-		
-		target.append(li);
+		target.append(item);
 	}
 	
 	function createSeparator(){
