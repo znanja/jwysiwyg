@@ -120,7 +120,12 @@ Wysiwyg = (function() {
 			// Final controls variable is an object where names point to global wysiwyg controls items.
 			//
 			if ( $.type( config.controls ) === 'string' ){
+				
 				controlList = config.controls.split(',');
+				controlList = controlList.map(function(str){
+					return str.replace(/^\s+|\s+$/g,"");
+				});
+				
 			} else if ( config.controls !== undefined ) {
 				controlList = config.controls;
 			}

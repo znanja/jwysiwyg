@@ -13,6 +13,13 @@ ul.wysiwyg_toolbar li{
 	margin-right:2px; 
 	background-image:url(wysiwyg_icons.png);
 }
+ul.wysiwyg_toolbar[disabled], ul.wysiwyg_toolbar li[disabled]{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: alpha(opacity=75);
+  -moz-opacity:0.75;
+  opacity: 0.75;
+}
+
 ul.wysiwyg_toolbar li.bold{ background-position:0px 0px; }
 ul.wysiwyg_toolbar li.italic{ background-position:0px -24px; }
 ul.wysiwyg_toolbar li.underline{ background-position:0px -48px; }
