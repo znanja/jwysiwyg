@@ -262,7 +262,6 @@ Wysiwyg = (function() {
 			   .addClass('wysiwyg_container')
 			   .attr('id', 'wysiwyg_container_' + this.uuid)
 			   .attr('unselectable', 'on')
-			   .append($("<div><!-- --></div>"))
 			   .append(iframe);
 						
 		this.editor = iframe;
@@ -292,6 +291,7 @@ Wysiwyg = (function() {
 		//
 		if ( this.options.toolbar !== undefined ){			
 			this.toolbar = $(this.options.toolbar);
+			this.toolbar.attr('role', 'menu');
 			
 			// On focus, re-create the toolbar to ensure controls update for
 			// this particular instance. This only applies to a global toolbar;
@@ -300,7 +300,7 @@ Wysiwyg = (function() {
 			});
 			
 		} else {
-			this.toolbar = $("<ul class='wysiwyg_toolbar'></ul>");
+			this.toolbar = $("<ul class='wysiwyg_toolbar' role='menu'></ul>");
 			wrapper.prepend(this.toolbar);
 		}
 		

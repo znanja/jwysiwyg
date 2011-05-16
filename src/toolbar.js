@@ -19,6 +19,7 @@ Wysiwyg.fn.createToolbar = function( ){
 		
 		item.addClass(i)
 		   .attr('role', 'menuitem')
+		   .attr('aria-readonly', 'true')
 		   .attr('unselectable', 'on')
 		   .attr('title', Wysiwyg.t(i))
 		   .data('wysiwyg', control)
