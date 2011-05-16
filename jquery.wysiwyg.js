@@ -23,7 +23,7 @@
 			$.error(msg);
 		}
 	};
-	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));  // !(/^[01]\.[0-5](?:\.|$)/.test($.fn.jquery));
+	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));
 
 	function Wysiwyg() {
 		this.controls = {
@@ -1001,6 +1001,9 @@
 		};
 
 		this.getContent = function () {
+			if (this.viewHTML) {
+				this.setContent(this.original.value);
+			}
 			return this.events.filter('getContent', this.editorDoc.body.innerHTML);
 		};
 		
@@ -1584,6 +1587,10 @@
 		};
 
 		this.saveContent = function () {
+			if (this.viewHTML)
+			{
+				return; // no need
+			}
 			if (this.original) {
 				var content, newContent;
 

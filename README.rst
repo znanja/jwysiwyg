@@ -16,6 +16,8 @@ Requires
 
 jQuery 1.3.2 or higher (tested with jQuery 1.5.2).
 
+Note that we do not support officially jQuery 1.6, but will support jQuery 1.6.1.
+
 ========
 Supports
 ========
