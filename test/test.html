@@ -15,8 +15,12 @@
 	<script src="../src/selection.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../src/template.js" type="text/javascript" charset="utf-8"></script>
 	<style type="text/css" media="screen">
-		iframe{ border:1px solid black; }
-		div.editor{ float:left; width:300px; margin-right:20px; }
+		body{ text-align:center; }
+		#wrapper{ width:960px; margin:0px auto; text-align:left; }
+		iframe{ border:2px solid #eee; background:white; width:98%; }
+		div.editor{ float:left; width:40%; margin-right:20px; padding:20px; background:#f6f6f6; border:1px solid #eee; }
+		div.editor ul.wysiwyg_toolbar li{ background-color:white; }
+		div.editor ul.wysiwyg_toolbar li:hover{ background-color:#dce9f6; }
 	</style>
 	<link rel="stylesheet" href="../support/wysiwyg.css" type="text/css" media="screen" charset="utf-8" />
 	<script type="text/javascript" charset="utf-8">
@@ -25,7 +29,7 @@
 
 		$(function(){		
 			editor  = Wysiwyg('#editor');
-			editor2 = $('#editor2').wysiwyg();
+			editor2 = $('#editor2').wysiwyg({ controls:'bold,italic' });
 			editor  = $('#editor').data('wysiwyg');
 			editor2 = $('#editor2').data('wysiwyg');
 		});
@@ -34,11 +38,13 @@
 	</script>
 </head>
 <body>
-	<div class="editor">
-		<textarea id="editor"></textarea>
-	</div>
-	<div class="editor">
-		<textarea id="editor2"></textarea>
+	<div id="wrapper">
+		<div class="editor">
+			<textarea id="editor"></textarea>
+		</div>
+		<div class="editor">
+			<textarea id="editor2"></textarea>
+		</div>
 	</div>
 </body>
 </html>

@@ -26,7 +26,6 @@ Wysiwyg = (function() {
 
 			// Create a new instance unless it exists.
 			if ( $.data(el, 'wysiwyg') === undefined ) {
-				
 				instance = new Wysiwyg.fn.init( el, config );
 				$.data(el, 'wysiwyg', instance);
 				
@@ -117,7 +116,6 @@ Wysiwyg = (function() {
 				self.fn[name] = plugins[name];
 			});
 						
-			
 			// Support passing controls as a string.. similar to TinyMCE. 
 			// Final controls variable is an object where names point to global wysiwyg controls items.
 			//
@@ -354,7 +352,9 @@ $.fn.wysiwyg = function( method, options ) {
 			return instance.fn[method].apply(instance, options);
 		}
 				
-	}
+	} else {
+		Wysiwyg(this, method);
+	}	
 	
-	return Wysiwyg(this, options);
+	return this;
 };
