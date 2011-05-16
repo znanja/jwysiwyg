@@ -255,13 +255,11 @@ Wysiwyg = (function() {
 		iframe.addClass('wysiwyg')
 			  .attr('id', 'wysiwyg_' + this.uuid)
 			  .attr('frameborder', '0')
-			  .attr("tabindex", element.attr("tabindex"))
-			  .attr('unselectable', 'on');
+			  .attr("tabindex", element.attr("tabindex"));
 		element.hide().before(wrapper);
 		wrapper.css({clear: "both"})
 			   .addClass('wysiwyg_container')
 			   .attr('id', 'wysiwyg_container_' + this.uuid)
-			   .attr('unselectable', 'on')
 			   .append(iframe);
 						
 		this.editor = iframe;
@@ -277,20 +275,19 @@ Wysiwyg = (function() {
 				this.document = $(doc.contentWindow.document);
 			}
 		}
-		
-		this.document.attr('unselectable', 'on');
+
 		
 		// Delay design mode to make IE happy
 		setTimeout( function(){
-			$(this.document).attr('contentEditable', 'on');
-			$(this.document).attr('designMode', 'on');
+			$(self.document).attr('contentEditable', 'on');
+			$(self.document).attr('designMode', 'on');
 		}, 1000 );
 				
 		// Support a jQuery selector as a toolbar to have a global toolbar for all 
 		// editor instances.
 		//
 		if ( this.options.toolbar !== undefined ){			
-			this.toolbar = $(this.options.toolbar);
+			this.toolbar = $(this.options.toolbar);			
 			this.toolbar.attr('role', 'menu');
 			
 			// On focus, re-create the toolbar to ensure controls update for
