@@ -26,10 +26,10 @@ div.wysiwyg ul.toolbar li.fileManager { background: url('icon.png'); }
 	 transition: all 0.5s ease-out;
 }
 
-.wysiwyg-files-wrapper input[type=text] { width:250px; }
 .wysiwyg-files-wrapper ul { padding:0px; margin:0px; }
 .wysiwyg-files-wrapper li { list-style:none; padding:0px; padding-left:20px; margin: 2px; }
 .wysiwyg-files-wrapper li a { display:inline-block; text-decoration:none; cursor: pointer; cursor: hand; }
+.wysiwyg-files-textfield { width:250px; border:solid 1px !important; }
 
 .wysiwyg-files-wrapper li.wysiwyg-files-hover { background-color: #BDF !important; }
 .wysiwyg-files-wrapper li.wysiwyg-files-dir { background: url(images/directory.png) left top no-repeat; }
@@ -37,7 +37,6 @@ div.wysiwyg ul.toolbar li.fileManager { background: url('icon.png'); }
 .wysiwyg-files-wrapper li.wysiwyg-files-file { background: url(images/file.png) left top no-repeat; }
 .wysiwyg-files-wrapper li.wysiwyg-files-dir-prev { background: url(images/prev-directory.png) left top no-repeat; }
 
-.wysiwyg-files-textfield { width:250px; border:solid 1px !important; }
 .wysiwyg-files-wrapper li .wysiwyg-files-action { float:right; width:16px; height:16px; margin:2px; cursor: pointer; cursor: hand; }
 .wysiwyg-files-wrapper li .wysiwyg-files-action-rename { background: url(images/rename.png) left top no-repeat; }
 .wysiwyg-files-wrapper li .wysiwyg-files-action-remove { background: url(images/remove.png) left top no-repeat; }

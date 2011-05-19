@@ -272,7 +272,7 @@
 								
 								// Upload File
 								$(".wysiwyg-files-action-upload").live("click", function (e) {
-									
+									self.loadUploadUI();
 								});
 								
 							}
@@ -419,10 +419,51 @@
 		 */
 		this.moveFile = function () {
 			if (!this.loaded) { return false; }
-			if (!this.rename.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }
-			
+			if (!this.rename.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
+			var self = this;
+			return false;
 		}
-		return false;
+		
+		// Upload:
+		this.loadUploadUI = function () {
+			if (!this.loaded) { return false; }
+			if (!this.rename.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
+			var self = this;
+			var uiHtml = 	'<form enctype="multipart/form-data" method="post" action="' + self.upload.handler + '">' + 
+							'<p><input type="file" name="handle" /><br>' + 
+							'<input type="text" name="newName" class="wysiwyg-files-textfield" /><br>' + 
+							'<input type="text" name="action" style="display:none;" value="upload" /><br></p>' + 
+							'<input type="text" name="dir" style="display:none;" value="' + self.curDir + '" /></p>' + 
+							'<input type="submit" name="submit" />' +
+							'</form>';
+			var uiJavascript = 	'<script type="text/javascript">' + 
+								'$(document).ready(function () {' +
+									'$(input[name="handle"]).change(function () {' +
+										'alert("yo");' +
+										'$("input[name=newName]").val($(this).val());' +
+									'});' +
+								'});' +
+								'</script>';
+			$("<iframe/>", { "class": "wysiwyg-files-upload" }).load(function () {
+				$doc = $(this).contents();
+				$doc.find("body").append(uiHtml);
+				$doc.find("input[type=file]").change(function () {
+					$val = $(this).val();
+					$val = $val.replace(/.*[\\\/]/, '');
+					$doc.find("input[name=newName]").val($val);
+				});
+				//$(this).contents().find("body").append(uiJavascript);
+			}).dialog({
+				height: 200,
+				modal: true,
+				draggable: true,
+				close: function () {
+					$(this).dialog("destroy");
+					$(this).remove();
+				}
+			});
+		}
+		
 	}
 	
 })(jQuery);

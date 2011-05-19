@@ -11,16 +11,18 @@ my $base_url = "http://localhost"; # The base URL for your file directory
 my $root = "/srv/http/jwysiwyg"; # Local URI for file directory
 my $action = param("action");
 
+warn "Shalalala";
 # All responses are strict JSON.
 print "Content-type: application/json; charset=utf-8\n\n";
 
-my $dir = param("dir");
-$dir = url_decode($dir);
 my $JSON = JSON::XS->new()->pretty(1);
+my $dir = url_decode(param("dir"));
+my $fhandle = param("handle");
+my $newName = url_decode(param("newName"));
 
 # Upload File Method:
 if ($action eq "upload") {
-	print $JSON->encode({ "success" => JSON::XS::false, "error" => "upload: Not yet supported" });
+	print "Failed";
 }
 
 # Method for decoding GET method utf8

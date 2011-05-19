@@ -27,10 +27,14 @@ if ($action eq "rename") {
 			$newName = $1;
 			$file =~ /([\w\.\(\)_\-\s]+)/;
 			$file = $1;
-			if (move("$root$dir/$file", "$root$dir/$newName")) {
-				print $JSON->encode({ "success" => JSON::XS::true, "data" => "$file is now $newName." });
+			if (-e "$root$dir/$newName") {
+				print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$newName' already exists." });
 			} else {
-				print $JSON->encode({ "success" => JSON::XS::false, "error" => "Error while trying to rename: $file" });
+				if (move("$root$dir/$file", "$root$dir/$newName")) {
+					print $JSON->encode({ "success" => JSON::XS::true, "data" => "$file is now $newName." });
+				} else {
+					print $JSON->encode({ "success" => JSON::XS::false, "error" => "Error while trying to rename: $file" });
+				}
 			}
 		} else { 
 			print $JSON->encode({ "success" => JSON::XS::false, "error" => "New name contains illegal characters." });

@@ -40,7 +40,7 @@ if ($action eq "remove") {
 				}
 			}
 		} else {	
-			print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$file' does not exist." });
+			print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$file' contains illegal characters." });
 		}
 	} else {
 		print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$file' does not exist." });
