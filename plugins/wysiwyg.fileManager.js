@@ -436,23 +436,15 @@
 							'<input type="text" name="dir" style="display:none;" value="' + self.curDir + '" /></p>' + 
 							'<input type="submit" name="submit" />' +
 							'</form>';
-			var uiJavascript = 	'<script type="text/javascript">' + 
-								'$(document).ready(function () {' +
-									'$(input[name="handle"]).change(function () {' +
-										'alert("yo");' +
-										'$("input[name=newName]").val($(this).val());' +
-									'});' +
-								'});' +
-								'</script>';
 			$("<iframe/>", { "class": "wysiwyg-files-upload" }).load(function () {
 				$doc = $(this).contents();
 				$doc.find("body").append(uiHtml);
 				$doc.find("input[type=file]").change(function () {
 					$val = $(this).val();
 					$val = $val.replace(/.*[\\\/]/, '');
+					// Should implement validation before submiting form
 					$doc.find("input[name=newName]").val($val);
 				});
-				//$(this).contents().find("body").append(uiJavascript);
 			}).dialog({
 				height: 200,
 				modal: true,
