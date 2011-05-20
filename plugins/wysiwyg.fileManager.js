@@ -157,7 +157,7 @@
 								// Image preview bindings
 								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
 									var $this = $(this);
-									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": $this.attr("rel"), "alt": $this.text() }).appendTo("body");
+									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": $this.find("a").attr("rel"), "alt": $this.text() }).appendTo("body");
 									$("img.wysiwyg-files-file-preview").load(function () {
 										$(this).removeClass("wysiwyg-files-ajax");
 									});
@@ -185,12 +185,13 @@
 										modal: true,
 										buttons: {
 											"Yes": function () {
-												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
+												var $this = $(this);
+												var file = entry.find("a").text();
 												self.removeFile(type, file, function (response) {
 													self.loadDir(self.curDir, function (list) {
 														$("#wysiwyg-files-list-wrapper").html(list);
 													});
-													removeDialog.dialog("close");
+													$this.dialog("close");
 												});
 											},
 											"No": function () {
@@ -220,12 +221,13 @@
 										modal: true,
 										buttons: {
 											"Rename": function () {
+												var $this = $(this);
 												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
 												self.renameFile(type, file, $(this).find("input[name=newName]").val(), function (response) {
 													self.loadDir(self.curDir, function (list) {
 														$("#wysiwyg-files-list-wrapper").html(list);
 													});
-													renameDialog.dialog("close");
+													$this.dialog("close");
 												});
 											},
 											"Cancel": function () {
@@ -252,11 +254,12 @@
 										modal: true,
 										buttons: {
 											"Create": function () {
+												var $this = $(this);
 												self.mkDir($(this).find("input[name=newName]").val(), function (response) {
 													self.loadDir(self.curDir, function (list) {
 														$("#wysiwyg-files-list-wrapper").html(list);
 													});
-													mkdirDialog.dialog("close");
+													$this.dialog("close");
 												});
 											},
 											"Cancel": function () {
@@ -312,7 +315,7 @@
 				return false;
 			}
 			var self = this;
-			self.curDir = dir;
+			self.curDir = dir.replace(/\/$/, '') + '/';
 			// Retreives list of files inside a certain directory:
 			$.getJSON(self.handler, { "dir": self.curDir, "action": "list" }, function (json) {
 				if (json.success) {
@@ -431,7 +434,7 @@
 			var self = this;
 			var uiHtml = 	'<form enctype="multipart/form-data" method="post" action="' + self.upload.handler + '">' + 
 							'<p><input type="file" name="handle" /><br>' + 
-							'<input type="text" name="newName" class="wysiwyg-files-textfield" /><br>' + 
+							'<input type="text" name="newName" style="width:250px; border:solid 1px !important;" /><br>' + 
 							'<input type="text" name="action" style="display:none;" value="upload" /><br></p>' + 
 							'<input type="text" name="dir" style="display:none;" value="' + self.curDir + '" /></p>' + 
 							'<input type="submit" name="submit" />' +
@@ -446,12 +449,16 @@
 					$doc.find("input[name=newName]").val($val);
 				});
 			}).dialog({
-				height: 200,
+				width: 400,
+				height: 250,
 				modal: true,
 				draggable: true,
 				close: function () {
-					$(this).dialog("destroy");
-					$(this).remove();
+					self.loadDir(self.curDir, function (list) {
+						$("#wysiwyg-files-list-wrapper").html(list);
+						$(this).dialog("destroy");
+						$(this).remove();
+					});
 				}
 			});
 		}

@@ -23,17 +23,17 @@ my $file = url_decode(param("file"));
 
 # Remove File Method:	
 if ($action eq "remove") {
-	if (-e "$root$dir/$file") {
+	if (-e "$root$dir$file") {
 		if ($file =~ /([\w\.\(\)_\-\s]+)/) {
 			$file = $1;
 			if ($type eq "dir") {
-				if (remove_tree("$root$dir/$file")) {
+				if (remove_tree("$root$dir$file")) {
 					print $JSON->encode({ "success" => JSON::XS::true, "data" => "$file has been removed." });
 				} else {
 					print $JSON->encode({ "success" => JSON::XS::false, "error" => "Error while trying to remove: $file" });
 				}
 			} else {
-				if (unlink("$root$dir/$file")) {
+				if (unlink("$root$dir$file")) {
 					print $JSON->encode({ "success" => JSON::XS::true, "data" => "$file has been removed." });
 				} else {
 					print $JSON->encode({ "success" => JSON::XS::false, "error" => "Error while trying to remove: $file" });
@@ -43,7 +43,7 @@ if ($action eq "remove") {
 			print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$file' contains illegal characters." });
 		}
 	} else {
-		print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$file' does not exist." });
+		print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$root$dir$file' does not exist." });
 	}
 }
 

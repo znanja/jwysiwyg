@@ -22,16 +22,16 @@ my $newName = url_decode(param("newName"));
 
 # Rename File Method:
 if ($action eq "rename") {
-	if (-e "$root$dir/$file") {
+	if (-e "$root$dir$file") {
 		if ($newName =~ /([\w\.\(\)_\-\s]+)/) {
 			$newName = $1;
 			$file =~ /([\w\.\(\)_\-\s]+)/;
 			$file = $1;
-			if (-e "$root$dir/$newName") {
+			if (-e "$root$dir$newName") {
 				print $JSON->encode({ "success" => JSON::XS::false, "error" => "'$newName' already exists." });
 			} else {
-				if (move("$root$dir/$file", "$root$dir/$newName")) {
-					print $JSON->encode({ "success" => JSON::XS::true, "data" => "$file is now $newName." });
+				if (move("$root$dir$file", "$root$dir$newName")) {
+					print $JSON->encode({ "success" => JSON::XS::true, "data" => "'$file' is now '$newName'." });
 				} else {
 					print $JSON->encode({ "success" => JSON::XS::false, "error" => "Error while trying to rename: $file" });
 				}

@@ -21,10 +21,10 @@ my $newName = url_decode(param("newName"));
 
 # Make Directory Method:
 if ($action eq "mkdir") {
-	unless (-d "$root$dir/$newName") {
+	unless (-d "$root$dir$newName") {
 		if ($newName =~ /([\w\.\(\)_\-\s]+)/) {
 			$newName = $1;
-			if (make_path("$root$dir/$newName")) {
+			if (make_path("$root$dir$newName")) {
 				print $JSON->encode({ "success" => JSON::XS::true, "data" => "$newName created successfuly." });
 			} else {
 				print $JSON->encode({ "success" => JSON::XS::false, "error" => "Unable to create directory." });
