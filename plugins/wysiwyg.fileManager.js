@@ -3,7 +3,8 @@
  * 
  * Yotam Bar-On, 2011
  * 
- * The file manager plugin does not currently support i18n 
+ * The file manager ui uses the Silk icon set from FAMFAMFAM
+ * 
  */
 (function ($) {
 	if (undefined === $.wysiwyg) {
@@ -72,13 +73,14 @@
 				}
 				// Wrap the file list:
 				self.loadDir("/", function (fileList) {
-					var uiHtml = 	'<div class="wysiwyg-files-wrapper" title="File Manager">' +
+					var uiHtml = 	'<div class="wysiwyg-files-wrapper" title="{{file_manager}}">' +
 									'<input type="text" name="url" />' +
 									'<div id="wysiwyg-files-list-wrapper">'+fileList+'</div>' +
-									'<div class="wysiwyg-files-action-upload" title="Upload new file to current directory"></div>' +
-									'<div class="wysiwyg-files-action-mkdir" title="Create new directory"></div>' +
-									'<input style="display:none;" type="button" name="submit" value="Select" />' +
+									'<div class="wysiwyg-files-action-upload" title="{{upload_action}}"></div>' +
+									'<div class="wysiwyg-files-action-mkdir" title="{{mkdir_action}}"></div>' +
+									'<input style="display:none;" type="button" name="submit" value="{{select}}" />' +
 									'</div>';
+					uiHtml = self.i18n(uiHtml);
 					if ($.wysiwyg.dialog) {
 						// Future support for native $.wysiwyg.dialog()
 						$.wysiwyg.dialog(uiHtml);
@@ -103,8 +105,10 @@
 									// Add action buttons:
 									if (!$(this).hasClass("wysiwyg-files-dir-prev")) {
 										$(".wysiwyg-files-action").remove();
-										$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-remove", "title": "Remove" }).appendTo(this);
-										$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-rename", "title": "Rename" }).appendTo(this);
+										var rmText = self.i18n("{{remove_action}}");
+										var rnText = self.i18n("{{rename_action}}");
+										$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-remove", "title": rmText }).appendTo(this);
+										$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-rename", "title": rnText }).appendTo(this);
 									}
 								}).live("mouseleave", function () {
 									$(this).removeClass("wysiwyg-files-dir-expanded");
@@ -178,26 +182,34 @@
 									var entry = $(this).parent("li");
 									// What are we deleting?
 									var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
-									var removeDialog = 	$('<p>Are you sure you want to delete this file?</p>');
+									var uiHtml = "<p>{{delete_message}}</p>";
+									uiHtml = self.i18n(uiHtml);
+									var removeDialog = 	$(uiHtml);
 									$(removeDialog).dialog({
-										height: 120,
+										height: 150,
 										draggable: true,
 										modal: true,
-										buttons: {
-											"Yes": function () {
-												var $this = $(this);
-												var file = entry.find("a").text();
-												self.removeFile(type, file, function (response) {
-													self.loadDir(self.curDir, function (list) {
-														$("#wysiwyg-files-list-wrapper").html(list);
+										buttons: [
+											{	
+												text: self.i18n("{{yes}}"),
+												click: function () {
+													var $this = $(this);
+													var file = entry.find("a").text();
+													self.removeFile(type, file, function (response) {
+														self.loadDir(self.curDir, function (list) {
+															$("#wysiwyg-files-list-wrapper").html(list);
+														});
+														$this.dialog("close");
 													});
-													$this.dialog("close");
-												});
+												}
 											},
-											"No": function () {
-												$(this).dialog("close");
+											{	
+												text: self.i18n("{{no}}"),
+												click: function () {
+													$(this).dialog("close");
+												}
 											}
-										},
+										],
 										close: function () {
 											$(this).dialog("destroy");
 											$(this).remove();
@@ -214,26 +226,33 @@
 									var renameDialog = 	$(	'<div>' +
 															'<input type="text" class="wysiwyg-files-textfield" name="newName" value="' + entry.find("a").text() + '" />' +
 															'</div>');
-									
+									var $rename = self.i18n("{{rename}}");
+									var $cancel = self.i18n("{{cancel}}");
 									renameDialog.dialog({
-										height: 120,
+										height: 150,
 										draggable: true,
 										modal: true,
-										buttons: {
-											"Rename": function () {
-												var $this = $(this);
-												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
-												self.renameFile(type, file, $(this).find("input[name=newName]").val(), function (response) {
-													self.loadDir(self.curDir, function (list) {
-														$("#wysiwyg-files-list-wrapper").html(list);
+										buttons: [
+											{
+												text: self.i18n("{{rename}}"),
+												click: function () {
+													var $this = $(this);
+													var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
+													self.renameFile(type, file, $(this).find("input[name=newName]").val(), function (response) {
+														self.loadDir(self.curDir, function (list) {
+															$("#wysiwyg-files-list-wrapper").html(list);
+														});
+														$this.dialog("close");
 													});
-													$this.dialog("close");
-												});
+												}
 											},
-											"Cancel": function () {
-												$(this).dialog("close");
+											{
+												text: self.i18n("{{cancel}}"),
+												click: function () {
+													$(this).dialog("close");
+												}
 											}
-										},
+										],
 										close: function () {
 											$(this).dialog("destroy");
 											$(this).remove();
@@ -244,28 +263,37 @@
 								// Create Directory
 								$(".wysiwyg-files-action-mkdir").live("click", function (e) {
 									e.preventDefault();
-									var mkdirDialog = 	$(	'<div>' +
-															'<input type="text" class="wysiwyg-files-textfield" name="newName" value="New Directory" />' +
-															'</div>');
-									
+									var uiHtml =	'<div>' +
+													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
+													'</div>';
+									uiHtml = self.i18n(uiHtml);
+									var mkdirDialog = $(uiHtml);
+									var $create = self.i18n("{{create}}");
+									var $cancel = self.i18n("{{cancel}}");
 									mkdirDialog.dialog({
-										height: 120,
+										height: 150,
 										draggable: true,
 										modal: true,
-										buttons: {
-											"Create": function () {
-												var $this = $(this);
-												self.mkDir($(this).find("input[name=newName]").val(), function (response) {
-													self.loadDir(self.curDir, function (list) {
-														$("#wysiwyg-files-list-wrapper").html(list);
+										buttons: [
+											{
+												text: self.i18n("{{create}}"),
+												click: function () {
+													var $this = $(this);
+													self.mkDir($(this).find("input[name=newName]").val(), function (response) {
+														self.loadDir(self.curDir, function (list) {
+															$("#wysiwyg-files-list-wrapper").html(list);
+														});
+														$this.dialog("close");
 													});
-													$this.dialog("close");
-												});
+												}
 											},
-											"Cancel": function () {
-												$(this).dialog("close");
+											{
+												text: self.i18n("{{cancel}}"),
+												click: function () {
+													$(this).dialog("close");
+												}
 											}
-										},
+										],
 										close: function () {
 											$(this).dialog("destroy");
 											$(this).remove();
@@ -340,7 +368,7 @@
 			if (self.curDir !== "/") {
 				var prevDir = self.curDir.replace(/[^\/]+\/?$/, '');
 				treeHtml += '<li class="wysiwyg-files-dir wysiwyg-files-dir-prev">' +
-							'<a href="#" rel="'+prevDir+'" title="Go to previous directory">' +
+							'<a href="#" rel="'+prevDir+'" title="{{previous_directory}}">' +
 							self.curDir +
 							'</a></li>';
 			}
@@ -358,7 +386,8 @@
 							'</a></li>';
 			});			
 			treeHtml += '</ul>';
-			return treeHtml;
+			
+			return self.i18n(treeHtml);
 		}
 		
 /*
@@ -437,8 +466,9 @@
 							'<input type="text" name="newName" style="width:250px; border:solid 1px !important;" /><br>' + 
 							'<input type="text" name="action" style="display:none;" value="upload" /><br></p>' + 
 							'<input type="text" name="dir" style="display:none;" value="' + self.curDir + '" /></p>' + 
-							'<input type="submit" name="submit" />' +
+							'<input type="submit" name="submit" value="{{submit}}" />' +
 							'</form>';
+			uiHtml = self.i18n(uiHtml);
 			$("<iframe/>", { "class": "wysiwyg-files-upload" }).load(function () {
 				$doc = $(this).contents();
 				$doc.find("body").append(uiHtml);
@@ -462,7 +492,50 @@
 				}
 			});
 		}
-		
+
+		/*
+		 * i18n Support.
+		 * The below methods will enable basic support for i18n
+		 */		
+		 
+		// Default translations (EN):
+		this.defaultTranslations = {
+			"file_manager": 		"File Manager",
+			"upload_action": 		"Upload new file to current directory",
+			"mkdir_action": 		"Create new directory",
+			"remove_action": 		"Remove this file",
+			"rename_action": 		"Rename this file" ,	
+			"delete_message": 		"Are you sure you want to delete this file?",
+			"new_directory": 		"New Directory",
+			"previous_directory": 	"Go to previous directory",
+			"rename":				"Rename",
+			"select": 				"Select",
+			"create": 				"Create",
+			"submit": 				"Submit",
+			"cancel": 				"Cancel",
+			"yes":					"Yes",
+			"no":					"No"
+		}
+		/* Take an html string with placeholders: {{placeholder}} and translate it. 
+		 * It takes all labels and trys to translate them. 
+		 * If there is no translation (or i18n plugin is not loaded) it will use the defaults.
+		 */
+		this.i18n = function (tHtml) {
+			var map = this.defaultTranslations;
+			// If i18n plugin exists:
+			if ($.wysiwyg.i18n) {
+				$.each(map, function (key, val) {
+					map[key] = $.wysiwyg.i18n.t(key, "fileManager")
+				});
+			}
+			
+			$.each(map, function (key, val) {
+				tHtml = tHtml.replace("{{" + key + "}}", val)
+			});
+			
+			return tHtml;
+		}
+		 
 	}
-	
+
 })(jQuery);

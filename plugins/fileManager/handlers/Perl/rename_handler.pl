@@ -23,7 +23,7 @@ my $newName = url_decode(param("newName"));
 # Rename File Method:
 if ($action eq "rename") {
 	if (-e "$root$dir$file") {
-		if ($newName =~ /([\w\.\(\)_\-\s]+)/) {
+		if ($newName =~ /^([\w\.\(\)_\-\s]+)$/) {
 			$newName = $1;
 			$file =~ /([\w\.\(\)_\-\s]+)/;
 			$file = $1;
