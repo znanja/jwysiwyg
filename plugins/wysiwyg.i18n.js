@@ -28,7 +28,9 @@
 
 			this.options = $.extend(true, this.defaults, Wysiwyg.options.plugins[this.name]);
 
-			if (!lang) {
+			if (lang) {
+				this.options.lang = lang;
+			} else {
 				lang = this.options.lang;
 			}
 
@@ -54,14 +56,6 @@
 		},
 
 		run: function (object, lang) {
-			if ("object" !== typeof (object) || !object.context) {
-				object = this;
-			}
-
-			if (!object.each) {
-				console.error($.wysiwyg.messages.noObject);
-			}
-
 			return object.each(function () {
 				var oWysiwyg = $(this).data("wysiwyg");
 
@@ -74,7 +68,7 @@
 		},
 
 		t: function (phrase, section, lang) {
-			var i, section_array, object;
+			var i, section_array, transObject;
 
 			if (!lang) {
 				lang = this.options.lang;
@@ -84,16 +78,16 @@
 				return phrase;
 			}
 
-			object = this.lang[lang];
+			transObject = this.lang[lang];
 			section_array = section.split(".");
 			for (i = 0; i < section_array.length; i += 1) {
-				if (object[section_array[i]]) {
-					object = object[section_array[i]];
+				if (transObject[section_array[i]]) {
+					transObject = transObject[section_array[i]];
 				}
 			}
 
-			if (object[phrase]) {
-				return object[phrase];
+			if (transObject[phrase]) {
+				return transObject[phrase];
 			}
 
 			return phrase;

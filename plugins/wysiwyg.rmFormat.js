@@ -199,6 +199,9 @@
 		msWordMarkup: function (text) {
 			var tagName, attrName, rules, reg, regAttr, found, attrs;
 
+			// @link https://github.com/akzhan/jwysiwyg/issues/165
+			text = text.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+
 			text = text.replace(/<meta\s[^>]+>/g, "");
 			text = text.replace(/<link\s[^>]+>/g, "");
 			text = text.replace(/<title>[\s\S]*?<\/title>/g, "");

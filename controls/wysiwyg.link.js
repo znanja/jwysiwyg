@@ -7,7 +7,7 @@
  */
 (function ($) {
 	if (undefined === $.wysiwyg) {
-		throw "wysiwyg.image.js depends on $.wysiwyg";
+		throw "wysiwyg.link.js depends on $.wysiwyg";
 	}
 
 	if (!$.wysiwyg.controls) {
@@ -133,6 +133,9 @@
 									window.alert(Wysiwyg.options.messages.nonSelection);
 								}
 							}
+
+							Wysiwyg.saveContent();
+
 							$(dialog).dialog("close");
 						});
 						$("input:reset", dialog).click(function (e) {
@@ -142,6 +145,7 @@
 					},
 					close: function (ev, ui) {
 						dialog.dialog("destroy");
+						dialog.remove();
 					}
 				});
 			} else {
@@ -193,6 +197,8 @@
 						window.alert(Wysiwyg.options.messages.nonSelection);
 					}
 				}
+
+				Wysiwyg.saveContent();
 			}
 
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");

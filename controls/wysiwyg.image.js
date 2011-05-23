@@ -24,64 +24,59 @@
 		tags: ["img"],
 		tooltip: "Insert image",	
 		init: function (Wysiwyg) {
-			var self = this, elements, dialog, formImageHtml,
-				formTextLegend, formTextPreview, formTextUrl, formTextTitle,
-				formTextDescription, formTextWidth, formTextHeight, formTextOriginal,
-				formTextFloat, formTextFloatNone, formTextFloatLeft, formTextFloatRight,
-				formTextSubmit, formTextReset,
+			var self = this, elements, dialog, formImageHtml, dialogReplacements, key, translation,
 				img = {
 					alt: "",
 					self: Wysiwyg.dom ? Wysiwyg.dom.getElement("img") : null, // link to element node
 					src: "http://",
 					title: ""
 				};
-				
-			formTextLegend  = "Insert Image";
-			formTextPreview = "Preview";
-			formTextUrl     = "URL";
-			formTextTitle   = "Title";
-			formTextDescription = "Description";
-			formTextWidth   = "Width";
-			formTextHeight  = "Height";
-			formTextOriginal = "Original W x H";
-			formTextFloat	= "Float";
-			formTextFloatNone = "None";
-			formTextFloatLeft = "Left";
-			formTextFloatRight = "Right";
-			formTextSubmit  = "Insert Image";
-			formTextReset   = "Cancel";
 
-			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.image");
-				formTextPreview = $.wysiwyg.i18n.t(formTextPreview, "dialogs.image");
-				formTextUrl = $.wysiwyg.i18n.t(formTextUrl, "dialogs.image");
-				formTextTitle = $.wysiwyg.i18n.t(formTextTitle, "dialogs.image");
-				formTextDescription = $.wysiwyg.i18n.t(formTextDescription, "dialogs.image");
-				formTextWidth = $.wysiwyg.i18n.t(formTextWidth, "dialogs.image");
-				formTextHeight = $.wysiwyg.i18n.t(formTextHeight, "dialogs.image");
-				formTextOriginal = $.wysiwyg.i18n.t(formTextOriginal, "dialogs.image");
-				formTextFloat = $.wysiwyg.i18n.t(formTextFloat, "dialogs.image");
-				formTextFloatNone = $.wysiwyg.i18n.t(formTextFloatNone, "dialogs.image");
-				formTextFloatLeft = $.wysiwyg.i18n.t(formTextFloatLeft, "dialogs.image");
-				formTextFloatRight = $.wysiwyg.i18n.t(formTextFloatRight, "dialogs.image");
-				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs.image");
-				formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
-			}
+			dialogReplacements = {
+				legend	: "Insert Image",
+				preview : "Preview",
+				url     : "URL",
+				title   : "Title",
+				description : "Description",
+				width   : "Width",
+				height  : "Height",
+				original : "Original W x H",
+				"float"	: "Float",
+				floatNone : "None",
+				floatLeft : "Left",
+				floatRight : "Right",
+				submit  : "Insert Image",
+				reset   : "Cancel"
+			};
 
 			formImageHtml = '<form class="wysiwyg" id="wysiwyg-addImage"><fieldset>' +
-				'<div class="form-row"><span class="form-row-key">' + formTextPreview + ':</span><div class="form-row-value"><img src="" alt="' + formTextPreview + '" style="margin: 2px; padding:5px; max-width: 100%; overflow:hidden; max-height: 100px; border: 1px solid rgb(192, 192, 192);"/></div></div>'+
-				'<div class="form-row"><label for="name">' + formTextUrl + ':</label><div class="form-row-value"><input type="text" name="src" value=""/></div></div>' +
-				'<div class="form-row"><label for="name">' + formTextTitle + ':</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
-				'<div class="form-row"><label for="name">' + formTextDescription + ':</label><div class="form-row-value"><input type="text" name="description" value=""/></div></div>' +
-				'<div class="form-row"><label for="name">' + formTextWidth + ' x ' + formTextHeight + ':</label><div class="form-row-value"><input type="text" name="width" value="" class="width-small"/> x <input type="text" name="height" value="" class="width-small"/></div></div>' +
-				'<div class="form-row"><label for="name">' + formTextOriginal + ':</label><div class="form-row-value"><input type="text" name="naturalWidth" value="" class="width-small" disabled="disabled"/> x ' +
+				'<div class="form-row"><span class="form-row-key">{preview}:</span><div class="form-row-value"><img src="" alt="{preview}" style="margin: 2px; padding:5px; max-width: 100%; overflow:hidden; max-height: 100px; border: 1px solid rgb(192, 192, 192);"/></div></div>'+
+				'<div class="form-row"><label for="name">{url}:</label><div class="form-row-value"><input type="text" name="src" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">{title}:</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">{description}:</label><div class="form-row-value"><input type="text" name="description" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">{width} x {height}:</label><div class="form-row-value"><input type="text" name="width" value="" class="width-small"/> x <input type="text" name="height" value="" class="width-small"/></div></div>' +
+				'<div class="form-row"><label for="name">{original}:</label><div class="form-row-value"><input type="text" name="naturalWidth" value="" class="width-small" disabled="disabled"/> x ' +
 				'<input type="text" name="naturalHeight" value="" class="width-small" disabled="disabled"/></div></div>' +
-				'<div class="form-row"><label for="name">' + formTextFloat + ':</label><div class="form-row-value"><select name="float">' + 
-				'<option value="">' + formTextFloatNone + '</option>' +
-				'<option value="left">' + formTextFloatLeft + '</option>' +
-				'<option value="right">' + formTextFloatRight + '</option></select></div></div>' +
-				'<div class="form-row form-row-last"><label for="name"></label><div class="form-row-value"><input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
-				'<input type="reset" value="' + formTextReset + '"/></div></div></fieldset></form>';
+				'<div class="form-row"><label for="name">{float}:</label><div class="form-row-value"><select name="float">' + 
+				'<option value="">{floatNone}</option>' +
+				'<option value="left">{floatLeft}</option>' +
+				'<option value="right">{floatRight}</option></select></div></div>' +
+				'<div class="form-row form-row-last"><label for="name"></label><div class="form-row-value"><input type="submit" class="button" value="{submit}"/> ' +
+				'<input type="reset" value="{reset}"/></div></div></fieldset></form>';
+
+			for (key in dialogReplacements) {
+				if ($.wysiwyg.i18n) {
+					translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs.image");
+
+					if (translation === dialogReplacements[key]) { // if not translated search in dialogs 
+						translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs");
+					}
+
+					dialogReplacements[key] = translation;
+				}
+
+				formImageHtml = formImageHtml.replace("{" + key + "}", dialogReplacements[key]);
+			}
 
 			if (img.self) {
 				img.src = img.self.src ? img.self.src : "";
@@ -104,11 +99,13 @@
 					adialog.close();
 					return false;
 				});
+
 				$("input:reset", dialog).click(function (e) {
 					adialog.close();
 					
 					return false;
 				});
+				
 				$("fieldset", dialog).click(function (e) {
 					e.stopPropagation();
 				});
@@ -158,6 +155,8 @@
 				} else {
 					$(img.self).css("height", "");
 				}
+				
+				Wysiwyg.saveContent();
 			} else {
 				found = width.toString().match(/^[0-9]+(px|%)?$/);
 				if (found) {
@@ -215,11 +214,11 @@
 
 	$.wysiwyg.insertImage = function (object, url, attributes) {
 		return object.each(function () {
-			var self = $(this).data("wysiwyg"),
+			var Wysiwyg = $(this).data("wysiwyg"),
 				image,
 				attribute;
 
-			if (!self) {
+			if (!Wysiwyg) {
 				return this;
 			}
 
@@ -228,12 +227,12 @@
 			}
 
 			if ($.browser.msie) {
-				self.ui.focus();
+				Wysiwyg.ui.focus();
 			}
 
 			if (attributes) {
-				self.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
-				image = self.getElementByAttributeValue("img", "src", "#jwysiwyg#");
+				Wysiwyg.editorDoc.execCommand("insertImage", false, "#jwysiwyg#");
+				image = Wysiwyg.getElementByAttributeValue("img", "src", "#jwysiwyg#");
 
 				if (image) {
 					image.src = url;
@@ -245,10 +244,12 @@
 					}
 				}
 			} else {
-				self.editorDoc.execCommand("insertImage", false, url);
+				Wysiwyg.editorDoc.execCommand("insertImage", false, url);
 			}
 
-			$(self.editorDoc).trigger("editorRefresh.wysiwyg");
+			Wysiwyg.saveContent();
+
+			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 
 			return this;
 		});
