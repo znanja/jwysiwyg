@@ -2050,14 +2050,16 @@
 	 * 
 	 */
 	$.wysiwyg.dialog = function (jWysiwyg, opts) {
-		var theme	= jWysiwyg.options.dialog,
-			obj		= $.wysiwyg.dialog.createDialog(jWysiwyg.options.dialog),
+		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : "default",
+			obj		= $.wysiwyg.dialog.createDialog(theme),
 			that	= this,
 			$that	= $(that);
 			
 		this.options = {
 			"title": "Title",
-			"content": "Content"
+			"content": "Content",
+			"open": false,
+			"close": false
 		}
 			
 		this.isOpen = false;
@@ -2106,6 +2108,13 @@
 			
 			$that.trigger("afterClose", [$dialog]);
 		};
+		
+		if(this.options.open) {
+			$that.bind("afterOpen", this.options.open);
+		}
+		if(this.options.close) {
+			$that.bind("afterClose", this.options.close);
+		}
 		
 		return this;
 	};
