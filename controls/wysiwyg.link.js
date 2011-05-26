@@ -67,7 +67,11 @@
 				elements.find("input[name=linktarget]").val(a.target);
 
 				if ($.browser.msie) {
-					dialog = elements.appendTo(Wysiwyg.editorDoc.body);
+					try {
+						dialog = elements.appendTo(Wysiwyg.editorDoc.body);
+					} catch(err) {
+						dialog = elements.appendTo("body");
+					}
 				} else {
 					dialog = elements.appendTo("body");
 				}
@@ -229,6 +233,7 @@
 			} else if (oWysiwyg.options.messages.nonSelection) {
 				window.alert(oWysiwyg.options.messages.nonSelection);
 			}
+			return this;
 		});
 	};
 })(jQuery);

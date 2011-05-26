@@ -16,11 +16,18 @@
 	 * Wysiwyg namespace: public properties and methods
 	 */
 	$.wysiwyg.controls.image = {
+		groupIndex: 6,
+		visible: true,
+		exec: function () {
+			$.wysiwyg.controls.image.init(this);
+		},
+		tags: ["img"],
+		tooltip: "Insert image",	
 		init: function (Wysiwyg) {
 			var self = this, elements, dialog, formImageHtml, dialogReplacements, key, translation,
 				img = {
 					alt: "",
-					self: Wysiwyg.dom.getElement("img"), // link to element node
+					self: Wysiwyg.dom ? Wysiwyg.dom.getElement("img") : null, // link to element node
 					src: "http://",
 					title: ""
 				};
@@ -42,20 +49,20 @@
 				reset   : "Cancel"
 			};
 
-			formImageHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
-				'<label>{preview}: <img src="" alt="{preview}" style="float: left; margin: 5px; width: 80px; height: 60px; border: 1px solid rgb(192, 192, 192);"/></label>' +
-				'<label>{url}: <input type="text" name="src" value=""/></label>' +
-				'<label>{title}: <input type="text" name="imgtitle" value=""/></label>' +
-				'<label>{description}: <input type="text" name="description" value=""/></label>' +
-				'<label>{width} x {height}: <input type="text" name="width" value="" class="width"/> x <input type="text" name="height" value="" class="height"/></label>' +
-				'<label>{original}: <input type="text" name="naturalWidth" value="" class="width" disabled="disabled"/> x ' +
-				'<input type="text" name="naturalHeight" value="" class="height" disabled="disabled"/></label>' +
-				'<label>{float}: <select name="float">' + 
+			formImageHtml = '<form class="wysiwyg" id="wysiwyg-addImage"><fieldset>' +
+				'<div class="form-row"><span class="form-row-key">{preview}:</span><div class="form-row-value"><img src="" alt="{preview}" style="margin: 2px; padding:5px; max-width: 100%; overflow:hidden; max-height: 100px; border: 1px solid rgb(192, 192, 192);"/></div></div>'+
+				'<div class="form-row"><label for="name">{url}:</label><div class="form-row-value"><input type="text" name="src" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">{title}:</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">{description}:</label><div class="form-row-value"><input type="text" name="description" value=""/></div></div>' +
+				'<div class="form-row"><label for="name">{width} x {height}:</label><div class="form-row-value"><input type="text" name="width" value="" class="width-small"/> x <input type="text" name="height" value="" class="width-small"/></div></div>' +
+				'<div class="form-row"><label for="name">{original}:</label><div class="form-row-value"><input type="text" name="naturalWidth" value="" class="width-small" disabled="disabled"/> x ' +
+				'<input type="text" name="naturalHeight" value="" class="width-small" disabled="disabled"/></div></div>' +
+				'<div class="form-row"><label for="name">{float}:</label><div class="form-row-value"><select name="float">' + 
 				'<option value="">{floatNone}</option>' +
 				'<option value="left">{floatLeft}</option>' +
-				'<option value="right">{floatRight}</option></select></label>' +
-				'<input type="submit" class="button" value="{submit}"/> ' +
-				'<input type="reset" value="{reset}"/></fieldset></form>';
+				'<option value="right">{floatRight}</option></select></div></div>' +
+				'<div class="form-row form-row-last"><label for="name"></label><div class="form-row-value"><input type="submit" class="button" value="{submit}"/> ' +
+				'<input type="reset" value="{reset}"/></div></div></fieldset></form>';
 
 			for (key in dialogReplacements) {
 				if ($.wysiwyg.i18n) {
@@ -78,94 +85,36 @@
 				img.width = img.self.width ? img.self.width : "";
 				img.height = img.self.height ? img.self.height : "";
 			}
-
-			if ($.modal) {
-				elements = $(formImageHtml);
-				elements = self.makeForm(elements, img);
-
-				$.modal(elements, {
-					onShow: function (dialog) {
-						$("input:submit", dialog.data).click(function (e) {
-							self.processInsert(dialog.container, Wysiwyg, img);
-
-							$.modal.close();
-							return false;
-						});
-						$("input:reset", dialog.data).click(function (e) {
-							$.modal.close();
-							return false;
-						});
-						$("fieldset", dialog.data).click(function (e) {
-							e.stopPropagation();
-						});
-					},
-					maxWidth: Wysiwyg.defaults.formWidth,
-					maxHeight: Wysiwyg.defaults.formHeight,
-					overlayClose: true
+			
+			var adialog = new $.wysiwyg.dialog(Wysiwyg, {
+				"title": formTextLegend,
+				"content": formImageHtml
+			});
+			
+			$(adialog).bind("afterOpen", function (e, dialog) {
+				$("form#wysiwyg-addImage", dialog).submit(function (e) {
+					e.preventDefault();
+					self.processInsert(dialog.container, Wysiwyg, img);
+					
+					adialog.close();
+					return false;
 				});
-			} else if ($.fn.dialog) {
-				elements = $(formImageHtml);
-				elements = self.makeForm(elements, img);
 
-				dialog = elements.appendTo("body");
-				dialog.dialog({
-					modal: true,
-					open: function (ev, ui) {
-						$("input:submit", dialog).click(function (e) {
-							self.processInsert(dialog.container, Wysiwyg, img);
-
-							$(dialog).dialog("close");
-							return false;
-						});
-						$("input:reset", dialog).click(function (e) {
-							$(dialog).dialog("close");
-							return false;
-						});
-						$('fieldset', dialog).click(function (e) {
-							e.stopPropagation();
-						});
-					},
-					close: function (ev, ui) {
-						dialog.dialog("destroy");
-						dialog.remove();
-					}
+				$("input:reset", dialog).click(function (e) {
+					adialog.close();
+					
+					return false;
 				});
-			} else {
-				if ($.browser.msie) {
-					Wysiwyg.ui.focus();
-					Wysiwyg.editorDoc.execCommand("insertImage", true, null);
-				} else {
-					elements = $("<div/>")
-						.css({"position": "fixed",
-							"z-index": 2000,
-							"left": "50%", "top": "50%", "background": "rgb(0, 0, 0)",
-							"margin-top": -1 * Math.round(Wysiwyg.defaults.formHeight / 2),
-							"margin-left": -1 * Math.round(Wysiwyg.defaults.formWidth / 2)})
-						.html(formImageHtml);
-					elements = self.makeForm(elements, img);
-
-					$("input:submit", elements).click(function (event) {
-						self.processInsert(elements, Wysiwyg, img);
-
-						$(elements).remove();
-						return false;
-					});
-					$("input:reset", elements).click(function (event) {
-						if ($.browser.msie) {
-							Wysiwyg.ui.returnRange();
-						}
-
-						$(elements).remove();
-						return false;
-					});
-
-					$("body").append(elements);
-					elements.click(function(e) {
-						e.stopPropagation();
-					});
-				}
-			}
-
+				
+				$("fieldset", dialog).click(function (e) {
+					e.stopPropagation();
+				});
+				
+				self.makeForm(dialog, img);
+			});
+			
+			adialog.open();
+			
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		},
 
@@ -181,7 +130,7 @@
 				found,
 				baseUrl;
 
-			if (Wysiwyg.options.controlImage.forceRelativeUrls) {
+			if (Wysiwyg.options.controlImage && Wysiwyg.options.controlImage.forceRelativeUrls) {
 				baseUrl = window.location.protocol + "//" + window.location.hostname;
 				if (0 === url.indexOf(baseUrl)) {
 					url = url.substr(baseUrl.length);

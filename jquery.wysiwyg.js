@@ -529,7 +529,9 @@
 				rmFormat: {
 					rmMsWordMarkup: false
 				}
-			}
+			},
+			
+			dialog : "default"
 		};
 
 		this.availableControlProperties = [
@@ -578,13 +580,25 @@
 
 		this.dom.getAncestor = function (element, filterTagName) {
 			filterTagName = filterTagName.toLowerCase();
-
-			while (element && "body" !== element.tagName.toLowerCase()) {
+			
+			while (element && typeof element.tagName != "undefined" && "body" !== element.tagName.toLowerCase()) {
 				if (filterTagName === element.tagName.toLowerCase()) {
 					return element;
 				}
 
 				element = element.parentNode;
+			}
+			if(!element.tagName && (element.previousSibling || element.nextSibling)) {
+				if(element.previousSibling) {
+					if(element.previousSibling.tagName.toLowerCase() == filterTagName) {
+						return element.previousSibling;
+					}
+				}	
+				if(element.nextSibling) {
+					if(element.nextSibling.tagName.toLowerCase() == filterTagName) {
+						return element.nextSibling;
+					}
+				}	
 			}
 
 			return null;
@@ -592,6 +606,8 @@
 
 		this.dom.getElement = function (filterTagName) {
 			var dom = this;
+			
+			filterTagName = filterTagName.toLowerCase();			
 
 			if (window.getSelection) {
 				return dom.w3c.getElement(filterTagName);
@@ -625,7 +641,7 @@
 			var dom		= this.parent,
 				range	= dom.parent.getInternalRange(),
 				element;
-
+				
 			if (!range) {
 				return null;
 			}
@@ -641,6 +657,19 @@
 			// startContainer and the boundary point of the Range
 			if (element === range.startContainer) {
 				element = element.childNodes[range.startOffset];
+			}
+			
+			if(!element.tagName && (element.previousSibiling || element.nextSibling)) {
+				if(element.previousSibiling) {
+					if(element.previousSibiling.tagName.toLowerCase() == filterTagName) {
+						return element.previousSibiling;
+					}
+				}	
+				if(element.nextSibling) {
+					if(element.nextSibling.tagName.toLowerCase() == filterTagName) {
+						return element.nextSibling;
+					}
+				}	
 			}
 
 			return dom.getAncestor(element, filterTagName);
@@ -1997,6 +2026,109 @@
 			}
 		}
 	};
+	
+	
+	/**
+	 * Unifies dialog methods to allow custom implementations
+	 * 
+	 * Events:
+	 *     * afterOpen
+	 *     * beforeShow
+	 *     * afterShow
+	 *     * beforeHide
+	 *     * afterHide
+	 *     * beforeClose
+	 *     * afterClose
+	 * 
+	 * Example:
+	 * var dialog = new ($.wysiwyg.dialog)($('#idToTextArea').data('wysiwyg'), {"title": "Test", "content": "form data, etc."});
+	 * 
+	 * dialog.bind("afterOpen", function () { alert('you should see a dialog behind this one!'); });
+	 * 
+	 * dialog.open();
+	 * 
+	 * 
+	 */
+	$.wysiwyg.dialog = function (jWysiwyg, opts) {
+		var theme	= jWysiwyg.options.dialog,
+			obj		= $.wysiwyg.dialog.createDialog(jWysiwyg.options.dialog),
+			that	= this,
+			$that	= $(that);
+			
+		this.options = {
+			"title": "Title",
+			"content": "Content"
+		}
+			
+		this.isOpen = false;
+		
+		$.extend(this.options, opts);
+	
+		// Opens a dialog with the specified content
+		this.open = function () {
+			this.isOpen = true;
+			
+			obj.init.apply(that, []);
+			var $dialog = obj.show.apply(that, []);
+			
+			$that.trigger("afterOpen", [$dialog]);
+		};
+		
+		this.show = function () {
+			this.isOpen = true;
+			
+			$that.trigger("beforeShow");
+			
+			var $dialog = obj.show.apply(that, []);
+			
+			$that.trigger("afterShow");
+		};
+		
+		this.hide = function () {
+			this.isOpen = false;
+			
+			$that.trigger("beforeHide");
+			
+			var $dialog = obj.hide.apply(that, []);
+			
+			$that.trigger("afterHide", [$dialog]);
+		}
+		
+		// Closes the dialog window
+		this.close = function () {
+			this.isOpen = false;
+						
+			var $dialog = obj.hide.apply(that, []);
+			
+			$that.trigger("beforeClose", [$dialog]);
+			
+			obj.destroy.apply(that, []);
+			
+			$that.trigger("afterClose", [$dialog]);
+		};
+		
+		return this;
+	};
+	
+	// "Static" Dialog methods
+	$.extend(true, $.wysiwyg.dialog, {
+		_themes : {}, // sample {"Theme Name": object}
+		_theme : "", // the current theme
+		
+		register : function(name, obj) {
+			$.wysiwyg.dialog._themes[name] = obj;
+		},
+		
+		deregister : function (name) {
+			delete $.wysiwyg.dialog._themes[name];
+		},
+		
+		createDialog : function (name) {
+			return new ($.wysiwyg.dialog._themes[name]);
+		}
+	});
+	
+	// end Dialog	
 
 	$.fn.wysiwyg = function (method) {
 		var args = arguments, plugin;
