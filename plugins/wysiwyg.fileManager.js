@@ -123,7 +123,6 @@
 								
 							},
 							"open": function (e, _dialog) {
-								
 								var dialog = $(".wysiwyg-dialog-content").find(".wysiwyg-files-wrapper");
 								
 								// Hover effect:
@@ -188,7 +187,7 @@
 								// Select file bindings
 								dialog.find("input[name=submit]").live("click", function () {
 									var file = dialog.find("input[name=url]").val();
-									dialog.close();
+									fileManagerUI.close();
 									self.loaded = false;
 									callback(file);
 								});
@@ -304,40 +303,34 @@
 									e.preventDefault();
 									var uiHtml =	'<div>' +
 													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
+													'<input type="button" name="cancel" value="{{cancel}}" />' +
+													'<input type="button" name="create" value="{{create}}" />' +
 													'</div>';
 									uiHtml = self.i18n(uiHtml);
-									var mkdirDialog = $(uiHtml);
-									var $create = self.i18n("{{create}}");
-									var $cancel = self.i18n("{{cancel}}");
-									mkdirDialog.dialog({
-										height: 150,
-										draggable: true,
-										modal: true,
-										buttons: [
-											{
-												text: self.i18n("{{create}}"),
-												click: function () {
-													var $this = $(this);
-													self.mkDir($(this).find("input[name=newName]").val(), function (response) {
-														self.loadDir(self.curDir, function (list) {
-															$("#wysiwyg-files-list-wrapper").html(list);
-														});
-														$this.dialog("close");
+									var _mkdirTitle = self.i18n("{{mkdir_title}}");
+									var mkdirDialog = new $.wysiwyg.dialog(null, {
+										"title": _mkdirTitle,
+										"content": uiHtml,
+										"close": function () {
+											
+										},
+										"open": function (e, _dialog) {
+											
+											_dialog.find("input[name=create]").bind("click", function () {
+												self.mkDir(_dialog.find("input[name=newName]").val(), function (response) {
+													self.loadDir(self.curDir, function (list) {
+														$("#wysiwyg-files-list-wrapper").html(list);
 													});
-												}
-											},
-											{
-												text: self.i18n("{{cancel}}"),
-												click: function () {
-													$(this).dialog("close");
-												}
-											}
-										],
-										close: function () {
-											$(this).dialog("destroy");
-											$(this).remove();
+													mkdirDialog.close();
+												});
+											});
+											
+											_dialog.find("input[name=cancel]").bind("click", function () {
+												mkdirDialog.close();
+											});
 										}
-									});									
+									});
+									mkdirDialog.open();								
 								});
 								
 								// Upload File
