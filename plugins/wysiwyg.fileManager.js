@@ -74,7 +74,7 @@
 				}
 				// Wrap the file list:
 				self.loadDir("/", function (fileList) {
-					var uiHtml = 	'<div class="wysiwyg-files-wrapper" title="{{file_manager}}">' +
+					var uiHtml = 	'<div class="wysiwyg-files-wrapper">' +
 									'<input type="text" name="url" />' +
 									'<div id="wysiwyg-files-list-wrapper">'+fileList+'</div>';
 					
@@ -94,11 +94,14 @@
 					uiHtml = self.i18n(uiHtml);
 					if ($.wysiwyg.dialog) { 
 						// Support for native $.wysiwyg.dialog()
+						var _title = self.i18n("{{file_manager}}");
 						var fileManagerUI = new $.wysiwyg.dialog(_handler, {
-							"title": "File Manager",
+							"title": _title,
 							"content": uiHtml,
 							"open": function (e, _dialog) {
-								dialog = $(_dialog);
+								
+								var dialog = $(".wysiwyg-dialog-content").find(".wysiwyg-files-wrapper");
+								
 								// Hover effect:
 								dialog.find("li").live("mouseenter", function () {
 									$(this).addClass("wysiwyg-files-hover");
