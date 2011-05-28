@@ -92,20 +92,11 @@
 								'</div>';
 								
 					uiHtml = self.i18n(uiHtml);
-					if (false) { // $.wysiwyg.dialog
-						// Future support for native $.wysiwyg.dialog()
-						$.wysiwyg.dialog(uiHtml);
-					} else if ($.fn.dialog()) {
-						$(uiHtml).dialog({
-							modal: true,
-							draggable: true,
-							resizable: true,
-							close: function () {
-								$(this).dialog("destroy");
-								$(this).remove();
-							},
-							open: function () {
-								dialog = $(this);
+					if ($.wysiwyg.dialog) { 
+						// Support for native $.wysiwyg.dialog()
+						var dialog = new $.wysiwyg.dialog(_handler, {
+							open: function (e, _dialog) {
+								dialog = $(_dialog);
 								// Hover effect:
 								dialog.find("li").live("mouseenter", function () {
 									$(this).addClass("wysiwyg-files-hover");
@@ -324,11 +315,10 @@
 								$(".wysiwyg-files-action-upload").live("click", function (e) {
 									self.loadUploadUI();
 								});
-								
+																
 							}
-							
 						});
-						
+					dialog.open();
 					} else {
 						// If neither .dialog() works..
 						throw "$.wysiwyg.fileManager: Can't find a working '.dialog()' lib.";
