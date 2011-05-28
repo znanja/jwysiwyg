@@ -261,41 +261,39 @@
 									var entry = $(this).parent("li");
 									// What are we deleting?
 									var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
-									var renameDialog = 	$(	'<div>' +
-															'<input type="text" class="wysiwyg-files-textfield" name="newName" value="' + entry.find("a").text() + '" />' +
-															'</div>');
-									var $rename = self.i18n("{{rename}}");
-									var $cancel = self.i18n("{{cancel}}");
-									renameDialog.dialog({
-										height: 150,
-										draggable: true,
-										modal: true,
-										buttons: [
-											{
-												text: self.i18n("{{rename}}"),
-												click: function () {
-													var $this = $(this);
-													var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
-													self.renameFile(type, file, $(this).find("input[name=newName]").val(), function (response) {
-														self.loadDir(self.curDir, function (list) {
-															$("#wysiwyg-files-list-wrapper").html(list);
-														});
-														$this.dialog("close");
+									var uiHtml = 	'<div>' +
+													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="' + entry.find("a").text() + '" />' +
+													'<input type="button" name="cancel" value="{{cancel}}" />' +
+													'<input type="button" name="rename" value="{{rename}}" />' +
+													'</div>';
+									uiHtml = self.i18n(uiHtml);
+									var _renameTitle = self.i18n("{{rename_title}}");
+									
+									var renameDialog = new $.wysiwyg.dialog(null, {
+										"title": _renameTitle,
+										"content": uiHtml,
+										"close": function () {
+											
+										},
+										"open": function (e, _dialog) {
+											_dialog.find("input[name=rename]").bind("click", function () {
+												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
+												self.renameFile(type, file, _dialog.find("input[name=newName]").val(), function (response) {
+													self.loadDir(self.curDir, function (list) {
+														$("#wysiwyg-files-list-wrapper").html(list);
 													});
-												}
-											},
-											{
-												text: self.i18n("{{cancel}}"),
-												click: function () {
-													$(this).dialog("close");
-												}
-											}
-										],
-										close: function () {
-											$(this).dialog("destroy");
-											$(this).remove();
+													renameDialog.close();
+												});
+											});
+											
+											_dialog.find("input[name=cancel]").bind("click", function () {
+												renameDialog.close();
+											});
 										}
 									});
+									
+									renameDialog.open();
+									
 								});
 								
 								// Create Directory
