@@ -58,9 +58,9 @@
 			formTextReset = $.wysiwyg.i18n.t(formTextReset, "dialogs");
 		}
 
-		formTableHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
-			'<label>' + formTextCols + ': <input type="text" name="colCount" value="3" /></label>' +
-			'<label>' + formTextRows + ': <input type="text" name="rowCount" value="3" /></label>' +
+		formTableHtml = '<form class="wysiwyg" id="wysiwyg-tableInsert"><fieldset><legend>' + formTextLegend + '</legend>' +
+			'<label>' + formTextCols + ': <input type="text" name="colCount" value="3" /></label><br/>' +
+			'<label>' + formTextRows + ': <input type="text" name="rowCount" value="3" /></label><br/>' +
 			'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
 			'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
@@ -68,55 +68,31 @@
 			Wysiwyg.insertTable = insertTable;
 		}
 
-		if ($.fn.modal) {
-			$.modal(formTableHtml, {
-				onShow: function (dialog) {
-					$("input:submit", dialog.data).click(function (e) {
-						e.preventDefault();
-						rowCount = $('input[name="rowCount"]', dialog.data).val();
-						colCount = $('input[name="colCount"]', dialog.data).val();
+		var adialog = new $.wysiwyg.dialog(Wysiwyg, {
+			"title": formTextLegend,
+			"content": formTableHtml,
+			"open": function (e, dialog) {
+				$("form#wysiwyg-tableInsert", dialog).submit(function (e) {
+				e.preventDefault();
+				rowCount = $('input[name="rowCount"]', dialog).val();
+				colCount = $('input[name="colCount"]', dialog).val();
 
-						Wysiwyg.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
-						$.modal.close();
-					});
-					$("input:reset", dialog.data).click(function (e) {
-						e.preventDefault();
-						$.modal.close();
-					});
-				},
-				maxWidth: Wysiwyg.defaults.formWidth,
-				maxHeight: Wysiwyg.defaults.formHeight,
-				overlayClose: true
-			});
-		} else if ($.fn.dialog) {
-			dialog = $(formTableHtml).appendTo("body");
-			dialog.dialog({
-				modal: true,
-				open: function (event, ui) {
-					$("input:submit", dialog).click(function (e) {
-						e.preventDefault();
-						rowCount = $('input[name="rowCount"]', dialog).val();
-						colCount = $('input[name="colCount"]', dialog).val();
+				Wysiwyg.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
 
-						Wysiwyg.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
-						$(dialog).dialog("close");
-					});
-					$("input:reset", dialog).click(function (e) {
-						e.preventDefault();
-						$(dialog).dialog("close");
-					});
-				},
-				close: function (event, ui) {
-					dialog.dialog("destroy");
-					dialog.remove();
-				}
-			});
-		} else {
-			colCount = prompt(formTextCols, "3");
-			rowCount = prompt(formTextRows, "3");
+				adialog.close();
+					return false;
+				});
 
-			Wysiwyg.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
-		}
+				$("input:reset", dialog).click(function (e) {
+					e.preventDefault();
+					adialog.close();
+					
+					return false;
+				});
+			}
+		});
+		
+		adialog.open();
 
 		$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 	};
