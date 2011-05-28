@@ -24,7 +24,7 @@
 		tags: ["img"],
 		tooltip: "Insert image",	
 		init: function (Wysiwyg) {
-			var self = this, elements, dialog, formImageHtml, dialogReplacements, key, translation,
+			var self = this, elements, dialog, formTextLegend, formImageHtml, dialogReplacements, key, translation,
 				img = {
 					alt: "",
 					self: Wysiwyg.dom ? Wysiwyg.dom.getElement("img") : null, // link to element node
@@ -77,6 +77,7 @@
 
 				formImageHtml = formImageHtml.replace("{" + key + "}", dialogReplacements[key]);
 			}
+			formTextLegend = dialogReplacements.legend;
 
 			if (img.self) {
 				img.src = img.self.src ? img.self.src : "";
