@@ -98,12 +98,17 @@
 						var fileManagerUI = new $.wysiwyg.dialog(_handler, {
 							"title": _title,
 							"content": uiHtml,
+							"close": function () {
+								// Unbind live-events of action icons:
+								$(".wysiwyg-files-action-rename").die("click");
+								$(".wysiwyg-files-action-remove").die("click");
+							},
 							"open": function (e, _dialog) {
 								
 								var dialog = $(".wysiwyg-dialog-content").find(".wysiwyg-files-wrapper");
 								
 								// Hover effect:
-								dialog.find("li").live("mouseenter", function () {
+								dialog.find("li").bind("mouseenter", function () {
 									$(this).addClass("wysiwyg-files-hover");
 									
 									if ($(this).hasClass("wysiwyg-files-dir")) {
@@ -125,7 +130,7 @@
 										}
 										
 									}
-								}).live("mouseleave", function () {
+								}).bind("mouseleave", function () {
 									$(this).removeClass("wysiwyg-files-dir-expanded");
 									$(this).removeClass("wysiwyg-files-hover");
 									
@@ -134,7 +139,7 @@
 								});
 								
 								// Browse:
-								dialog.find("li").find("a").live("click", function (e) {
+								dialog.find("li").find("a").bind("click", function (e) {
 									self.selectedFile = $(this).attr("rel");
 									$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
 									
@@ -162,28 +167,28 @@
 								});
 
 								// Select file bindings
-								dialog.find("input[name=submit]").live("click", function () {
+								dialog.find("input[name=submit]").bind("click", function () {
 									var file = dialog.find("input[name=url]").val();
-									dialog.dialog("close");
+									dialog.close();
 									self.loaded = false;
 									callback(file);
 								});
-								dialog.find("li.wysiwyg-files-file").live("dblclick", function () {
+								dialog.find("li.wysiwyg-files-file").bind("dblclick", function () {
 									$(this).trigger("click");
 									dialog.find("input[name=submit]").trigger("click");
 								});
 								
 								// Image preview bindings
-								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
+								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").bind("mouseenter", function () {
 									var $this = $(this);
 									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": $this.find("a").attr("rel"), "alt": $this.text() }).appendTo("body");
 									$("img.wysiwyg-files-file-preview").load(function () {
 										$(this).removeClass("wysiwyg-files-ajax");
 									});
-								}).live("mousemove", function (e) {
+								}).bind("mousemove", function (e) {
 									$("img.wysiwyg-files-file-preview").css("left", e.pageX + 15);
 									$("img.wysiwyg-files-file-preview").css("top", e.pageY);
-								}).live("mouseleave", function () {
+								}).bind("mouseleave", function () {
 									$("img.wysiwyg-files-file-preview").remove();
 								});
 								
@@ -276,7 +281,7 @@
 								});
 								
 								// Create Directory
-								$(".wysiwyg-files-action-mkdir").live("click", function (e) {
+								$(".wysiwyg-files-action-mkdir").bind("click", function (e) {
 									e.preventDefault();
 									var uiHtml =	'<div>' +
 													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
@@ -317,7 +322,7 @@
 								});
 								
 								// Upload File
-								$(".wysiwyg-files-action-upload").live("click", function (e) {
+								$(".wysiwyg-files-action-upload").bind("click", function (e) {
 									self.loadUploadUI();
 								});
 																
@@ -485,28 +490,35 @@
 							'<input type="submit" name="submit" value="{{submit}}" />' +
 							'</form>';
 			uiHtml = self.i18n(uiHtml);
-			$("<iframe/>", { "class": "wysiwyg-files-upload" }).load(function () {
-				$doc = $(this).contents();
-				$doc.find("body").append(uiHtml);
-				$doc.find("input[type=file]").change(function () {
-					$val = $(this).val();
-					$val = $val.replace(/.*[\\\/]/, '');
-					// Should implement validation before submiting form
-					$doc.find("input[name=newName]").val($val);
-				});
-			}).dialog({
-				width: 400,
-				height: 250,
-				modal: true,
-				draggable: true,
-				close: function () {
+								
+			var _uploadTitle = self.i18n("{{upload_title}}");
+			
+			var dialog = new $.wysiwyg.dialog(null, {
+				"title": _uploadTitle,
+				"content": "",
+				"open": function (e, _dialog) {
+
+					$("<iframe/>", { "class": "wysiwyg-files-upload" }).load(function () {
+						$doc = $(this).contents();
+						$doc.find("body").append(uiHtml);
+						$doc.find("input[type=file]").change(function () {
+							$val = $(this).val();
+							$val = $val.replace(/.*[\\\/]/, '');
+							// Should implement validation of extensions before submitting form
+							$doc.find("input[name=newName]").val($val);
+						});
+
+					}).appendTo(_dialog.find(".wysiwyg-dialog-content"));
+
+				},
+				"close": function () {
 					self.loadDir(self.curDir, function (list) {
 						$("#wysiwyg-files-list-wrapper").html(list);
-						$(this).dialog("destroy");
-						$(this).remove();
 					});
 				}
 			});
+			
+			dialog.open();
 		}
 
 		/*
@@ -517,6 +529,10 @@
 		// Default translations (EN):
 		this.defaultTranslations = {
 			"file_manager": 		"File Manager",
+			"upload_title":			"Upload File",
+			"rename_title":			"Rename File",
+			"remove_title":			"Remove File",
+			"mkdir_title":			"Create Directory",
 			"upload_action": 		"Upload new file to current directory",
 			"mkdir_action": 		"Create new directory",
 			"remove_action": 		"Remove this file",
