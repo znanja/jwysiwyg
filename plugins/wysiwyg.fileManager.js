@@ -99,16 +99,35 @@
 							"title": _title,
 							"content": uiHtml,
 							"close": function () {
-								// Unbind live-events of action icons:
-								$(".wysiwyg-files-action-rename").die("click");
-								$(".wysiwyg-files-action-remove").die("click");
+								var dialog = $(".wysiwyg-dialog-content").find(".wysiwyg-files-wrapper");
+								
+								// Unbind live-events:
+									// Actions:
+									$(".wysiwyg-files-action-rename").die("click");
+									$(".wysiwyg-files-action-remove").die("click");
+									
+									// li Elements:
+									dialog.find("li").die("mouseenter");
+									dialog.find("li").die("mouseleave");
+									dialog.find("li").find("a").die("click");
+									
+									// Image previews:
+									_images = dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp");
+									_images.die("mouseenter");
+									_images.die("mouseleave");
+									_images.die("mouseover");
+									
+									// File selection:
+									dialog.find("input[name=submit]").die("click");
+									dialog.find("li.wysiwyg-files-file").die("dblclick");
+								
 							},
 							"open": function (e, _dialog) {
 								
 								var dialog = $(".wysiwyg-dialog-content").find(".wysiwyg-files-wrapper");
 								
 								// Hover effect:
-								dialog.find("li").bind("mouseenter", function () {
+								dialog.find("li").live("mouseenter", function () {
 									$(this).addClass("wysiwyg-files-hover");
 									
 									if ($(this).hasClass("wysiwyg-files-dir")) {
@@ -130,7 +149,7 @@
 										}
 										
 									}
-								}).bind("mouseleave", function () {
+								}).live("mouseleave", function () {
 									$(this).removeClass("wysiwyg-files-dir-expanded");
 									$(this).removeClass("wysiwyg-files-hover");
 									
@@ -139,7 +158,7 @@
 								});
 								
 								// Browse:
-								dialog.find("li").find("a").bind("click", function (e) {
+								dialog.find("li").find("a").live("click", function (e) {
 									self.selectedFile = $(this).attr("rel");
 									$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
 									
@@ -167,28 +186,28 @@
 								});
 
 								// Select file bindings
-								dialog.find("input[name=submit]").bind("click", function () {
+								dialog.find("input[name=submit]").live("click", function () {
 									var file = dialog.find("input[name=url]").val();
 									dialog.close();
 									self.loaded = false;
 									callback(file);
 								});
-								dialog.find("li.wysiwyg-files-file").bind("dblclick", function () {
+								dialog.find("li.wysiwyg-files-file").live("dblclick", function () {
 									$(this).trigger("click");
 									dialog.find("input[name=submit]").trigger("click");
 								});
 								
 								// Image preview bindings
-								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").bind("mouseenter", function () {
+								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
 									var $this = $(this);
 									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": $this.find("a").attr("rel"), "alt": $this.text() }).appendTo("body");
 									$("img.wysiwyg-files-file-preview").load(function () {
 										$(this).removeClass("wysiwyg-files-ajax");
 									});
-								}).bind("mousemove", function (e) {
+								}).live("mousemove", function (e) {
 									$("img.wysiwyg-files-file-preview").css("left", e.pageX + 15);
 									$("img.wysiwyg-files-file-preview").css("top", e.pageY);
-								}).bind("mouseleave", function () {
+								}).live("mouseleave", function () {
 									$("img.wysiwyg-files-file-preview").remove();
 								});
 								
