@@ -94,8 +94,10 @@
 					uiHtml = self.i18n(uiHtml);
 					if ($.wysiwyg.dialog) { 
 						// Support for native $.wysiwyg.dialog()
-						var dialog = new $.wysiwyg.dialog(_handler, {
-							open: function (e, _dialog) {
+						var fileManagerUI = new $.wysiwyg.dialog(_handler, {
+							"title": "File Manager",
+							"content": uiHtml,
+							"open": function (e, _dialog) {
 								dialog = $(_dialog);
 								// Hover effect:
 								dialog.find("li").live("mouseenter", function () {
@@ -318,7 +320,7 @@
 																
 							}
 						});
-					dialog.open();
+						fileManagerUI.open();
 					} else {
 						// If neither .dialog() works..
 						throw "$.wysiwyg.fileManager: Can't find a working '.dialog()' lib.";
