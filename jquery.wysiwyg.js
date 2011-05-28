@@ -2058,6 +2058,8 @@
 		this.options = {
 			"title": "Title",
 			"content": "Content",
+			"width":"auto",
+			"height":"auto",
 			"open": false,
 			"close": false
 		}
@@ -2137,61 +2139,119 @@
 		}
 	});
 	
-	$.wysiwyg.dialog.register("default", function () {
-		var that = this;
-		
-		this._$dialog = null;
-		
-		this.init = function() {
-			var abstractDialog	= this,
-				content 		= this.options.content;
+	$(function () { // need access to jQuery UI stuff
+		if(jQuery.ui) {
+			$.wysiwyg.dialog.register("jqueryui", function () {
+				var that = this;
 				
-			if(typeof content == 'object') {
-				if(typeof content.html == 'function') {
-					content = content.html();
+				this._$dialog = null;
+				
+				this.init = function() {
+					var abstractDialog	= this,
+						content 		= this.options.content;
+						
+					if(typeof content == 'object') {
+						if(typeof content.html == 'function') {
+							content = content.html();
+						}
+						else if(typeof content.toString == 'function') {
+							content = content.toString();
+						}
+					}
+					
+					that._$dialog = $('<div></div>').attr('title', this.options.title).html(content);
+					
+					console.log(that._$dialog);
+					that._$dialog.dialog({
+						modal: true,
+						height: this.options.height,
+						width: this.options.width,
+						close: function () {
+							abstractDialog.close()
+						}
+					});
+					
+									
+					return that._$dialog;
+				};
+				
+				this.show = function () {
+					that._$dialog.dialog("open");
+					return that._$dialog;
 				}
-				else if(typeof content.toString == 'function') {
-					content = content.toString();
-				}
-			}
-			
-			that._$dialog = $('<div class="wysiwyg-dialog"></div>');
-			
-			var $topbar = $('<div class="wysiwyg-dialog-topbar"><div class="wysiwyg-dialog-close-wrapper"></div><div class="wysiwyg-dialog-title">'+this.options.title+'</div></div>');
-			var $link = $('<a href="#" class="wysiwyg-dialog-close-button">X</a>');
-			
-			$link.click(function () {
-				abstractDialog.close(); // this is important it makes sure that is close from the abstract $.wysiwyg.dialog instace, not just locally 
+				
+				this.hide = function () {
+					that._$dialog.dialog("close");
+					return that._$dialog;
+				};
+				
+				this.destroy = function() {
+					that._$dialog.dialog("destroy");
+					return that._$dialog;
+				};
 			});
-
-			$topbar.find('.wysiwyg-dialog-close-wrapper').prepend($link);
-			
-			var $dcontent = $('<div class="wysiwyg-dialog-content">'+content+'</div>');
-			
-			that._$dialog.append($topbar).append($dcontent);
-			
-			that._$dialog.hide();
-			
-			$("body").append(that._$dialog);
-			
-			return that._$dialog;
-		};
-		
-		this.show = function () {
-			that._$dialog.show();
-			return that._$dialog;
 		}
 		
-		this.hide = function () {
-			that._$dialog.hide();
-			return that._$dialog;
-		};
-		
-		this.destroy = function() {
-			that._$dialog.remove();
-			return that._$dialog;
-		};
+		$.wysiwyg.dialog.register("default", function () {
+			var that = this;
+			
+			this._$dialog = null;
+			
+			this.init = function() {
+				var abstractDialog	= this,
+					content 		= this.options.content;
+					
+				if(typeof content == 'object') {
+					if(typeof content.html == 'function') {
+						content = content.html();
+					}
+					else if(typeof content.toString == 'function') {
+						content = content.toString();
+					}
+				}
+				
+				that._$dialog = $('<div class="wysiwyg-dialog"></div>');
+				
+				var $topbar = $('<div class="wysiwyg-dialog-topbar"><div class="wysiwyg-dialog-close-wrapper"></div><div class="wysiwyg-dialog-title">'+this.options.title+'</div></div>');
+				var $link = $('<a href="#" class="wysiwyg-dialog-close-button">X</a>');
+				
+				$link.click(function () {
+					abstractDialog.close(); // this is important it makes sure that is close from the abstract $.wysiwyg.dialog instace, not just locally 
+				});
+
+				$topbar.find('.wysiwyg-dialog-close-wrapper').prepend($link);
+				
+				var $dcontent = $('<div class="wysiwyg-dialog-content">'+content+'</div>');
+				
+				that._$dialog.append($topbar).append($dcontent);
+				
+				that._$dialog.hide().css({
+					"width":this.options.width == 'auto' ? 450 : this.options.width,
+					"height":this.options.height == 'auto' ? 300 : this.options.height,
+				});
+				
+				$("body").append(that._$dialog);
+				
+				return that._$dialog;
+			};
+			
+			this.show = function () {
+				that._$dialog.show();
+				return that._$dialog;
+			}
+			
+			this.hide = function () {
+				that._$dialog.hide();
+				return that._$dialog;
+			};
+			
+			this.destroy = function() {
+				that._$dialog.remove();
+				return that._$dialog;
+			};
+		});
 	});
+	
 	// end Dialog	
 
 	$.fn.wysiwyg = function (method) {
