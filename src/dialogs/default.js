@@ -1,5 +1,5 @@
 (function ($) {
-	var defaultDialog = function () {
+	$.wysiwyg.dialog.register("default", function () {
 		var that = this;
 		
 		this._$dialog = null;
@@ -53,7 +53,5 @@
 			that._$dialog.remove();
 			return that._$dialog;
 		};
-	};
-	
-	$.wysiwyg.dialog.register("default", defaultDialog);
+	});
 })(jQuery);
