@@ -75,13 +75,23 @@
 				self.loadDir("/", function (fileList) {
 					var uiHtml = 	'<div class="wysiwyg-files-wrapper" title="{{file_manager}}">' +
 									'<input type="text" name="url" />' +
-									'<div id="wysiwyg-files-list-wrapper">'+fileList+'</div>' +
-									'<div class="wysiwyg-files-action-upload" title="{{upload_action}}"></div>' +
-									'<div class="wysiwyg-files-action-mkdir" title="{{mkdir_action}}"></div>' +
-									'<input style="display:none;" type="button" name="submit" value="{{select}}" />' +
-									'</div>';
+									'<div id="wysiwyg-files-list-wrapper">'+fileList+'</div>';
+					
+					// If handler does not support upload, icon will not appear:
+					if (self.upload.enabled) {
+						uiHtml += 	'<div class="wysiwyg-files-action-upload" title="{{upload_action}}"></div>';
+					}
+					
+					// If handler does not support mkdir, icon will not appear:
+					if (self.mkdir.enabled) {
+						uiHtml += 	'<div class="wysiwyg-files-action-mkdir" title="{{mkdir_action}}"></div>';
+					}
+					
+					uiHtml += 	'<input style="display:none;" type="button" name="submit" value="{{select}}" />' +
+								'</div>';
+								
 					uiHtml = self.i18n(uiHtml);
-					if ($.wysiwyg.dialog) {
+					if (false) { // $.wysiwyg.dialog
 						// Future support for native $.wysiwyg.dialog()
 						$.wysiwyg.dialog(uiHtml);
 					} else if ($.fn.dialog()) {
@@ -105,10 +115,18 @@
 									// Add action buttons:
 									if (!$(this).hasClass("wysiwyg-files-dir-prev")) {
 										$(".wysiwyg-files-action").remove();
-										var rmText = self.i18n("{{remove_action}}");
-										var rnText = self.i18n("{{rename_action}}");
-										$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-remove", "title": rmText }).appendTo(this);
-										$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-rename", "title": rnText }).appendTo(this);
+										// If handler does not support remove, icon will not appear:
+										if (self.remove.enabled) {
+											var rmText = self.i18n("{{remove_action}}");
+											$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-remove", "title": rmText }).appendTo(this);
+										}
+										
+										// If handler does not support rename, icon will not appear:
+										if (self.rename.enabled) {
+											var rnText = self.i18n("{{rename_action}}");
+											$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-rename", "title": rnText }).appendTo(this);
+										}
+										
 									}
 								}).live("mouseleave", function () {
 									$(this).removeClass("wysiwyg-files-dir-expanded");
@@ -168,7 +186,7 @@
 								}).live("mousemove", function (e) {
 									$("img.wysiwyg-files-file-preview").css("left", e.pageX + 15);
 									$("img.wysiwyg-files-file-preview").css("top", e.pageY);
-								}).live("mouseout", function () {
+								}).live("mouseleave", function () {
 									$("img.wysiwyg-files-file-preview").remove();
 								});
 								
@@ -394,6 +412,8 @@
  * Should be remembered for future implementation:
  * If handler does not support certain actions - do not show their icons/button.
  * Only action a handler MUST support is "list" (list directory).
+ * 
+ * Implemented: 28-May-2011, Yotam Bar-On
  */
 		
 		// Remove File Method:
@@ -451,7 +471,7 @@
 		 */
 		this.moveFile = function () {
 			if (!this.loaded) { return false; }
-			if (!this.rename.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
+			if (!this.move.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
 			var self = this;
 			return false;
 		}
@@ -459,7 +479,7 @@
 		// Upload:
 		this.loadUploadUI = function () {
 			if (!this.loaded) { return false; }
-			if (!this.rename.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
+			if (!this.upload.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
 			var self = this;
 			var uiHtml = 	'<form enctype="multipart/form-data" method="post" action="' + self.upload.handler + '">' + 
 							'<p><input type="file" name="handle" /><br>' + 
