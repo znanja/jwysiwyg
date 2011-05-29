@@ -14,8 +14,8 @@
 	/*
 	 * Wysiwyg namespace: public properties and methods
 	 */
-	 // Only for show
-	 var fileManager = {
+	// Only for show
+	var fileManager = {
 		name: "fileManager",
 		version: "0.98", // Same as jwysiwyg
 		ajaxHandler: "",
@@ -39,8 +39,8 @@
 				return false;
 			}
 		}
-		
-	 }
+	};
+
 	// Register:
 	$.wysiwyg.plugin.register(fileManager);
 	
@@ -341,8 +341,8 @@
 					}
 				});
 			});
-		}
-		
+		};
+
 		this.authenticate = function (callback) {
 			if (!this.loaded) {
 				return false;
@@ -361,8 +361,8 @@
 					callback(json.error);
 				}
 			});
-		}
-		
+		};
+
 		this.loadDir = function (dir, callback) {
 			if (!this.loaded) {
 				return false;
@@ -377,12 +377,12 @@
 					alert(json.error);
 				}
 			});
-		}
-		
-		/*
-		 * Ajax Methods:
+		};
+
+		/**
+		 * Ajax Methods.
 		 */
-		
+
 		// List Directory
 		this.listDir = function (json) {
 			if (!this.loaded) {
@@ -413,9 +413,9 @@
 			treeHtml += '</ul>';
 			
 			return self.i18n(treeHtml);
-		}
+		};
 		
-/*
+/**
  * Should be remembered for future implementation:
  * If handler does not support certain actions - do not show their icons/button.
  * Only action a handler MUST support is "list" (list directory).
@@ -437,7 +437,7 @@
 				}
 				callback(json);
 			});
-		}
+		};
 		
 		// Rename File Method
 		this.renameFile = function (type, file, newName, callback) {
@@ -453,9 +453,8 @@
 				}
 				callback(json);
 			});		
-		}
-				
-		
+		};	
+
 		// Make Directory Method
 		this.mkDir = function (newName, callback) {
 			if (!this.loaded) { return false; }
@@ -470,10 +469,9 @@
 				}
 				callback(json);
 			});		
-		}
-				
-				
-		/*
+		};
+
+		/**
 		 * Currently we will not support moving of files. This will be supported only when a more interactive interface will be introduced.
 		 */
 		this.moveFile = function () {
@@ -481,8 +479,8 @@
 			if (!this.move.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
 			var self = this;
 			return false;
-		}
-		
+		};
+
 		// Upload:
 		this.loadUploadUI = function () {
 			if (!this.loaded) { return false; }
@@ -525,9 +523,9 @@
 			});
 			
 			dialog.open();
-		}
+		};
 
-		/*
+		/**
 		 * i18n Support.
 		 * The below methods will enable basic support for i18n
 		 */		
@@ -553,7 +551,7 @@
 			"cancel": 				"Cancel",
 			"yes":					"Yes",
 			"no":					"No"
-		}
+		};
 		/* Take an html string with placeholders: {{placeholder}} and translate it. 
 		 * It takes all labels and trys to translate them. 
 		 * If there is no translation (or i18n plugin is not loaded) it will use the defaults.
@@ -563,16 +561,15 @@
 			// If i18n plugin exists:
 			if ($.wysiwyg.i18n) {
 				$.each(map, function (key, val) {
-					map[key] = $.wysiwyg.i18n.t(key, "fileManager")
+					map[key] = $.wysiwyg.i18n.t(key, "fileManager");
 				});
 			}
 			
 			$.each(map, function (key, val) {
-				tHtml = tHtml.replace("{{" + key + "}}", val)
+				tHtml = tHtml.replace("{{" + key + "}}", val);
 			});
 			
 			return tHtml;
-		}
-		 
+		};
 	}
 })(jQuery);
