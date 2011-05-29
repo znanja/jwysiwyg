@@ -191,10 +191,6 @@
 									self.loaded = false;
 									callback(file);
 								});
-								dialog.find("li.wysiwyg-files-file").live("dblclick", function () {
-									$(this).trigger("click");
-									dialog.find("input[name=submit]").trigger("click");
-								});
 								
 								// Image preview bindings
 								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
