@@ -1,5 +1,5 @@
 =========================
-jWYSIWYG 0.97 User Manual
+jWYSIWYG 0.98 User Manual
 =========================
 
 Copyright (c) 2009-2010 Juan M Martínez, 2011 Akzhan Abdulin and all contributors
@@ -456,6 +456,17 @@ The plugin supports four basic actions:
 Setup
 -----
 
+The File Manager plugin needs to be setup on server-side before it can be used.
+Along with the jWYSIWYG source code, come handlers for different languages, so you can use it on different platforms.
+The handler that shuold be set with .setAjaxHandler("...") is the one that contains the ``authentication`` response. This is usually the "file_manager.*" handler.
+Note that usually you will need to rewrite some of the handlers code, so it will fit your application.
+
+After you setup the server-side part, you need to add the javascript and css files for the file manager: ::
+
+	<link rel="stylesheet" href="../../plugins/fileManager/wysiwyg.fileManager.css" type="text/css"/> 
+	<script type="text/javascript" src="../../plugins/wysiwyg.fileManager.js"></script> 
+
+Then, all you have to do is start using it, as explained below.
 
 Usage
 -----
@@ -526,6 +537,15 @@ This is a quick example of how to use the jWYSIWYG editor with a custom file man
 	$.wysiwyg.fileManager.setAjaxHandler("http://example.com/jwysiwyg/handler.php");
 
 The file manager's css file contains the icon for this control, so it is recommended that if you use a custom control, you will name it "fileManager".
+
+Writing Custom Handlers
+-----------------------
+
+It is possible to use custom ajax handlers that you write, with the File Manager.
+As mentioned before, the file manager enables you to set the ajax handler you want. The only thing that is required, is for the handler to follow the protocol documented here:
+
+https://github.com/akzhan/jwysiwyg/wiki/File-Manager-API
+
 
 ====================================
 Customizing the Editor Look and Feel
