@@ -220,39 +220,39 @@
 									var entry = $(this).parent("li");
 									// What are we deleting?
 									var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
-									var uiHtml = "<p>{{delete_message}}</p>";
+									var uiHtml = 	"<p>{{delete_message}}</p>" + 
+													'<div class="">' + 
+													'<input type="button" name="cancel" value="{{no}}" />' +
+													'<input type="button" name="remove" value="{{yes}}" />' +
+													"</div>";
 									uiHtml = self.i18n(uiHtml);
-									var removeDialog = 	$(uiHtml);
-									$(removeDialog).dialog({
-										height: 150,
-										draggable: true,
-										modal: true,
-										buttons: [
-											{	
-												text: self.i18n("{{yes}}"),
-												click: function () {
-													var $this = $(this);
-													var file = entry.find("a").text();
-													self.removeFile(type, file, function (response) {
-														self.loadDir(self.curDir, function (list) {
-															$("#wysiwyg-files-list-wrapper").html(list);
-														});
-														$this.dialog("close");
+									
+									var _removeTitle = self.i18n("{{remove_title}}");
+									
+									var removeDialog = 	new $.wysiwyg.dialog(null, {
+										"title": _removeTitle,
+										"content": uiHtml,
+										"close": function () {
+											
+										},
+										"open": function (e, _dialog) {
+											_dialog.find("input[name=remove]").bind("click", function () {
+												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
+												self.removeFile(type, file, function (response) {
+													self.loadDir(self.curDir, function (list) {
+														$("#wysiwyg-files-list-wrapper").html(list);
 													});
-												}
-											},
-											{	
-												text: self.i18n("{{no}}"),
-												click: function () {
-													$(this).dialog("close");
-												}
-											}
-										],
-										close: function () {
-											$(this).dialog("destroy");
-											$(this).remove();
+													removeDialog.close();
+												});
+											});
+											
+											_dialog.find("input[name=cancel]").bind("click", function () {
+												removeDialog.close();
+											});
 										}
 									});
+									
+									removeDialog.open();
 								});
 								
 								// Rename
