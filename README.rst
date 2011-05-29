@@ -500,8 +500,8 @@ For convinience, the setAjaxHandler() method returns the $.wysiwyg.fileManager o
 Use Within Other Plugins
 ------------------------
 
-In addition to its stand-alone usage, the File Manager plugin can be incorporated quite easily into other plugin.
-Actually, the only thing the should be checked before using the plugin, is whther its ajax handler is set: ::
+In addition to its stand-alone usage, the File Manager plugin can be incorporated quite easily into other plugins.
+Actually, the only thing the should be checked before using the plugin, is whether its ajax handler is set: ::
 
 	if ($.wysiwyg.fileManager.isAjaxSet()) {
 		$.wysiwyg.fileManager.setAjaxHandler("http://example.com/jwysiwyg/handler.php").init(function (selected) {
