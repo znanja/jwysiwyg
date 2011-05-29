@@ -7,22 +7,22 @@
  */
 class AuthHandler extends ResponseHandler {
 	private $authorized = false;
-	
+
 	public function __construct () {
-		$this->authorized = $_GET['auth'] == "jwysiwyg";
+		$this->authorized = (array_key_exists('auth', $_GET) && $_GET['auth'] === 'jwysiwyg');
 	}
-	
+
 	public function getStatus ($router) {
 		return $this->authorized ? "" : ResponseRouter::$Status401;
 	}
-	
+
 	public function getStatusNumber ($router) {
-		return $this->authorized ? 200 : 401;	
+		return $this->authorized ? 200 : 401;
 	}
-	
+
 	public function getResponse ($router) {
 		$cap = $router->getConfig()->getCapabilities();
-		
+
 		$r = array();
 		foreach($cap as $k => $v) {
 			// var_dump($router->getBaseFile());
@@ -30,7 +30,7 @@ class AuthHandler extends ResponseHandler {
 				"handler" => $router->getBaseFile(),
 				"enabled" => $v
 			);
-			
+
 			if($k == "upload") {
 				$r[$k]["accept_ext"] = $router->getConfig()->getValidExtensions();
 			}
@@ -56,7 +56,7 @@ class ListHandler extends ResponseHandler {
 			"files" => array()
 		);
 		$dir = $router->normalizeDir($_GET['dir']);
-		
+
 		if(!file_exists($router->getConfig()->getRootDir().$dir)) {
 			return new Response404();
 		}
@@ -69,7 +69,7 @@ class ListHandler extends ResponseHandler {
 				$data["directories"][$info->getFilename()] = $this->remove_path($info->getPath(), $router->getConfig()->getPubDir());
 			}
 		}
-		
+
 		return array(
 			"success" => true,
 			"data" => $data
@@ -83,7 +83,7 @@ class RenameHandler extends ResponseHandler {
 		$dir = $router->normalizeDir($_GET['dir']);
 		$root = $router->getConfig()->getRootDir();
 		$file = $_GET['file'] == "null" ? "" : $router->cleanFile($_GET['file']);
-		
+
 		if(!file_exists($root.$dir)) {
 			return new Response404();
 		}
@@ -109,7 +109,7 @@ class RemoveHandler extends ResponseHandler {
 		$dir = $router->normalizeDir($_GET['dir']);
 		$root = $router->getConfig()->getRootDir();
 		$file = $router->cleanFile($_GET['file']);
-		
+
 		if(!file_exists($root.$dir.$file)) {
 			return new Response404();
 		}
@@ -134,7 +134,7 @@ class MkdirHandler extends ResponseHandler {
 		$dir = $router->normalizeDir($_GET['dir']);
 		$root = $router->getConfig()->getRootDir();
 		$newName = $router->cleanFile($_GET['newName']);
-		
+
 		if(!file_exists($root.$dir)) {
 			return new Response404();
 		}
@@ -160,7 +160,7 @@ class MoveHandler extends ResponseHandler {
 		$root = $router->getConfig()->getRootDir();
 		$newPath = $router->cleanFile($_GET['newPath']);
 		$file = $router->cleanFile($_GET['file']);
-		
+
 		if(!file_exists($root.$dir.$file)) {
 			return new Response404();
 		}
