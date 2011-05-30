@@ -45,7 +45,8 @@ ResponseRouter::getInstance()->setHandler("auth", new AuthHandler());
 
 class ListHandler extends ResponseHandler {
 	private function remove_path($file, $path) {
-		if(strpos($file, $path) !== false) {
+		$path = rtrim($path, '/');
+		if (strpos($file, $path) !== false) {
 			return substr($file, strlen($path));
 		}
 	}
@@ -63,10 +64,10 @@ class ListHandler extends ResponseHandler {
 		foreach(new DirectoryIterator($router->getConfig()->getRootDir().$dir) as $info) {
 			if($info->isDot()) continue;
 			if($info->isFile()) {
-				$data["files"][$info->getFilename()] = $this->remove_path($info->getPath(), $router->getConfig()->getPubDir());
+				$data["files"][$info->getFilename()] = $this->remove_path($info->getPathname(), $router->getConfig()->getPubDir());
 			}
 			else if($info->isDir()) {
-				$data["directories"][$info->getFilename()] = $this->remove_path($info->getPath(), $router->getConfig()->getPubDir());
+				$data["directories"][$info->getFilename()] = $this->remove_path($info->getPathname(), $router->getConfig()->getPubDir());
 			}
 		}
 
