@@ -111,16 +111,28 @@ class RemoveHandler extends ResponseHandler {
 		$root = $router->getConfig()->getRootDir();
 		$file = $router->cleanFile($_GET['file']);
 
-		if(!file_exists($root.$dir.$file)) {
+		if (!file_exists($root.$dir.$file)) {
 			return new Response404();
+		} else if (!is_writable($root.$dir.$file)) {
+			return array(
+				'success' => false,
+				'error' => 'Don\'t have permission'
+			);
 		}
-		if(unlink($root.$dir.$file)) {
+
+		$is_removed = false;
+		if (is_dir($root.$dir.$file)) {
+			// :TODO: recursive remove
+			$is_removed = rmdir($root.$dir.$file);
+		} else {
+			$is_removed = unlink($root.$dir.$file);
+		}
+		if ($is_removed) {
 			return array(
 				"success" => true,
 				"data" => "message .. "
 			);
-		}
-		else {
+		} else {
 			return array(
 				"success" => false,
 				"error" => "Couldn't delete the file."
