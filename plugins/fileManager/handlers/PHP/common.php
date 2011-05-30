@@ -126,12 +126,18 @@ class ResponseRouter {
 	}
 
 	public function run () {
-		if($_GET['action']) {
-			if($this->handlers[$_GET['action']]) {
+		if (array_key_exists('action', $_GET)) {
+			if ($this->handlers[$_GET['action']]) {
 				$this->handle($this->handlers[$_GET['action']]);
-				return;
+				return true;
+			}
+		} else if (array_key_exists('action', $_POST)) {
+			if ($this->handlers[$_POST['action']]) {
+				$this->handle($this->handlers[$_POST['action']]);
+				return true;
 			}
 		}
+
 		$this->handle($this->handlers["401"]);
 	}
 

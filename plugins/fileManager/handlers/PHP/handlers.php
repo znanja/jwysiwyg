@@ -193,3 +193,37 @@ class MoveHandler extends ResponseHandler {
 }
 ResponseRouter::getInstance()->setHandler("move", new MoveHandler());
 
+class UploadHandler extends ResponseHandler {
+	public function getResponse ($router) {
+		$dir = $router->normalizeDir($_POST['dir']);
+		$root = $router->getConfig()->getRootDir();
+		$dst = $root . $dir . $_POST['newName'];
+
+		if (file_exists($dst)) {
+			return array(
+				'success' => false,
+				'error' => sprintf('Destination file "%s" exists.', $dir . $_POST['newName'])
+			);
+		}
+
+		if (!is_uploaded_file($_FILES['handle']['tmp_name'])) {
+			return array(
+				'success' => false,
+				'error' => 'Couldn\'t upload file.'
+			);
+		}
+
+		if (!move_uploaded_file($_FILES['handle']['tmp_name'], $dst)) {
+			return array(
+				'success' => false,
+				'error' => 'Couldn\'t upload file.'
+			);
+		}
+
+		return array(
+			'success' => true,
+			'data' => 'File upload successful.'
+		);
+	}
+}
+ResponseRouter::getInstance()->setHandler("upload", new UploadHandler());
