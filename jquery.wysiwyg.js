@@ -2055,6 +2055,8 @@
 			$that	= $(that);
 
 		this.options = {
+			"modal": true,
+			"draggable": false,
 			"title": "Title",
 			"content": "Content",
 			"width":"auto",
@@ -2075,6 +2077,17 @@
 			var $dialog = obj.show.apply(that, []);
 
 			$that.trigger("afterOpen", [$dialog]);
+			
+			// Modal feature:
+			if (that.options.modal) { 
+				$("<div/>", { "class": "wysiwyg-dialog-modal-div" }).appendTo("body");
+			}
+			
+			// Draggable feature:
+			if (that.options.draggable) { 
+				
+			}
+			
 		};
 
 		this.show = function () {
@@ -2108,6 +2121,17 @@
 			obj.destroy.apply(that, []);
 			
 			$that.trigger("afterClose", [$dialog]);
+			
+			// Modal feature:
+			if (that.options.modal) { 
+				$("body").find("div.wysiwyg-dialog-modal-div").remove();
+			}
+			
+			// Draggable feature:
+			if (that.options.draggable) { 
+				
+			}
+			
 		};
 
 		if (this.options.open) {
