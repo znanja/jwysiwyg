@@ -6,7 +6,10 @@
  * The file manager ui uses the Silk icon set from FAMFAMFAM
  * 
  */
+
 (function ($) {
+	"use strict";
+
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.fileManager.js depends on $.wysiwyg";
 	}
@@ -33,7 +36,7 @@
 		},
 		init: function (callback) {
 			if (this.ajaxHandler) {
-				manager = new fileManagerObj(this.ajaxHandler);
+				var manager = new fileManagerObj(this.ajaxHandler);
 				manager.load(callback);
 			} else {
 				return false;
@@ -43,8 +46,6 @@
 
 	// Register:
 	$.wysiwyg.plugin.register(fileManager);
-	
-	
 	
 	// Private object:
 	function fileManagerObj (_handler) {
@@ -62,6 +63,7 @@
 		/*
 		 * Methods
 		 */
+		var console = $.wysiwyg.console;
 		console.log(this.handler);
 		 
 		this.load = function (callback) {
@@ -100,27 +102,27 @@
 							"content": uiHtml,
 							"close": function () {
 								var dialog = $(".wysiwyg-dialog-content").find(".wysiwyg-files-wrapper");
-								
+
 								// Unbind live-events:
-									// Actions:
-									$(".wysiwyg-files-action-rename").die("click");
-									$(".wysiwyg-files-action-remove").die("click");
-									
-									// li Elements:
-									dialog.find("li").die("mouseenter");
-									dialog.find("li").die("mouseleave");
-									dialog.find("li").find("a").die("click");
-									
-									// Image previews:
-									_images = dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp");
-									_images.die("mouseenter");
-									_images.die("mouseleave");
-									_images.die("mouseover");
-									
-									// File selection:
-									dialog.find("input[name=submit]").die("click");
-									dialog.find("li.wysiwyg-files-file").die("dblclick");
-								
+								// Actions:
+								$(".wysiwyg-files-action-rename").die("click");
+								$(".wysiwyg-files-action-remove").die("click");
+
+								// li Elements:
+								dialog.find("li").die("mouseenter");
+								dialog.find("li").die("mouseleave");
+								dialog.find("li").find("a").die("click");
+
+								// Image previews:
+								var _images = dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp");
+								_images.die("mouseenter");
+								_images.die("mouseleave");
+								_images.die("mouseover");
+
+								// File selection:
+								dialog.find("input[name=submit]").die("click");
+								dialog.find("li.wysiwyg-files-file").die("dblclick");
+
 							},
 							"open": function (e, _dialog) {
 								var dialog = $(".wysiwyg-dialog-content").find(".wysiwyg-files-wrapper");
@@ -209,7 +211,7 @@
 								/* 
 								 * Bind action buttons:
 								 */
-								 
+
 								// Remove:
 								$(".wysiwyg-files-action-remove").live("click", function (e) {
 									e.preventDefault();
@@ -250,7 +252,7 @@
 									
 									removeDialog.open();
 								});
-								
+
 								// Rename
 								$(".wysiwyg-files-action-rename").live("click", function (e) {
 									e.preventDefault();
@@ -291,7 +293,7 @@
 									renameDialog.open();
 									
 								});
-								
+
 								// Create Directory
 								$(".wysiwyg-files-action-mkdir").bind("click", function (e) {
 									e.preventDefault();
@@ -318,7 +320,7 @@
 													mkdirDialog.close();
 												});
 											});
-											
+
 											_dialog.find("input[name=cancel]").bind("click", function () {
 												mkdirDialog.close();
 											});
@@ -326,12 +328,12 @@
 									});
 									mkdirDialog.open();								
 								});
-								
+
 								// Upload File
 								$(".wysiwyg-files-action-upload").bind("click", function (e) {
 									self.loadUploadUI();
 								});
-																
+
 							}
 						});
 						fileManagerUI.open();
@@ -503,10 +505,10 @@
 				"open": function (e, _dialog) {
 
 					$("<iframe/>", { "class": "wysiwyg-files-upload" }).load(function () {
-						$doc = $(this).contents();
+						var $doc = $(this).contents();
 						$doc.find("body").append(uiHtml);
 						$doc.find("input[type=file]").change(function () {
-							$val = $(this).val();
+							var $val = $(this).val();
 							$val = $val.replace(/.*[\\\/]/, '');
 							// Should implement validation of extensions before submitting form
 							$doc.find("input[name=newName]").val($val);

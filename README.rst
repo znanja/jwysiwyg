@@ -1,5 +1,5 @@
 =========================
-jWYSIWYG 0.98 User Manual
+jWYSIWYG 0.97 User Manual
 =========================
 
 Copyright (c) 2009-2010 Juan M Martínez, 2011 Akzhan Abdulin and all contributors

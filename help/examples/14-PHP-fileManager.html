@@ -31,13 +31,15 @@
 						groupIndex: 12,
 						tooltip: "File Manager",
 						exec: function () {
-							$.wysiwyg.fileManager.setAjaxHandler("http://localhost/projects/jwysiwyg/plugins/fileManager/handlers/PHP/file-manager.php").init(function (file) {
+							$.wysiwyg.fileManager.init(function (file) {
 								file ? alert(file) : alert("No file selected.");
 							});
 						}
 					}
 				}
 			});
+
+			$.wysiwyg.fileManager.setAjaxHandler("http://localhost/projects/jwysiwyg/plugins/fileManager/handlers/PHP/file-manager.php");
 		});
 	})(jQuery);
 </script>
