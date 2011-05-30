@@ -2088,6 +2088,33 @@
 			// Draggable feature:
 			if (that.options.draggable) { 
 				
+				var mouseDown = false;
+				
+				$("div.wysiwyg-dialog-topbar").bind("mousedown", function (e) {
+					e.preventDefault();
+					$(this).css({ "cursor": "move" });
+					var _dialog = $(this).parents(".wysiwyg-dialog"),
+						offsetX = (e.pageX - parseInt(_dialog.css("left"))),
+						offsetY = (e.pageY - parseInt(_dialog.css("top")));
+					mouseDown = true;
+					$(this).css({ "cursor": "move" });
+					
+					$("*").bind("mousemove", function (e) {
+						e.preventDefault();
+						if (mouseDown) {
+							_dialog.css({
+								"top": (e.pageY - offsetY),
+								"left": (e.pageX - offsetX)
+							});
+						}
+					}).bind("mouseup", function (e) {
+						e.preventDefault();
+						mouseDown = false;
+						$(this).css({ "cursor": "" });
+					});
+				
+				});
+				
 			}
 			
 		};
@@ -2131,7 +2158,7 @@
 			
 			// Draggable feature:
 			if (that.options.draggable) { 
-				
+				$("div.wysiwyg-dialog-topbar").unbind("mousedown");
 			}
 			
 		};
