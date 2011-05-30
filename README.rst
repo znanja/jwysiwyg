@@ -507,7 +507,7 @@ In addition to its stand-alone usage, the File Manager plugin can be incorporate
 Actually, the only thing the should be checked before using the plugin, is whether its ajax handler is set: ::
 
 	if ($.wysiwyg.fileManager.ready) {
-		$.wysiwyg.fileManager.setAjaxHandler("http://example.com/jwysiwyg/handler.php").init(function (selected) {
+		$.wysiwyg.fileManager.init(function (selected) {
 			alert(selected);
 		});	
 	}
