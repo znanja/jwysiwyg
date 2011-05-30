@@ -2078,6 +2078,8 @@
 
 			$that.trigger("afterOpen", [$dialog]);
 			
+			// alert($that.children("div").length);
+			
 			// Modal feature:
 			if (that.options.modal) { 
 				$("<div/>", { "class": "wysiwyg-dialog-modal-div" }).appendTo("body");
@@ -2245,10 +2247,16 @@
 				var $dcontent = $('<div class="wysiwyg-dialog-content">'+content+'</div>');
 
 				that._$dialog.append($topbar).append($dcontent);
-
+				
+				
+				// Set dialog's height & width, and position it correctly:
+				var dialogHeight = this.options.height == 'auto' ? 300 : this.options.height,
+					dialogWidth = this.options.width == 'auto' ? 450 : this.options.width;
 				that._$dialog.hide().css({
-					"width":this.options.width == 'auto' ? 450 : this.options.width,
-					"height":this.options.height == 'auto' ? 300 : this.options.height
+					"width": dialogWidth,
+					"height": dialogHeight,
+					"left": (($(window).width() - dialogWidth) / 2),
+					"top": (($(window).height() - dialogHeight) / 3)
 				});
 
 				$("body").append(that._$dialog);
