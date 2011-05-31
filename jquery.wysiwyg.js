@@ -2078,7 +2078,6 @@
 
 			$that.trigger("afterOpen", [$dialog]);
 			
-			// alert($that.children("div").length);
 			
 			// Modal feature:
 			if (that.options.modal) { 
@@ -2090,7 +2089,7 @@
 				
 				var mouseDown = false;
 				
-				$("div.wysiwyg-dialog-topbar").bind("mousedown", function (e) {
+				obj._$dialog.find("div.wysiwyg-dialog-topbar").bind("mousedown", function (e) {
 					e.preventDefault();
 					$(this).css({ "cursor": "move" });
 					var _dialog = $(this).parents(".wysiwyg-dialog"),
@@ -2099,7 +2098,7 @@
 					mouseDown = true;
 					$(this).css({ "cursor": "move" });
 					
-					$("*").bind("mousemove", function (e) {
+					$(document).bind("mousemove", function (e) {
 						e.preventDefault();
 						if (mouseDown) {
 							_dialog.css({
@@ -2158,7 +2157,7 @@
 			
 			// Draggable feature:
 			if (that.options.draggable) { 
-				$("div.wysiwyg-dialog-topbar").unbind("mousedown");
+				$obj._$dialog.find("div.wysiwyg-dialog-topbar").unbind("mousedown");
 			}
 			
 		};
