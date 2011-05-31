@@ -2232,7 +2232,6 @@
 
 				that._$dialog.append($topbar).append($dcontent);
 				
-				
 				// Set dialog's height & width, and position it correctly:
 				var dialogHeight = this.options.height == 'auto' ? 300 : this.options.height,
 					dialogWidth = this.options.width == 'auto' ? 450 : this.options.width;
