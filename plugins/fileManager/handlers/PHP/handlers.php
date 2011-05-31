@@ -24,6 +24,7 @@ class AuthHandler extends ResponseHandler {
 		$cap = $router->getConfig()->getCapabilities();
 
 		$r = array();
+		$r['baseUrl'] = $router->getConfig()->getBaseUrl();
 		foreach($cap as $k => $v) {
 			// var_dump($router->getBaseFile());
 			$r[$k] = array(
