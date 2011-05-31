@@ -53,6 +53,7 @@
 		this.remove = false;
 		this.upload = false;
 		this.mkdir = false;
+		this.baseUrl = "";
 		this.selectedFile = "";
 		this.curDir = "/";
 		this.curListHtml = "";
@@ -185,7 +186,7 @@
 
 								// Select file bindings
 								dialog.find("input[name=submit]").live("click", function () {
-									var file = dialog.find("input[name=url]").val();
+									var file = self.baseUrl + dialog.find("input[name=url]").val();
 									fileManagerUI.close();
 									self.loaded = false;
 									callback(file);
@@ -194,7 +195,7 @@
 								// Image preview bindings
 								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
 									var $this = $(this);
-									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": $this.find("a").attr("rel"), "alt": $this.text() }).appendTo("body");
+									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": self.baseUrl + $this.find("a").attr("rel"), "alt": $this.text() }).appendTo("body");
 									$("img.wysiwyg-files-file-preview").load(function () {
 										$(this).removeClass("wysiwyg-files-ajax");
 									});
@@ -354,6 +355,7 @@
 					self.remove = json.data.remove;
 					self.mkdir = json.data.mkdir;
 					self.upload = json.data.upload;
+					self.baseUrl = json.data.baseUrl;
 					callback("success");
 				} else {
 					console.log("$.wysiwyg.fileManager: Unable to authenticate handler.");
@@ -398,7 +400,7 @@
 			}
 			$.each(json.data.directories, function(name, dirPath) {
 				treeHtml += '<li class="wysiwyg-files-dir">' +
-							'<a href="#" rel="'+dirPath+'">' +
+							'<a href="#" rel="' + dirPath + '">' +
 							name +
 							'</a></li>';
 			});			
@@ -528,7 +530,7 @@
 		 * i18n Support.
 		 * The below methods will enable basic support for i18n
 		 */		
-		 
+
 		// Default translations (EN):
 		this.defaultTranslations = {
 			"file_manager": 		"File Manager",
@@ -551,23 +553,25 @@
 			"yes":					"Yes",
 			"no":					"No"
 		};
+
 		/* Take an html string with placeholders: {{placeholder}} and translate it. 
 		 * It takes all labels and trys to translate them. 
 		 * If there is no translation (or i18n plugin is not loaded) it will use the defaults.
 		 */
 		this.i18n = function (tHtml) {
 			var map = this.defaultTranslations;
+
 			// If i18n plugin exists:
 			if ($.wysiwyg.i18n) {
 				$.each(map, function (key, val) {
-					map[key] = $.wysiwyg.i18n.t(key, "fileManager");
+					map[key] = $.wysiwyg.i18n.t(key, "dialogs.fileManager");
 				});
 			}
-			
+
 			$.each(map, function (key, val) {
 				tHtml = tHtml.replace("{{" + key + "}}", val);
 			});
-			
+
 			return tHtml;
 		};
 	}
