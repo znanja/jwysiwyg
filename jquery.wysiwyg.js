@@ -2049,11 +2049,11 @@
 	 * 
 	 */
 	$.wysiwyg.dialog = function (jWysiwyg, opts) {
-		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : "jqueryui",
+		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : "default",
 			obj		= $.wysiwyg.dialog.createDialog(theme),
 			that	= this,
 			$that	= $(that);
-
+				
 		this.options = {
 			"modal": true,
 			"draggable": true,
