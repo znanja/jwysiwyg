@@ -2049,7 +2049,7 @@
 	 * 
 	 */
 	$.wysiwyg.dialog = function (jWysiwyg, opts) {
-		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : "default",
+		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : "jqueryui",
 			obj		= $.wysiwyg.dialog.createDialog(theme),
 			that	= this,
 			$that	= $(that);
@@ -2159,7 +2159,6 @@
 						} else if(typeof content.toString === 'function') {
 							content = content.toString();
 						}
-						alert(content);
 					}
 
 					that._$dialog = $('<div></div>').attr('title', this.options.title).html(content);
@@ -2173,10 +2172,7 @@
 						modal: this.options.modal,
 						draggable: this.options.draggable,
 						height: dialogHeight,
-						width: dialogWidth,
-						close: function () {
-							abstractDialog.close();
-						}
+						width: dialogWidth
 					});
 
 					return that._$dialog;
