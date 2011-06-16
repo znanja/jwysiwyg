@@ -155,9 +155,7 @@
 								self.loadUploadUI();
 							});
 
-						},
-						"modal": false
-						// "theme": "jqueryui"
+						}
 					});
 					
 					fileManagerUI.open();
