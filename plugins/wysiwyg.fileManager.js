@@ -119,7 +119,7 @@
 							});
 							
 							// Create Directory
-							$(".wysiwyg-files-action-mkdir").bind("click", function (e) {
+							self.dialog.find(".wysiwyg-files-action-mkdir").bind("click", function (e) {
 								e.preventDefault();
 								var uiHtml =	'<div>' +
 												'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
@@ -301,13 +301,11 @@
 							});
 
 							// Upload File
-							$(".wysiwyg-files-action-upload").bind("click", function (e) {
+							self.dialog.find(".wysiwyg-files-action-upload").bind("click", function (e) {
 								self.loadUploadUI();
 							});
 
-						},
-						"modal": false
-						// "theme": "jqueryui"
+						}
 					});
 					
 					fileManagerUI.open();
@@ -583,7 +581,7 @@
 				// Add action buttons:
 				if (!$(this).hasClass("wysiwyg-files-dir-prev")) {
 					
-					$(".wysiwyg-files-action").remove();
+					self.dialog.find(".wysiwyg-files-action").remove();
 					
 					// If handler does not support remove, icon will not appear:
 					if (self.remove.enabled) {
@@ -591,7 +589,7 @@
 						$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-remove", "title": rmText }).appendTo(this);
 						
 						// "Remove" binding:
-						$(".wysiwyg-files-action-remove").bind("click", function (e) {
+						self.dialog.find(".wysiwyg-files-action-remove").bind("click", function (e) {
 							e.preventDefault();
 							var entry = $(this).parent("li");
 							// What are we deleting?
@@ -638,7 +636,7 @@
 						$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-rename", "title": rnText }).appendTo(this);
 						
 						// "Rename" binding:
-						$(".wysiwyg-files-action-rename").bind("click", function (e) {
+						self.dialog.find(".wysiwyg-files-action-rename").bind("click", function (e) {
 							e.preventDefault();
 							var entry = $(this).parent("li");
 							// What are we deleting?
@@ -685,7 +683,7 @@
 				$(this).removeClass("wysiwyg-files-hover");
 				
 				// Remove action buttons:
-				$(".wysiwyg-files-action").remove();
+				self.dialog.find(".wysiwyg-files-action").remove();
 			});
 			
 		}
@@ -702,16 +700,16 @@
 			// Browse:
 			object.bind("click", function (e) {
 				
-				$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
+				self.dialog.find(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
 				
 				// Browse Directory:
 				if ($(this).parent("li").hasClass("wysiwyg-files-dir")) {
 					self.selectedFile = $(this).attr("rel");
 					self.curDir = $(this).attr("rel");
 					dialog.find("input[name=submit]").hide();
-					$(".wysiwyg-files-wrapper").find("input[name=url]").val("");
-					$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
-					$('#wysiwyg-files-list-wrapper').html("");
+					self.dialog.find(".wysiwyg-files-wrapper").find("input[name=url]").val("");
+					self.dialog.find('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
+					self.dialog.find('#wysiwyg-files-list-wrapper').html("");
 					self.loadDir();
 					dialog.find("input[name=submit]").hide();
 					
@@ -719,7 +717,7 @@
 				} else {
 					self.selectedFile = $(this).text();
 					$(this).parent("li").css("backgroundColor", "#BDF");
-					$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
+					self.dialog.find(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
 					dialog.find("input[name=submit]").show();
 				}
 				
