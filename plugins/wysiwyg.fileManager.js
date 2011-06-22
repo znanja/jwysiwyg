@@ -26,7 +26,7 @@
 		setAjaxHandler: function (_handler) {
 			this.ajaxHandler = _handler;
 			this.ready = true;
-			
+
 			return this;
 		},
 		ready: false,
@@ -43,7 +43,7 @@
 
 	// Register:
 	$.wysiwyg.plugin.register(fileManager);
-	
+
 	// Private object:
 	function fileManagerObj (_handler) {
 		this.handler = _handler;
@@ -53,18 +53,17 @@
 		this.remove = false;
 		this.upload = false;
 		this.mkdir = false;
-		this.baseUrl = "";
 		this.selectedFile = "";
 		this.curDir = "/";
 		this.curListHtml = "";
 		this.dialog = null;
-		
+
 		/**
 		 * Methods
 		 */
 		var console = $.wysiwyg.console;
 		console.log(this.handler);
-		 
+
 		this.load = function (callback) {
 			var self = this;
 			self.loaded = true;
@@ -77,20 +76,20 @@
 				var uiHtml = 	'<div class="wysiwyg-files-wrapper">' +
 								'<input type="text" name="url" />' +
 								'<div id="wysiwyg-files-list-wrapper"></div>';
-				
+
 				// If handler does not support upload, icon will not appear:
 				if (self.upload.enabled) {
 					uiHtml += 	'<div class="wysiwyg-files-action-upload" title="{{upload_action}}"></div>';
 				}
-				
+
 				// If handler does not support mkdir, icon will not appear:
 				if (self.mkdir.enabled) {
 					uiHtml += 	'<div class="wysiwyg-files-action-mkdir" title="{{mkdir_action}}"></div>';
 				}
-				
+
 				uiHtml += 	'<input style="display:none;" type="button" name="submit" value="{{select}}" />' +
 							'</div>';
-							
+
 				uiHtml = self.i18n(uiHtml);
 				if ($.wysiwyg.dialog) { 
 					// Support for native $.wysiwyg.dialog()
@@ -102,9 +101,9 @@
 							self.dialog = null;
 						},
 						"open": function (e, dialog) {
-							
+
 							self.dialog = dialog;
-							
+
 							self.loadDir();
 							self.bindHover();
 							self.bindBrowse();
@@ -117,9 +116,9 @@
 								self.loaded = false;
 								callback(file);
 							});
-							
+
 							// Create Directory
-							self.dialog.find(".wysiwyg-files-action-mkdir").bind("click", function (e) {
+							$(".wysiwyg-files-action-mkdir").bind("click", function (e) {
 								e.preventDefault();
 								var uiHtml =	'<div>' +
 												'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
@@ -132,162 +131,13 @@
 									"title": _mkdirTitle,
 									"content": uiHtml,
 									"close": function () {
-										
+
 									},
 									"open": function (e, _dialog) {
-										
-<<<<<<< HEAD
+
 										_dialog.find("input[name=create]").bind("click", function () {
 											self.mkDir(_dialog.find("input[name=newName]").val(), function (response) {
 												self.loadDir();
-=======
-									// Select Entry:
-									} else {
-										self.selectedFile = $(this).text();
-										$(this).parent("li").css("backgroundColor", "#BDF");
-										$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
-										dialog.find("input[name=submit]").show();
-									}
-									
-								});
-
-								// Select file bindings
-								dialog.find("input[name=submit]").live("click", function () {
-									var file = self.baseUrl + dialog.find("input[name=url]").val();
-									fileManagerUI.close();
-									self.loaded = false;
-									callback(file);
-								});
-								
-								// Image preview bindings
-								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
-									var $this = $(this);
-									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": self.baseUrl + $this.find("a").attr("rel"), "alt": $this.text() }).appendTo("body");
-									$("img.wysiwyg-files-file-preview").load(function () {
-										$(this).removeClass("wysiwyg-files-ajax");
-									});
-								}).live("mousemove", function (e) {
-									$("img.wysiwyg-files-file-preview").css("left", e.pageX + 15);
-									$("img.wysiwyg-files-file-preview").css("top", e.pageY);
-								}).live("mouseleave", function () {
-									$("img.wysiwyg-files-file-preview").remove();
-								});
-								
-								/* 
-								 * Bind action buttons:
-								 */
-
-								// Remove:
-								$(".wysiwyg-files-action-remove").live("click", function (e) {
-									e.preventDefault();
-									var entry = $(this).parent("li");
-									// What are we deleting?
-									var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
-									var uiHtml = 	"<p>{{delete_message}}</p>" + 
-													'<div class="">' + 
-													'<input type="button" name="cancel" value="{{no}}" />' +
-													'<input type="button" name="remove" value="{{yes}}" />' +
-													"</div>";
-									uiHtml = self.i18n(uiHtml);
-									
-									var _removeTitle = self.i18n("{{remove_title}}");
-									
-									var removeDialog = 	new $.wysiwyg.dialog(null, {
-										"title": _removeTitle,
-										"content": uiHtml,
-										"close": function () {
-											
-										},
-										"open": function (e, _dialog) {
-											_dialog.find("input[name=remove]").bind("click", function () {
-												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
-												self.removeFile(type, file, function (response) {
-													self.loadDir(self.curDir, function (list) {
-														$("#wysiwyg-files-list-wrapper").html(list);
-													});
-													removeDialog.close();
-												});
-											});
-											
-											_dialog.find("input[name=cancel]").bind("click", function () {
-												removeDialog.close();
-											});
-										}
-									});
-									
-									removeDialog.open();
-								});
-
-								// Rename
-								$(".wysiwyg-files-action-rename").live("click", function (e) {
-									e.preventDefault();
-									var entry = $(this).parent("li");
-									// What are we deleting?
-									var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
-									var uiHtml = 	'<div>' +
-													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="' + entry.find("a").text() + '" />' +
-													'<input type="button" name="cancel" value="{{cancel}}" />' +
-													'<input type="button" name="rename" value="{{rename}}" />' +
-													'</div>';
-									uiHtml = self.i18n(uiHtml);
-									var _renameTitle = self.i18n("{{rename_title}}");
-									
-									var renameDialog = new $.wysiwyg.dialog(null, {
-										"title": _renameTitle,
-										"content": uiHtml,
-										"close": function () {
-											
-										},
-										"open": function (e, _dialog) {
-											_dialog.find("input[name=rename]").bind("click", function () {
-												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
-												self.renameFile(type, file, _dialog.find("input[name=newName]").val(), function (response) {
-													self.loadDir(self.curDir, function (list) {
-														$("#wysiwyg-files-list-wrapper").html(list);
-													});
-													renameDialog.close();
-												});
-											});
-											
-											_dialog.find("input[name=cancel]").bind("click", function () {
-												renameDialog.close();
-											});
-										}
-									});
-									
-									renameDialog.open();
-									
-								});
-
-								// Create Directory
-								$(".wysiwyg-files-action-mkdir").bind("click", function (e) {
-									e.preventDefault();
-									var uiHtml =	'<div>' +
-													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
-													'<input type="button" name="cancel" value="{{cancel}}" />' +
-													'<input type="button" name="create" value="{{create}}" />' +
-													'</div>';
-									uiHtml = self.i18n(uiHtml);
-									var _mkdirTitle = self.i18n("{{mkdir_title}}");
-									var mkdirDialog = new $.wysiwyg.dialog(null, {
-										"title": _mkdirTitle,
-										"content": uiHtml,
-										"close": function () {
-											
-										},
-										"open": function (e, _dialog) {
-											
-											_dialog.find("input[name=create]").bind("click", function () {
-												self.mkDir(_dialog.find("input[name=newName]").val(), function (response) {
-													self.loadDir(self.curDir, function (list) {
-														$("#wysiwyg-files-list-wrapper").html(list);
-													});
-													mkdirDialog.close();
-												});
-											});
-
-											_dialog.find("input[name=cancel]").bind("click", function () {
->>>>>>> e3f741f35241ed24cdf5bc6e3f355c379fcf0ba1
 												mkdirDialog.close();
 											});
 										});
@@ -301,15 +151,17 @@
 							});
 
 							// Upload File
-							self.dialog.find(".wysiwyg-files-action-upload").bind("click", function (e) {
+							$(".wysiwyg-files-action-upload").bind("click", function (e) {
 								self.loadUploadUI();
 							});
 
-						}
+						},
+						"modal": false
+						// "theme": "jqueryui"
 					});
-					
+
 					fileManagerUI.open();
-					
+
 				} else {
 					// If $.wysiwyg.dialog() does not work..
 					console.error("$.wysiwyg.fileManager: This plugin uses the native dialog system of jWYSIWYG. Make sure you are using version > 0.98");
@@ -329,7 +181,6 @@
 					self.remove = json.data.remove;
 					self.mkdir = json.data.mkdir;
 					self.upload = json.data.upload;
-					self.baseUrl = json.data.baseUrl;
 					callback("success");
 				} else {
 					console.log("$.wysiwyg.fileManager: Unable to authenticate handler.");
@@ -344,7 +195,7 @@
 			}
 			var self = this;
 			self.curDir = self.curDir.replace(/\/$/, '') + '/';
-			
+
 			// Retreives list of files inside a certain directory:
 			$.getJSON(self.handler, { "dir": self.curDir, "action": "list" }, function (json) {
 				if (json.success) {
@@ -377,7 +228,7 @@
 			}
 			$.each(json.data.directories, function(name, dirPath) {
 				treeHtml += '<li class="wysiwyg-files-dir">' +
-							'<a href="#" rel="' + dirPath + '">' +
+							'<a href="#" rel="'+dirPath+'">' +
 							name +
 							'</a></li>';
 			});			
@@ -389,10 +240,10 @@
 							'</a></li>';
 			});			
 			treeHtml += '</ul>';
-			
+
 			return self.i18n(treeHtml);
 		};
-		
+
 /**
  * Should be remembered for future implementation:
  * If handler does not support certain actions - do not show their icons/button.
@@ -400,12 +251,12 @@
  * 
  * Implemented: 28-May-2011, Yotam Bar-On
  */
-		
+
 		// Remove File Method:
 		this.removeFile = function (type, callback) {
 			if (!this.loaded) { return false; }
 			if (!this.remove.enabled) { console.log("$.wysiwyg.fileManager: handler: remove is disabled."); return false; }
-			
+
 			var self = this;
 			$.getJSON(self.remove.handler, { "action": "remove", "type": type, "dir": self.curDir, "file": self.selectedFile  }, function (json) {
 				if (json.success) {
@@ -416,12 +267,12 @@
 				callback(json);
 			});
 		};
-		
+
 		// Rename File Method
 		this.renameFile = function (type, newName, callback) {
 			if (!this.loaded) { return false; }
 			if (!this.rename.enabled) { console.log("$.wysiwyg.fileManager: handler: rename is disabled."); return false; }
-			
+
 			var self = this;
 			$.getJSON(self.rename.handler, { "action": "rename", "type": type, "dir": self.curDir, "file": self.selectedFile, "newName": newName  }, function (json) {
 				if (json.success) {
@@ -437,7 +288,7 @@
 		this.mkDir = function (newName, callback) {
 			if (!this.loaded) { return false; }
 			if (!this.mkdir.enabled) { console.log("$.wysiwyg.fileManager: handler: mkdir is disabled."); return false; }
-			
+
 			var self = this;
 			$.getJSON(self.mkdir.handler, { "action": "mkdir", "dir": self.curDir, "newName": newName  }, function (json) {
 				if (json.success) {
@@ -472,9 +323,9 @@
 							'<input type="submit" name="submit" value="{{submit}}" />' +
 							'</form>';
 			uiHtml = self.i18n(uiHtml);
-								
+
 			var _uploadTitle = self.i18n("{{upload_title}}");
-			
+
 			var dialog = new $.wysiwyg.dialog(null, {
 				"title": _uploadTitle,
 				"content": "",
@@ -497,7 +348,7 @@
 					self.loadDir();
 				}
 			});
-			
+
 			dialog.open();
 		};
 
@@ -528,23 +379,17 @@
 			"yes":					"Yes",
 			"no":					"No"
 		};
-<<<<<<< HEAD
 		/** 
 		 * Take an html string with placeholders: {{placeholder}} and translate it. 
-=======
-
-		/* Take an html string with placeholders: {{placeholder}} and translate it. 
->>>>>>> e3f741f35241ed24cdf5bc6e3f355c379fcf0ba1
 		 * It takes all labels and trys to translate them. 
 		 * If there is no translation (or i18n plugin is not loaded) it will use the defaults.
 		 */
 		this.i18n = function (tHtml) {
 			var map = this.defaultTranslations;
-
 			// If i18n plugin exists:
 			if ($.wysiwyg.i18n) {
 				$.each(map, function (key, val) {
-					map[key] = $.wysiwyg.i18n.t(key, "dialogs.fileManager");
+					map[key] = $.wysiwyg.i18n.t(key, "fileManager");
 				});
 			}
 
@@ -554,42 +399,42 @@
 
 			return tHtml;
 		};
-	
+
 		/**
 		 * BINDINGS FOR ELEMENTS
 		 * The below methods are bind methods for elements inside the File Manager's dialogs.
 		 * Their purpose is to enable simple coding of the dialog interfaces,
 		 * and to make the use of "live" deprecated.
 		 */
-		
+
 		this.bindHover = function () {
-		
+
 			var self = this,
 				dialog = self.dialog,
 				object = dialog.find("li");
-			
+
 			/** 
 			 * HOVER + ACTIONS BINDINGS:
 			 */
 			object.bind("mouseenter", function () {
 				$(this).addClass("wysiwyg-files-hover");
-				
+
 				if ($(this).hasClass("wysiwyg-files-dir")) {
 					$(this).addClass("wysiwyg-files-dir-expanded");
 				}
-				
+
 				// Add action buttons:
 				if (!$(this).hasClass("wysiwyg-files-dir-prev")) {
-					
-					self.dialog.find(".wysiwyg-files-action").remove();
-					
+
+					$(".wysiwyg-files-action").remove();
+
 					// If handler does not support remove, icon will not appear:
 					if (self.remove.enabled) {
 						var rmText = self.i18n("{{remove_action}}");
 						$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-remove", "title": rmText }).appendTo(this);
-						
+
 						// "Remove" binding:
-						self.dialog.find(".wysiwyg-files-action-remove").bind("click", function (e) {
+						$(".wysiwyg-files-action-remove").bind("click", function (e) {
 							e.preventDefault();
 							var entry = $(this).parent("li");
 							// What are we deleting?
@@ -600,14 +445,14 @@
 											'<input type="button" name="remove" value="{{yes}}" />' +
 											"</div>";
 							uiHtml = self.i18n(uiHtml);
-							
+
 							var _removeTitle = self.i18n("{{remove_title}}");
-							
+
 							var removeDialog = 	new $.wysiwyg.dialog(null, {
 								"title": _removeTitle,
 								"content": uiHtml,
 								"close": function () {
-									
+
 								},
 								"open": function (e, _dialog) {
 									_dialog.find("input[name=remove]").bind("click", function () {
@@ -617,26 +462,26 @@
 											removeDialog.close();
 										});
 									});
-									
+
 									_dialog.find("input[name=cancel]").bind("click", function () {
 										removeDialog.close();
 									});
 								}
 							});
-							
+
 							removeDialog.open();
-							
+
 						});
-						
+
 					}
-					
+
 					// If handler does not support rename, icon will not appear:
 					if (self.rename.enabled) {
 						var rnText = self.i18n("{{rename_action}}");
 						$("<div/>", { "class": "wysiwyg-files-action wysiwyg-files-action-rename", "title": rnText }).appendTo(this);
-						
+
 						// "Rename" binding:
-						self.dialog.find(".wysiwyg-files-action-rename").bind("click", function (e) {
+						$(".wysiwyg-files-action-rename").bind("click", function (e) {
 							e.preventDefault();
 							var entry = $(this).parent("li");
 							// What are we deleting?
@@ -648,12 +493,12 @@
 											'</div>';
 							uiHtml = self.i18n(uiHtml);
 							var _renameTitle = self.i18n("{{rename_title}}");
-							
+
 							var renameDialog = new $.wysiwyg.dialog(null, {
 								"title": _renameTitle,
 								"content": uiHtml,
 								"close": function () {
-									
+
 								},
 								"open": function (e, _dialog) {
 									_dialog.find("input[name=rename]").bind("click", function () {
@@ -663,74 +508,74 @@
 											renameDialog.close();
 										});
 									});
-									
+
 									_dialog.find("input[name=cancel]").bind("click", function () {
 										renameDialog.close();
 									});
 								}
 							});
-							
+
 							renameDialog.open();
-							
+
 						});					
-						
+
 					}
 
-					
+
 				}
 			}).bind("mouseleave", function () {
 				$(this).removeClass("wysiwyg-files-dir-expanded");
 				$(this).removeClass("wysiwyg-files-hover");
-				
+
 				// Remove action buttons:
-				self.dialog.find(".wysiwyg-files-action").remove();
+				$(".wysiwyg-files-action").remove();
 			});
-			
+
 		}
-		
+
 		/**
 		 * BROWSING BINDINGS
 		 */
 		this.bindBrowse = function () {
-		
+
 			var self = this,
 				dialog = self.dialog,
 				object = self.dialog.find("li").find("a");
 
 			// Browse:
 			object.bind("click", function (e) {
-				
-				self.dialog.find(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
-				
+
+				$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
+
 				// Browse Directory:
 				if ($(this).parent("li").hasClass("wysiwyg-files-dir")) {
 					self.selectedFile = $(this).attr("rel");
 					self.curDir = $(this).attr("rel");
 					dialog.find("input[name=submit]").hide();
-					self.dialog.find(".wysiwyg-files-wrapper").find("input[name=url]").val("");
-					self.dialog.find('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
-					self.dialog.find('#wysiwyg-files-list-wrapper').html("");
+					$(".wysiwyg-files-wrapper").find("input[name=url]").val("");
+					$('#wysiwyg-files-list-wrapper').addClass("wysiwyg-files-ajax");
+					$('#wysiwyg-files-list-wrapper').html("");
 					self.loadDir();
 					dialog.find("input[name=submit]").hide();
-					
+
 				// Select Entry:
 				} else {
 					self.selectedFile = $(this).text();
 					$(this).parent("li").css("backgroundColor", "#BDF");
-					self.dialog.find(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
+					$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
 					dialog.find("input[name=submit]").show();
 				}
-				
+
 			});
-					
+
 		}
-		
+
 		this.bindPreview = function (object) {
-		
+
 		var self = this;
-					
+
 		}
-		
+
 	}
-	
+
 })(jQuery);
