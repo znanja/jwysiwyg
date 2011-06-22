@@ -389,7 +389,7 @@
 			// If i18n plugin exists:
 			if ($.wysiwyg.i18n) {
 				$.each(map, function (key, val) {
-					map[key] = $.wysiwyg.i18n.t(key, "fileManager");
+					map[key] = $.wysiwyg.i18n.t(key, "dialogs.fileManager");
 				});
 			}
 
