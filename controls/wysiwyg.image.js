@@ -4,6 +4,8 @@
  * Depends on jWYSIWYG
  */
 (function ($) {
+	"use strict";
+
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.image.js depends on $.wysiwyg";
 	}
@@ -110,7 +112,8 @@
 				// File Manager (select file):
 				$("div.wysiwyg-fileManager").bind("click", function () {
 					$.wysiwyg.fileManager.init(function (selected) {
-						$('input[name="src"]', dialog).val(selected);
+						dialog.find("input[name=src]").val(selected);
+						dialog.find("input[name=src]").trigger("change");
 					});
 				});
 				

@@ -53,6 +53,7 @@
 		this.remove = false;
 		this.upload = false;
 		this.mkdir = false;
+		this.baseUrl = "";
 		this.selectedFile = "";
 		this.curDir = "/";
 		this.curListHtml = "";
@@ -135,9 +136,158 @@
 									},
 									"open": function (e, _dialog) {
 										
+<<<<<<< HEAD
 										_dialog.find("input[name=create]").bind("click", function () {
 											self.mkDir(_dialog.find("input[name=newName]").val(), function (response) {
 												self.loadDir();
+=======
+									// Select Entry:
+									} else {
+										self.selectedFile = $(this).text();
+										$(this).parent("li").css("backgroundColor", "#BDF");
+										$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
+										dialog.find("input[name=submit]").show();
+									}
+									
+								});
+
+								// Select file bindings
+								dialog.find("input[name=submit]").live("click", function () {
+									var file = self.baseUrl + dialog.find("input[name=url]").val();
+									fileManagerUI.close();
+									self.loaded = false;
+									callback(file);
+								});
+								
+								// Image preview bindings
+								dialog.find("li.wysiwyg-files-png, li.wysiwyg-files-jpg, li.wysiwyg-files-jpeg, li.wysiwyg-files-gif, li.wysiwyg-files-ico, li.wysiwyg-files-bmp").live("mouseenter", function () {
+									var $this = $(this);
+									$("<img/>", { "class": "wysiwyg-files-ajax wysiwyg-files-file-preview", "src": self.baseUrl + $this.find("a").attr("rel"), "alt": $this.text() }).appendTo("body");
+									$("img.wysiwyg-files-file-preview").load(function () {
+										$(this).removeClass("wysiwyg-files-ajax");
+									});
+								}).live("mousemove", function (e) {
+									$("img.wysiwyg-files-file-preview").css("left", e.pageX + 15);
+									$("img.wysiwyg-files-file-preview").css("top", e.pageY);
+								}).live("mouseleave", function () {
+									$("img.wysiwyg-files-file-preview").remove();
+								});
+								
+								/* 
+								 * Bind action buttons:
+								 */
+
+								// Remove:
+								$(".wysiwyg-files-action-remove").live("click", function (e) {
+									e.preventDefault();
+									var entry = $(this).parent("li");
+									// What are we deleting?
+									var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
+									var uiHtml = 	"<p>{{delete_message}}</p>" + 
+													'<div class="">' + 
+													'<input type="button" name="cancel" value="{{no}}" />' +
+													'<input type="button" name="remove" value="{{yes}}" />' +
+													"</div>";
+									uiHtml = self.i18n(uiHtml);
+									
+									var _removeTitle = self.i18n("{{remove_title}}");
+									
+									var removeDialog = 	new $.wysiwyg.dialog(null, {
+										"title": _removeTitle,
+										"content": uiHtml,
+										"close": function () {
+											
+										},
+										"open": function (e, _dialog) {
+											_dialog.find("input[name=remove]").bind("click", function () {
+												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
+												self.removeFile(type, file, function (response) {
+													self.loadDir(self.curDir, function (list) {
+														$("#wysiwyg-files-list-wrapper").html(list);
+													});
+													removeDialog.close();
+												});
+											});
+											
+											_dialog.find("input[name=cancel]").bind("click", function () {
+												removeDialog.close();
+											});
+										}
+									});
+									
+									removeDialog.open();
+								});
+
+								// Rename
+								$(".wysiwyg-files-action-rename").live("click", function (e) {
+									e.preventDefault();
+									var entry = $(this).parent("li");
+									// What are we deleting?
+									var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
+									var uiHtml = 	'<div>' +
+													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="' + entry.find("a").text() + '" />' +
+													'<input type="button" name="cancel" value="{{cancel}}" />' +
+													'<input type="button" name="rename" value="{{rename}}" />' +
+													'</div>';
+									uiHtml = self.i18n(uiHtml);
+									var _renameTitle = self.i18n("{{rename_title}}");
+									
+									var renameDialog = new $.wysiwyg.dialog(null, {
+										"title": _renameTitle,
+										"content": uiHtml,
+										"close": function () {
+											
+										},
+										"open": function (e, _dialog) {
+											_dialog.find("input[name=rename]").bind("click", function () {
+												var file = (type === "file") ? entry.find("a").text() : entry.find("a").attr("rel");
+												self.renameFile(type, file, _dialog.find("input[name=newName]").val(), function (response) {
+													self.loadDir(self.curDir, function (list) {
+														$("#wysiwyg-files-list-wrapper").html(list);
+													});
+													renameDialog.close();
+												});
+											});
+											
+											_dialog.find("input[name=cancel]").bind("click", function () {
+												renameDialog.close();
+											});
+										}
+									});
+									
+									renameDialog.open();
+									
+								});
+
+								// Create Directory
+								$(".wysiwyg-files-action-mkdir").bind("click", function (e) {
+									e.preventDefault();
+									var uiHtml =	'<div>' +
+													'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
+													'<input type="button" name="cancel" value="{{cancel}}" />' +
+													'<input type="button" name="create" value="{{create}}" />' +
+													'</div>';
+									uiHtml = self.i18n(uiHtml);
+									var _mkdirTitle = self.i18n("{{mkdir_title}}");
+									var mkdirDialog = new $.wysiwyg.dialog(null, {
+										"title": _mkdirTitle,
+										"content": uiHtml,
+										"close": function () {
+											
+										},
+										"open": function (e, _dialog) {
+											
+											_dialog.find("input[name=create]").bind("click", function () {
+												self.mkDir(_dialog.find("input[name=newName]").val(), function (response) {
+													self.loadDir(self.curDir, function (list) {
+														$("#wysiwyg-files-list-wrapper").html(list);
+													});
+													mkdirDialog.close();
+												});
+											});
+
+											_dialog.find("input[name=cancel]").bind("click", function () {
+>>>>>>> e3f741f35241ed24cdf5bc6e3f355c379fcf0ba1
 												mkdirDialog.close();
 											});
 										});
@@ -181,6 +331,7 @@
 					self.remove = json.data.remove;
 					self.mkdir = json.data.mkdir;
 					self.upload = json.data.upload;
+					self.baseUrl = json.data.baseUrl;
 					callback("success");
 				} else {
 					console.log("$.wysiwyg.fileManager: Unable to authenticate handler.");
@@ -228,7 +379,7 @@
 			}
 			$.each(json.data.directories, function(name, dirPath) {
 				treeHtml += '<li class="wysiwyg-files-dir">' +
-							'<a href="#" rel="'+dirPath+'">' +
+							'<a href="#" rel="' + dirPath + '">' +
 							name +
 							'</a></li>';
 			});			
@@ -356,7 +507,7 @@
 		 * i18n Support.
 		 * The below methods will enable basic support for i18n
 		 */		
-		 
+
 		// Default translations (EN):
 		this.defaultTranslations = {
 			"file_manager": 		"File Manager",
@@ -379,24 +530,30 @@
 			"yes":					"Yes",
 			"no":					"No"
 		};
+<<<<<<< HEAD
 		/** 
 		 * Take an html string with placeholders: {{placeholder}} and translate it. 
+=======
+
+		/* Take an html string with placeholders: {{placeholder}} and translate it. 
+>>>>>>> e3f741f35241ed24cdf5bc6e3f355c379fcf0ba1
 		 * It takes all labels and trys to translate them. 
 		 * If there is no translation (or i18n plugin is not loaded) it will use the defaults.
 		 */
 		this.i18n = function (tHtml) {
 			var map = this.defaultTranslations;
+
 			// If i18n plugin exists:
 			if ($.wysiwyg.i18n) {
 				$.each(map, function (key, val) {
-					map[key] = $.wysiwyg.i18n.t(key, "fileManager");
+					map[key] = $.wysiwyg.i18n.t(key, "dialogs.fileManager");
 				});
 			}
-			
+
 			$.each(map, function (key, val) {
 				tHtml = tHtml.replace("{{" + key + "}}", val);
 			});
-			
+
 			return tHtml;
 		};
 	

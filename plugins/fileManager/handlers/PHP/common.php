@@ -21,16 +21,31 @@ class Config {
 	private $capabilities = array();
 	private $root_dir = "";
 	private $pub_dir = "";
+	private $baseUrl = '';
 
 	public function setValidExtensions(array $extensions) {
 		$this->valid_extensions = $extensions;
 	}
 
-	public function setRootDir($dir) {
-		$dir = str_replace("\\", "/", realpath($dir));
-		if($dir != "/") {
-			$dir = rtrim($dir, "/");
+	public function setBaseUrl($url) {
+		if ($url !== '/') {
+			$url = rtrim($url, '/');
 		}
+
+		$this->baseUrl = $url;
+	}
+
+	public function getBaseUrl() {
+		return $this->baseUrl;
+	}
+
+	public function setRootDir($dir) {
+		$dir = str_replace("\\", '/', realpath($dir));
+
+		if ($dir !== '/') {
+			$dir = rtrim($dir, '/');
+		}
+
 		$this->root_dir = $dir;
 	}
 
@@ -90,6 +105,7 @@ Config::getInstance()->setValidExtensions($accepted_extensions);
 Config::getInstance()->setCapabilities($capabilities);
 Config::getInstance()->setRootDir($uploads_dir);
 Config::getInstance()->setPubDir($uploads_access_dir);
+Config::getInstance()->setBaseUrl($base_url);
 
 function json_response ($json, $exit = true) {
 	if(!is_string($json)) {

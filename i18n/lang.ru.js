@@ -21,6 +21,7 @@
 			"Create link": "Создать ссылку",
 			"Cut": "Вырезать",
 			"Decrease font size": "Уменьшить шрифт",
+			"File Manager": "Управление файлами",
 			"Fullscreen": "На весь экран",
 			"Header 1": "Заголовок 1",
 			"Header 2": "Заголовок 2",
@@ -59,6 +60,28 @@
 			colorpicker: {
 				"Colorpicker": "Выбор цвета",
 				"Color": "Цвет"
+			},
+
+			fileManager: {
+				"file_manager": 		"Управление файлами",
+				"upload_title":			"Загрузить файл",
+				"rename_title":			"Переименовать файл",
+				"remove_title":			"Удалить файл",
+				"mkdir_title":			"Создать папку",
+				"upload_action": 		"Загружает новый файл в текущую папку",
+				"mkdir_action": 		"Создаёт новую папку",
+				"remove_action": 		"Удалить этот файл",
+				"rename_action": 		"Переименовать этот файл" ,	
+				"delete_message": 		"Хотите удалить этот файл?",
+				"new_directory": 		"Новая папка",
+				"previous_directory": 	"Вернуться к предыдущей папке",
+				"rename":				"Переименовать",
+				"select": 				"Выбрать",
+				"create": 				"Создать",
+				"submit": 				"Послать",
+				"cancel": 				"Отмена",
+				"yes":					"Да",
+				"no":					"Нет"
 			},
 
 			image: {
