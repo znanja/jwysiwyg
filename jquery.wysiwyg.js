@@ -1009,10 +1009,28 @@
 
 		this.increaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand('increaseFontSize', false, null);
-			} else if ($.browser.safari) {
-				var newNode = this.editorDoc.createElement('big');
-				this.getInternalRange().surroundContents(newNode);
+				this.editorDoc.execCommand("increaseFontSize", false, null);
+			} else if ($.browser.safari) {				
+				var Range = this.getInternalRange(),
+					Selection = this.getInternalSelection(),
+					newNode = this.editorDoc.createElement("big");
+
+				// If cursor placed on text node
+				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
+					var text = Range.commonAncestorContainer.nodeValue.toString(),
+						start = text.lastIndexOf(" ", Range.startOffset) + 1,
+						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
+
+					Range.setStart(Range.commonAncestorContainer, start);
+					Range.setEnd(Range.commonAncestorContainer, end);
+
+					Range.surroundContents(newNode);
+					Selection.addRange(Range);
+				} else {
+					Range.surroundContents(newNode);
+					Selection.removeAllRanges();
+					Selection.addRange(Range);
+				}
 			} else {
 				console.error("Internet Explorer?");
 			}
@@ -1020,10 +1038,28 @@
 
 		this.decreaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand('decreaseFontSize', false, null);
+				this.editorDoc.execCommand("decreaseFontSize", false, null);
 			} else if ($.browser.safari) {
-				var newNode = this.editorDoc.createElement('small');
-				this.getInternalRange().surroundContents(newNode);
+				var Range = this.getInternalRange(),
+					Selection = this.getInternalSelection(),
+					newNode = this.editorDoc.createElement("small");
+
+				// If cursor placed on text node
+				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
+					var text = Range.commonAncestorContainer.nodeValue.toString(),
+						start = text.lastIndexOf(" ", Range.startOffset) + 1,
+						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
+	
+					Range.setStart(Range.commonAncestorContainer, start);
+					Range.setEnd(Range.commonAncestorContainer, end);
+	
+					Range.surroundContents(newNode);
+					Selection.addRange(Range);
+				} else {
+					Range.surroundContents(newNode);
+					Selection.removeAllRanges();
+					Selection.addRange(Range);
+				}
 			} else {
 				console.error("Internet Explorer?");
 			}
