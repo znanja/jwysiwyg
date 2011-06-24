@@ -222,7 +222,10 @@
 			form.find('img').attr("src", img.src);
 
 			form.find('img').bind("load", function () {
-				if (form.find('img').attr("naturalWidth")) {
+				if (form.find('img').get(0).naturalWidth) {
+					form.find('input[name="naturalWidth"]').val(form.find('img').get(0).naturalWidth);
+					form.find('input[name="naturalHeight"]').val(form.find('img').get(0).naturalHeight);
+				} else if (form.find('img').attr("naturalWidth")) {
 					form.find('input[name="naturalWidth"]').val(form.find('img').attr("naturalWidth"));
 					form.find('input[name="naturalHeight"]').val(form.find('img').attr("naturalHeight"));
 				}
