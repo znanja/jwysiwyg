@@ -95,6 +95,7 @@
 				img.title  = img.self.title  ? img.self.title  : "";
 				img.width  = img.self.width  ? img.self.width  : "";
 				img.height = img.self.height ? img.self.height : "";
+				img.styleFloat = $(img.self).css("float");
 			}
 			
 			adialog = new $.wysiwyg.dialog(Wysiwyg, {
@@ -217,6 +218,7 @@
 			form.find("input[name=description]").val(img.alt);
 			form.find('input[name="width"]').val(img.width);
 			form.find('input[name="height"]').val(img.height);
+			form.find('select[name="float"]').val(img.styleFloat);
 			form.find('img').attr("src", img.src);
 
 			form.find('img').bind("load", function () {
