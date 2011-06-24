@@ -26,7 +26,7 @@
 		tags: ["img"],
 		tooltip: "Insert image",	
 		init: function (Wysiwyg) {
-			var self = this, elements, adialog, dialog, formTextLegend, formImageHtml, regexp, dialogReplacements, key, translation,
+			var self = this, elements, adialog, dialog, formImageHtml, regexp, dialogReplacements, key, translation,
 				img = {
 					alt: "",
 					self: Wysiwyg.dom ? Wysiwyg.dom.getElement("img") : null, // link to element node
@@ -58,7 +58,7 @@
 			
 			if ($.wysiwyg.fileManager && $.wysiwyg.fileManager.ready) {
 				// Add the File Manager icon:
-				formImageHtml +=	'<div class="wysiwyg-fileManager" title="{fileManagerIcon}"/>';
+				formImageHtml += '<div class="wysiwyg-fileManager" title="{fileManagerIcon}"/>';
 			}
 			
 			formImageHtml += '</div></div>' +
@@ -88,7 +88,6 @@
 				regexp = new RegExp("{" + key + "}", "g");
 				formImageHtml = formImageHtml.replace(regexp, dialogReplacements[key]);
 			}
-			formTextLegend = dialogReplacements.legend;
 
 			if (img.self) {
 				img.src    = img.self.src    ? img.self.src    : "";
@@ -100,8 +99,8 @@
 			}
 			
 			adialog = new $.wysiwyg.dialog(Wysiwyg, {
-				"title": formTextLegend,
-				"content": formImageHtml
+				"title"   : dialogReplacements.legend,
+				"content" : formImageHtml
 			});
 			
 			$(adialog).bind("afterOpen", function (e, dialog) {
