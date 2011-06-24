@@ -26,7 +26,7 @@
 		tags: ["img"],
 		tooltip: "Insert image",	
 		init: function (Wysiwyg) {
-			var self = this, elements, adialog, dialog, formTextLegend, formImageHtml, dialogReplacements, key, translation,
+			var self = this, elements, adialog, dialog, formTextLegend, formImageHtml, regexp, dialogReplacements, key, translation,
 				img = {
 					alt: "",
 					self: Wysiwyg.dom ? Wysiwyg.dom.getElement("img") : null, // link to element node
@@ -85,7 +85,8 @@
 					dialogReplacements[key] = translation;
 				}
 
-				formImageHtml = formImageHtml.replace("{" + key + "}", dialogReplacements[key]);
+				regexp = new RegExp("{" + key + "}", "g");
+				formImageHtml = formImageHtml.replace(regexp, dialogReplacements[key]);
 			}
 			formTextLegend = dialogReplacements.legend;
 
