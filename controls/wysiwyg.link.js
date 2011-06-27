@@ -6,6 +6,8 @@
  * By: Esteban Beltran (academo) <sergies@gmail.com>
  */
 (function ($) {
+	"use strict";
+
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.link.js depends on $.wysiwyg";
 	}
@@ -22,7 +24,7 @@
 			var self = this, elements, dialog, url, a, selection,
 				formLinkHtml, formTextLegend, formTextUrl, formTextTitle, formTextTarget,
 				formTextSubmit, formTextReset,
-				baseUrl;
+				baseUrl, img;
 
 			formTextLegend  = "Insert Link";
 			formTextUrl     = "Link URL";
@@ -69,7 +71,7 @@
 				if ($.browser.msie) {
 					try {
 						dialog = elements.appendTo(Wysiwyg.editorDoc.body);
-					} catch(err) {
+					} catch (err) {
 						dialog = elements.appendTo("body");
 					}
 				} else {
@@ -85,7 +87,8 @@
 							var url = $('input[name="linkhref"]', dialog).val(),
 								title = $('input[name="linktitle"]', dialog).val(),
 								target = $('input[name="linktarget"]', dialog).val(),
-								baseUrl;
+								baseUrl,
+								img;
 
 							if (Wysiwyg.options.controlLink.forceRelativeUrls) {
 								baseUrl = window.location.protocol + "//" + window.location.hostname;
