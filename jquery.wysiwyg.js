@@ -1009,10 +1009,28 @@
 
 		this.increaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand('increaseFontSize', false, null);
-			} else if ($.browser.safari) {
-				var newNode = this.editorDoc.createElement('big');
-				this.getInternalRange().surroundContents(newNode);
+				this.editorDoc.execCommand("increaseFontSize", false, null);
+			} else if ($.browser.safari) {				
+				var Range = this.getInternalRange(),
+					Selection = this.getInternalSelection(),
+					newNode = this.editorDoc.createElement("big");
+
+				// If cursor placed on text node
+				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
+					var text = Range.commonAncestorContainer.nodeValue.toString(),
+						start = text.lastIndexOf(" ", Range.startOffset) + 1,
+						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
+
+					Range.setStart(Range.commonAncestorContainer, start);
+					Range.setEnd(Range.commonAncestorContainer, end);
+
+					Range.surroundContents(newNode);
+					Selection.addRange(Range);
+				} else {
+					Range.surroundContents(newNode);
+					Selection.removeAllRanges();
+					Selection.addRange(Range);
+				}
 			} else {
 				console.error("Internet Explorer?");
 			}
@@ -1020,10 +1038,28 @@
 
 		this.decreaseFontSize = function () {
 			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand('decreaseFontSize', false, null);
+				this.editorDoc.execCommand("decreaseFontSize", false, null);
 			} else if ($.browser.safari) {
-				var newNode = this.editorDoc.createElement('small');
-				this.getInternalRange().surroundContents(newNode);
+				var Range = this.getInternalRange(),
+					Selection = this.getInternalSelection(),
+					newNode = this.editorDoc.createElement("small");
+
+				// If cursor placed on text node
+				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
+					var text = Range.commonAncestorContainer.nodeValue.toString(),
+						start = text.lastIndexOf(" ", Range.startOffset) + 1,
+						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
+	
+					Range.setStart(Range.commonAncestorContainer, start);
+					Range.setEnd(Range.commonAncestorContainer, end);
+	
+					Range.surroundContents(newNode);
+					Selection.addRange(Range);
+				} else {
+					Range.surroundContents(newNode);
+					Selection.removeAllRanges();
+					Selection.addRange(Range);
+				}
 			} else {
 				console.error("Internet Explorer?");
 			}
@@ -1303,7 +1339,7 @@
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			 */
 			$(self.original).focus(function () {
-				if ($(this).filter(":visible")) {
+				if ($(this).filter(":visible").length === 0) {
 					return;
 				}
 				self.ui.focus();
@@ -1496,6 +1532,7 @@
 					});
 				});
 			}
+			$(self.original).trigger('ready.jwysiwyg', [self.editorDoc, self]);
 		};
 
 		this.innerDocument = function () {
@@ -2026,8 +2063,7 @@
 			}
 		}
 	};
-	
-	
+
 	/**
 	 * Unifies dialog methods to allow custom implementations
 	 * 
@@ -2050,34 +2086,40 @@
 	 * 
 	 */
 	$.wysiwyg.dialog = function (jWysiwyg, opts) {
-		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : "default",
-			obj		= $.wysiwyg.dialog.createDialog(theme),
+		
+		var theme	= (jWysiwyg && jWysiwyg.options && jWysiwyg.options.dialog) ? jWysiwyg.options.dialog : (opts.theme ? opts.theme : "default"),
+			obj		= new $.wysiwyg.dialog.createDialog(theme),
 			that	= this,
 			$that	= $(that);
-			
+				
 		this.options = {
+			"modal": true,
+			"draggable": true,
 			"title": "Title",
 			"content": "Content",
 			"width":"auto",
 			"height":"auto",
 			"open": false,
 			"close": false
-		}
-			
+		};
+
 		this.isOpen = false;
-		
+
 		$.extend(this.options, opts);
-	
+
+		this.object = obj;
+
 		// Opens a dialog with the specified content
 		this.open = function () {
 			this.isOpen = true;
-			
+
 			obj.init.apply(that, []);
 			var $dialog = obj.show.apply(that, []);
-			
+
 			$that.trigger("afterOpen", [$dialog]);
+			
 		};
-		
+
 		this.show = function () {
 			this.isOpen = true;
 			
@@ -2087,7 +2129,7 @@
 			
 			$that.trigger("afterShow");
 		};
-		
+
 		this.hide = function () {
 			this.isOpen = false;
 			
@@ -2096,9 +2138,9 @@
 			var $dialog = obj.hide.apply(that, []);
 			
 			$that.trigger("afterHide", [$dialog]);
-		}
-		
-		// Closes the dialog window
+		};
+
+		// Closes the dialog window.
 		this.close = function () {
 			this.isOpen = false;
 						
@@ -2109,150 +2151,206 @@
 			obj.destroy.apply(that, []);
 			
 			$that.trigger("afterClose", [$dialog]);
+			
 		};
-		
-		if(this.options.open) {
+
+		if (this.options.open) {
 			$that.bind("afterOpen", this.options.open);
 		}
-		if(this.options.close) {
+		if (this.options.close) {
 			$that.bind("afterClose", this.options.close);
 		}
-		
+
 		return this;
 	};
-	
-	// "Static" Dialog methods
+
+	// "Static" Dialog methods.
 	$.extend(true, $.wysiwyg.dialog, {
 		_themes : {}, // sample {"Theme Name": object}
 		_theme : "", // the current theme
-		
+
 		register : function(name, obj) {
 			$.wysiwyg.dialog._themes[name] = obj;
 		},
-		
+
 		deregister : function (name) {
 			delete $.wysiwyg.dialog._themes[name];
 		},
-		
+
 		createDialog : function (name) {
 			return new ($.wysiwyg.dialog._themes[name]);
 		}
 	});
-	
-	$(function () { // need access to jQuery UI stuff
-		if(jQuery.ui) {
+
+	$(function () { // need access to jQuery UI stuff.
+		if (jQuery.ui) {
 			$.wysiwyg.dialog.register("jqueryui", function () {
 				var that = this;
-				
+
 				this._$dialog = null;
-				
+
 				this.init = function() {
 					var abstractDialog	= this,
 						content 		= this.options.content;
-						
-					if(typeof content == 'object') {
-						if(typeof content.html == 'function') {
+
+					if (typeof content === 'object') {
+						if (typeof content.html === 'function') {
 							content = content.html();
-						}
-						else if(typeof content.toString == 'function') {
+						} else if(typeof content.toString === 'function') {
 							content = content.toString();
 						}
 					}
-					
+
 					that._$dialog = $('<div></div>').attr('title', this.options.title).html(content);
+
+					var dialogHeight = this.options.height == 'auto' ? 300 : this.options.height,
+						dialogWidth = this.options.width == 'auto' ? 450 : this.options.width;
+
+					// console.log(that._$dialog);
 					
-					console.log(that._$dialog);
 					that._$dialog.dialog({
-						modal: true,
-						height: this.options.height,
-						width: this.options.width,
-						close: function () {
-							abstractDialog.close()
-						}
+						modal: this.options.modal,
+						draggable: this.options.draggable,
+						height: dialogHeight,
+						width: dialogWidth
 					});
-					
-									
+
 					return that._$dialog;
 				};
-				
+
 				this.show = function () {
 					that._$dialog.dialog("open");
 					return that._$dialog;
-				}
-				
+				};
+
 				this.hide = function () {
 					that._$dialog.dialog("close");
 					return that._$dialog;
 				};
-				
+
 				this.destroy = function() {
 					that._$dialog.dialog("destroy");
 					return that._$dialog;
 				};
 			});
 		}
-		
+
 		$.wysiwyg.dialog.register("default", function () {
 			var that = this;
-			
+
 			this._$dialog = null;
-			
+
 			this.init = function() {
 				var abstractDialog	= this,
 					content 		= this.options.content;
-					
-				if(typeof content == 'object') {
-					if(typeof content.html == 'function') {
+
+				if (typeof content === 'object') {
+					if(typeof content.html === 'function') {
 						content = content.html();
 					}
-					else if(typeof content.toString == 'function') {
+					else if(typeof content.toString === 'function') {
 						content = content.toString();
 					}
 				}
-				
+
 				that._$dialog = $('<div class="wysiwyg-dialog"></div>');
-				
+
 				var $topbar = $('<div class="wysiwyg-dialog-topbar"><div class="wysiwyg-dialog-close-wrapper"></div><div class="wysiwyg-dialog-title">'+this.options.title+'</div></div>');
 				var $link = $('<a href="#" class="wysiwyg-dialog-close-button">X</a>');
-				
+
 				$link.click(function () {
 					abstractDialog.close(); // this is important it makes sure that is close from the abstract $.wysiwyg.dialog instace, not just locally 
 				});
-
+				
 				$topbar.find('.wysiwyg-dialog-close-wrapper').prepend($link);
-				
+
 				var $dcontent = $('<div class="wysiwyg-dialog-content">'+content+'</div>');
-				
+
 				that._$dialog.append($topbar).append($dcontent);
 				
+				// Set dialog's height & width, and position it correctly:
+				var dialogHeight = this.options.height == 'auto' ? 300 : this.options.height,
+					dialogWidth = this.options.width == 'auto' ? 450 : this.options.width;
 				that._$dialog.hide().css({
-					"width":this.options.width == 'auto' ? 450 : this.options.width,
-					"height":this.options.height == 'auto' ? 300 : this.options.height,
+					"width": dialogWidth,
+					"height": dialogHeight,
+					"left": (($(window).width() - dialogWidth) / 2),
+					"top": (($(window).height() - dialogHeight) / 3)
 				});
-				
+
 				$("body").append(that._$dialog);
-				
+
 				return that._$dialog;
 			};
-			
+
 			this.show = function () {
+
+				// Modal feature:
+				if (this.options.modal) {
+					that._$dialog.wrap('<div class="wysiwyg-dialog-modal-div"></div>');
+				}
+				
+				// Draggable feature:
+				if (this.options.draggable) { 
+					
+					var mouseDown = false;
+					
+					that._$dialog.find("div.wysiwyg-dialog-topbar").bind("mousedown", function (e) {
+						e.preventDefault();
+						$(this).css({ "cursor": "move" });
+						var $topbar = $(this),
+							_dialog = $(this).parents(".wysiwyg-dialog"),
+							offsetX = (e.pageX - parseInt(_dialog.css("left"), 10)),
+							offsetY = (e.pageY - parseInt(_dialog.css("top"), 10));
+						mouseDown = true;
+						$(this).css({ "cursor": "move" });
+						
+						$(document).bind("mousemove", function (e) {
+							e.preventDefault();
+							if (mouseDown) {
+								_dialog.css({
+									"top": (e.pageY - offsetY),
+									"left": (e.pageX - offsetX)
+								});
+							}
+						}).bind("mouseup", function (e) {
+							e.preventDefault();
+							mouseDown = false;
+							$topbar.css({ "cursor": "auto" });
+							$(document).unbind("mousemove").unbind("mouseup");
+						});
+					
+					});
+				}
+				
 				that._$dialog.show();
 				return that._$dialog;
-			}
-			
+
+			};
+
 			this.hide = function () {
 				that._$dialog.hide();
 				return that._$dialog;
 			};
-			
+
 			this.destroy = function() {
+			
+				// Modal feature:
+				if (this.options.modal) { 
+					that._$dialog.unwrap();
+				}
+				
+				// Draggable feature:
+				if (this.options.draggable) { 
+					that._$dialog.find("div.wysiwyg-dialog-topbar").unbind("mousedown");
+				}
+				
 				that._$dialog.remove();
 				return that._$dialog;
 			};
 		});
 	});
-	
-	// end Dialog	
+	// end Dialog
 
 	$.fn.wysiwyg = function (method) {
 		var args = arguments, plugin;

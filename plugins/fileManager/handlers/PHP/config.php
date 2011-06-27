@@ -10,6 +10,9 @@ $accepted_extensions = array(
 	"png", "jpg", "gif"
 );
 
+// http://your-web-site.domain/base/url
+$base_url = '/uploads';
+
 // the root path of the upload directory on the server
 $uploads_dir = realpath("./uploads");
 
