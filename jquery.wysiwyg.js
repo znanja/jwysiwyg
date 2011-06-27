@@ -1339,7 +1339,7 @@
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			 */
 			$(self.original).focus(function () {
-				if ($(this).filter(":visible")) {
+				if ($(this).filter(":visible").length === 0) {
 					return;
 				}
 				self.ui.focus();
