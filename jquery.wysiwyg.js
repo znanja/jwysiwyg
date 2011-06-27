@@ -2299,8 +2299,8 @@
 						$(this).css({ "cursor": "move" });
 						var $topbar = $(this),
 							_dialog = $(this).parents(".wysiwyg-dialog"),
-							offsetX = (e.pageX - parseInt(_dialog.css("left"))),
-							offsetY = (e.pageY - parseInt(_dialog.css("top")));
+							offsetX = (e.pageX - parseInt(_dialog.css("left"), 10)),
+							offsetY = (e.pageY - parseInt(_dialog.css("top"), 10));
 						mouseDown = true;
 						$(this).css({ "cursor": "move" });
 						
