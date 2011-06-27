@@ -1339,7 +1339,7 @@
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			 */
 			$(self.original).focus(function () {
-				if ($(this).filter(":visible")) {
+				if ($(this).filter(":visible").length === 0) {
 					return;
 				}
 				self.ui.focus();
@@ -1532,6 +1532,7 @@
 					});
 				});
 			}
+			$(self.original).trigger('ready.jwysiwyg', [self.editorDoc, self]);
 		};
 
 		this.innerDocument = function () {
@@ -2299,8 +2300,8 @@
 						$(this).css({ "cursor": "move" });
 						var $topbar = $(this),
 							_dialog = $(this).parents(".wysiwyg-dialog"),
-							offsetX = (e.pageX - parseInt(_dialog.css("left"))),
-							offsetY = (e.pageY - parseInt(_dialog.css("top")));
+							offsetX = (e.pageX - parseInt(_dialog.css("left"), 10)),
+							offsetY = (e.pageY - parseInt(_dialog.css("top"), 10));
 						mouseDown = true;
 						$(this).css({ "cursor": "move" });
 						
