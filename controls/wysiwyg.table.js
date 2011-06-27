@@ -4,6 +4,8 @@
  * Depends on jWYSIWYG
  */
 (function ($) {
+	"use strict";
+
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.table.js depends on $.wysiwyg";
 	}
@@ -43,7 +45,7 @@
 	 * Wysiwyg namespace: public properties and methods
 	 */
 	$.wysiwyg.controls.table = function (Wysiwyg) {
-		var dialog, colCount, rowCount, formTableHtml,
+		var adialog, dialog, colCount, rowCount, formTableHtml,
 			formTextLegend = "Insert table",
 			formTextCols   = "Count of columns",
 			formTextRows   = "Count of rows",
@@ -68,25 +70,24 @@
 			Wysiwyg.insertTable = insertTable;
 		}
 
-		var adialog = new $.wysiwyg.dialog(Wysiwyg, {
-			"title": formTextLegend,
-			"content": formTableHtml,
-			"open": function (e, dialog) {
-				$("form#wysiwyg-tableInsert", dialog).submit(function (e) {
-				e.preventDefault();
-				rowCount = $('input[name="rowCount"]', dialog).val();
-				colCount = $('input[name="colCount"]', dialog).val();
+		adialog = new $.wysiwyg.dialog(Wysiwyg, {
+			"title"   : formTextLegend,
+			"content" : formTableHtml,
+			"open"    : function (e, dialog) {
+				dialog.find("form#wysiwyg-tableInsert").submit(function (e) {
+					e.preventDefault();
+					rowCount = dialog.find("input[name=rowCount]").val();
+					colCount = dialog.find("input[name=colCount]").val();
 
-				Wysiwyg.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
+					Wysiwyg.insertTable(colCount, rowCount, Wysiwyg.defaults.tableFiller);
 
-				adialog.close();
+					adialog.close();
 					return false;
 				});
 
-				$("input:reset", dialog).click(function (e) {
+				dialog.find("input:reset").click(function (e) {
 					e.preventDefault();
 					adialog.close();
-					
 					return false;
 				});
 			}
