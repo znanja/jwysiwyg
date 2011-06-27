@@ -1532,6 +1532,7 @@
 					});
 				});
 			}
+			$(self.original).trigger('ready.jwysiwyg', [self.editorDoc, self]);
 		};
 
 		this.innerDocument = function () {
