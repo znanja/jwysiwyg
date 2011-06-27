@@ -22,32 +22,39 @@
 	$.wysiwyg.controls.link = {
 		init: function (Wysiwyg) {
 			var self = this, elements, dialog, url, a, selection,
-				formLinkHtml, formTextLegend, formTextUrl, formTextTitle, formTextTarget,
-				formTextSubmit, formTextReset,
+				formLinkHtml, dialogReplacements, key, translation, regexp,
 				baseUrl, img;
 
-			formTextLegend  = "Insert Link";
-			formTextUrl     = "Link URL";
-			formTextTitle   = "Link Title";
-			formTextTarget  = "Link Target";
-			formTextSubmit  = "Insert Link";
-			formTextReset   = "Cancel";
+			dialogReplacements = {
+				legend: "Insert Link",
+				url   : "Link URL",
+				title : "Link Title",
+				target: "Link Target",
+				submit: "Insert Link",
+				reset: "Cancel"
+			};
 
-			if ($.wysiwyg.i18n) {
-				formTextLegend = $.wysiwyg.i18n.t(formTextLegend, "dialogs.link");
-				formTextUrl    = $.wysiwyg.i18n.t(formTextUrl, "dialogs.link");
-				formTextTitle  = $.wysiwyg.i18n.t(formTextTitle, "dialogs.link");
-				formTextTarget = $.wysiwyg.i18n.t(formTextTarget, "dialogs.link");
-				formTextSubmit = $.wysiwyg.i18n.t(formTextSubmit, "dialogs.link");
-				formTextReset  = $.wysiwyg.i18n.t(formTextReset, "dialogs");
+			formLinkHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
+				'<label>{url}: <input type="text" name="linkhref" value=""/></label>' +
+				'<label>{title}: <input type="text" name="linktitle" value=""/></label>' +
+				'<label>{target}: <input type="text" name="linktarget" value=""/></label>' +
+				'<input type="submit" class="button" value="{submit}"/> ' +
+				'<input type="reset" value="{reset}"/></fieldset></form>';
+
+			for (key in dialogReplacements) {
+				if ($.wysiwyg.i18n) {
+					translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs.link");
+
+					if (translation === dialogReplacements[key]) { // if not translated search in dialogs 
+						translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs");
+					}
+
+					dialogReplacements[key] = translation;
+				}
+
+				regexp = new RegExp("{" + key + "}", "g");
+				formLinkHtml = formLinkHtml.replace(regexp, dialogReplacements[key]);
 			}
-
-			formLinkHtml = '<form class="wysiwyg"><fieldset><legend>' + formTextLegend + '</legend>' +
-				'<label>' + formTextUrl + ': <input type="text" name="linkhref" value=""/></label>' +
-				'<label>' + formTextTitle + ': <input type="text" name="linktitle" value=""/></label>' +
-				'<label>' + formTextTarget + ': <input type="text" name="linktarget" value=""/></label>' +
-				'<input type="submit" class="button" value="' + formTextSubmit + '"/> ' +
-				'<input type="reset" value="' + formTextReset + '"/></fieldset></form>';
 
 			a = {
 				self: Wysiwyg.dom.getElement("a"), // link to element node
@@ -183,7 +190,7 @@
 							Wysiwyg.ui.focus();
 							Wysiwyg.editorDoc.execCommand("createLink", true, null);
 						} else {
-							url = window.prompt(formTextUrl, a.href);
+							url = window.prompt(dialogReplacements.url, a.href);
 
 							if (Wysiwyg.options.controlLink.forceRelativeUrls) {
 								baseUrl = window.location.protocol + "//" + window.location.hostname;
