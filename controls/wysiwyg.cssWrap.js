@@ -5,7 +5,7 @@
  * 
  * By Yotam Bar-On (https://github.com/tudmotu)
  */
-(function ($) {		
+(function ($) {
 	if (undefined === $.wysiwyg) {
 		throw "wysiwyg.cssWrap.js depends on $.wysiwyg";
 	}

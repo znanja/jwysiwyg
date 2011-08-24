@@ -531,7 +531,7 @@
 				$(".wysiwyg-files-action").remove();
 			});
 
-		}
+		};
 
 		/**
 		 * BROWSING BINDINGS
@@ -567,15 +567,11 @@
 				}
 
 			});
-
-		}
+		};
 
 		this.bindPreview = function (object) {
-
-		var self = this;
-
-		}
-
+			var self = this;
+		};
 	}
 
 })(jQuery);
