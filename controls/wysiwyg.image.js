@@ -24,7 +24,7 @@
 			$.wysiwyg.controls.image.init(this);
 		},
 		tags: ["img"],
-		tooltip: "Insert image",	
+		tooltip: "Insert image",
 		init: function (Wysiwyg) {
 			var self = this, elements, adialog, dialog, formImageHtml, regexp, dialogReplacements, key, translation,
 				img = {
@@ -55,19 +55,19 @@
 			formImageHtml = '<form class="wysiwyg" id="wysiwyg-addImage"><fieldset>' +
 				'<div class="form-row"><span class="form-row-key">{preview}:</span><div class="form-row-value"><img src="" alt="{preview}" style="margin: 2px; padding:5px; max-width: 100%; overflow:hidden; max-height: 100px; border: 1px solid rgb(192, 192, 192);"/></div></div>' +
 				'<div class="form-row"><label for="name">{url}:</label><div class="form-row-value"><input type="text" name="src" value=""/>';
-			
+
 			if ($.wysiwyg.fileManager && $.wysiwyg.fileManager.ready) {
 				// Add the File Manager icon:
 				formImageHtml += '<div class="wysiwyg-fileManager" title="{fileManagerIcon}"/>';
 			}
-			
+
 			formImageHtml += '</div></div>' +
 				'<div class="form-row"><label for="name">{title}:</label><div class="form-row-value"><input type="text" name="imgtitle" value=""/></div></div>' +
 				'<div class="form-row"><label for="name">{description}:</label><div class="form-row-value"><input type="text" name="description" value=""/></div></div>' +
 				'<div class="form-row"><label for="name">{width} x {height}:</label><div class="form-row-value"><input type="text" name="width" value="" class="width-small"/> x <input type="text" name="height" value="" class="width-small"/></div></div>' +
 				'<div class="form-row"><label for="name">{original}:</label><div class="form-row-value"><input type="text" name="naturalWidth" value="" class="width-small" disabled="disabled"/> x ' +
 				'<input type="text" name="naturalHeight" value="" class="width-small" disabled="disabled"/></div></div>' +
-				'<div class="form-row"><label for="name">{float}:</label><div class="form-row-value"><select name="float">' + 
+				'<div class="form-row"><label for="name">{float}:</label><div class="form-row-value"><select name="float">' +
 				'<option value="">{floatNone}</option>' +
 				'<option value="left">{floatLeft}</option>' +
 				'<option value="right">{floatRight}</option></select></div></div>' +
@@ -97,21 +97,21 @@
 				img.height = img.self.height ? img.self.height : "";
 				img.styleFloat = $(img.self).css("float");
 			}
-			
+
 			adialog = new $.wysiwyg.dialog(Wysiwyg, {
 				"title"   : dialogReplacements.legend,
 				"content" : formImageHtml
 			});
-			
+
 			$(adialog).bind("afterOpen", function (e, dialog) {
 				dialog.find("form#wysiwyg-addImage").submit(function (e) {
 					e.preventDefault();
 					self.processInsert(dialog.container, Wysiwyg, img);
-					
+
 					adialog.close();
 					return false;
 				});
-				
+
 				// File Manager (select file):
 				if ($.wysiwyg.fileManager) {
 					$("div.wysiwyg-fileManager").bind("click", function () {
@@ -124,19 +124,19 @@
 
 				$("input:reset", dialog).click(function (e) {
 					adialog.close();
-					
+
 					return false;
 				});
-				
+
 				$("fieldset", dialog).click(function (e) {
 					e.stopPropagation();
 				});
-				
+
 				self.makeForm(dialog, img);
 			});
-			
+
 			adialog.open();
-			
+
 			$(Wysiwyg.editorDoc).trigger("editorRefresh.wysiwyg");
 		},
 
@@ -154,7 +154,8 @@
 				baseUrl;
 
 			if (Wysiwyg.options.controlImage && Wysiwyg.options.controlImage.forceRelativeUrls) {
-				baseUrl = window.location.protocol + "//" + window.location.hostname;
+				baseUrl = window.location.protocol + "//" + window.location.hostname
+					+ (window.location.port ? ":" + window.location.port : "");
 				if (0 === url.indexOf(baseUrl)) {
 					url = url.substr(baseUrl.length);
 				}
@@ -178,7 +179,7 @@
 				} else {
 					$(img.self).css("height", "");
 				}
-				
+
 				Wysiwyg.saveContent();
 			} else {
 				found = width.toString().match(/^[0-9]+(px|%)?$/);
