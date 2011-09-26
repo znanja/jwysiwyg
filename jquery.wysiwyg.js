@@ -2097,8 +2097,9 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			"draggable": true,
 			"title": "Title",
 			"content": "Content",
-			"width":"auto",
-			"height":"auto",
+			"width":  "auto",
+			"height": "auto",
+			"zIndex": 2000,
 			"open": false,
 			"close": false
 		};
@@ -2253,7 +2254,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					}
 				}
 
-				that._$dialog = $('<div class="wysiwyg-dialog"></div>');
+				that._$dialog = $('<div class="wysiwyg-dialog"></div>').css({"z-index": this.options.zIndex});
 
 				var $topbar = $('<div class="wysiwyg-dialog-topbar"><div class="wysiwyg-dialog-close-wrapper"></div><div class="wysiwyg-dialog-title">'+this.options.title+'</div></div>');
 				var $link = $('<a href="#" class="wysiwyg-dialog-close-button">X</a>');
