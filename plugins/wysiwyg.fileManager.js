@@ -45,7 +45,7 @@
 	$.wysiwyg.plugin.register(fileManager);
 
 	// Private object:
-	function fileManagerObj (_handler) {
+	function fileManagerObj(_handler) {
 		this.handler = _handler;
 		this.loaded = false;
 		this.move = false;
@@ -73,25 +73,25 @@
 					return false;
 				}
 				// Wrap the file list:
-				var uiHtml = 	'<div class="wysiwyg-files-wrapper">' +
+				var uiHtml = '<div class="wysiwyg-files-wrapper">' +
 								'<input type="text" name="url" />' +
 								'<div id="wysiwyg-files-list-wrapper"></div>';
 
 				// If handler does not support upload, icon will not appear:
 				if (self.upload.enabled) {
-					uiHtml += 	'<div class="wysiwyg-files-action-upload" title="{{upload_action}}"></div>';
+					uiHtml += '<div class="wysiwyg-files-action-upload" title="{{upload_action}}"></div>';
 				}
 
 				// If handler does not support mkdir, icon will not appear:
 				if (self.mkdir.enabled) {
-					uiHtml += 	'<div class="wysiwyg-files-action-mkdir" title="{{mkdir_action}}"></div>';
+					uiHtml += '<div class="wysiwyg-files-action-mkdir" title="{{mkdir_action}}"></div>';
 				}
 
-				uiHtml += 	'<input style="display:none;" type="button" name="submit" value="{{select}}" />' +
+				uiHtml += '<input style="display:none;" type="button" name="submit" value="{{select}}" />' +
 							'</div>';
 
 				uiHtml = self.i18n(uiHtml);
-				if ($.wysiwyg.dialog) { 
+				if ($.wysiwyg.dialog) {
 					// Support for native $.wysiwyg.dialog()
 					var _title = self.i18n("{{file_manager}}");
 					var fileManagerUI = new $.wysiwyg.dialog(_handler, {
@@ -147,7 +147,7 @@
 										});
 									}
 								});
-								mkdirDialog.open();								
+								mkdirDialog.open();
 							});
 
 							// Upload File
@@ -222,23 +222,23 @@
 			if (self.curDir !== "/") {
 				var prevDir = self.curDir.replace(/[^\/]+\/?$/, '');
 				treeHtml += '<li class="wysiwyg-files-dir wysiwyg-files-dir-prev">' +
-							'<a href="#" rel="'+prevDir+'" title="{{previous_directory}}">' +
+							'<a href="#" rel="' + prevDir + '" title="{{previous_directory}}">' +
 							self.curDir +
 							'</a></li>';
 			}
-			$.each(json.data.directories, function(name, dirPath) {
+			$.each(json.data.directories, function (name, dirPath) {
 				treeHtml += '<li class="wysiwyg-files-dir">' +
-							'<a href="#" rel="'+dirPath+'">' +
+							'<a href="#" rel="' + dirPath + '">' +
 							name +
 							'</a></li>';
-			});			
-			$.each(json.data.files, function(name, url) {
+			});
+			$.each(json.data.files, function (name, url) {
 				var ext = name.replace(/^.*?\./, '').toLowerCase();
-				treeHtml += '<li class="wysiwyg-files-file wysiwyg-files-'+ext+'">' +
-							'<a href="#" rel="'+url+'">' +
+				treeHtml += '<li class="wysiwyg-files-file wysiwyg-files-' + ext + '">' +
+							'<a href="#" rel="' + url + '">' +
 							name +
 							'</a></li>';
-			});			
+			});
 			treeHtml += '</ul>';
 
 			return self.i18n(treeHtml);
@@ -281,8 +281,8 @@
 					alert(json.error);
 				}
 				callback(json);
-			});		
-		};	
+			});
+		};
 
 		// Make Directory Method
 		this.mkDir = function (newName, callback) {
@@ -297,15 +297,19 @@
 					alert(json.error);
 				}
 				callback(json);
-			});		
+			});
 		};
 
 		/**
 		 * Currently we will not support moving of files. This will be supported only when a more interactive interface will be introduced.
 		 */
 		this.moveFile = function () {
-			if (!this.loaded) { return false; }
-			if (!this.move.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
+			if (!this.loaded) {
+				return false;
+			}
+			if (!this.move.enabled) {
+				console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false;
+			}
 			var self = this;
 			return false;
 		};
@@ -313,13 +317,13 @@
 		// Upload:
 		this.loadUploadUI = function () {
 			if (!this.loaded) { return false; }
-			if (!this.upload.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }	
+			if (!this.upload.enabled) { console.log("$.wysiwyg.fileManager: handler: move is disabled."); return false; }
 			var self = this;
-			var uiHtml = 	'<form enctype="multipart/form-data" method="post" action="' + self.upload.handler + '">' + 
-							'<p><input type="file" name="handle" /><br>' + 
-							'<input type="text" name="newName" style="width:250px; border:solid 1px !important;" /><br>' + 
-							'<input type="text" name="action" style="display:none;" value="upload" /><br></p>' + 
-							'<input type="text" name="dir" style="display:none;" value="' + self.curDir + '" /></p>' + 
+			var uiHtml = '<form enctype="multipart/form-data" method="post" action="' + self.upload.handler + '">' +
+							'<p><input type="file" name="handle" /><br>' +
+							'<input type="text" name="newName" style="width:250px; border:solid 1px !important;" /><br>' +
+							'<input type="text" name="action" style="display:none;" value="upload" /><br></p>' +
+							'<input type="text" name="dir" style="display:none;" value="' + self.curDir + '" /></p>' +
 							'<input type="submit" name="submit" value="{{submit}}" />' +
 							'</form>';
 			uiHtml = self.i18n(uiHtml);
@@ -355,7 +359,7 @@
 		/**
 		 * i18n Support.
 		 * The below methods will enable basic support for i18n
-		 */		
+		 */
 
 		// Default translations (EN):
 		this.defaultTranslations = {
@@ -367,7 +371,7 @@
 			"upload_action": 		"Upload new file to current directory",
 			"mkdir_action": 		"Create new directory",
 			"remove_action": 		"Remove this file",
-			"rename_action": 		"Rename this file" ,	
+			"rename_action": 		"Rename this file",
 			"delete_message": 		"Are you sure you want to delete this file?",
 			"new_directory": 		"New Directory",
 			"previous_directory": 	"Go to previous directory",
@@ -439,8 +443,8 @@
 							var entry = $(this).parent("li");
 							// What are we deleting?
 							var type = entry.hasClass("wysiwyg-files-file") ? "file" : "dir";
-							var uiHtml = 	"<p>{{delete_message}}</p>" + 
-											'<div class="">' + 
+							var uiHtml = 	"<p>{{delete_message}}</p>" +
+											'<div class="">' +
 											'<input type="button" name="cancel" value="{{no}}" />' +
 											'<input type="button" name="remove" value="{{yes}}" />' +
 											"</div>";
@@ -516,12 +520,8 @@
 							});
 
 							renameDialog.open();
-
-						});					
-
+						});
 					}
-
-
 				}
 			}).bind("mouseleave", function () {
 				$(this).removeClass("wysiwyg-files-dir-expanded");
@@ -530,7 +530,6 @@
 				// Remove action buttons:
 				$(".wysiwyg-files-action").remove();
 			});
-
 		};
 
 		/**
@@ -573,5 +572,4 @@
 			var self = this;
 		};
 	}
-
 })(jQuery);
