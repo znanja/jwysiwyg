@@ -6,7 +6,9 @@
  * By Alec Gorge <alecgorge@gmail.com>
  */
 
-if (true) { // Debug.
+define('DEBUG', true);
+
+if (DEBUG) {
 	error_reporting(E_ALL | E_NOTICE | E_STRICT);
 	ini_set('display_errors', 'On');
 	ini_set('display_startup_errors', 'On');
@@ -16,13 +18,13 @@ if (true) { // Debug.
 	// Test if error log is writable.
 	$error = '';
 	if (file_exists($error_log_file) && !is_writable($error_log_file)) {
-		$error = 'Make file "' . $error_log_file . '" writable.';
+		$error = 'Make file "' . $error_log_file . '" writable or set debug to false.';
 	} else if (!file_exists($error_log_file) && !is_writable(dirname($error_log_file))) {
-		$error = 'Make dir "' . dirname($error_log_file) . '" writable.';
+		$error = 'Make dir "' . dirname($error_log_file) . '" writable or set debug to false.';
 	}
 	if ($error) {
 		header('Content-type: text/html; charset=UTF-8');
-		print($error);
+		print('{"error":"file-manager.php: ' . htmlentities($error) . '","success":false}');
 		exit();
 	}
 

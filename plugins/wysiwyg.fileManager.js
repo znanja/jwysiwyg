@@ -69,9 +69,15 @@
 			self.loaded = true;
 			self.authenticate(function (response) {
 				if (response !== "success") {
-					alert(response);
+					var dialog = new $.wysiwyg.dialog(null, {
+						"title"   : "Error",
+						"content" : response
+					});
+					dialog.open();
+
 					return false;
 				}
+
 				// Wrap the file list:
 				var uiHtml = '<div class="wysiwyg-files-wrapper">' +
 								'<input type="text" name="url" />' +
@@ -107,7 +113,6 @@
 							self.loadDir();
 							self.bindHover();
 							self.bindBrowse();
-
 
 							// Select file bindings
 							dialog.find("input[name=submit]").bind("click", function () {
@@ -174,7 +179,7 @@
 				return false;
 			}
 			var self = this;
-			$.getJSON(self.handler, { "action": "auth", "auth": "jwysiwyg" }, function (json) {
+			$.getJSON(self.handler, { "action": "auth", "auth": "jwysiwyg" }, function (json, textStatus) {
 				if (json.success) {
 					self.move = json.data.move;
 					self.rename = json.data.rename;
@@ -183,8 +188,7 @@
 					self.upload = json.data.upload;
 					callback("success");
 				} else {
-					console.log("$.wysiwyg.fileManager: Unable to authenticate handler.");
-					callback(json.error);
+					callback(json.error + "\n<br>$.wysiwyg.fileManager: Unable to authenticate handler.");
 				}
 			});
 		};
