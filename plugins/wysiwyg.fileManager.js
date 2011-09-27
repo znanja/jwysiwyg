@@ -62,7 +62,7 @@
 		 * Methods
 		 */
 		var console = $.wysiwyg.console;
-		console.log(this.handler);
+		console.log("handler: " + this.handler);
 
 		this.load = function (callback) {
 			var self = this;
@@ -125,7 +125,7 @@
 							// Create Directory
 							$(".wysiwyg-files-action-mkdir").bind("click", function (e) {
 								e.preventDefault();
-								var uiHtml =	'<div>' +
+								var uiHtml = '<div>' +
 												'<input type="text" class="wysiwyg-files-textfield" name="newName" value="{{new_directory}}" />' +
 												'<input type="button" name="cancel" value="{{cancel}}" />' +
 												'<input type="button" name="create" value="{{create}}" />' +
@@ -139,7 +139,6 @@
 
 									},
 									"open": function (e, _dialog) {
-
 										_dialog.find("input[name=create]").bind("click", function () {
 											self.mkDir(_dialog.find("input[name=newName]").val(), function (response) {
 												self.loadDir();
@@ -416,7 +415,6 @@
 		 */
 
 		this.bindHover = function () {
-
 			var self = this,
 				dialog = self.dialog,
 				object = dialog.find("li");
@@ -478,9 +476,7 @@
 							});
 
 							removeDialog.open();
-
 						});
-
 					}
 
 					// If handler does not support rename, icon will not appear:
@@ -540,14 +536,12 @@
 		 * BROWSING BINDINGS
 		 */
 		this.bindBrowse = function () {
-
 			var self = this,
 				dialog = self.dialog,
 				object = self.dialog.find("li").find("a");
 
 			// Browse:
 			object.bind("click", function (e) {
-
 				$(".wysiwyg-files-wrapper").find("li").css("backgroundColor", "#FFF");
 
 				// Browse Directory:
@@ -568,7 +562,6 @@
 					$(".wysiwyg-files-wrapper").find("input[name=url]").val($(this).attr("rel"));
 					dialog.find("input[name=submit]").show();
 				}
-
 			});
 		};
 
