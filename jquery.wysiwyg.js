@@ -2180,6 +2180,20 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 
 		createDialog : function (name) {
 			return new ($.wysiwyg.dialog._themes[name]);
+		},
+		
+		getDimensions : function () {
+			var width  = document.body.scrollWidth,
+				height = document.body.scrollHeight;
+
+			if ($.browser.opera) {
+				height = Math.max(
+					$(document).height(),
+					$(window).height(),
+					document.documentElement.clientHeight);
+			}
+
+			return [width, height];
 		}
 	});
 
@@ -2288,7 +2302,10 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 
 				// Modal feature:
 				if (this.options.modal) {
-					that._$dialog.wrap('<div class="wysiwyg-dialog-modal-div"></div>');
+					var dimensions = $.wysiwyg.dialog.getDimensions(),
+						wrapper    = $('<div class="wysiwyg-dialog-modal-div"></div>')
+						.css({"width": dimensions[0], "height": dimensions[1]});
+					that._$dialog.wrap(wrapper);
 				}
 				
 				// Draggable feature:
