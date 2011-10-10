@@ -1260,6 +1260,17 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					this.editor.css("height", newY.toString() + "px");
 				}
 			}
+			/** 
+			 * Automagically add id to iframe if textarea has its own when possible 
+			 * ( http://github.com/akzhan/jwysiwyg/issues/245 )
+			 */
+			if (element.id) {
+				var proposedId = element.id + '-wysiwyg-iframe';
+				if (! document.getElementById(proposedId)) {
+					this.editor.attr('id', proposedId);
+				}
+			}
+
 			/**
 			 * http://code.google.com/p/jwysiwyg/issues/detail?id=96
 			 */
