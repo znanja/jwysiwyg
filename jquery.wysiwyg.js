@@ -1237,8 +1237,8 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 		this.init = function (element, options) {
 			var self = this,
 				$form = $(element).closest("form"),
-				newX = element.width || element.clientWidth || 0,
-				newY = element.height || element.clientHeight || 0
+				newX = (element.width || element.clientWidth || 0),
+				newY = (element.height || element.clientHeight || 0)
 				;
 
 			this.options	= this.extendOptions(options);
