@@ -1364,10 +1364,10 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
                 var check = false;
                 try {
                     var range = self.getInternalRange();
-                    if ($.isFunction(range.parentElement)) { //IE8
+                    if (range && $.isFunction(range.parentElement)) { //IE8
                         node = range.parentElement();
                         check = range.boundingWidth == 0;
-                    } else if (range.startContainer) { //FF, chrome, IE9
+                    } else if (range && range.startContainer) { //FF, chrome, IE9
                         node = range.startContainer.parentNode;
                         check = range.startOffset == range.endOffset;
                     }
