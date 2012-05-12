@@ -2232,7 +2232,8 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			obj.destroy.apply(that, []);
 			
 			$that.trigger("afterClose", [$dialog]);
-			
+
+			jWysiwyg.ui.focus();
 		};
 
 		if (this.options.open) {
