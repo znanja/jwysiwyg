@@ -1759,7 +1759,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					content = newContent.html();
 				}
 
-				$(this.original).val(content);
+				$(this.original).val(content).change();
 
 				if (this.options.events && this.options.events.save) {
 					this.options.events.save.call(this);
