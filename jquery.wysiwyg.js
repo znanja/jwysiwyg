@@ -26,6 +26,11 @@
 	var supportsProp = (('prop' in $.fn) && ('removeProp' in $.fn));
 
 	function Wysiwyg() {
+		// - the item is added by this.ui.appendControls and then appendItem
+		// - click triggers this.triggerControl
+		// cmd or[key] - designMode exec function name
+		// tags - activates control for these tags (@see checkTargets)
+		// css - activates control if one of css is applied
 		this.controls = {
 			bold: {
 				groupIndex: 0,
@@ -61,6 +66,15 @@
 				},
 				tags: ["a"],
 				tooltip: "Create link"
+			},
+			
+			unLink : {
+				groupIndex: 6,
+				visible: true,
+				exec : function() {
+					this.editorDoc.execCommand("unlink", false, null);
+				},
+				tooltip: "Remove link"
 			},
 
 			cut: {
@@ -161,7 +175,7 @@
 						elementHeight = this.element.height();
 					}
 
-					if (this.viewHTML) {
+					if (this.viewHTML) { //textarea is shown
 						this.setContent(this.original.value);
 
 						$(this.original).hide();
@@ -187,7 +201,7 @@
 								li.removeClass('disabled');
 							}
 						});
-					} else {
+					} else { //wysiwyg is shown
 						this.saveContent();
 
 						$(this.original).css({
@@ -534,6 +548,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			dialog : "default"
 		};
 
+		//these properties are set from control hashes
 		this.availableControlProperties = [
 			"arguments",
 			"callback",
@@ -550,7 +565,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			"visible"
 		];
 
-		this.editor			= null;
+		this.editor			= null;  //jquery iframe holder
 		this.editorDoc		= null;
 		this.element		= null;
 		this.options		= {};
@@ -688,7 +703,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				controlsByGroup = {},
 				i,
 				currentGroupIndex, // jslint wants all vars at top of function
-				iterateGroup = function (controlName, control) {
+				iterateGroup = function (controlName, control) { //called for every group when adding
 					if (control.groupIndex && currentGroupIndex !== control.groupIndex) {
 						currentGroupIndex = control.groupIndex;
 						hasVisibleControls = false;
@@ -710,7 +725,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					}
 				};
 
-			$.each(controls, function (name, c) {
+			$.each(controls, function (name, c) { //sort by groupIndex
 				var index = "empty";
 
 				if (undefined !== c.groupIndex) {
@@ -728,7 +743,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				controlsByGroup[index][name] = c;
 			});
 
-			groups.sort(function (a, b) {
+			groups.sort(function (a, b) { //just sort group indexes by
 				if ("number" === typeof (a) && typeof (a) === typeof (b)) {
 					return (a - b);
 				} else {
@@ -766,13 +781,25 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				.addClass(className)
 				.attr("title", tooltip)
 				.hover(this.addHoverClass, this.removeHoverClass)
-				.click(function () {
+				.click(function (event) {
 					if ($(this).hasClass("disabled")) {
 						return false;
 					}
 
 					self.triggerControl.apply(self, [name, control]);
 
+					/**
+					* @link https://github.com/akzhan/jwysiwyg/issues/219
+					*/
+					var $target = $(event.target);
+					for (var controlName in self.controls) {
+						if ($target.hasClass(controlName)) {
+							self.ui.toolbar.find("." + controlName).toggleClass("active");
+							self.editorDoc.rememberCommand = true;
+							break;
+						}
+					}
+                    
 					this.blur();
 					self.ui.returnRange();
 					self.ui.focus();
@@ -821,9 +848,11 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			this.saveContent();
 		};
 
+		//called after click in wysiwyg "textarea"
 		this.ui.checkTargets = function (element) {
 			var self = this.self;
 
+			//activate controls
 			$.each(self.options.controls, function (name, control) {
 				var className = control.className || control.command || name || "empty",
 					tags,
@@ -849,6 +878,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					self.ui.toolbar.find("." + className).removeClass("active");
 				}
 
+				//activate by allowed tags
 				if (control.tags || (control.options && control.options.tags)) {
 					tags = control.tags || (control.options && control.options.tags);
 
@@ -866,6 +896,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					}
 				}
 
+				//activate by supposed css
 				if (control.css || (control.options && control.options.css)) {
 					css = control.css || (control.options && control.options.css);
 					el = $(element);
@@ -1227,8 +1258,8 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 		this.init = function (element, options) {
 			var self = this,
 				$form = $(element).closest("form"),
-				newX = element.width || element.clientWidth || 0,
-				newY = element.height || element.clientHeight || 0
+				newX = (element.width || element.clientWidth || 0),
+				newY = (element.height || element.clientHeight || 0)
 				;
 
 			this.options	= this.extendOptions(options);
@@ -1254,7 +1285,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				this.editor.css({
 					minHeight: (newY - 6).toString() + "px",
 					// fix for issue 12 ( http://github.com/akzhan/jwysiwyg/issues/issue/12 )
-					width: (newX > 50) ? (newX - 8).toString() + "px" : ""
+					width: (newX > 50) ? newX.toString() + "px" : ""
 				});
 				if ($.browser.msie && parseInt($.browser.version, 10) < 7) {
 					this.editor.css("height", newY.toString() + "px");
@@ -1346,6 +1377,29 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				self.ui.checkTargets(event.target ? event.target : event.srcElement);
 			});
 
+            /**
+             * @link https://github.com/akzhan/jwysiwyg/issues/251
+             */
+            setInterval(function () {
+                var offset = null;
+
+                try {
+                    var range = self.getInternalRange();
+                    if (range) {
+                        offset = {
+                            range: range,
+                            parent: $.browser.msie ? range.parentElement() : range.endContainer.parentNode,
+                            width: ($.browser.msie ? range.boundingWidth : range.startOffset - range.endOffset) || 0
+                        };
+                    }
+                }
+                catch (e) { console.error(e); }
+
+                if (offset && offset.width == 0 && !self.editorDoc.rememberCommand) {
+                    self.ui.checkTargets(offset.parent);
+                }
+            }, 400);
+            
 			/**
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
 			 */
@@ -1365,26 +1419,29 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 						return false;
 					}
 				}
+                
+                self.editorDoc.rememberCommand = false;
 				return true;
 			});
 
 			if (!$.browser.msie) {
 				$(self.editorDoc).keydown(function (event) {
 					var controlName;
+                    			var control;
 
 					/* Meta for Macs. tom@punkave.com */
 					if (event.ctrlKey || event.metaKey) {
-						for (controlName in self.controls) {
-							if (self.controls[controlName].hotkey && self.controls[controlName].hotkey.ctrl) {
-								if (event.keyCode === self.controls[controlName].hotkey.key) {
-									self.triggerControl.apply(self, [controlName, self.controls[controlName]]);
+						for (controlName in self.options.controls) {
+                            				control = self.options.controls[controlName];
+							if (control.hotkey && control.hotkey.ctrl) {
+								if (event.keyCode === control.hotkey.key) {
+									self.triggerControl.apply(self, [controlName, control]);
 
 									return false;
 								}
 							}
 						}
 					}
-
 					return true;
 				});
 			} else if (self.options.brIE) {
@@ -1614,6 +1671,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			return this;
 		};
 
+		//check allowed properties
 		this.parseControls = function () {
 			var self = this;
 
@@ -1625,7 +1683,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				});
 			});
 
-			if (this.options.parseControls) {
+			if (this.options.parseControls) { //user callback
 				return this.options.parseControls.call(this);
 			}
 
@@ -1701,7 +1759,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					content = newContent.html();
 				}
 
-				$(this.original).val(content);
+				$(this.original).val(content).change();
 
 				if (this.options.events && this.options.events.save) {
 					this.options.events.save.call(this);
@@ -1719,14 +1777,14 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 		};
 
 		this.triggerControl = function (name, control) {
-			var cmd = control.command || name,
+			var cmd = control.command || name,							//command directly for designMode=on iframe (this.editorDoc)
 				args = control["arguments"] || [];
 
 			if (control.exec) {
-				control.exec.apply(this);
+				control.exec.apply(this);  //custom exec function in control, allows DOM changing
 			} else {
 				this.ui.focus();
-				this.ui.withoutCss();
+				this.ui.withoutCss(); //disable style="" attr inserting in mozzila's designMode
 				// when click <Cut>, <Copy> or <Paste> got "Access to XPConnect service denied" code: "1011"
 				// in Firefox untrusted JavaScript is not allowed to access the clipboard
 				try {
@@ -1854,6 +1912,17 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			}
 
 			return oWysiwyg.getContent();
+		},
+    
+    		getSelection: function (object) {
+  			// no chains because of return
+			var oWysiwyg = object.data("wysiwyg");
+
+			if (!oWysiwyg) {
+				return undefined;
+			}
+
+			return oWysiwyg.getRangeText();
 		},
 
 		init: function (object, options) {
@@ -2108,8 +2177,9 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			"draggable": true,
 			"title": "Title",
 			"content": "Content",
-			"width":"auto",
-			"height":"auto",
+			"width":  "auto",
+			"height": "auto",
+			"zIndex": 2000,
 			"open": false,
 			"close": false
 		};
@@ -2162,7 +2232,8 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			obj.destroy.apply(that, []);
 			
 			$that.trigger("afterClose", [$dialog]);
-			
+
+			jWysiwyg.ui.focus();
 		};
 
 		if (this.options.open) {
@@ -2190,6 +2261,20 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 
 		createDialog : function (name) {
 			return new ($.wysiwyg.dialog._themes[name]);
+		},
+		
+		getDimensions : function () {
+			var width  = document.body.scrollWidth,
+				height = document.body.scrollHeight;
+
+			if ($.browser.opera) {
+				height = Math.max(
+					$(document).height(),
+					$(window).height(),
+					document.documentElement.clientHeight);
+			}
+
+			return [width, height];
 		}
 	});
 
@@ -2264,7 +2349,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					}
 				}
 
-				that._$dialog = $('<div class="wysiwyg-dialog"></div>');
+				that._$dialog = $('<div class="wysiwyg-dialog"></div>').css({"z-index": this.options.zIndex});
 
 				var $topbar = $('<div class="wysiwyg-dialog-topbar"><div class="wysiwyg-dialog-close-wrapper"></div><div class="wysiwyg-dialog-title">'+this.options.title+'</div></div>');
 				var $link = $('<a href="#" class="wysiwyg-dialog-close-button">X</a>');
@@ -2298,7 +2383,10 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 
 				// Modal feature:
 				if (this.options.modal) {
-					that._$dialog.wrap('<div class="wysiwyg-dialog-modal-div"></div>');
+					var dimensions = $.wysiwyg.dialog.getDimensions(),
+						wrapper    = $('<div class="wysiwyg-dialog-modal-div"></div>')
+						.css({"width": dimensions[0], "height": dimensions[1]});
+					that._$dialog.wrap(wrapper);
 				}
 				
 				// Draggable feature:
@@ -2383,6 +2471,6 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 	};
 	
 	$.fn.getWysiwyg = function () {
-		return $.data(this, "wysiwyg");
+		return this.data("wysiwyg");
 	};
 })(jQuery);
