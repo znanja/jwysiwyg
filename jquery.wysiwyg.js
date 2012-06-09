@@ -674,10 +674,10 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				element = element.childNodes[range.startOffset];
 			}
 			
-			if(!element.tagName && (element.previousSibiling || element.nextSibling)) {
-				if(element.previousSibiling) {
-					if(element.previousSibiling.tagName.toLowerCase() == filterTagName) {
-						return element.previousSibiling;
+			if(!element.tagName && (element.previousSibling || element.nextSibling)) {
+				if(element.previousSibling) {
+					if(element.previousSibling.tagName.toLowerCase() == filterTagName) {
+						return element.previousSibling;
 					}
 				}	
 				if(element.nextSibling) {
