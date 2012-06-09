@@ -1402,9 +1402,10 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
             
 			/**
 			 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=20
+			 * @link https://github.com/akzhan/jwysiwyg/issues/330
 			 */
 			$(self.original).focus(function () {
-				if ($(this).filter(":visible").length === 0) {
+				if ($(this).filter(":visible").length === 0 || $.browser.opera) {
 					return;
 				}
 				self.ui.focus();
