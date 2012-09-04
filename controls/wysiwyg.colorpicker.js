@@ -136,7 +136,7 @@
 				dialog = elements.appendTo("body");
 				dialog.dialog({
 					modal: true,
-
+					width:360,
 					open: function (event, ui) {
 						$("input:submit", elements).click(function (e) {
 							var color = $('input[name="color"]', dialog).val();
@@ -239,7 +239,7 @@
 				});
 
 				colorSelect = $("<li>" + this.color[type].palette[i] + "</li>")
-					.css({"float": "left", "list-style": "none"})
+					.css({"cursor": "pointer", "list-style": "none"})
 					.append(colorExample)
 					.bind("click.wysiwyg", bind);
 
