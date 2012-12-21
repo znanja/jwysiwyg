@@ -1052,61 +1052,21 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 		};
 
 		this.increaseFontSize = function () {
-			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand("increaseFontSize", false, null);
-			} else if ($.browser.safari) {				
-				var Range = this.getInternalRange(),
-					Selection = this.getInternalSelection(),
-					newNode = this.editorDoc.createElement("big");
+			this.editorDoc.execCommand(
+				"fontSize", null,
+				parseInt(this.editorDoc.queryCommandValue("fontSize") || 3) + 1
+			);
 
-				// If cursor placed on text node
-				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
-					var text = Range.commonAncestorContainer.nodeValue.toString(),
-						start = text.lastIndexOf(" ", Range.startOffset) + 1,
-						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
-
-					Range.setStart(Range.commonAncestorContainer, start);
-					Range.setEnd(Range.commonAncestorContainer, end);
-
-					Range.surroundContents(newNode);
-					Selection.addRange(Range);
-				} else {
-					Range.surroundContents(newNode);
-					Selection.removeAllRanges();
-					Selection.addRange(Range);
-				}
-			} else {
-				console.error("Internet Explorer?");
-			}
+			// TODO: IE selects the whole page for some reason
 		};
 
 		this.decreaseFontSize = function () {
-			if ($.browser.mozilla || $.browser.opera) {
-				this.editorDoc.execCommand("decreaseFontSize", false, null);
-			} else if ($.browser.safari) {
-				var Range = this.getInternalRange(),
-					Selection = this.getInternalSelection(),
-					newNode = this.editorDoc.createElement("small");
+			this.editorDoc.execCommand(
+				"fontSize", null,
+				parseInt(this.editorDoc.queryCommandValue("fontSize") || 3) - 1
+			);
 
-				// If cursor placed on text node
-				if (true === Range.collapsed && 3 === Range.commonAncestorContainer.nodeType) {
-					var text = Range.commonAncestorContainer.nodeValue.toString(),
-						start = text.lastIndexOf(" ", Range.startOffset) + 1,
-						end = (-1 === text.indexOf(" ", Range.startOffset)) ? text : text.indexOf(" ", Range.startOffset);
-	
-					Range.setStart(Range.commonAncestorContainer, start);
-					Range.setEnd(Range.commonAncestorContainer, end);
-	
-					Range.surroundContents(newNode);
-					Selection.addRange(Range);
-				} else {
-					Range.surroundContents(newNode);
-					Selection.removeAllRanges();
-					Selection.addRange(Range);
-				}
-			} else {
-				console.error("Internet Explorer?");
-			}
+			// TODO: IE selects the whole page for some reason
 		};
 
 		this.getContent = function () {
