@@ -97,8 +97,8 @@
 				groupIndex: 7,
 				visible: true,
 				className: "h1",
-				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.safari) ? "<h1>" : "h1",
+				command: "FormatBlock",
+				"arguments": "<h1>",
 				tags: ["h1"],
 				tooltip: "Header 1"
 			},
@@ -107,8 +107,8 @@
 				groupIndex: 7,
 				visible: true,
 				className: "h2",
-				command: ($.browser.msie || $.browser.safari)	? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.safari) ? "<h2>" : "h2",
+				command: "FormatBlock",
+				"arguments": "<h2>",
 				tags: ["h2"],
 				tooltip: "Header 2"
 			},
@@ -117,8 +117,8 @@
 				groupIndex: 7,
 				visible: true,
 				className: "h3",
-				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.safari) ? "<h3>" : "h3",
+				command: "FormatBlock",
+				"arguments": "<h3>",
 				tags: ["h3"],
 				tooltip: "Header 3"
 			},
