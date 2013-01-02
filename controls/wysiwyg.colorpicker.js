@@ -55,8 +55,8 @@
 			dialogReplacements = {
 				legend: "Colorpicker",
 				color: "Color",
-				applyForeColor: "Set Text",
-				applyBgColor: "Set Background",
+				applyForeColor: "Set text color",
+				applyBgColor: "Set highlight color",
 				reset: "Cancel"
 			};
 
@@ -149,8 +149,13 @@
 				
 				dialog.dialog({
 					modal: true,
+					title: 'Change text color',
+					minWidth: 400,
+					resizable: false,
+					draggable: false,
 					open: function (event, ui) {
-						$("input:button,input:reset", elements).hide();
+						$("input:button,input:reset,legend", elements).hide();
+						$(elements).css("margin-left", "3em");
 						$("input.applyForeColor,input.applyBgColor", elements).click(function (e) {
 							var color = $('input[name="color"]', dialog).val();
 							self.color.fore.prev = color;
