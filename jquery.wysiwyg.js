@@ -1031,23 +1031,33 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			var self = this.self, sel;
 
 			if (self.savedRange !== null) {
-				if (window.getSelection) { //non IE and there is already a selection
-					sel = window.getSelection();
-					if (sel.rangeCount > 0) {
-						sel.removeAllRanges();
+				var callback = function () {
+					if (window.getSelection) { //non IE>8 and there is already a selection
+						sel = window.getSelection();
+						if (sel.rangeCount > 0) {
+							sel.removeAllRanges();
+						}
+						try {
+							sel.addRange(self.savedRange);
+						} catch (e) {
+							console.error(e);
+						}
+					} else if (window.document.createRange) { // non IE>8 and no selection
+						window.getSelection().addRange(self.savedRange);
+					} else if (window.document.selection) { //IE<=8
+						self.savedRange.select();
 					}
-					try {
-						sel.addRange(self.savedRange);
-					} catch (e) {
-						console.error(e);
-					}
-				} else if (window.document.createRange) { // non IE and no selection
-					window.getSelection().addRange(self.savedRange);
-				} else if (window.document.selection) { //IE
-					self.savedRange.select();
-				}
 
-				self.savedRange = null;
+					self.savedRange = null;
+				};
+
+				if ($.browser.msie) {
+					// Need to wait for all events to finish up, or else the
+					// wrong selection will be restored
+					setTimeout(callback, 10);
+				} else {
+					callback();
+				}
 			}
 		};
 
