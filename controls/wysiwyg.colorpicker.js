@@ -1,6 +1,6 @@
 /**
  * Controls: Colorpicker plugin
- * 
+ *
  * Depends on jWYSIWYG, (farbtastic || other colorpicker plugins)
  */
 (function ($) {
@@ -72,7 +72,7 @@
 				if ($.wysiwyg.i18n) {
 					translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs.colorpicker");
 
-					if (translation === dialogReplacements[key]) { // if not translated search in dialogs 
+					if (translation === dialogReplacements[key]) { // if not translated search in dialogs
 						translation = $.wysiwyg.i18n.t(dialogReplacements[key], "dialogs");
 					}
 
@@ -146,7 +146,7 @@
 				buttonSetup[ dialogReplacements['reset'] ] = function() {
 					dialog.find('input:reset').click();
 				};
-				
+
 				dialog.dialog({
 					modal: true,
 					title: 'Change text color',
@@ -171,9 +171,9 @@
 								if ($.browser.msie)
 									Wysiwyg.editorDoc.execCommand('BackColor', false, color);
 								else
-									Wysiwyg.editorDoc.execCommand('hilitecolor',false,color);							
-							}							
-							
+									Wysiwyg.editorDoc.execCommand('hilitecolor',false,color);
+							}
+
 							$(dialog).dialog("close");
 							return false;
 						});
@@ -223,7 +223,7 @@
 							if ($.browser.msie)
 								Wysiwyg.editorDoc.execCommand('BackColor', false, color);
 							else
-								Wysiwyg.editorDoc.execCommand('hilitecolor',false,color);							
+								Wysiwyg.editorDoc.execCommand('hilitecolor',false,color);
 						}
 
 						$(elements).remove();
