@@ -1031,33 +1031,23 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			var self = this.self, sel;
 
 			if (self.savedRange !== null) {
-				var callback = function () {
-					if (window.getSelection) { //non IE>8 and there is already a selection
-						sel = window.getSelection();
-						if (sel.rangeCount > 0) {
-							sel.removeAllRanges();
-						}
-						try {
-							sel.addRange(self.savedRange);
-						} catch (e) {
-							console.error(e);
-						}
-					} else if (window.document.createRange) { // non IE>8 and no selection
-						window.getSelection().addRange(self.savedRange);
-					} else if (window.document.selection) { //IE<=8
-						self.savedRange.select();
+				if (window.getSelection) { //non IE>8 and there is already a selection
+					sel = window.getSelection();
+					if (sel.rangeCount > 0) {
+						sel.removeAllRanges();
 					}
-
-					self.savedRange = null;
-				};
-
-				if ($.browser.msie) {
-					// Need to wait for all events to finish up, or else the
-					// wrong selection will be restored
-					setTimeout(callback, 10);
-				} else {
-					callback();
+					try {
+						sel.addRange(self.savedRange);
+					} catch (e) {
+						console.error(e);
+					}
+				} else if (window.document.createRange) { // non IE>8 and no selection
+					window.getSelection().addRange(self.savedRange);
+				} else if (window.document.selection) { //IE<=8
+					self.savedRange.select();
 				}
+
+				self.savedRange = null;
 			}
 		};
 
@@ -1066,8 +1056,6 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				"fontSize", null,
 				parseInt(this.editorDoc.queryCommandValue("fontSize") || 3) + 1
 			);
-
-			// TODO: IE selects the whole page for some reason
 		};
 
 		this.decreaseFontSize = function () {
@@ -1075,8 +1063,6 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				"fontSize", null,
 				parseInt(this.editorDoc.queryCommandValue("fontSize") || 3) - 1
 			);
-
-			// TODO: IE selects the whole page for some reason
 		};
 
 		this.getContent = function () {
@@ -1800,6 +1786,13 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				args = control["arguments"] || [];
 
 			if (control.exec) {
+				if ($.browser.msie) {
+					// Always set focus, or else IE will sometimes apply styles
+					// to the wrong selection because beforedeactivate fires
+					// late
+					this.ui.focus();
+				}
+
 				control.exec.apply(this);  //custom exec function in control, allows DOM changing
 			} else {
 				this.ui.focus();
