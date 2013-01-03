@@ -63,7 +63,7 @@
 			colorpickerHtml = '<form class="wysiwyg"><fieldset><legend>{legend}</legend>' +
 				'<ul class="palette"></ul>' +
 				'<label>{color}: <input type="text" name="color" value="#123456"/></label>' +
-				'<div class="wheel"></div>' +
+				'<div class="wheel" style="padding-left: 3.5em;"></div>' +
 				'<input type="button" class="button applyForeColor" value="{applyForeColor}"/> ' +
 				'<input type="button" class="button applyBgColor" value="{applyBgColor}"/> ' +
 				'<input type="reset" value="{reset}"/></fieldset></form>';
