@@ -18,6 +18,7 @@
 			rules: {
 				heading: false,
 				table: false,
+				formatting: false,
 				inlineCSS: false,
 				/*
 				 * rmAttr       - { "all" | object with names } remove all
@@ -139,11 +140,19 @@
 
 			return false;
 		},
-		
+
 		removeStyle: function(node) {
-		  if (this.options.rules.inlineCSS) {
-		    $(node).removeAttr('style');
-		  }
+			if (this.options.rules.inlineCSS) {
+				$(node).removeAttr('style');
+			} else if (this.options.rules.formatting) {
+				$(node).css({
+					'background-color': '',
+					'color': '',
+					'font-family': '',
+					'font-size': '',
+					'text-align': ''
+				});
+			}
 		},
 
 		domTraversing: function (el, start, end, canRemove, cnt) {
@@ -305,7 +314,7 @@
 			options = options || {};
 			this.options = $.extend(true, this.defaults, options);
 
-			if (this.options.rules.heading || this.options.rules.table) {
+			if (this.options.rules.heading || this.options.rules.table || this.options.rules.formatting) {
 				var r = Wysiwyg.getInternalRange(),
 					start,
 					end,
