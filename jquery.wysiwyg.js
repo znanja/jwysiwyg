@@ -540,9 +540,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			plugins: { // placeholder for plugins settings
 				autoload: false,
 				i18n: false,
-				rmFormat: {
-					rmMsWordMarkup: false
-				}
+				rmFormat: {},
 			},
 
 			dialog : "default"
@@ -1708,11 +1706,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			this.editorDoc.execCommand("unlink", false, null);
 
 			if ($.wysiwyg.rmFormat && $.wysiwyg.rmFormat.enabled) {
-				if ("object" === typeof (this.options.plugins.rmFormat.rmMsWordMarkup)) {
-					$.wysiwyg.rmFormat.run(this, {rules: { msWordMarkup: this.options.plugins.rmFormat.rmMsWordMarkup }});
-				} else {
-					$.wysiwyg.rmFormat.run(this, {rules: { msWordMarkup: { enabled: true }}});
-				}
+				$.wysiwyg.rmFormat.run(this, this.options.plugins.rmFormat);
 			}
 
 			return this;
