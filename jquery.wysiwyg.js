@@ -1466,14 +1466,11 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				$(self.editorDoc).bind("keyup.wysiwyg", function (event) {
 					if (event.ctrlKey || event.metaKey) {
 						// CTRL + V (paste)
-						if (86 === event.keyCode) {
-							if ($.wysiwyg.rmFormat) {
-								if ("object" === typeof (self.options.plugins.rmFormat.rmMsWordMarkup)) {
-									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.plugins.rmFormat.rmMsWordMarkup }});
-								} else {
-									$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: { enabled: true }}});
-								}
-							}
+						if (86 === event.keyCode &&
+						    $.wysiwyg.rmFormat && $.wysiwyg.rmFormat.enabled &&
+						    "object" === typeof (self.options.plugins.rmFormat.rmMsWordMarkup)) {
+							// Only run Word Markup removal if configured
+							$.wysiwyg.rmFormat.run(self, {rules: { msWordMarkup: self.options.plugins.rmFormat.rmMsWordMarkup }});
 						}
 					}
 				});
