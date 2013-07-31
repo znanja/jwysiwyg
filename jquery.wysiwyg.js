@@ -925,11 +925,17 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 		};
 
 		this.ui.designMode = function () {
+			// PATCHED: Use contenteditable instead of designMode.  Firefox
+			// *sometimes* does not execute JavaScript inside iframes when
+			// designMode is enabled (it seems to disable JavaScript if the
+			// iframe happens to redirect).  The capital E in "contentEditable"
+			// is required for IE7.
 			var attempts = 3,
 				self = this.self,
 				runner;
 				runner = function (attempts) {
-					if ("on" === self.editorDoc.designMode) {
+					var body = $(self.editorDoc).find('body');
+					if (body.attr('contentEditable') === 'true') {
 						if (self.timers.designMode) {
 							window.clearTimeout(self.timers.designMode);
 						}
@@ -943,7 +949,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					}
 
 					try {
-						self.editorDoc.designMode = "on";
+						body.attr('contentEditable', 'true');
 					} catch (e) {
 					}
 
@@ -1325,7 +1331,8 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				return null;
 			}
 
-			self.ui.designMode();
+			// PATCHED: designMode() should be called after setting the initial
+			// content, so that contenteditable is set on the initial content.
 			self.editorDoc.open();
 			self.editorDoc.write(
 				self.options.html
@@ -1335,6 +1342,8 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					.replace(/INITIAL_CONTENT/, function () { return self.wrapInitialContent(); })
 			);
 			self.editorDoc.close();
+
+			self.ui.designMode();
 
 			$.wysiwyg.plugin.bind(self);
 
