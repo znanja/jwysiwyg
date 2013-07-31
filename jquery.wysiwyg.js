@@ -930,10 +930,9 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			// designMode is enabled (it seems to disable JavaScript if the
 			// iframe happens to redirect).  The capital E in "contentEditable"
 			// is required for IE7.
-			var attempts = 3,
-				self = this.self,
+			var self = this.self,
 				runner;
-				runner = function (attempts) {
+				runner = function () {
 					var body = $(self.editorDoc).find('body');
 					if (body.attr('contentEditable') === 'true') {
 						if (self.timers.designMode) {
@@ -953,13 +952,10 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 					} catch (e) {
 					}
 
-					attempts -= 1;
-					if (attempts > 0) {
-						self.timers.designMode = window.setTimeout(function () { runner(attempts); }, 100);
-					}
+					self.timers.designMode = window.setTimeout(function () { runner(); }, 100);
 				};
 
-			runner(attempts);
+			runner();
 		};
 
 		this.destroy = function () {
